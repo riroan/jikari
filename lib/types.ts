@@ -28,15 +28,27 @@ export interface VocabCard {
   meanings: string[];
   /** Korean meanings — primary quiz choice language for Korean speakers */
   koreanMeanings: string[];
+  /**
+   * Optional word with inline furigana markup: `{漢字|かんじ}` segments.
+   * Example: `{食|た}べる`. Falls back to `word + reading` if absent.
+   */
+  ruby?: string;
   jlptLevel: JLPTLevel;
 }
 
 export interface SentenceCard {
   id: string;
-  /** Sentence with ＿＿＿ blank */
+  /** Sentence with ＿＿＿ blank — plain text (no markup) */
   sentence: string;
-  /** The correct word that fills the blank */
+  /**
+   * Optional sentence with furigana markup: `{私|わたし}は{水|みず}を＿＿＿。`.
+   * Rendered via RubyText. Falls back to `sentence` if absent.
+   */
+  sentenceRuby?: string;
+  /** The correct word that fills the blank (may contain ruby markup) */
   blank: string;
+  /** Optional ruby version of the blank — used when rendering filled-back */
+  blankRuby?: string;
   /** 3 semantically-distinct distractors (not just grammatically valid) */
   distractors: string[];
   translation: string;

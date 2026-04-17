@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { QuizCard } from "@/components/QuizCard";
+import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import {
   SENTENCE_IDS,
@@ -72,14 +73,18 @@ export default function SentenceQuizPage() {
           question={
             <div>
               <div
-                className="text-[32px] leading-snug font-medium mb-4"
+                className="text-[28px] leading-[1.9] font-medium mb-4"
                 style={{
                   fontFamily: "var(--font-jp-serif)",
                   color: "var(--fg)",
                   letterSpacing: "-0.01em",
                 }}
               >
-                {nextCard.sentence}
+                {nextCard.sentenceRuby ? (
+                  <RubyText text={nextCard.sentenceRuby} />
+                ) : (
+                  nextCard.sentence
+                )}
               </div>
               <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
                 {nextCard.translation}
@@ -140,31 +145,29 @@ function EmptyState() {
 }
 
 function SentenceBack({ card }: { card: SentenceCard }) {
-  // Replace blank with bolded answer
-  const filled = card.sentence.replace(
-    "＿＿＿",
-    card.blank
-  );
+  const BLANK_PLACEHOLDER = "＿＿＿";
+  const hasRuby = Boolean(card.sentenceRuby);
+  const sentenceSrc = card.sentenceRuby ?? card.sentence;
+  const answerSrc = card.blankRuby ?? card.blank;
+
+  // Split at the placeholder so we can style the answer segment
+  const [before, after] = sentenceSrc.split(BLANK_PLACEHOLDER);
+
   return (
     <div className="flex flex-col gap-4">
       <div
-        className="text-[24px] leading-snug font-medium"
+        className="text-[22px] leading-[1.9] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
           letterSpacing: "-0.01em",
         }}
       >
-        {filled.split(card.blank).map((part, i, arr) => (
-          <span key={i}>
-            {part}
-            {i < arr.length - 1 && (
-              <span className="text-[color:var(--accent-progress)] font-semibold underline decoration-dotted underline-offset-4">
-                {card.blank}
-              </span>
-            )}
-          </span>
-        ))}
+        {hasRuby ? <RubyText text={before ?? ""} /> : before}
+        <span className="text-[color:var(--accent-progress)] font-semibold underline decoration-dotted underline-offset-4">
+          {hasRuby ? <RubyText text={answerSrc} /> : answerSrc}
+        </span>
+        {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
       </div>
       <div className="text-[14px] text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { QuizCard } from "@/components/QuizCard";
+import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import {
   VOCAB_IDS,
@@ -77,16 +78,23 @@ export default function VocabQuizPage() {
                   fontFamily: "var(--font-jp-serif)",
                   letterSpacing: "-0.02em",
                   color: "var(--fg)",
+                  // Ruby font-size is relative (0.45em of parent) — parent 56px ⇒ rt 25px, good
                 }}
               >
-                {nextCard.word}
+                {nextCard.ruby ? (
+                  <RubyText text={nextCard.ruby} />
+                ) : (
+                  nextCard.word
+                )}
               </div>
-              <div
-                className="text-[16px] text-[color:var(--fg-faint)]"
-                style={{ fontFamily: "var(--font-jp-sans)" }}
-              >
-                {nextCard.reading}
-              </div>
+              {!nextCard.ruby && (
+                <div
+                  className="text-[16px] text-[color:var(--fg-faint)]"
+                  style={{ fontFamily: "var(--font-jp-sans)" }}
+                >
+                  {nextCard.reading}
+                </div>
+              )}
             </div>
           }
           subtitle="의미는?"
@@ -146,21 +154,23 @@ function VocabBack({ card }: { card: VocabCard }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="text-[48px] leading-tight font-semibold"
+        className="text-[44px] leading-tight font-semibold"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
           letterSpacing: "-0.02em",
         }}
       >
-        {card.word}
+        {card.ruby ? <RubyText text={card.ruby} /> : card.word}
       </div>
-      <div
-        className="text-[16px] text-[color:var(--fg-soft)]"
-        style={{ fontFamily: "var(--font-jp-sans)" }}
-      >
-        {card.reading}
-      </div>
+      {!card.ruby && (
+        <div
+          className="text-[16px] text-[color:var(--fg-soft)]"
+          style={{ fontFamily: "var(--font-jp-sans)" }}
+        >
+          {card.reading}
+        </div>
+      )}
       <div className="text-[16px] text-[color:var(--fg)] leading-relaxed font-medium">
         {card.koreanMeanings.join(", ")}
       </div>
