@@ -1,0 +1,252 @@
+[
+  {
+    "id": "s31",
+    "sentence": "電車に＿＿＿。",
+    "sentenceRuby": "{電車|でんしゃ}に＿＿＿。",
+    "blank": "乗る",
+    "blankRuby": "{乗|の}る",
+    "distractors": ["飲む", "書く", "泳ぐ"],
+    "translation": "전철을 탄다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s32",
+    "sentence": "友達を＿＿＿。",
+    "sentenceRuby": "{友達|ともだち}を＿＿＿。",
+    "blank": "待つ",
+    "blankRuby": "{待|ま}つ",
+    "distractors": ["食べる", "買う", "泳ぐ"],
+    "translation": "친구를 기다린다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s33",
+    "sentence": "公園で＿＿＿。",
+    "sentenceRuby": "{公園|こうえん}で＿＿＿。",
+    "blank": "遊ぶ",
+    "blankRuby": "{遊|あそ}ぶ",
+    "distractors": ["売る", "閉める", "開ける"],
+    "translation": "공원에서 논다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s34",
+    "sentence": "魚を＿＿＿。",
+    "sentenceRuby": "{魚|さかな}を＿＿＿。",
+    "blank": "食べる",
+    "blankRuby": "{食|た}べる",
+    "distractors": ["読む", "書く", "走る"],
+    "translation": "생선을 먹는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s35",
+    "sentence": "日本語は＿＿＿です。",
+    "sentenceRuby": "{日本語|にほんご}は＿＿＿です。",
+    "blank": "難しい",
+    "blankRuby": "{難|むずか}しい",
+    "distractors": ["白い", "寒い", "高い"],
+    "translation": "일본어는 어렵다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s36",
+    "sentence": "私は犬が＿＿＿です。",
+    "sentenceRuby": "{私|わたし}は{犬|いぬ}が＿＿＿です。",
+    "blank": "好き",
+    "blankRuby": "{好|す}き",
+    "distractors": ["寒い", "忙しい", "新しい"],
+    "translation": "나는 개를 좋아한다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s37",
+    "sentence": "先生に＿＿＿。",
+    "sentenceRuby": "{先生|せんせい}に＿＿＿。",
+    "blank": "会う",
+    "blankRuby": "{会|あ}う",
+    "distractors": ["泳ぐ", "作る", "乗る"],
+    "translation": "선생님을 만난다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s38",
+    "sentence": "かばんを＿＿＿。",
+    "sentenceRuby": "かばんを＿＿＿。",
+    "blank": "持つ",
+    "blankRuby": "{持|も}つ",
+    "distractors": ["飲む", "走る", "寝る"],
+    "translation": "가방을 든다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s39",
+    "sentence": "海で＿＿＿。",
+    "sentenceRuby": "{海|うみ}で＿＿＿。",
+    "blank": "泳ぐ",
+    "blankRuby": "{泳|およ}ぐ",
+    "distractors": ["寝る", "書く", "使う"],
+    "translation": "바다에서 헤엄친다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s40",
+    "sentence": "＿＿＿で寝る。",
+    "sentenceRuby": "＿＿＿で{寝|ね}る。",
+    "blank": "部屋",
+    "blankRuby": "{部屋|へや}",
+    "distractors": ["時計", "果物", "手紙"],
+    "translation": "방에서 잔다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s41",
+    "sentence": "母がご飯を＿＿＿。",
+    "sentenceRuby": "{母|はは}がご{飯|はん}を＿＿＿。",
+    "blank": "作る",
+    "blankRuby": "{作|つく}る",
+    "distractors": ["走る", "聞く", "話す"],
+    "translation": "어머니가 밥을 만든다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s42",
+    "sentence": "夜十一時に＿＿＿。",
+    "sentenceRuby": "{夜|よる}{十一時|じゅういちじ}に＿＿＿。",
+    "blank": "寝る",
+    "blankRuby": "{寝|ね}る",
+    "distractors": ["書く", "買う", "歩く"],
+    "translation": "밤 11시에 잔다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s43",
+    "sentence": "コーヒーを＿＿＿。",
+    "sentenceRuby": "コーヒーを＿＿＿。",
+    "blank": "飲む",
+    "blankRuby": "{飲|の}む",
+    "distractors": ["見る", "書く", "閉める"],
+    "translation": "커피를 마신다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s44",
+    "sentence": "病院に＿＿＿。",
+    "sentenceRuby": "{病院|びょういん}に＿＿＿。",
+    "blank": "行く",
+    "blankRuby": "{行|い}く",
+    "distractors": ["食べる", "話す", "立つ"],
+    "translation": "병원에 간다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s45",
+    "sentence": "テレビを＿＿＿。",
+    "sentenceRuby": "テレビを＿＿＿。",
+    "blank": "見る",
+    "blankRuby": "{見|み}る",
+    "distractors": ["書く", "歩く", "泳ぐ"],
+    "translation": "TV를 본다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s46",
+    "sentence": "野菜が＿＿＿です。",
+    "sentenceRuby": "{野菜|やさい}が＿＿＿です。",
+    "blank": "高い",
+    "blankRuby": "{高|たか}い",
+    "distractors": ["暗い", "忙しい", "難しい"],
+    "translation": "야채가 비싸다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s47",
+    "sentence": "果物が＿＿＿です。",
+    "sentenceRuby": "{果物|くだもの}が＿＿＿です。",
+    "blank": "おいしい",
+    "blankRuby": "おいしい",
+    "distractors": ["寒い", "暗い", "忙しい"],
+    "translation": "과일이 맛있다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s48",
+    "sentence": "先生が日本語を＿＿＿。",
+    "sentenceRuby": "{先生|せんせい}が{日本語|にほんご}を＿＿＿。",
+    "blank": "教える",
+    "blankRuby": "{教|おし}える",
+    "distractors": ["走る", "寝る", "持つ"],
+    "translation": "선생님이 일본어를 가르친다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s49",
+    "sentence": "この本は＿＿＿です。",
+    "sentenceRuby": "この{本|ほん}は＿＿＿です。",
+    "blank": "楽しい",
+    "blankRuby": "{楽|たの}しい",
+    "distractors": ["寒い", "暑い", "暗い"],
+    "translation": "이 책은 재미있다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s50",
+    "sentence": "新しい車を＿＿＿。",
+    "sentenceRuby": "{新|あたら}しい{車|くるま}を＿＿＿。",
+    "blank": "買う",
+    "blankRuby": "{買|か}う",
+    "distractors": ["飲む", "泳ぐ", "開ける"],
+    "translation": "새 차를 산다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s51",
+    "sentence": "毎日本を＿＿＿。",
+    "sentenceRuby": "{毎日|まいにち}{本|ほん}を＿＿＿。",
+    "blank": "読む",
+    "blankRuby": "{読|よ}む",
+    "distractors": ["乗る", "走る", "閉める"],
+    "translation": "매일 책을 읽는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s52",
+    "sentence": "日本語を＿＿＿。",
+    "sentenceRuby": "{日本語|にほんご}を＿＿＿。",
+    "blank": "話す",
+    "blankRuby": "{話|はな}す",
+    "distractors": ["食べる", "売る", "泳ぐ"],
+    "translation": "일본어를 말한다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s53",
+    "sentence": "今日は＿＿＿です。",
+    "sentenceRuby": "{今日|きょう}は＿＿＿です。",
+    "blank": "忙しい",
+    "blankRuby": "{忙|いそが}しい",
+    "distractors": ["古い", "白い", "大きい"],
+    "translation": "오늘은 바쁘다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s54",
+    "sentence": "手紙を＿＿＿。",
+    "sentenceRuby": "{手紙|てがみ}を＿＿＿。",
+    "blank": "書く",
+    "blankRuby": "{書|か}く",
+    "distractors": ["飲む", "乗る", "閉める"],
+    "translation": "편지를 쓴다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s55",
+    "sentence": "学校まで＿＿＿。",
+    "sentenceRuby": "{学校|がっこう}まで＿＿＿。",
+    "blank": "歩く",
+    "blankRuby": "{歩|ある}く",
+    "distractors": ["食べる", "閉める", "開ける"],
+    "translation": "학교까지 걷는다.",
+    "jlptLevel": 5
+  }
+]
