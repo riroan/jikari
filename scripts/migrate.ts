@@ -1,14 +1,11 @@
-import { loadEnvConfig } from "@next/env";
 import mysql from "mysql2/promise";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-loadEnvConfig(process.cwd());
-
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
 if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME) {
-  console.error("Missing DB env vars. Check .env.local.");
+  console.error("Missing DB env vars (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME).");
   process.exit(1);
 }
 
