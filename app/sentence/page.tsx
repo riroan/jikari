@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { ModeTabs, type StudyMode } from "@/components/ModeTabs";
@@ -14,10 +15,29 @@ import type { SentenceCard } from "@/lib/types";
 const BLANK = "＿＿＿";
 
 export default function SentencePage() {
+  return (
+    <Suspense fallback={<Shell mode="quiz" setMode={() => {}} />}>
+      <SentencePageInner />
+    </Suspense>
+  );
+}
+
+function SentencePageInner() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const [mode, setMode] = useState<StudyMode>("quiz");
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
+  const setMode = (next: StudyMode) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (next === "quiz") params.delete("mode");
+    else params.set("mode", next);
+    const qs = params.toString();
+    router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
+  };
+
   const review = useStore((s) => s.review);
 
   const [epoch, setEpoch] = useState(0);

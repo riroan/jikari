@@ -1,12 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
-import { KANJI_IDS, VOCAB_IDS, SENTENCE_IDS } from "@/lib/data";
 import { Heatmap } from "@/components/Heatmap";
-import { cardKey, getTodayQueue, newLearningState } from "@/lib/srs";
-import type { CardMode } from "@/lib/types";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -14,29 +11,6 @@ export default function Home() {
 
   const heatmap = useStore((s) => s.heatmap);
   const currentStreak = useStore((s) => s.currentStreak);
-  const learningStates = useStore((s) => s.learningStates);
-  const settings = useStore((s) => s.settings);
-
-  // Queue counts — hint of SRS-due cards per mode (quiz is random-infinite anyway,
-  // so this is informational, not a cap).
-  const counts = useMemo(() => {
-    if (!mounted) return { kanji: 0, vocab: 0, sentence: 0 };
-    const now = Date.now();
-    const countFor = (mode: CardMode, ids: string[]) => {
-      const states = ids.map(
-        (id) => learningStates[cardKey(mode, id)] ?? newLearningState(mode, id, now)
-      );
-      const q = getTodayQueue(states, now, settings);
-      return q.due.length + q.new.length;
-    };
-    return {
-      kanji: countFor("kanji", KANJI_IDS),
-      vocab: countFor("vocab", VOCAB_IDS),
-      sentence: countFor("sentence", SENTENCE_IDS),
-    };
-  }, [mounted, learningStates, settings]);
-
-  const totalToday = counts.kanji + counts.vocab + counts.sentence;
 
   return (
     <main className="flex-1 flex justify-center">
@@ -64,33 +38,20 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Today */}
-        <section className="mb-10">
-          <div className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-1.5 font-medium">
-            TODAY
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span
-              className="text-[56px] font-semibold tabular-nums"
-              style={{
-                fontFamily: "var(--font-jp-serif)",
-                letterSpacing: "-0.03em",
-                color: "var(--fg)",
-              }}
-            >
-              {mounted ? totalToday : 0}
-            </span>
-            <span className="text-base text-[color:var(--fg-soft)]">
-              cards ready
-            </span>
-          </div>
+        {/* 공부 section */}
+        <SectionHeader ko="공부" jp="勉強" />
+        <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-10">
+          <EntryRow href="/kanji?mode=study" ko="한자" jp="漢字" />
+          <EntryRow href="/vocab?mode=study" ko="단어" jp="単語" />
+          <EntryRow href="/sentence?mode=study" ko="문장" jp="文章" />
         </section>
 
-        {/* Entries */}
+        {/* 퀴즈 section */}
+        <SectionHeader ko="퀴즈" jp="問題" />
         <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-12">
-          <EntryRow href="/kanji" ko="한자" jp="漢字" count={counts.kanji} />
-          <EntryRow href="/vocab" ko="단어" jp="単語" count={counts.vocab} />
-          <EntryRow href="/sentence" ko="문장" jp="文章" count={counts.sentence} />
+          <EntryRow href="/kanji" ko="한자" jp="漢字" />
+          <EntryRow href="/vocab" ko="단어" jp="単語" />
+          <EntryRow href="/sentence" ko="문장" jp="文章" />
         </section>
 
         {/* Heatmap */}
@@ -120,17 +81,23 @@ export default function Home() {
   );
 }
 
-function EntryRow({
-  href,
-  ko,
-  jp,
-  count,
-}: {
-  href: string;
-  ko: string;
-  jp: string;
-  count: number;
-}) {
+function SectionHeader({ ko, jp }: { ko: string; jp: string }) {
+  return (
+    <div className="flex items-baseline gap-2 mb-3 px-1">
+      <span className="text-[15px] font-medium tracking-wide text-[color:var(--fg)]">
+        {ko}
+      </span>
+      <span
+        className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.15em]"
+        style={{ fontFamily: "var(--font-jp-sans)" }}
+      >
+        {jp}
+      </span>
+    </div>
+  );
+}
+
+function EntryRow({ href, ko, jp }: { href: string; ko: string; jp: string }) {
   return (
     <Link
       href={href}
@@ -145,12 +112,7 @@ function EntryRow({
           {jp}
         </span>
       </div>
-      <span
-        className="text-[13px] text-[color:var(--fg-faint)] tabular-nums"
-        style={{ fontFamily: "var(--font-jp-sans)" }}
-      >
-        {count}
-      </span>
+      <span className="text-[color:var(--fg-faint)]">→</span>
     </Link>
   );
 }
