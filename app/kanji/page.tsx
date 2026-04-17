@@ -3,151 +3,163 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { QuizCard } from "@/components/QuizCard";
+import { StudyCard } from "@/components/StudyCard";
+import { ModeTabs, type StudyMode } from "@/components/ModeTabs";
 import { useStore } from "@/lib/store";
-import {
-  KANJI_IDS,
-  generateKanjiChoices,
-  getKanji,
-} from "@/lib/data";
-import { cardKey, getTodayQueue, newLearningState } from "@/lib/srs";
+import { KANJI_IDS, generateKanjiChoices, getKanji } from "@/lib/data";
+import { shuffleIds } from "@/lib/deck";
 import type { KanjiCard } from "@/lib/types";
 
 type QType = "on" | "kun";
 
-export default function KanjiQuizPage() {
+export default function KanjiPage() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  const [mode, setMode] = useState<StudyMode>("quiz");
   const review = useStore((s) => s.review);
-  const learningStates = useStore((s) => s.learningStates);
-  const settings = useStore((s) => s.settings);
 
-  const [seed, setSeed] = useState(() => Date.now());
+  // Infinite random deck (reshuffles when exhausted)
+  const [epoch, setEpoch] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
-  // Compute queue via useMemo — avoid method selector returning new objects
-  const queue = useMemo(() => {
-    const now = Date.now();
-    const states = KANJI_IDS.map(
-      (id) => learningStates[cardKey("kanji", id)] ?? newLearningState("kanji", id, now)
-    );
-    return getTodayQueue(states, now, settings);
-    // seed is included to reshuffle after each review
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seed, learningStates, settings]);
+  const deck = useMemo(
+    () => shuffleIds(KANJI_IDS, seed + epoch * 7919),
+    [seed, epoch]
+  );
 
-  const nextCard: KanjiCard | undefined = useMemo(() => {
-    const pool = [...queue.due, ...queue.new];
-    if (pool.length === 0) return undefined;
-    const pick = pool[0];
-    return getKanji(pick.cardId);
-  }, [queue]);
+  const advance = () => {
+    setIndex((i) => {
+      const next = i + 1;
+      if (next >= deck.length) {
+        setEpoch((e) => e + 1);
+        return 0;
+      }
+      return next;
+    });
+  };
 
-  // Decide which reading to ask — prefer whichever has readings
-  const qType: QType = useMemo(() => {
-    if (!nextCard) return "on";
-    if (nextCard.onReadings.length > 0 && nextCard.kunReadings.length > 0) {
-      // Alternate based on seed
-      return seed % 2 === 0 ? "on" : "kun";
-    }
-    return nextCard.onReadings.length > 0 ? "on" : "kun";
-  }, [nextCard, seed]);
+  const retreat = () => {
+    setIndex((i) => {
+      if (i === 0) {
+        setEpoch((e) => Math.max(0, e - 1));
+        return deck.length - 1;
+      }
+      return i - 1;
+    });
+  };
 
-  const choices = useMemo(() => {
-    if (!nextCard) return null;
-    return generateKanjiChoices(nextCard, qType, seed);
-  }, [nextCard, qType, seed]);
+  const cardId = deck[index] ?? KANJI_IDS[0];
+  const card: KanjiCard | undefined = getKanji(cardId);
 
-  if (!mounted) {
-    return (
-      <main className="flex-1 flex justify-center">
-        <div className="w-[390px] px-6 pt-8 pb-10">
-          <PageHeader />
-        </div>
-      </main>
-    );
-  }
-
-  if (!nextCard || !choices) {
-    return (
-      <main className="flex-1 flex justify-center">
-        <div className="w-[390px] px-6 pt-8 pb-10">
-          <PageHeader />
-          <EmptyState />
-        </div>
-      </main>
-    );
+  if (!mounted || !card) {
+    return <Shell mode={mode} setMode={setMode} />;
   }
 
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
-        <PageHeader />
-
-        <QuizCard
-          question={
-            <div
-              className="text-[148px] leading-none font-semibold"
-              style={{
-                fontFamily: "var(--font-jp-serif)",
-                letterSpacing: "-0.02em",
-                color: "var(--fg)",
-              }}
-            >
-              {nextCard.kanji}
-            </div>
-          }
-          subtitle={qType === "on" ? "音読み" : "訓読み"}
-          choices={choices.choices}
-          correct={choices.correct}
-          back={
-            <KanjiBack card={nextCard} />
-          }
+    <Shell mode={mode} setMode={setMode}>
+      {mode === "study" ? (
+        <StudyCard
+          body={<KanjiStudyBody card={card} />}
+          position={index + 1}
+          total={deck.length}
+          onPrev={retreat}
+          onNext={advance}
+        />
+      ) : (
+        <KanjiQuiz
+          card={card}
+          seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
-            review("kanji", nextCard.id, wasCorrect);
-            setSeed(Date.now());
+            review("kanji", card.id, wasCorrect);
+            advance();
           }}
         />
+      )}
+    </Shell>
+  );
+}
+
+function Shell({
+  mode,
+  setMode,
+  children,
+}: {
+  mode: StudyMode;
+  setMode: (m: StudyMode) => void;
+  children?: React.ReactNode;
+}) {
+  return (
+    <main className="flex-1 flex justify-center">
+      <div className="w-[390px] px-6 pt-8 pb-10">
+        <header className="flex justify-between items-baseline mb-6">
+          <Link
+            href="/"
+            className="text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
+          >
+            ← HOME
+          </Link>
+          <h1
+            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            style={{ fontFamily: "var(--font-jp-serif)" }}
+          >
+            漢字
+          </h1>
+        </header>
+        <ModeTabs mode={mode} onChange={setMode} />
+        {children}
       </div>
     </main>
   );
 }
 
-function PageHeader() {
+function KanjiQuiz({
+  card,
+  seed,
+  onResolved,
+}: {
+  card: KanjiCard;
+  seed: number;
+  onResolved: (correct: boolean) => void;
+}) {
+  const qType: QType =
+    card.onReadings.length > 0 && card.kunReadings.length > 0
+      ? seed % 2 === 0
+        ? "on"
+        : "kun"
+      : card.onReadings.length > 0
+      ? "on"
+      : "kun";
+
+  const choices = generateKanjiChoices(card, qType, seed);
+
   return (
-    <header className="flex justify-between items-baseline mb-10">
-      <Link href="/" className="text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]">
-        ← HOME
-      </Link>
-      <h1
-        className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
-        style={{ fontFamily: "var(--font-jp-serif)" }}
-      >
-        漢字
-      </h1>
-    </header>
+    <QuizCard
+      question={
+        <div
+          className="text-[148px] leading-none font-semibold"
+          style={{
+            fontFamily: "var(--font-jp-serif)",
+            letterSpacing: "-0.02em",
+            color: "var(--fg)",
+          }}
+        >
+          {card.kanji}
+        </div>
+      }
+      subtitle={qType === "on" ? "音読み" : "訓読み"}
+      choices={choices.choices}
+      correct={choices.correct}
+      back={<KanjiBack card={card} />}
+      onResolved={onResolved}
+    />
   );
 }
 
-function EmptyState() {
-  return (
-    <div className="mt-20 text-center">
-      <div
-        className="text-[64px] font-semibold mb-4"
-        style={{ fontFamily: "var(--font-jp-serif)", color: "var(--fg-faint)" }}
-      >
-        —
-      </div>
-      <p className="text-sm text-[color:var(--fg-soft)] leading-relaxed">
-        오늘 한자 카드가 없습니다. 내일 다시 오세요.
-      </p>
-      <Link
-        href="/"
-        className="inline-block mt-6 px-4 py-2 text-sm text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)]"
-      >
-        홈으로
-      </Link>
-    </div>
-  );
+function KanjiStudyBody({ card }: { card: KanjiCard }) {
+  // Identical to quiz back — in study mode, everything is visible from the start.
+  return <KanjiBack card={card} />;
 }
 
 function KanjiBack({ card }: { card: KanjiCard }) {
@@ -156,7 +168,6 @@ function KanjiBack({ card }: { card: KanjiCard }) {
       className="flex flex-col gap-4 text-[color:var(--fg-soft)]"
       style={{ fontFamily: "var(--font-jp-sans)" }}
     >
-      {/* Same size as front — no visual jump on flip */}
       <div
         className="text-[148px] leading-none font-semibold"
         style={{
