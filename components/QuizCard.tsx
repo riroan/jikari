@@ -1,14 +1,21 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
 
 /**
  * Common quiz card for all 3 modes.
- * - Shows question + 4 choices.
- * - On click: disable inputs for 0.5s (prevent double-tap), show feedback.
- * - Render-prop pattern for question content: caller provides front/back.
+ *
+ * Timing (prevents answer-flash when a new card loads):
+ *   t=0      user clicks → selected/disabled set
+ *   t=500    flip to back (answer revealed)
+ *   t=2000   flip to front (same card — user can glance back at question)
+ *   t=2700   onResolved + state reset → parent loads next card AFTER flip completes
+ *
+ * Back face is only mounted when selected !== null. Before user answers,
+ * the back DOM is absent — no way for its content to flash even during reflow.
+ * Also aria-hidden={!flipped} so screen readers don't leak the answer.
  */
 
 export interface QuizCardProps {
@@ -25,7 +32,8 @@ export interface QuizCardProps {
 }
 
 const DISABLE_MS = 500;
-const FEEDBACK_MS = 1500;
+const ANSWER_HOLD_MS = 1500; // how long the back face stays visible
+const FLIP_MS = 600; // matches motion.div transition duration
 
 export function QuizCard({
   question,
@@ -48,25 +56,50 @@ export function QuizCard({
       const wasCorrect = choice === correct;
 
       if (back) {
+        // Flip to back (show answer)
         setTimeout(() => setFlipped(true), DISABLE_MS);
+        // Flip back to front (still same card — lets the flip animation resolve
+        // before the new card's back content ever enters the DOM)
+        setTimeout(
+          () => setFlipped(false),
+          DISABLE_MS + ANSWER_HOLD_MS
+        );
+        // Finally load the next card — only after the flip-back animation settled
+        setTimeout(() => {
+          onResolved(wasCorrect);
+          setSelected(null);
+          setDisabled(false);
+        }, DISABLE_MS + ANSWER_HOLD_MS + FLIP_MS);
+      } else {
+        setTimeout(() => {
+          onResolved(wasCorrect);
+          setSelected(null);
+          setDisabled(false);
+        }, ANSWER_HOLD_MS);
       }
-      setTimeout(() => {
-        onResolved(wasCorrect);
-        // Reset for next card
-        setSelected(null);
-        setDisabled(false);
-        setFlipped(false);
-      }, FEEDBACK_MS + (back ? 400 : 0));
     },
     [disabled, correct, back, onResolved]
   );
+
+  // Safety: if parent hot-reloads or props change mid-animation, reset.
+  useEffect(() => {
+    return () => {
+      setSelected(null);
+      setDisabled(false);
+      setFlipped(false);
+    };
+  }, []);
+
+  // Back only mounts after user has answered.
+  // Even during flip-back or state reset, back DOM is unmounted — no flash possible.
+  const showBack = back && selected !== null;
 
   return (
     <div className="flex flex-col gap-8">
       <div className="min-h-[260px]" style={{ perspective: "1200px" }}>
         <motion.div
           animate={{ rotateY: flipped ? 180 : 0 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: FLIP_MS / 1000, ease: [0.4, 0, 0.2, 1] }}
           style={{ transformStyle: "preserve-3d", position: "relative" }}
           className="min-h-[260px]"
         >
@@ -77,6 +110,7 @@ export function QuizCard({
               position: flipped ? "absolute" : "relative",
               inset: 0,
             }}
+            aria-hidden={flipped}
           >
             <div>{question}</div>
             {subtitle && (
@@ -85,8 +119,8 @@ export function QuizCard({
               </div>
             )}
           </div>
-          {/* Back */}
-          {back && (
+          {/* Back — mounts ONLY after user answers; stays mounted through reset */}
+          {showBack && (
             <div
               style={{
                 backfaceVisibility: "hidden",
@@ -94,6 +128,7 @@ export function QuizCard({
                 position: "absolute",
                 inset: 0,
               }}
+              aria-hidden={!flipped}
             >
               {back}
             </div>
@@ -111,7 +146,6 @@ export function QuizCard({
           } else if (disabled && isSelected && !isCorrectChoice) {
             stateClass = "border-[color:var(--accent-korean)] bg-[color:var(--accent-korean)]/10";
           } else if (disabled && !isSelected && isCorrectChoice) {
-            // Show the correct answer after wrong pick
             stateClass = "border-[color:var(--accent-progress)] bg-[color:var(--accent-progress)]/5";
           }
           return (
