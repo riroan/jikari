@@ -1,0 +1,271 @@
+[
+  {
+    "id": "家",
+    "word": "家",
+    "reading": "いえ",
+    "meanings": ["house", "home"],
+    "koreanMeanings": ["집"],
+    "ruby": "{家|いえ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "部屋",
+    "word": "部屋",
+    "reading": "へや",
+    "meanings": ["room"],
+    "koreanMeanings": ["방"],
+    "ruby": "{部屋|へや}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "車",
+    "word": "車",
+    "reading": "くるま",
+    "meanings": ["car"],
+    "koreanMeanings": ["자동차", "차"],
+    "ruby": "{車|くるま}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "電車",
+    "word": "電車",
+    "reading": "でんしゃ",
+    "meanings": ["train"],
+    "koreanMeanings": ["전철"],
+    "ruby": "{電車|でんしゃ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "ご飯",
+    "word": "ご飯",
+    "reading": "ごはん",
+    "meanings": ["rice", "meal"],
+    "koreanMeanings": ["밥"],
+    "ruby": "ご{飯|はん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "肉",
+    "word": "肉",
+    "reading": "にく",
+    "meanings": ["meat"],
+    "koreanMeanings": ["고기"],
+    "ruby": "{肉|にく}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "魚",
+    "word": "魚",
+    "reading": "さかな",
+    "meanings": ["fish"],
+    "koreanMeanings": ["생선", "물고기"],
+    "ruby": "{魚|さかな}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "野菜",
+    "word": "野菜",
+    "reading": "やさい",
+    "meanings": ["vegetable"],
+    "koreanMeanings": ["야채", "채소"],
+    "ruby": "{野菜|やさい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "果物",
+    "word": "果物",
+    "reading": "くだもの",
+    "meanings": ["fruit"],
+    "koreanMeanings": ["과일"],
+    "ruby": "{果物|くだもの}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "時計",
+    "word": "時計",
+    "reading": "とけい",
+    "meanings": ["clock", "watch"],
+    "koreanMeanings": ["시계"],
+    "ruby": "{時計|とけい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "銀行",
+    "word": "銀行",
+    "reading": "ぎんこう",
+    "meanings": ["bank"],
+    "koreanMeanings": ["은행"],
+    "ruby": "{銀行|ぎんこう}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "病院",
+    "word": "病院",
+    "reading": "びょういん",
+    "meanings": ["hospital"],
+    "koreanMeanings": ["병원"],
+    "ruby": "{病院|びょういん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "公園",
+    "word": "公園",
+    "reading": "こうえん",
+    "meanings": ["park"],
+    "koreanMeanings": ["공원"],
+    "ruby": "{公園|こうえん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "手紙",
+    "word": "手紙",
+    "reading": "てがみ",
+    "meanings": ["letter"],
+    "koreanMeanings": ["편지"],
+    "ruby": "{手紙|てがみ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "名前",
+    "word": "名前",
+    "reading": "なまえ",
+    "meanings": ["name"],
+    "koreanMeanings": ["이름"],
+    "ruby": "{名前|なまえ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "分かる",
+    "word": "分かる",
+    "reading": "わかる",
+    "meanings": ["understand"],
+    "koreanMeanings": ["알다", "이해하다"],
+    "ruby": "{分|わ}かる",
+    "jlptLevel": 5
+  },
+  {
+    "id": "知る",
+    "word": "知る",
+    "reading": "しる",
+    "meanings": ["know"],
+    "koreanMeanings": ["알다"],
+    "ruby": "{知|し}る",
+    "jlptLevel": 5
+  },
+  {
+    "id": "会う",
+    "word": "会う",
+    "reading": "あう",
+    "meanings": ["meet"],
+    "koreanMeanings": ["만나다"],
+    "ruby": "{会|あ}う",
+    "jlptLevel": 5
+  },
+  {
+    "id": "持つ",
+    "word": "持つ",
+    "reading": "もつ",
+    "meanings": ["hold", "have"],
+    "koreanMeanings": ["들다", "가지다"],
+    "ruby": "{持|も}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "待つ",
+    "word": "待つ",
+    "reading": "まつ",
+    "meanings": ["wait"],
+    "koreanMeanings": ["기다리다"],
+    "ruby": "{待|ま}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "作る",
+    "word": "作る",
+    "reading": "つくる",
+    "meanings": ["make"],
+    "koreanMeanings": ["만들다"],
+    "ruby": "{作|つく}る",
+    "jlptLevel": 5
+  },
+  {
+    "id": "乗る",
+    "word": "乗る",
+    "reading": "のる",
+    "meanings": ["ride", "get on"],
+    "koreanMeanings": ["타다"],
+    "ruby": "{乗|の}る",
+    "jlptLevel": 5
+  },
+  {
+    "id": "遊ぶ",
+    "word": "遊ぶ",
+    "reading": "あそぶ",
+    "meanings": ["play"],
+    "koreanMeanings": ["놀다"],
+    "ruby": "{遊|あそ}ぶ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "泳ぐ",
+    "word": "泳ぐ",
+    "reading": "およぐ",
+    "meanings": ["swim"],
+    "koreanMeanings": ["헤엄치다", "수영하다"],
+    "ruby": "{泳|およ}ぐ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "教える",
+    "word": "教える",
+    "reading": "おしえる",
+    "meanings": ["teach"],
+    "koreanMeanings": ["가르치다"],
+    "ruby": "{教|おし}える",
+    "jlptLevel": 5
+  },
+  {
+    "id": "好き",
+    "word": "好き",
+    "reading": "すき",
+    "meanings": ["like"],
+    "koreanMeanings": ["좋아하다"],
+    "ruby": "{好|す}き",
+    "jlptLevel": 5
+  },
+  {
+    "id": "嫌い",
+    "word": "嫌い",
+    "reading": "きらい",
+    "meanings": ["dislike"],
+    "koreanMeanings": ["싫어하다"],
+    "ruby": "{嫌|きら}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "おいしい",
+    "word": "おいしい",
+    "reading": "おいしい",
+    "meanings": ["delicious"],
+    "koreanMeanings": ["맛있다"],
+    "jlptLevel": 5
+  },
+  {
+    "id": "難しい",
+    "word": "難しい",
+    "reading": "むずかしい",
+    "meanings": ["difficult"],
+    "koreanMeanings": ["어렵다"],
+    "ruby": "{難|むずか}しい",
+    "jlptLevel": 5
+  },
+  {
+    "id": "楽しい",
+    "word": "楽しい",
+    "reading": "たのしい",
+    "meanings": ["fun", "enjoyable"],
+    "koreanMeanings": ["즐겁다"],
+    "ruby": "{楽|たの}しい",
+    "jlptLevel": 5
+  }
+]

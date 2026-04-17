@@ -1,0 +1,222 @@
+[
+  {
+    "id": "円",
+    "kanji": "円",
+    "onReadings": ["えん"],
+    "kunReadings": ["まる"],
+    "meanings": ["yen", "circle"],
+    "jlptLevel": 5,
+    "koreanHanja": "圓",
+    "koreanSound": ["원"],
+    "koreanMeaning": "둥글"
+  },
+  {
+    "id": "東",
+    "kanji": "東",
+    "onReadings": ["とう"],
+    "kunReadings": ["ひがし"],
+    "meanings": ["east"],
+    "jlptLevel": 5,
+    "koreanHanja": "東",
+    "koreanSound": ["동"],
+    "koreanMeaning": "동녘"
+  },
+  {
+    "id": "西",
+    "kanji": "西",
+    "onReadings": ["せい", "さい"],
+    "kunReadings": ["にし"],
+    "meanings": ["west"],
+    "jlptLevel": 5,
+    "koreanHanja": "西",
+    "koreanSound": ["서"],
+    "koreanMeaning": "서녘"
+  },
+  {
+    "id": "南",
+    "kanji": "南",
+    "onReadings": ["なん"],
+    "kunReadings": ["みなみ"],
+    "meanings": ["south"],
+    "jlptLevel": 5,
+    "koreanHanja": "南",
+    "koreanSound": ["남"],
+    "koreanMeaning": "남녘"
+  },
+  {
+    "id": "北",
+    "kanji": "北",
+    "onReadings": ["ほく"],
+    "kunReadings": ["きた"],
+    "meanings": ["north"],
+    "jlptLevel": 5,
+    "koreanHanja": "北",
+    "koreanSound": ["북", "배"],
+    "koreanMeaning": "북녘"
+  },
+  {
+    "id": "女",
+    "kanji": "女",
+    "onReadings": ["じょ", "にょ"],
+    "kunReadings": ["おんな", "め"],
+    "meanings": ["woman", "female"],
+    "jlptLevel": 5,
+    "koreanHanja": "女",
+    "koreanSound": ["녀", "여"],
+    "koreanMeaning": "여자"
+  },
+  {
+    "id": "男",
+    "kanji": "男",
+    "onReadings": ["だん", "なん"],
+    "kunReadings": ["おとこ"],
+    "meanings": ["man", "male"],
+    "jlptLevel": 5,
+    "koreanHanja": "男",
+    "koreanSound": ["남"],
+    "koreanMeaning": "사내"
+  },
+  {
+    "id": "学",
+    "kanji": "学",
+    "onReadings": ["がく"],
+    "kunReadings": ["まな"],
+    "meanings": ["study", "learning"],
+    "jlptLevel": 5,
+    "koreanHanja": "學",
+    "koreanSound": ["학"],
+    "koreanMeaning": "배울"
+  },
+  {
+    "id": "校",
+    "kanji": "校",
+    "onReadings": ["こう"],
+    "kunReadings": [],
+    "meanings": ["school"],
+    "jlptLevel": 5,
+    "koreanHanja": "校",
+    "koreanSound": ["교"],
+    "koreanMeaning": "학교"
+  },
+  {
+    "id": "生",
+    "kanji": "生",
+    "onReadings": ["せい", "しょう"],
+    "kunReadings": ["い", "う", "なま", "は"],
+    "meanings": ["life", "birth", "raw"],
+    "jlptLevel": 5,
+    "koreanHanja": "生",
+    "koreanSound": ["생"],
+    "koreanMeaning": "날"
+  },
+  {
+    "id": "先",
+    "kanji": "先",
+    "onReadings": ["せん"],
+    "kunReadings": ["さき"],
+    "meanings": ["previous", "ahead"],
+    "jlptLevel": 5,
+    "koreanHanja": "先",
+    "koreanSound": ["선"],
+    "koreanMeaning": "먼저"
+  },
+  {
+    "id": "父",
+    "kanji": "父",
+    "onReadings": ["ふ"],
+    "kunReadings": ["ちち"],
+    "meanings": ["father"],
+    "jlptLevel": 5,
+    "koreanHanja": "父",
+    "koreanSound": ["부"],
+    "koreanMeaning": "아버지"
+  },
+  {
+    "id": "母",
+    "kanji": "母",
+    "onReadings": ["ぼ"],
+    "kunReadings": ["はは"],
+    "meanings": ["mother"],
+    "jlptLevel": 5,
+    "koreanHanja": "母",
+    "koreanSound": ["모"],
+    "koreanMeaning": "어머니"
+  },
+  {
+    "id": "食",
+    "kanji": "食",
+    "onReadings": ["しょく"],
+    "kunReadings": ["た", "く"],
+    "meanings": ["eat", "food"],
+    "jlptLevel": 5,
+    "koreanHanja": "食",
+    "koreanSound": ["식", "사"],
+    "koreanMeaning": "먹을"
+  },
+  {
+    "id": "飲",
+    "kanji": "飲",
+    "onReadings": ["いん"],
+    "kunReadings": ["の"],
+    "meanings": ["drink"],
+    "jlptLevel": 5,
+    "koreanHanja": "飮",
+    "koreanSound": ["음"],
+    "koreanMeaning": "마실"
+  },
+  {
+    "id": "見",
+    "kanji": "見",
+    "onReadings": ["けん"],
+    "kunReadings": ["み"],
+    "meanings": ["see", "look"],
+    "jlptLevel": 5,
+    "koreanHanja": "見",
+    "koreanSound": ["견", "현"],
+    "koreanMeaning": "볼"
+  },
+  {
+    "id": "行",
+    "kanji": "行",
+    "onReadings": ["こう", "ぎょう"],
+    "kunReadings": ["い", "おこな", "ゆ"],
+    "meanings": ["go", "carry out"],
+    "jlptLevel": 5,
+    "koreanHanja": "行",
+    "koreanSound": ["행", "항"],
+    "koreanMeaning": "다닐"
+  },
+  {
+    "id": "来",
+    "kanji": "来",
+    "onReadings": ["らい"],
+    "kunReadings": ["く", "きた"],
+    "meanings": ["come"],
+    "jlptLevel": 5,
+    "koreanHanja": "來",
+    "koreanSound": ["래", "내"],
+    "koreanMeaning": "올"
+  },
+  {
+    "id": "会",
+    "kanji": "会",
+    "onReadings": ["かい", "え"],
+    "kunReadings": ["あ"],
+    "meanings": ["meet", "meeting"],
+    "jlptLevel": 5,
+    "koreanHanja": "會",
+    "koreanSound": ["회"],
+    "koreanMeaning": "모일"
+  },
+  {
+    "id": "国",
+    "kanji": "国",
+    "onReadings": ["こく"],
+    "kunReadings": ["くに"],
+    "meanings": ["country"],
+    "jlptLevel": 5,
+    "koreanHanja": "國",
+    "koreanSound": ["국"],
+    "koreanMeaning": "나라"
+  }
+]
