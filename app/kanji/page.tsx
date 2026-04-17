@@ -235,9 +235,6 @@ function KanjiBack({ card }: { card: KanjiCard }) {
             )}
           </span>
         </div>
-        <div className="text-[12px] text-[color:var(--fg-faint)] leading-relaxed mt-1">
-          {card.meanings.join(", ")}
-        </div>
       </div>
     </div>
   );
