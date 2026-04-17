@@ -153,8 +153,9 @@ function EmptyState() {
 function VocabBack({ card }: { card: VocabCard }) {
   return (
     <div className="flex flex-col gap-3">
+      {/* Same size as front — same word, same visual weight */}
       <div
-        className="text-[44px] leading-tight font-semibold"
+        className="text-[56px] leading-tight font-semibold"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
@@ -165,13 +166,13 @@ function VocabBack({ card }: { card: VocabCard }) {
       </div>
       {!card.ruby && (
         <div
-          className="text-[16px] text-[color:var(--fg-soft)]"
+          className="text-[16px] text-[color:var(--fg-faint)]"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {card.reading}
         </div>
       )}
-      <div className="text-[16px] text-[color:var(--fg)] leading-relaxed font-medium">
+      <div className="text-[18px] text-[color:var(--fg)] leading-relaxed font-medium mt-1">
         {card.koreanMeanings.join(", ")}
       </div>
       <div className="text-[12px] text-[color:var(--fg-faint)] leading-relaxed">

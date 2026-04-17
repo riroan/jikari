@@ -155,8 +155,9 @@ function SentenceBack({ card }: { card: SentenceCard }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Same size as front — sentence reads identically, just with the blank filled */}
       <div
-        className="text-[22px] leading-[1.9] font-medium"
+        className="text-[28px] leading-[1.9] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",

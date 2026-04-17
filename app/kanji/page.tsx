@@ -153,58 +153,60 @@ function EmptyState() {
 function KanjiBack({ card }: { card: KanjiCard }) {
   return (
     <div
-      className="flex flex-col gap-3 text-[color:var(--fg-soft)]"
+      className="flex flex-col gap-4 text-[color:var(--fg-soft)]"
       style={{ fontFamily: "var(--font-jp-sans)" }}
     >
-      <div className="flex items-baseline gap-4">
-        <span
-          className="text-[64px] font-semibold"
-          style={{
-            fontFamily: "var(--font-jp-serif)",
-            color: "var(--fg)",
-            letterSpacing: "-0.02em",
-            lineHeight: 1,
-          }}
-        >
-          {card.kanji}
-        </span>
-        <div className="flex flex-col gap-1">
-          {card.onReadings.length > 0 && (
-            <div className="flex gap-3 items-baseline">
-              <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] w-8 font-medium">
-                音
-              </span>
-              <span className="text-[16px]">{card.onReadings.join(" ・ ")}</span>
-            </div>
-          )}
-          {card.kunReadings.length > 0 && (
-            <div className="flex gap-3 items-baseline">
-              <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] w-8 font-medium">
-                訓
-              </span>
-              <span className="text-[16px]">{card.kunReadings.join(" ・ ")}</span>
-            </div>
-          )}
-        </div>
+      {/* Same size as front — no visual jump on flip */}
+      <div
+        className="text-[148px] leading-none font-semibold"
+        style={{
+          fontFamily: "var(--font-jp-serif)",
+          color: "var(--fg)",
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {card.kanji}
       </div>
-      <div className="text-[14px] text-[color:var(--fg-faint)] leading-relaxed">
-        {card.meanings.join(", ")}
-      </div>
-      <div className="mt-2 pt-3 border-t border-dashed border-[color:var(--line)] flex gap-2 items-baseline">
-        <span
-          className="text-xs font-semibold tracking-[0.1em] text-[color:var(--accent-korean)]"
-          style={{ fontFamily: "var(--font-jp-serif)" }}
-        >
-          韓
-        </span>
-        <span className="text-[14px] text-[color:var(--fg-soft)]">
-          {card.koreanMeaning} {card.koreanSound.join("·")}
-          {card.koreanHanja !== card.kanji && (
-            <span className="ml-2 text-[color:var(--fg-faint)] text-xs">
-              ({card.koreanHanja})
+      <div className="flex flex-col gap-1.5 pl-1">
+        {card.onReadings.length > 0 && (
+          <div className="flex gap-3.5 items-baseline">
+            <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] w-9 font-medium">
+              音
             </span>
-          )}
-        </span>
+            <span className="text-[17px] text-[color:var(--fg-soft)]">
+              {card.onReadings.join(" ・ ")}
+            </span>
+          </div>
+        )}
+        {card.kunReadings.length > 0 && (
+          <div className="flex gap-3.5 items-baseline">
+            <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] w-9 font-medium">
+              訓
+            </span>
+            <span className="text-[17px] text-[color:var(--fg-soft)]">
+              {card.kunReadings.join(" ・ ")}
+            </span>
+          </div>
+        )}
+        <div className="mt-2 pt-2 border-t border-dashed border-[color:var(--line)] flex gap-2.5 items-baseline">
+          <span
+            className="text-xs font-semibold tracking-[0.1em] text-[color:var(--accent-korean)]"
+            style={{ fontFamily: "var(--font-jp-serif)" }}
+          >
+            韓
+          </span>
+          <span className="text-[14px] text-[color:var(--fg-soft)]">
+            {card.koreanMeaning} {card.koreanSound.join("·")}
+            {card.koreanHanja !== card.kanji && (
+              <span className="ml-2 text-[color:var(--fg-faint)] text-xs">
+                ({card.koreanHanja})
+              </span>
+            )}
+          </span>
+        </div>
+        <div className="text-[12px] text-[color:var(--fg-faint)] leading-relaxed mt-1">
+          {card.meanings.join(", ")}
+        </div>
       </div>
     </div>
   );
