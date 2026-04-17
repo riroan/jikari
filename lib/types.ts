@@ -24,7 +24,10 @@ export interface VocabCard {
   id: string;
   word: string;
   reading: string;
+  /** English meanings (reference only, shown on card back) */
   meanings: string[];
+  /** Korean meanings — primary quiz choice language for Korean speakers */
+  koreanMeanings: string[];
   jlptLevel: JLPTLevel;
 }
 

@@ -69,18 +69,19 @@ export function generateKanjiChoices(
 }
 
 /**
- * Generate 4-choice options for a vocab card — correct meaning + 3 distractors.
+ * Generate 4-choice options for a vocab card — correct Korean meaning + 3 distractors.
+ * Korean is primary quiz language for Korean speakers (design review feedback).
  */
 export function generateVocabChoices(
   card: VocabCard,
   seed: number = Math.random()
 ): { correct: string; choices: string[] } {
-  const correct = card.meanings[0];
+  const correct = card.koreanMeanings[0];
   const pool: string[] = [];
   for (const other of VOCAB_CARDS) {
     if (other.id === card.id) continue;
-    for (const m of other.meanings) {
-      if (!card.meanings.includes(m)) pool.push(m);
+    for (const m of other.koreanMeanings) {
+      if (!card.koreanMeanings.includes(m)) pool.push(m);
     }
   }
   const distractors = sampleUnique(pool, 3, seed);

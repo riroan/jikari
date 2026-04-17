@@ -144,7 +144,7 @@ function EmptyState() {
 
 function VocabBack({ card }: { card: VocabCard }) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <div
         className="text-[48px] leading-tight font-semibold"
         style={{
@@ -161,7 +161,10 @@ function VocabBack({ card }: { card: VocabCard }) {
       >
         {card.reading}
       </div>
-      <div className="text-[15px] text-[color:var(--fg)] leading-relaxed">
+      <div className="text-[16px] text-[color:var(--fg)] leading-relaxed font-medium">
+        {card.koreanMeanings.join(", ")}
+      </div>
+      <div className="text-[12px] text-[color:var(--fg-faint)] leading-relaxed">
         {card.meanings.join(", ")}
       </div>
     </div>
