@@ -1,0 +1,270 @@
+[
+  {
+    "id": "休む",
+    "word": "休む",
+    "reading": "やすむ",
+    "meanings": ["rest", "take a day off"],
+    "koreanMeanings": ["쉬다"],
+    "ruby": "{休|やす}む",
+    "jlptLevel": 5
+  },
+  {
+    "id": "洗う",
+    "word": "洗う",
+    "reading": "あらう",
+    "meanings": ["wash"],
+    "koreanMeanings": ["씻다"],
+    "ruby": "{洗|あら}う",
+    "jlptLevel": 5
+  },
+  {
+    "id": "電話",
+    "word": "電話",
+    "reading": "でんわ",
+    "meanings": ["telephone"],
+    "koreanMeanings": ["전화"],
+    "ruby": "{電話|でんわ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "紙",
+    "word": "紙",
+    "reading": "かみ",
+    "meanings": ["paper"],
+    "koreanMeanings": ["종이"],
+    "ruby": "{紙|かみ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "いす",
+    "word": "いす",
+    "reading": "いす",
+    "meanings": ["chair"],
+    "koreanMeanings": ["의자"],
+    "jlptLevel": 5
+  },
+  {
+    "id": "机",
+    "word": "机",
+    "reading": "つくえ",
+    "meanings": ["desk"],
+    "koreanMeanings": ["책상"],
+    "ruby": "{机|つくえ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "窓",
+    "word": "窓",
+    "reading": "まど",
+    "meanings": ["window"],
+    "koreanMeanings": ["창문"],
+    "ruby": "{窓|まど}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "傘",
+    "word": "傘",
+    "reading": "かさ",
+    "meanings": ["umbrella"],
+    "koreanMeanings": ["우산"],
+    "ruby": "{傘|かさ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "近い",
+    "word": "近い",
+    "reading": "ちかい",
+    "meanings": ["near", "close"],
+    "koreanMeanings": ["가깝다"],
+    "ruby": "{近|ちか}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "遠い",
+    "word": "遠い",
+    "reading": "とおい",
+    "meanings": ["far"],
+    "koreanMeanings": ["멀다"],
+    "ruby": "{遠|とお}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "早い",
+    "word": "早い",
+    "reading": "はやい",
+    "meanings": ["early", "fast"],
+    "koreanMeanings": ["이르다", "빠르다"],
+    "ruby": "{早|はや}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "遅い",
+    "word": "遅い",
+    "reading": "おそい",
+    "meanings": ["late", "slow"],
+    "koreanMeanings": ["늦다", "느리다"],
+    "ruby": "{遅|おそ}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "明るい",
+    "word": "明るい",
+    "reading": "あかるい",
+    "meanings": ["bright"],
+    "koreanMeanings": ["밝다"],
+    "ruby": "{明|あか}るい",
+    "jlptLevel": 5
+  },
+  {
+    "id": "暗い",
+    "word": "暗い",
+    "reading": "くらい",
+    "meanings": ["dark"],
+    "koreanMeanings": ["어둡다"],
+    "ruby": "{暗|くら}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "強い",
+    "word": "強い",
+    "reading": "つよい",
+    "meanings": ["strong"],
+    "koreanMeanings": ["강하다", "세다"],
+    "ruby": "{強|つよ}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "弱い",
+    "word": "弱い",
+    "reading": "よわい",
+    "meanings": ["weak"],
+    "koreanMeanings": ["약하다"],
+    "ruby": "{弱|よわ}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "多い",
+    "word": "多い",
+    "reading": "おおい",
+    "meanings": ["many", "much"],
+    "koreanMeanings": ["많다"],
+    "ruby": "{多|おお}い",
+    "jlptLevel": 5
+  },
+  {
+    "id": "少ない",
+    "word": "少ない",
+    "reading": "すくない",
+    "meanings": ["few", "little"],
+    "koreanMeanings": ["적다"],
+    "ruby": "{少|すく}ない",
+    "jlptLevel": 5
+  },
+  {
+    "id": "天気",
+    "word": "天気",
+    "reading": "てんき",
+    "meanings": ["weather"],
+    "koreanMeanings": ["날씨"],
+    "ruby": "{天気|てんき}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "空",
+    "word": "空",
+    "reading": "そら",
+    "meanings": ["sky"],
+    "koreanMeanings": ["하늘"],
+    "ruby": "{空|そら}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "雪",
+    "word": "雪",
+    "reading": "ゆき",
+    "meanings": ["snow"],
+    "koreanMeanings": ["눈"],
+    "ruby": "{雪|ゆき}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "風",
+    "word": "風",
+    "reading": "かぜ",
+    "meanings": ["wind"],
+    "koreanMeanings": ["바람"],
+    "ruby": "{風|かぜ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "海",
+    "word": "海",
+    "reading": "うみ",
+    "meanings": ["sea", "ocean"],
+    "koreanMeanings": ["바다"],
+    "ruby": "{海|うみ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "山",
+    "word": "山",
+    "reading": "やま",
+    "meanings": ["mountain"],
+    "koreanMeanings": ["산"],
+    "ruby": "{山|やま}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "川",
+    "word": "川",
+    "reading": "かわ",
+    "meanings": ["river"],
+    "koreanMeanings": ["강"],
+    "ruby": "{川|かわ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "パン",
+    "word": "パン",
+    "reading": "パン",
+    "meanings": ["bread"],
+    "koreanMeanings": ["빵"],
+    "jlptLevel": 5
+  },
+  {
+    "id": "牛乳",
+    "word": "牛乳",
+    "reading": "ぎゅうにゅう",
+    "meanings": ["milk"],
+    "koreanMeanings": ["우유"],
+    "ruby": "{牛乳|ぎゅうにゅう}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "卵",
+    "word": "卵",
+    "reading": "たまご",
+    "meanings": ["egg"],
+    "koreanMeanings": ["달걀"],
+    "ruby": "{卵|たまご}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "お酒",
+    "word": "お酒",
+    "reading": "おさけ",
+    "meanings": ["alcohol", "sake"],
+    "koreanMeanings": ["술"],
+    "ruby": "お{酒|さけ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "元気",
+    "word": "元気",
+    "reading": "げんき",
+    "meanings": ["healthy", "energetic"],
+    "koreanMeanings": ["건강", "기운"],
+    "ruby": "{元気|げんき}",
+    "jlptLevel": 5
+  }
+]

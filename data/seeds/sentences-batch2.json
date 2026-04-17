@@ -1,0 +1,252 @@
+[
+  {
+    "id": "s56",
+    "sentence": "銀行で＿＿＿を借りる。",
+    "sentenceRuby": "{銀行|ぎんこう}で＿＿＿を{借|か}りる。",
+    "blank": "お金",
+    "blankRuby": "お{金|かね}",
+    "distractors": ["時計", "手紙", "果物"],
+    "translation": "은행에서 돈을 빌린다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s57",
+    "sentence": "＿＿＿を毎日食べる。",
+    "sentenceRuby": "＿＿＿を{毎日|まいにち}{食|た}べる。",
+    "blank": "野菜",
+    "blankRuby": "{野菜|やさい}",
+    "distractors": ["時計", "車", "手紙"],
+    "translation": "야채를 매일 먹는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s58",
+    "sentence": "時計が＿＿＿です。",
+    "sentenceRuby": "{時計|とけい}が＿＿＿です。",
+    "blank": "古い",
+    "blankRuby": "{古|ふる}い",
+    "distractors": ["寒い", "忙しい", "難しい"],
+    "translation": "시계가 오래됐다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s59",
+    "sentence": "私の＿＿＿は田中です。",
+    "sentenceRuby": "{私|わたし}の＿＿＿は{田中|たなか}です。",
+    "blank": "名前",
+    "blankRuby": "{名前|なまえ}",
+    "distractors": ["時計", "公園", "果物"],
+    "translation": "제 이름은 다나카입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s60",
+    "sentence": "毎朝顔を＿＿＿。",
+    "sentenceRuby": "{毎朝|まいあさ}{顔|かお}を＿＿＿。",
+    "blank": "洗う",
+    "blankRuby": "{洗|あら}う",
+    "distractors": ["書く", "走る", "売る"],
+    "translation": "매일 아침 얼굴을 씻는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s61",
+    "sentence": "この部屋は＿＿＿です。",
+    "sentenceRuby": "この{部屋|へや}は＿＿＿です。",
+    "blank": "暑い",
+    "blankRuby": "{暑|あつ}い",
+    "distractors": ["忙しい", "楽しい", "古い"],
+    "translation": "이 방은 덥다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s62",
+    "sentence": "姉は会社で＿＿＿。",
+    "sentenceRuby": "{姉|あね}は{会社|かいしゃ}で＿＿＿。",
+    "blank": "働く",
+    "blankRuby": "{働|はたら}く",
+    "distractors": ["寝る", "走る", "泳ぐ"],
+    "translation": "언니는 회사에서 일한다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s63",
+    "sentence": "窓を＿＿＿。",
+    "sentenceRuby": "{窓|まど}を＿＿＿。",
+    "blank": "開ける",
+    "blankRuby": "{開|あ}ける",
+    "distractors": ["食べる", "泳ぐ", "走る"],
+    "translation": "창문을 연다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s64",
+    "sentence": "日本は＿＿＿国です。",
+    "sentenceRuby": "{日本|にほん}は＿＿＿{国|くに}です。",
+    "blank": "大きい",
+    "blankRuby": "{大|おお}きい",
+    "distractors": ["暗い", "安い", "白い"],
+    "translation": "일본은 큰 나라다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s65",
+    "sentence": "週末は家で＿＿＿。",
+    "sentenceRuby": "{週末|しゅうまつ}は{家|いえ}で＿＿＿。",
+    "blank": "休む",
+    "blankRuby": "{休|やす}む",
+    "distractors": ["走る", "泳ぐ", "閉める"],
+    "translation": "주말에는 집에서 쉰다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s66",
+    "sentence": "妹は＿＿＿が好きです。",
+    "sentenceRuby": "{妹|いもうと}は＿＿＿が{好|す}きです。",
+    "blank": "猫",
+    "blankRuby": "{猫|ねこ}",
+    "distractors": ["時計", "銀行", "手紙"],
+    "translation": "여동생은 고양이를 좋아한다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s67",
+    "sentence": "朝＿＿＿を飲む。",
+    "sentenceRuby": "{朝|あさ}＿＿＿を{飲|の}む。",
+    "blank": "水",
+    "blankRuby": "{水|みず}",
+    "distractors": ["本", "時計", "手紙"],
+    "translation": "아침에 물을 마신다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s68",
+    "sentence": "＿＿＿で友達に会う。",
+    "sentenceRuby": "＿＿＿で{友達|ともだち}に{会|あ}う。",
+    "blank": "駅",
+    "blankRuby": "{駅|えき}",
+    "distractors": ["時計", "果物", "魚"],
+    "translation": "역에서 친구를 만난다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s69",
+    "sentence": "冬はとても＿＿＿です。",
+    "sentenceRuby": "{冬|ふゆ}はとても＿＿＿です。",
+    "blank": "寒い",
+    "blankRuby": "{寒|さむ}い",
+    "distractors": ["白い", "忙しい", "新しい"],
+    "translation": "겨울은 매우 춥다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s70",
+    "sentence": "母に＿＿＿を書く。",
+    "sentenceRuby": "{母|はは}に＿＿＿を{書|か}く。",
+    "blank": "手紙",
+    "blankRuby": "{手紙|てがみ}",
+    "distractors": ["時計", "魚", "車"],
+    "translation": "어머니께 편지를 쓴다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s71",
+    "sentence": "日本語が少し＿＿＿。",
+    "sentenceRuby": "{日本語|にほんご}が{少|すこ}し＿＿＿。",
+    "blank": "分かる",
+    "blankRuby": "{分|わ}かる",
+    "distractors": ["飲む", "泳ぐ", "使う"],
+    "translation": "일본어를 조금 안다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s72",
+    "sentence": "彼の名前を＿＿＿。",
+    "sentenceRuby": "{彼|かれ}の{名前|なまえ}を＿＿＿。",
+    "blank": "知る",
+    "blankRuby": "{知|し}る",
+    "distractors": ["書く", "飲む", "閉める"],
+    "translation": "그의 이름을 안다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s73",
+    "sentence": "＿＿＿を持って学校に行く。",
+    "sentenceRuby": "＿＿＿を{持|も}って{学校|がっこう}に{行|い}く。",
+    "blank": "本",
+    "blankRuby": "{本|ほん}",
+    "distractors": ["車", "猫", "病院"],
+    "translation": "책을 가지고 학교에 간다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s74",
+    "sentence": "バスを＿＿＿。",
+    "sentenceRuby": "バスを＿＿＿。",
+    "blank": "待つ",
+    "blankRuby": "{待|ま}つ",
+    "distractors": ["食べる", "閉める", "書く"],
+    "translation": "버스를 기다린다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s75",
+    "sentence": "＿＿＿が降る。",
+    "sentenceRuby": "＿＿＿が{降|ふ}る。",
+    "blank": "雨",
+    "blankRuby": "{雨|あめ}",
+    "distractors": ["車", "時計", "手紙"],
+    "translation": "비가 내린다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s76",
+    "sentence": "父は毎朝新聞を＿＿＿。",
+    "sentenceRuby": "{父|ちち}は{毎朝|まいあさ}{新聞|しんぶん}を＿＿＿。",
+    "blank": "読む",
+    "blankRuby": "{読|よ}む",
+    "distractors": ["食べる", "泳ぐ", "閉める"],
+    "translation": "아버지는 매일 아침 신문을 읽는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s77",
+    "sentence": "私の犬は＿＿＿です。",
+    "sentenceRuby": "{私|わたし}の{犬|いぬ}は＿＿＿です。",
+    "blank": "小さい",
+    "blankRuby": "{小|ちい}さい",
+    "distractors": ["寒い", "忙しい", "新しい"],
+    "translation": "제 개는 작다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s78",
+    "sentence": "＿＿＿で野菜を買う。",
+    "sentenceRuby": "＿＿＿で{野菜|やさい}を{買|か}う。",
+    "blank": "店",
+    "blankRuby": "{店|みせ}",
+    "distractors": ["車", "公園", "手紙"],
+    "translation": "가게에서 야채를 산다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s79",
+    "sentence": "彼女は＿＿＿人です。",
+    "sentenceRuby": "{彼女|かのじょ}は＿＿＿{人|ひと}です。",
+    "blank": "忙しい",
+    "blankRuby": "{忙|いそが}しい",
+    "distractors": ["古い", "寒い", "安い"],
+    "translation": "그녀는 바쁜 사람이다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s80",
+    "sentence": "お父さんの＿＿＿は高いです。",
+    "sentenceRuby": "お{父|とう}さんの＿＿＿は{高|たか}いです。",
+    "blank": "車",
+    "blankRuby": "{車|くるま}",
+    "distractors": ["手紙", "果物", "公園"],
+    "translation": "아버지의 차는 비싸다.",
+    "jlptLevel": 5
+  }
+]
