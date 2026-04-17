@@ -108,6 +108,20 @@ export default function SettingsPage() {
 
         <section className="mb-10">
           <h2 className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
+            표시
+          </h2>
+          <label className="flex justify-between items-center text-[14px] py-1">
+            <span className="text-[color:var(--fg-soft)]">후리가나 (한자 위 읽기)</span>
+            <Toggle
+              checked={settings.showFurigana}
+              onChange={(checked) => updateSettings({ showFurigana: checked })}
+              ariaLabel="후리가나 표시"
+            />
+          </label>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
             일일 한도
           </h2>
           <div className="flex flex-col gap-3">
@@ -174,5 +188,39 @@ export default function SettingsPage() {
         )}
       </div>
     </main>
+  );
+}
+
+function Toggle({
+  checked,
+  onChange,
+  ariaLabel,
+}: {
+  checked: boolean;
+  onChange: (next: boolean) => void;
+  ariaLabel: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={ariaLabel}
+      onClick={() => onChange(!checked)}
+      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors border border-[color:var(--line)]"
+      style={{
+        background: checked
+          ? "color-mix(in oklab, var(--accent-progress) 85%, transparent)"
+          : "var(--bg-deep)",
+      }}
+    >
+      <span
+        className="inline-block h-4 w-4 rounded-full bg-[color:var(--bg)] transition-transform"
+        style={{
+          transform: checked ? "translateX(22px)" : "translateX(4px)",
+          boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
+        }}
+      />
+    </button>
   );
 }

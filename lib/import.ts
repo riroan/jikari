@@ -27,6 +27,7 @@ const persistedStateSchema = z.object({
     theme: z.enum(["light", "dark"]),
     dailyNewLimit: z.number().int().positive().max(500),
     dailyReviewLimit: z.number().int().positive().max(2000),
+    showFurigana: z.boolean().default(true),
   }),
 });
 

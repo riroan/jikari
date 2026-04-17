@@ -91,13 +91,16 @@ export interface PersistedState {
     dailyNewLimit: number;
     /** Max review cards per day */
     dailyReviewLimit: number;
+    /** Show furigana over kanji — beginners on, advanced off */
+    showFurigana: boolean;
   };
 }
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   theme: "light",
   dailyNewLimit: 20,
   dailyReviewLimit: 50,
+  showFurigana: true,
 };

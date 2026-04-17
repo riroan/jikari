@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import { FuriganaBoundary } from "@/components/FuriganaBoundary";
 import "./globals.css";
 
 const notoSerifJP = Noto_Serif_JP({
@@ -38,7 +39,9 @@ export default function RootLayout({
       lang="ko"
       className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <FuriganaBoundary>{children}</FuriganaBoundary>
+      </body>
     </html>
   );
 }

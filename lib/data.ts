@@ -20,6 +20,10 @@ export const SENTENCE_IDS = SENTENCE_CARDS.map((c) => c.id);
 const KANJI_BY_ID = new Map(KANJI_CARDS.map((c) => [c.id, c]));
 const VOCAB_BY_ID = new Map(VOCAB_CARDS.map((c) => [c.id, c]));
 const SENTENCE_BY_ID = new Map(SENTENCE_CARDS.map((c) => [c.id, c]));
+// Word → ruby lookup for auto-annotating sentence distractors.
+// Key by both dictionary form and (plain kanji+okurigana) so conjugated forms
+// like "飲んだ" resolve via the dictionary form "飲む".
+const VOCAB_BY_WORD = new Map(VOCAB_CARDS.map((c) => [c.word, c]));
 
 export function getKanji(id: string): KanjiCard | undefined {
   return KANJI_BY_ID.get(id);
@@ -29,6 +33,67 @@ export function getVocab(id: string): VocabCard | undefined {
 }
 export function getSentence(id: string): SentenceCard | undefined {
   return SENTENCE_BY_ID.get(id);
+}
+
+/**
+ * Look up ruby markup for a word. Tries:
+ *   1. Exact match on word (食べる → "{食|た}べる")
+ *   2. Conjugation match — trim common Japanese verb suffixes and retry
+ *      (飲んだ → 飲む → "{飲|の}む")
+ *      In that case we substitute the suffix back onto the kanji portion.
+ *   3. Fall back to the word as-is (no ruby).
+ *
+ * This is a heuristic — good enough for seed data where distractors are
+ * common N5 verbs. For broader coverage, integrate kuromoji.js.
+ */
+export function wordToRuby(word: string): string {
+  // Direct match
+  const direct = VOCAB_BY_WORD.get(word);
+  if (direct?.ruby) return direct.ruby;
+  if (direct) return word; // known word, no ruby (kana)
+
+  // Try conjugation stripping for common past/te/masu forms
+  // 飲んだ → 飲む, 書いた → 書く, 食べた → 食べる, etc.
+  const conjugations: Array<[RegExp, string]> = [
+    // past て form: た → dictionary final
+    [/んだ$/, "む"], // 飲んだ → 飲む
+    [/いた$/, "く"], // 書いた → 書く
+    [/った$/, "る"], // 買った → 買う  — but also 走った → 走る. Ambiguous. Retry both.
+    [/ました$/, "る"], // 食べました → 食べる (crude)
+    [/って$/, "る"], // 買って → 買う — handled below by u/ru fallback
+    [/て$/, "る"], // 食べて → 食べる
+    [/た$/, "る"], // 食べた → 食べる
+  ];
+  for (const [suffixPattern, replacement] of conjugations) {
+    if (!suffixPattern.test(word)) continue;
+    const dictForm = word.replace(suffixPattern, replacement);
+    const candidate = VOCAB_BY_WORD.get(dictForm);
+    if (candidate?.ruby) {
+      // Swap the suffix back into the matched ruby markup
+      const dictSuffix = replacement;
+      const conjSuffix = word.slice(dictForm.length - dictSuffix.length);
+      return candidate.ruby.slice(0, candidate.ruby.length - dictSuffix.length) + conjSuffix;
+    }
+  }
+
+  // u-verb variant: try -う → -った, -う → -って
+  for (const [suffixPattern, replacement] of [
+    [/った$/, "う"], // 買った → 買う
+    [/って$/, "う"], // 買って → 買う
+  ] as const) {
+    if (!suffixPattern.test(word)) continue;
+    const dictForm = word.replace(suffixPattern, replacement);
+    const candidate = VOCAB_BY_WORD.get(dictForm);
+    if (candidate?.ruby) {
+      const conjSuffix = word.slice(dictForm.length - replacement.length);
+      return (
+        candidate.ruby.slice(0, candidate.ruby.length - replacement.length) + conjSuffix
+      );
+    }
+  }
+
+  // No match — return plain
+  return word;
 }
 
 /**
@@ -91,14 +156,19 @@ export function generateVocabChoices(
 
 /**
  * Sentence card choices come pre-authored (distractors are semantically curated).
- * We just shuffle the 4 options.
+ * We shuffle the 4 options and auto-annotate each with ruby markup via
+ * VOCAB lookup so all kanji in choices also show furigana (when enabled).
+ *
+ * Returns ruby-markup strings. If furigana is disabled by the user's setting,
+ * the RubyText component strips the markup at render time.
  */
 export function generateSentenceChoices(
   card: SentenceCard,
   seed: number = Math.random()
 ): { correct: string; choices: string[] } {
-  const correct = card.blank;
-  return { correct, choices: shuffle([correct, ...card.distractors], seed) };
+  const correct = card.blankRuby ?? wordToRuby(card.blank);
+  const distractorsRuby = card.distractors.map(wordToRuby);
+  return { correct, choices: shuffle([correct, ...distractorsRuby], seed) };
 }
 
 // ─────────────────────────────────────────────────────────────

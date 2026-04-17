@@ -116,13 +116,18 @@ export const useStore = create<Store>()(
       storage: createJSONStorage(() => safeLocalStorage()),
       version: SCHEMA_VERSION,
       /**
-       * Migration: if persisted state has older schemaVersion, upgrade here.
-       * For v1 this is a no-op.
+       * Schema migration: pad missing settings fields with defaults.
+       * v1 → v2: added settings.showFurigana (default true)
        */
       migrate: (persisted: unknown, _version: number) => {
-        // Validate that persisted looks like our PersistedState shape
         if (!persisted || typeof persisted !== "object") return initialState;
-        return persisted as PersistedState;
+        const p = persisted as Partial<PersistedState> & { settings?: Partial<PersistedState["settings"]> };
+        return {
+          ...initialState,
+          ...p,
+          schemaVersion: SCHEMA_VERSION,
+          settings: { ...DEFAULT_SETTINGS, ...(p.settings ?? {}) },
+        } as PersistedState;
       },
     }
   )

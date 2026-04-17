@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
+import { RubyText } from "./Furigana";
 
 /**
  * Common quiz card for all 3 modes.
@@ -155,7 +156,13 @@ export function QuizCard({
               disabled={disabled}
               className={`text-left px-4 py-3.5 text-[17px] text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
             >
-              {choice}
+              {/*
+                RubyText safely handles both markup and plain strings.
+                Plain strings (vocab kana choices, kanji readings) render as-is.
+                Markup strings (sentence choice verbs) render with ruby.
+                Context from FuriganaBoundary controls visibility globally.
+              */}
+              <RubyText text={choice} />
             </button>
           );
         })}
