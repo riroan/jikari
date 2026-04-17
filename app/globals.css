@@ -1,26 +1,101 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
 @import "tailwindcss";
 
+/*
+ * jikari design tokens
+ * Source of truth: DESIGN.md § 3. 컬러 시스템
+ * Two palettes: Light "Quiet Paper" (default) + Dark "Dark Study"
+ * v1 default: Light. Toggle UI is v1.1.
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light — Quiet Paper */
+  --paper:       #F5EFE4;
+  --paper-deep:  #EDE5D4;
+  --ink:         #1A1915;
+  --ink-soft:    #3A3631;
+  --ink-faint:   #8A8275;
+  --accent-clay: #B85840;
+  --accent-sage: #7A8F6E;
+  --line:        rgba(26, 25, 21, 0.08);
+
+  /* Semantic tokens — components reference these */
+  --bg:          var(--paper);
+  --bg-deep:     var(--paper-deep);
+  --fg:          var(--ink);
+  --fg-soft:     var(--ink-soft);
+  --fg-faint:    var(--ink-faint);
+  --accent-korean:   var(--accent-clay);
+  --accent-progress: var(--accent-sage);
+
+  /* Bg gradient — DESIGN.md § 3 */
+  --bg-gradient: radial-gradient(ellipse at top, #F9F4E8 0%, var(--paper) 60%);
 }
 
+[data-theme="dark"] {
+  /* Dark — Dark Study */
+  --bg-deep:  #0E141E;
+  --bg:       #121A26;
+  --bg-soft:  #1A2332;
+  --bone:     #E8E2D2;
+  --bone-soft:#B8B0A0;
+  --bone-faint:#6A6358;
+  --gold:     #D4B76A;
+  --gold-deep:#B89550;
+  --crimson:  #C47A6E;
+  --line:     rgba(232, 226, 210, 0.08);
+
+  /* Semantic remap */
+  --fg:          var(--bone);
+  --fg-soft:     var(--bone-soft);
+  --fg-faint:    var(--bone-faint);
+  --accent-korean:   var(--crimson);
+  --accent-progress: var(--gold);
+
+  --bg-gradient: radial-gradient(ellipse at top, #1A2332 0%, var(--bg-deep) 55%);
+}
+
+/* Tailwind 4 theme tokens — exposes CSS vars as Tailwind utilities */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg:                var(--bg);
+  --color-bg-deep:           var(--bg-deep);
+  --color-fg:                var(--fg);
+  --color-fg-soft:           var(--fg-soft);
+  --color-fg-faint:          var(--fg-faint);
+  --color-accent-korean:     var(--accent-korean);
+  --color-accent-progress:   var(--accent-progress);
+  --color-line:              var(--line);
+
+  --font-jp-serif: var(--font-jp-serif);
+  --font-jp-sans:  var(--font-jp-sans);
+  --font-kr-sans:  "Pretendard Variable", Pretendard, -apple-system, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  font-feature-settings: 'ss01';
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+}
+
+/* DESIGN.md § 7 — respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Shake animation for wrong answers — CSS (not Framer) per DESIGN.md § 7 */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
 }
