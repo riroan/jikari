@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 /**
  * Study card — flashcard browsing UI.
  * Shows front and back information simultaneously (no quizzing, no SRS update).
@@ -14,14 +12,12 @@ export function StudyCard({
   total,
   onPrev,
   onNext,
-  homeHref = "/",
 }: {
   body: React.ReactNode;
   position: number;
   total: number;
   onPrev: () => void;
   onNext: () => void;
-  homeHref?: string;
 }) {
   return (
     <div className="flex flex-col gap-8 min-h-[520px]">
@@ -51,13 +47,6 @@ export function StudyCard({
           다음 →
         </button>
       </div>
-
-      <Link
-        href={homeHref}
-        className="text-center text-[11px] text-[color:var(--fg-faint)] tracking-[0.25em] font-medium hover:text-[color:var(--fg-soft)] mt-4"
-      >
-        HOME
-      </Link>
     </div>
   );
 }

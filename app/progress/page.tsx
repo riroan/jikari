@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
-import { KANJI_CARDS } from "@/lib/data";
+import { useCardsStore } from "@/lib/cards-store";
 import { masteryLevel } from "@/lib/srs";
 import type { KanjiCard } from "@/lib/types";
 
@@ -19,12 +19,13 @@ export default function ProgressPage() {
   useEffect(() => setMounted(true), []);
 
   const states = useStore((s) => s.learningStates);
+  const kanjiCards = useCardsStore((s) => s.kanji);
 
-  const masteredCount = KANJI_CARDS.filter(
+  const masteredCount = kanjiCards.filter(
     (c) => mounted && masteryLevel(states[`kanji:${c.id}`]) === "mastered"
   ).length;
 
-  const learningCount = KANJI_CARDS.filter(
+  const learningCount = kanjiCards.filter(
     (c) => mounted && masteryLevel(states[`kanji:${c.id}`]) === "learning"
   ).length;
 
@@ -62,7 +63,7 @@ export default function ProgressPage() {
               >
                 {mounted ? masteredCount : 0}
                 <span className="text-lg text-[color:var(--fg-faint)] font-normal ml-1">
-                  / {KANJI_CARDS.length}
+                  / {kanjiCards.length}
                 </span>
               </div>
             </div>
@@ -86,10 +87,10 @@ export default function ProgressPage() {
 
         <section>
           <div className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
-            N5 KANJI ({KANJI_CARDS.length})
+            N5 KANJI ({kanjiCards.length})
           </div>
           <div className="grid grid-cols-10 gap-1">
-            {KANJI_CARDS.map((card) => (
+            {kanjiCards.map((card) => (
               <KanjiCell
                 key={card.id}
                 card={card}
@@ -101,7 +102,7 @@ export default function ProgressPage() {
 
         <section className="mt-8 text-[11px] text-[color:var(--fg-faint)] leading-relaxed">
           <p>
-            풀 상용한자 2136자 그리드는 v2 확장. 현재는 데이터에 있는 N5 범위({KANJI_CARDS.length}자)만 표시.
+            풀 상용한자 2136자 그리드는 v2 확장. 현재는 데이터에 있는 N5 범위({kanjiCards.length}자)만 표시.
           </p>
         </section>
       </div>

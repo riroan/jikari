@@ -16,6 +16,7 @@ import {
   type TodayQueue,
 } from "./srs";
 import { incrementToday, currentStreak, toLocalDateKey } from "./heatmap";
+import { remoteStorage } from "./remote-storage";
 
 interface StoreActions {
   /** Record a review result for a card. Creates state if new. */
@@ -48,25 +49,6 @@ const initialState: PersistedState = {
   settings: { ...DEFAULT_SETTINGS },
 };
 
-/**
- * Storage layer is abstracted for v2 migration (outside voice + CEO plan catch):
- * swap createJSONStorage(() => localStorage) for a remote fetch adapter later.
- *
- * QuotaExceededError handling: in-memory catch block retries after pruning
- * oldest heatmap entries. If still fails, surfaces error so UI can warn user.
- */
-const safeLocalStorage = () => {
-  if (typeof window === "undefined") {
-    // SSR — provide no-op storage
-    return {
-      getItem: () => null,
-      setItem: () => {},
-      removeItem: () => {},
-    };
-  }
-  return window.localStorage;
-};
-
 export const useStore = create<Store>()(
   persist(
     (set, get) => ({
@@ -93,7 +75,6 @@ export const useStore = create<Store>()(
         const settings = get().settings;
         const now = Date.now();
 
-        // For each cardId, get-or-create learning state
         const modeStates: LearningState[] = allCardIds.map((cardId) => {
           const key = cardKey(mode, cardId);
           return states[key] ?? newLearningState(mode, cardId, now);
@@ -113,8 +94,14 @@ export const useStore = create<Store>()(
     }),
     {
       name: "jikari-state",
-      storage: createJSONStorage(() => safeLocalStorage()),
+      storage: createJSONStorage(() => remoteStorage),
       version: SCHEMA_VERSION,
+      /**
+       * Skip automatic hydration — HydrationBoundary triggers `rehydrate()`
+       * in a client-only `useEffect`, so SSR / static generation never hits
+       * the remote API.
+       */
+      skipHydration: true,
       /**
        * Schema migration: pad missing settings fields with defaults.
        * v1 → v2: added settings.showFurigana (default true)
@@ -147,5 +134,4 @@ export function exportState(): string {
   return JSON.stringify(backup, null, 2);
 }
 
-/** Re-export for callers */
 export { toLocalDateKey };

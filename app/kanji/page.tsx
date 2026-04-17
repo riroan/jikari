@@ -2,20 +2,22 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
-import { ModeTabs, type StudyMode } from "@/components/ModeTabs";
 import { useStore } from "@/lib/store";
-import { KANJI_IDS, generateKanjiChoices, getKanji } from "@/lib/data";
+import { generateKanjiChoices, getKanji } from "@/lib/data";
+import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds } from "@/lib/deck";
 import type { KanjiCard } from "@/lib/types";
+
+type StudyMode = "study" | "quiz";
 
 type QType = "on" | "kun";
 
 export default function KanjiPage() {
   return (
-    <Suspense fallback={<Shell mode="quiz" setMode={() => {}} />}>
+    <Suspense fallback={<Shell />}>
       <KanjiPageInner />
     </Suspense>
   );
@@ -26,18 +28,10 @@ function KanjiPageInner() {
   useEffect(() => setMounted(true), []);
 
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
-  const setMode = (next: StudyMode) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (next === "quiz") params.delete("mode");
-    else params.set("mode", next);
-    const qs = params.toString();
-    router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
-  };
 
   const review = useStore((s) => s.review);
+  const kanjiIds = useCardsStore((s) => s.kanjiIds);
 
   // Infinite random deck (reshuffles when exhausted)
   const [epoch, setEpoch] = useState(0);
@@ -45,8 +39,8 @@ function KanjiPageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => shuffleIds(KANJI_IDS, seed + epoch * 7919),
-    [seed, epoch]
+    () => shuffleIds(kanjiIds, seed + epoch * 7919),
+    [seed, epoch, kanjiIds]
   );
 
   const advance = () => {
@@ -70,15 +64,15 @@ function KanjiPageInner() {
     });
   };
 
-  const cardId = deck[index] ?? KANJI_IDS[0];
+  const cardId = deck[index] ?? kanjiIds[0];
   const card: KanjiCard | undefined = getKanji(cardId);
 
   if (!mounted || !card) {
-    return <Shell mode={mode} setMode={setMode} />;
+    return <Shell />;
   }
 
   return (
-    <Shell mode={mode} setMode={setMode}>
+    <Shell>
       {mode === "study" ? (
         <StudyCard
           body={<KanjiStudyBody card={card} />}
@@ -101,19 +95,11 @@ function KanjiPageInner() {
   );
 }
 
-function Shell({
-  mode,
-  setMode,
-  children,
-}: {
-  mode: StudyMode;
-  setMode: (m: StudyMode) => void;
-  children?: React.ReactNode;
-}) {
+function Shell({ children }: { children?: React.ReactNode }) {
   return (
     <main className="flex-1 flex justify-center">
       <div className="w-[390px] px-6 pt-8 pb-10">
-        <header className="flex justify-between items-baseline mb-6">
+        <header className="flex justify-between items-baseline mb-8">
           <Link
             href="/"
             className="text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
@@ -127,7 +113,6 @@ function Shell({
             漢字
           </h1>
         </header>
-        <ModeTabs mode={mode} onChange={setMode} />
         {children}
       </div>
     </main>

@@ -23,6 +23,7 @@ const validState: PersistedState = {
     theme: "light",
     dailyNewLimit: 20,
     dailyReviewLimit: 50,
+    showFurigana: true,
   },
 };
 
