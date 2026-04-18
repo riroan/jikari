@@ -1,0 +1,202 @@
+[
+  {
+    "id": "s81",
+    "sentence": "病気で＿＿＿に行く。",
+    "sentenceRuby": "{病気|びょうき}で＿＿＿に{行|い}く。",
+    "blank": "病院",
+    "blankRuby": "{病院|びょういん}",
+    "distractors": ["時計", "果物", "手紙"],
+    "translation": "아파서 병원에 간다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s82",
+    "sentence": "毎朝＿＿＿を歌う。",
+    "sentenceRuby": "{毎朝|まいあさ}＿＿＿を{歌|うた}う。",
+    "blank": "歌",
+    "blankRuby": "{歌|うた}",
+    "distractors": ["肉", "時計", "手紙"],
+    "translation": "매일 아침 노래를 부른다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s83",
+    "sentence": "友達と＿＿＿を見る。",
+    "sentenceRuby": "{友達|ともだち}と＿＿＿を{見|み}る。",
+    "blank": "映画",
+    "blankRuby": "{映画|えいが}",
+    "distractors": ["車", "時計", "公園"],
+    "translation": "친구와 영화를 본다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s84",
+    "sentence": "＿＿＿で勉強する。",
+    "sentenceRuby": "＿＿＿で{勉強|べんきょう}する。",
+    "blank": "図書館",
+    "blankRuby": "{図書館|としょかん}",
+    "distractors": ["銀行", "病院", "電車"],
+    "translation": "도서관에서 공부한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s85",
+    "sentence": "私は＿＿＿が好きです。",
+    "sentenceRuby": "{私|わたし}は＿＿＿が{好|す}きです。",
+    "blank": "音楽",
+    "blankRuby": "{音楽|おんがく}",
+    "distractors": ["銀行", "時計", "電話"],
+    "translation": "나는 음악을 좋아한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s86",
+    "sentence": "母が＿＿＿を作る。",
+    "sentenceRuby": "{母|はは}が＿＿＿を{作|つく}る。",
+    "blank": "料理",
+    "blankRuby": "{料理|りょうり}",
+    "distractors": ["時計", "手紙", "公園"],
+    "translation": "어머니가 요리를 만든다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s87",
+    "sentence": "父は＿＿＿で忙しい。",
+    "sentenceRuby": "{父|ちち}は＿＿＿で{忙|いそが}しい。",
+    "blank": "仕事",
+    "blankRuby": "{仕事|しごと}",
+    "distractors": ["手紙", "果物", "傘"],
+    "translation": "아버지는 일로 바쁘다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s88",
+    "sentence": "来週＿＿＿に行く。",
+    "sentenceRuby": "{来週|らいしゅう}＿＿＿に{行|い}く。",
+    "blank": "旅行",
+    "blankRuby": "{旅行|りょこう}",
+    "distractors": ["野菜", "手紙", "時計"],
+    "translation": "다음 주에 여행을 간다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s89",
+    "sentence": "母は＿＿＿で料理をする。",
+    "sentenceRuby": "{母|はは}は＿＿＿で{料理|りょうり}をする。",
+    "blank": "台所",
+    "blankRuby": "{台所|だいどころ}",
+    "distractors": ["公園", "銀行", "時計"],
+    "translation": "어머니는 부엌에서 요리를 한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s90",
+    "sentence": "先生に＿＿＿をする。",
+    "sentenceRuby": "{先生|せんせい}に＿＿＿をする。",
+    "blank": "質問",
+    "blankRuby": "{質問|しつもん}",
+    "distractors": ["時計", "傘", "手紙"],
+    "translation": "선생님께 질문을 한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s91",
+    "sentence": "この＿＿＿が分からない。",
+    "sentenceRuby": "この＿＿＿が{分|わ}からない。",
+    "blank": "漢字",
+    "blankRuby": "{漢字|かんじ}",
+    "distractors": ["魚", "電車", "果物"],
+    "translation": "이 한자를 모르겠다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s92",
+    "sentence": "この＿＿＿が難しい。",
+    "sentenceRuby": "この＿＿＿が{難|むずか}しい。",
+    "blank": "問題",
+    "blankRuby": "{問題|もんだい}",
+    "distractors": ["公園", "銀行", "手紙"],
+    "translation": "이 문제가 어렵다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s93",
+    "sentence": "日本について＿＿＿。",
+    "sentenceRuby": "{日本|にほん}について＿＿＿。",
+    "blank": "考える",
+    "blankRuby": "{考|かんが}える",
+    "distractors": ["泳ぐ", "走る", "閉める"],
+    "translation": "일본에 대해 생각한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s94",
+    "sentence": "私もそう＿＿＿。",
+    "sentenceRuby": "{私|わたし}もそう＿＿＿。",
+    "blank": "思う",
+    "blankRuby": "{思|おも}う",
+    "distractors": ["泳ぐ", "売る", "開ける"],
+    "translation": "나도 그렇게 생각한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s95",
+    "sentence": "映画が＿＿＿。",
+    "sentenceRuby": "{映画|えいが}が＿＿＿。",
+    "blank": "始まる",
+    "blankRuby": "{始|はじ}まる",
+    "distractors": ["閉める", "泳ぐ", "走る"],
+    "translation": "영화가 시작된다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s96",
+    "sentence": "これは＿＿＿の本です。",
+    "sentenceRuby": "これは＿＿＿の{本|ほん}です。",
+    "blank": "自分",
+    "blankRuby": "{自分|じぶん}",
+    "distractors": ["時計", "傘", "手紙"],
+    "translation": "이것은 내 책이다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s97",
+    "sentence": "日本語の＿＿＿を知る。",
+    "sentenceRuby": "{日本語|にほんご}の＿＿＿を{知|し}る。",
+    "blank": "意味",
+    "blankRuby": "{意味|いみ}",
+    "distractors": ["手紙", "時計", "電車"],
+    "translation": "일본어의 뜻을 안다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s98",
+    "sentence": "寒い日はコートを＿＿＿。",
+    "sentenceRuby": "{寒|さむ}い{日|ひ}はコートを＿＿＿。",
+    "blank": "着る",
+    "blankRuby": "{着|き}る",
+    "distractors": ["売る", "飲む", "閉める"],
+    "translation": "추운 날은 코트를 입는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s99",
+    "sentence": "電車の＿＿＿を買う。",
+    "sentenceRuby": "{電車|でんしゃ}の＿＿＿を{買|か}う。",
+    "blank": "切符",
+    "blankRuby": "{切符|きっぷ}",
+    "distractors": ["猫", "魚", "電話"],
+    "translation": "전철 표를 산다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s100",
+    "sentence": "雨の日は＿＿＿を持って出かける。",
+    "sentenceRuby": "{雨|あめ}の{日|ひ}は＿＿＿を{持|も}って{出|で}かける。",
+    "blank": "傘",
+    "blankRuby": "{傘|かさ}",
+    "distractors": ["猫", "時計", "魚"],
+    "translation": "비 오는 날은 우산을 들고 나간다.",
+    "jlptLevel": 4
+  }
+]

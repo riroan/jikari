@@ -1,0 +1,227 @@
+[
+  {
+    "id": "医者",
+    "word": "医者",
+    "reading": "いしゃ",
+    "meanings": ["doctor"],
+    "koreanMeanings": ["의사"],
+    "ruby": "{医者|いしゃ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "歌",
+    "word": "歌",
+    "reading": "うた",
+    "meanings": ["song"],
+    "koreanMeanings": ["노래"],
+    "ruby": "{歌|うた}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "歌う",
+    "word": "歌う",
+    "reading": "うたう",
+    "meanings": ["sing"],
+    "koreanMeanings": ["노래하다"],
+    "ruby": "{歌|うた}う",
+    "jlptLevel": 4
+  },
+  {
+    "id": "映画",
+    "word": "映画",
+    "reading": "えいが",
+    "meanings": ["movie"],
+    "koreanMeanings": ["영화"],
+    "ruby": "{映画|えいが}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "地図",
+    "word": "地図",
+    "reading": "ちず",
+    "meanings": ["map"],
+    "koreanMeanings": ["지도"],
+    "ruby": "{地図|ちず}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "図書館",
+    "word": "図書館",
+    "reading": "としょかん",
+    "meanings": ["library"],
+    "koreanMeanings": ["도서관"],
+    "ruby": "{図書館|としょかん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "音楽",
+    "word": "音楽",
+    "reading": "おんがく",
+    "meanings": ["music"],
+    "koreanMeanings": ["음악"],
+    "ruby": "{音楽|おんがく}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "料理",
+    "word": "料理",
+    "reading": "りょうり",
+    "meanings": ["cooking", "dish"],
+    "koreanMeanings": ["요리"],
+    "ruby": "{料理|りょうり}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "仕事",
+    "word": "仕事",
+    "reading": "しごと",
+    "meanings": ["work", "job"],
+    "koreanMeanings": ["일", "직업"],
+    "ruby": "{仕事|しごと}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "旅行",
+    "word": "旅行",
+    "reading": "りょこう",
+    "meanings": ["travel", "trip"],
+    "koreanMeanings": ["여행"],
+    "ruby": "{旅行|りょこう}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "台所",
+    "word": "台所",
+    "reading": "だいどころ",
+    "meanings": ["kitchen"],
+    "koreanMeanings": ["부엌"],
+    "ruby": "{台所|だいどころ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "親",
+    "word": "親",
+    "reading": "おや",
+    "meanings": ["parent"],
+    "koreanMeanings": ["부모"],
+    "ruby": "{親|おや}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "切符",
+    "word": "切符",
+    "reading": "きっぷ",
+    "meanings": ["ticket"],
+    "koreanMeanings": ["표"],
+    "ruby": "{切符|きっぷ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "牛肉",
+    "word": "牛肉",
+    "reading": "ぎゅうにく",
+    "meanings": ["beef"],
+    "koreanMeanings": ["쇠고기"],
+    "ruby": "{牛肉|ぎゅうにく}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "自分",
+    "word": "自分",
+    "reading": "じぶん",
+    "meanings": ["self", "oneself"],
+    "koreanMeanings": ["자기", "자신"],
+    "ruby": "{自分|じぶん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "世界",
+    "word": "世界",
+    "reading": "せかい",
+    "meanings": ["world"],
+    "koreanMeanings": ["세계"],
+    "ruby": "{世界|せかい}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "漢字",
+    "word": "漢字",
+    "reading": "かんじ",
+    "meanings": ["kanji", "Chinese character"],
+    "koreanMeanings": ["한자"],
+    "ruby": "{漢字|かんじ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "質問",
+    "word": "質問",
+    "reading": "しつもん",
+    "meanings": ["question"],
+    "koreanMeanings": ["질문"],
+    "ruby": "{質問|しつもん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "意味",
+    "word": "意味",
+    "reading": "いみ",
+    "meanings": ["meaning"],
+    "koreanMeanings": ["의미", "뜻"],
+    "ruby": "{意味|いみ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "問題",
+    "word": "問題",
+    "reading": "もんだい",
+    "meanings": ["problem", "issue"],
+    "koreanMeanings": ["문제"],
+    "ruby": "{問題|もんだい}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "思う",
+    "word": "思う",
+    "reading": "おもう",
+    "meanings": ["think"],
+    "koreanMeanings": ["생각하다"],
+    "ruby": "{思|おも}う",
+    "jlptLevel": 4
+  },
+  {
+    "id": "答える",
+    "word": "答える",
+    "reading": "こたえる",
+    "meanings": ["answer"],
+    "koreanMeanings": ["대답하다"],
+    "ruby": "{答|こた}える",
+    "jlptLevel": 4
+  },
+  {
+    "id": "着る",
+    "word": "着る",
+    "reading": "きる",
+    "meanings": ["wear"],
+    "koreanMeanings": ["입다"],
+    "ruby": "{着|き}る",
+    "jlptLevel": 4
+  },
+  {
+    "id": "考える",
+    "word": "考える",
+    "reading": "かんがえる",
+    "meanings": ["think over", "consider"],
+    "koreanMeanings": ["생각하다", "고려하다"],
+    "ruby": "{考|かんが}える",
+    "jlptLevel": 4
+  },
+  {
+    "id": "始まる",
+    "word": "始まる",
+    "reading": "はじまる",
+    "meanings": ["begin (intransitive)"],
+    "koreanMeanings": ["시작되다"],
+    "ruby": "{始|はじ}まる",
+    "jlptLevel": 4
+  }
+]
