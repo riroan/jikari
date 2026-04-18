@@ -157,6 +157,7 @@ function VocabQuiz({
       correct={choices.correct}
       back={<VocabBack card={card} />}
       onResolved={onResolved}
+      minQuestionHeight={0}
     />
   );
 }

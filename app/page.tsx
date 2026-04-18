@@ -44,6 +44,7 @@ export default function Home() {
           <EntryRow href="/kanji?mode=study" ko="한자" jp="漢字" />
           <EntryRow href="/vocab?mode=study" ko="단어" jp="単語" />
           <EntryRow href="/sentence?mode=study" ko="문장" jp="文章" />
+          <EntryRow href="/particle?mode=study" ko="조사" jp="助詞" />
         </section>
 
         {/* 퀴즈 section */}
@@ -52,6 +53,7 @@ export default function Home() {
           <EntryRow href="/kanji" ko="한자" jp="漢字" />
           <EntryRow href="/vocab" ko="단어" jp="単語" />
           <EntryRow href="/sentence" ko="문장" jp="文章" />
+          <EntryRow href="/particle" ko="조사" jp="助詞" />
         </section>
 
         {/* Heatmap */}

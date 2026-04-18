@@ -36,8 +36,12 @@ export interface VocabCard {
   jlptLevel: JLPTLevel;
 }
 
+export type SentenceCategory = "vocab" | "particle";
+
 export interface SentenceCard {
   id: string;
+  /** Which pool this card belongs to — default "vocab" (verbs/adjectives blanks). */
+  category: SentenceCategory;
   /** Sentence with ＿＿＿ blank — plain text (no markup) */
   sentence: string;
   /**

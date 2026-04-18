@@ -40,6 +40,11 @@ function validate(c: unknown, idx: number): SentenceCard {
   if (r.blankRuby !== undefined && !isStr(r.blankRuby)) {
     throw new Error(`#${idx}: invalid 'blankRuby' (must be string or omitted)`);
   }
+  if (r.category === undefined) {
+    r.category = "vocab";
+  } else if (r.category !== "vocab" && r.category !== "particle") {
+    throw new Error(`#${idx}: invalid 'category' (must be 'vocab' or 'particle')`);
+  }
   return r as unknown as SentenceCard;
 }
 
@@ -77,10 +82,11 @@ async function main() {
     }
     await conn.query(
       `INSERT INTO sentence_cards
-         (id, sentence, sentence_ruby, blank, blank_ruby, distractors, translation, jlpt_level)
-       VALUES (?, ?, ?, ?, ?, CAST(? AS JSON), ?, ?)`,
+         (id, category, sentence, sentence_ruby, blank, blank_ruby, distractors, translation, jlpt_level)
+       VALUES (?, ?, ?, ?, ?, ?, CAST(? AS JSON), ?, ?)`,
       [
         c.id,
+        c.category,
         c.sentence,
         c.sentenceRuby ?? null,
         c.blank,
@@ -91,7 +97,7 @@ async function main() {
       ]
     );
     inserted++;
-    console.log(`  + ${c.id}  (N${c.jlptLevel}, "${c.sentence}")`);
+    console.log(`  + ${c.id}  [${c.category}] (N${c.jlptLevel}, "${c.sentence}")`);
   }
 
   await conn.end();

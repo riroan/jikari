@@ -10,21 +10,22 @@ import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds } from "@/lib/deck";
+import { PARTICLE_INFO } from "@/lib/particle-info";
 import type { SentenceCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
 
 const BLANK = "＿＿＿";
 
-export default function SentencePage() {
+export default function ParticlePage() {
   return (
     <Suspense fallback={<Shell />}>
-      <SentencePageInner />
+      <ParticlePageInner />
     </Suspense>
   );
 }
 
-function SentencePageInner() {
+function ParticlePageInner() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -32,15 +33,15 @@ function SentencePageInner() {
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
-  const sentenceIds = useCardsStore((s) => s.sentenceIds);
+  const particleIds = useCardsStore((s) => s.particleIds);
 
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => shuffleIds(sentenceIds, seed + epoch * 7919),
-    [seed, epoch, sentenceIds]
+    () => shuffleIds(particleIds, seed + epoch * 7919),
+    [seed, epoch, particleIds]
   );
 
   const advance = () => {
@@ -64,7 +65,7 @@ function SentencePageInner() {
     });
   };
 
-  const cardId = deck[index] ?? sentenceIds[0];
+  const cardId = deck[index] ?? particleIds[0];
   const card: SentenceCard | undefined = getSentence(cardId);
 
   if (!mounted || !card) {
@@ -75,14 +76,14 @@ function SentencePageInner() {
     <Shell>
       {mode === "study" ? (
         <StudyCard
-          body={<SentenceStudyBody card={card} />}
+          body={<ParticleStudyBody card={card} />}
           position={index + 1}
           total={deck.length}
           onPrev={retreat}
           onNext={advance}
         />
       ) : (
-        <SentenceQuiz
+        <ParticleQuiz
           card={card}
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
@@ -110,7 +111,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
             className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
-            文章
+            助詞
           </h1>
         </header>
         {children}
@@ -119,7 +120,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
   );
 }
 
-function SentenceQuiz({
+function ParticleQuiz({
   card,
   seed,
   onResolved,
@@ -152,23 +153,23 @@ function SentenceQuiz({
           </div>
         </div>
       }
-      subtitle="빈칸에 들어갈 말은?"
+      subtitle="빈칸에 들어갈 조사는?"
       choiceFontFamily="var(--font-jp-sans)"
       choices={choices.choices}
       correct={choices.correct}
-      back={<SentenceBack card={card} />}
+      back={<ParticleBack card={card} />}
       onResolved={onResolved}
       minQuestionHeight={0}
     />
   );
 }
 
-function SentenceStudyBody({ card }: { card: SentenceCard }) {
-  // Study mode: show the full sentence with the blank already filled in.
+function ParticleStudyBody({ card }: { card: SentenceCard }) {
   const hasRuby = Boolean(card.sentenceRuby);
   const sentenceSrc = card.sentenceRuby ?? card.sentence;
   const answerSrc = card.blankRuby ?? card.blank;
   const [before, after] = sentenceSrc.split(BLANK);
+  const info = PARTICLE_INFO[card.blank];
 
   return (
     <div className="flex flex-col gap-4">
@@ -189,11 +190,40 @@ function SentenceStudyBody({ card }: { card: SentenceCard }) {
       <div className="text-[14px] text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}
       </div>
+      {info && <ParticleInfoBlock particle={card.blank} info={info} />}
     </div>
   );
 }
 
-function SentenceBack({ card }: { card: SentenceCard }) {
+function ParticleInfoBlock({
+  particle,
+  info,
+}: {
+  particle: string;
+  info: { label: string; gloss: string; note: string };
+}) {
+  return (
+    <div className="mt-2 pl-3 border-l-2 border-[color:var(--accent-progress)] flex flex-col gap-1.5">
+      <div className="flex items-baseline gap-2">
+        <span
+          className="text-[22px] font-semibold text-[color:var(--accent-progress)]"
+          style={{ fontFamily: "var(--font-jp-sans)" }}
+        >
+          {particle}
+        </span>
+        <span className="text-[11px] tracking-[0.18em] text-[color:var(--fg-faint)] uppercase">
+          {info.label}
+        </span>
+        <span className="text-[12px] text-[color:var(--fg-soft)]">{info.gloss}</span>
+      </div>
+      <div className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed">
+        {info.note}
+      </div>
+    </div>
+  );
+}
+
+function ParticleBack({ card }: { card: SentenceCard }) {
   const hasRuby = Boolean(card.sentenceRuby);
   const sentenceSrc = card.sentenceRuby ?? card.sentence;
   const answerSrc = card.blankRuby ?? card.blank;

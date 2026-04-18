@@ -11,7 +11,10 @@ interface CardsState {
   sentences: SentenceCard[];
   kanjiIds: string[];
   vocabIds: string[];
+  /** IDs of sentence cards with category === "vocab" (verbs/adjectives blanks) */
   sentenceIds: string[];
+  /** IDs of sentence cards with category === "particle" */
+  particleIds: string[];
   kanjiById: Map<string, KanjiCard>;
   vocabById: Map<string, VocabCard>;
   sentenceById: Map<string, SentenceCard>;
@@ -26,6 +29,7 @@ const emptyMaps = {
   kanjiIds: [] as string[],
   vocabIds: [] as string[],
   sentenceIds: [] as string[],
+  particleIds: [] as string[],
   kanjiById: new Map<string, KanjiCard>(),
   vocabById: new Map<string, VocabCard>(),
   sentenceById: new Map<string, SentenceCard>(),
@@ -55,7 +59,8 @@ export const useCardsStore = create<CardsState>((set, get) => ({
         sentences,
         kanjiIds: kanji.map((c) => c.id),
         vocabIds: vocab.map((c) => c.id),
-        sentenceIds: sentences.map((c) => c.id),
+        sentenceIds: sentences.filter((c) => c.category === "vocab").map((c) => c.id),
+        particleIds: sentences.filter((c) => c.category === "particle").map((c) => c.id),
         kanjiById: new Map(kanji.map((c) => [c.id, c])),
         vocabById: new Map(vocab.map((c) => [c.id, c])),
         sentenceById: new Map(sentences.map((c) => [c.id, c])),

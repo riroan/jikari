@@ -5,6 +5,7 @@ import type {
   JLPTLevel,
   KanjiCard,
   SentenceCard,
+  SentenceCategory,
   VocabCard,
 } from "../types";
 
@@ -54,10 +55,11 @@ export async function getAllVocab(): Promise<VocabCard[]> {
 
 export async function getAllSentences(): Promise<SentenceCard[]> {
   const [rows] = await getPool().query<RowDataPacket[]>(
-    "SELECT id, sentence, sentence_ruby, blank, blank_ruby, distractors, translation, jlpt_level FROM sentence_cards ORDER BY id"
+    "SELECT id, category, sentence, sentence_ruby, blank, blank_ruby, distractors, translation, jlpt_level FROM sentence_cards ORDER BY id"
   );
   return rows.map((r) => ({
     id: r.id as string,
+    category: (r.category as SentenceCategory) ?? "vocab",
     sentence: r.sentence as string,
     sentenceRuby: (r.sentence_ruby as string | null) ?? undefined,
     blank: r.blank as string,
