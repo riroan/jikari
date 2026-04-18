@@ -1,0 +1,227 @@
+[
+  {
+    "id": "昼ご飯",
+    "word": "昼ご飯",
+    "reading": "ひるごはん",
+    "meanings": ["lunch"],
+    "koreanMeanings": ["점심밥", "점심"],
+    "ruby": "{昼|ひる}ご{飯|はん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "晩ご飯",
+    "word": "晩ご飯",
+    "reading": "ばんごはん",
+    "meanings": ["dinner"],
+    "koreanMeanings": ["저녁밥", "저녁"],
+    "ruby": "{晩|ばん}ご{飯|はん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "午前",
+    "word": "午前",
+    "reading": "ごぜん",
+    "meanings": ["morning", "AM"],
+    "koreanMeanings": ["오전"],
+    "ruby": "{午前|ごぜん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "午後",
+    "word": "午後",
+    "reading": "ごご",
+    "meanings": ["afternoon", "PM"],
+    "koreanMeanings": ["오후"],
+    "ruby": "{午後|ごご}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "春",
+    "word": "春",
+    "reading": "はる",
+    "meanings": ["spring"],
+    "koreanMeanings": ["봄"],
+    "ruby": "{春|はる}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "夏",
+    "word": "夏",
+    "reading": "なつ",
+    "meanings": ["summer"],
+    "koreanMeanings": ["여름"],
+    "ruby": "{夏|なつ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "秋",
+    "word": "秋",
+    "reading": "あき",
+    "meanings": ["autumn"],
+    "koreanMeanings": ["가을"],
+    "ruby": "{秋|あき}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "冬",
+    "word": "冬",
+    "reading": "ふゆ",
+    "meanings": ["winter"],
+    "koreanMeanings": ["겨울"],
+    "ruby": "{冬|ふゆ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "色",
+    "word": "色",
+    "reading": "いろ",
+    "meanings": ["color"],
+    "koreanMeanings": ["색", "색깔"],
+    "ruby": "{色|いろ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "赤い",
+    "word": "赤い",
+    "reading": "あかい",
+    "meanings": ["red"],
+    "koreanMeanings": ["빨갛다"],
+    "ruby": "{赤|あか}い",
+    "jlptLevel": 4
+  },
+  {
+    "id": "青い",
+    "word": "青い",
+    "reading": "あおい",
+    "meanings": ["blue"],
+    "koreanMeanings": ["파랗다"],
+    "ruby": "{青|あお}い",
+    "jlptLevel": 4
+  },
+  {
+    "id": "黄色い",
+    "word": "黄色い",
+    "reading": "きいろい",
+    "meanings": ["yellow"],
+    "koreanMeanings": ["노랗다"],
+    "ruby": "{黄色|きいろ}い",
+    "jlptLevel": 4
+  },
+  {
+    "id": "黒い",
+    "word": "黒い",
+    "reading": "くろい",
+    "meanings": ["black"],
+    "koreanMeanings": ["검다"],
+    "ruby": "{黒|くろ}い",
+    "jlptLevel": 4
+  },
+  {
+    "id": "白い",
+    "word": "白い",
+    "reading": "しろい",
+    "meanings": ["white"],
+    "koreanMeanings": ["하얗다", "희다"],
+    "ruby": "{白|しろ}い",
+    "jlptLevel": 4
+  },
+  {
+    "id": "花",
+    "word": "花",
+    "reading": "はな",
+    "meanings": ["flower"],
+    "koreanMeanings": ["꽃"],
+    "ruby": "{花|はな}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "地下鉄",
+    "word": "地下鉄",
+    "reading": "ちかてつ",
+    "meanings": ["subway"],
+    "koreanMeanings": ["지하철"],
+    "ruby": "{地下鉄|ちかてつ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "空港",
+    "word": "空港",
+    "reading": "くうこう",
+    "meanings": ["airport"],
+    "koreanMeanings": ["공항"],
+    "ruby": "{空港|くうこう}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "飛行機",
+    "word": "飛行機",
+    "reading": "ひこうき",
+    "meanings": ["airplane"],
+    "koreanMeanings": ["비행기"],
+    "ruby": "{飛行機|ひこうき}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "建物",
+    "word": "建物",
+    "reading": "たてもの",
+    "meanings": ["building"],
+    "koreanMeanings": ["건물"],
+    "ruby": "{建物|たてもの}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "動物",
+    "word": "動物",
+    "reading": "どうぶつ",
+    "meanings": ["animal"],
+    "koreanMeanings": ["동물"],
+    "ruby": "{動物|どうぶつ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "旅館",
+    "word": "旅館",
+    "reading": "りょかん",
+    "meanings": ["Japanese inn"],
+    "koreanMeanings": ["여관"],
+    "ruby": "{旅館|りょかん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "写真",
+    "word": "写真",
+    "reading": "しゃしん",
+    "meanings": ["photograph"],
+    "koreanMeanings": ["사진"],
+    "ruby": "{写真|しゃしん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "自転車",
+    "word": "自転車",
+    "reading": "じてんしゃ",
+    "meanings": ["bicycle"],
+    "koreanMeanings": ["자전거"],
+    "ruby": "{自転車|じてんしゃ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "運動",
+    "word": "運動",
+    "reading": "うんどう",
+    "meanings": ["exercise", "sports"],
+    "koreanMeanings": ["운동"],
+    "ruby": "{運動|うんどう}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "番号",
+    "word": "番号",
+    "reading": "ばんごう",
+    "meanings": ["number"],
+    "koreanMeanings": ["번호"],
+    "ruby": "{番号|ばんごう}",
+    "jlptLevel": 4
+  }
+]
