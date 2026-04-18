@@ -1,6 +1,9 @@
 import mysql from "mysql2/promise";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { loadJikariEnv } from "./_env";
+
+loadJikariEnv();
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 

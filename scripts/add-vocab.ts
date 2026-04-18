@@ -1,10 +1,10 @@
-import { loadEnvConfig } from "@next/env";
 import mysql from "mysql2/promise";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { VocabCard } from "../lib/types";
+import { loadJikariEnv } from "./_env";
 
-loadEnvConfig(process.cwd());
+loadJikariEnv();
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
