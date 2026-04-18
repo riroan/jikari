@@ -1,0 +1,302 @@
+[
+  {
+    "id": "p001",
+    "category": "particle",
+    "sentence": "私＿＿＿学生です。",
+    "sentenceRuby": "{私|わたし}＿＿＿{学生|がくせい}です。",
+    "blank": "は",
+    "distractors": ["が", "を", "の"],
+    "translation": "저는 학생입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p002",
+    "category": "particle",
+    "sentence": "私は犬＿＿＿好きです。",
+    "sentenceRuby": "{私|わたし}は{犬|いぬ}＿＿＿{好|す}きです。",
+    "blank": "が",
+    "distractors": ["を", "は", "に"],
+    "translation": "저는 개를 좋아합니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p003",
+    "category": "particle",
+    "sentence": "私は肉＿＿＿食べません。",
+    "sentenceRuby": "{私|わたし}は{肉|にく}＿＿＿{食|た}べません。",
+    "blank": "を",
+    "distractors": ["は", "が", "で"],
+    "translation": "저는 고기를 먹지 않습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p004",
+    "category": "particle",
+    "sentence": "毎朝七時＿＿＿起きます。",
+    "sentenceRuby": "{毎朝|まいあさ}{七時|しちじ}＿＿＿{起|お}きます。",
+    "blank": "に",
+    "distractors": ["で", "を", "が"],
+    "translation": "매일 아침 7시에 일어납니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p005",
+    "category": "particle",
+    "sentence": "図書館＿＿＿本を読みます。",
+    "sentenceRuby": "{図書館|としょかん}＿＿＿{本|ほん}を{読|よ}みます。",
+    "blank": "で",
+    "distractors": ["に", "を", "へ"],
+    "translation": "도서관에서 책을 읽습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p006",
+    "category": "particle",
+    "sentence": "家＿＿＿帰ります。",
+    "sentenceRuby": "{家|いえ}＿＿＿{帰|かえ}ります。",
+    "blank": "に",
+    "distractors": ["で", "を", "が"],
+    "translation": "집에 돌아갑니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p007",
+    "category": "particle",
+    "sentence": "彼女＿＿＿映画を見ました。",
+    "sentenceRuby": "{彼女|かのじょ}＿＿＿{映画|えいが}を{見|み}ました。",
+    "blank": "と",
+    "distractors": ["に", "や", "で"],
+    "translation": "그녀와 영화를 봤습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p008",
+    "category": "particle",
+    "sentence": "日本＿＿＿来ました。",
+    "sentenceRuby": "{日本|にほん}＿＿＿{来|き}ました。",
+    "blank": "から",
+    "distractors": ["に", "まで", "で"],
+    "translation": "일본에서 왔습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p009",
+    "category": "particle",
+    "sentence": "駅＿＿＿五分かかります。",
+    "sentenceRuby": "{駅|えき}＿＿＿{五分|ごふん}かかります。",
+    "blank": "まで",
+    "distractors": ["から", "に", "で"],
+    "translation": "역까지 5분 걸립니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p010",
+    "category": "particle",
+    "sentence": "これは私＿＿＿本です。",
+    "sentenceRuby": "これは{私|わたし}＿＿＿{本|ほん}です。",
+    "blank": "の",
+    "distractors": ["は", "が", "を"],
+    "translation": "이것은 저의 책입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p011",
+    "category": "particle",
+    "sentence": "ビールもジュース＿＿＿飲みます。",
+    "sentenceRuby": "ビールもジュース＿＿＿{飲|の}みます。",
+    "blank": "も",
+    "distractors": ["や", "を", "と"],
+    "translation": "맥주도 주스도 마십니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p012",
+    "category": "particle",
+    "sentence": "りんご＿＿＿みかんを買いました。",
+    "sentenceRuby": "りんご＿＿＿みかんを{買|か}いました。",
+    "blank": "や",
+    "distractors": ["と", "も", "の"],
+    "translation": "사과랑 귤 (등)을 샀습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p013",
+    "category": "particle",
+    "sentence": "これは本です＿＿＿。",
+    "sentenceRuby": "これは{本|ほん}です＿＿＿。",
+    "blank": "か",
+    "distractors": ["ね", "よ", "の"],
+    "translation": "이것은 책입니까?",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p014",
+    "category": "particle",
+    "sentence": "ペン＿＿＿書きます。",
+    "sentenceRuby": "ペン＿＿＿{書|か}きます。",
+    "blank": "で",
+    "distractors": ["に", "を", "へ"],
+    "translation": "펜으로 씁니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p015",
+    "category": "particle",
+    "sentence": "公園に子供＿＿＿います。",
+    "sentenceRuby": "{公園|こうえん}に{子供|こども}＿＿＿います。",
+    "blank": "が",
+    "distractors": ["は", "を", "で"],
+    "translation": "공원에 아이가 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p016",
+    "category": "particle",
+    "sentence": "この部屋＿＿＿テレビがあります。",
+    "sentenceRuby": "この{部屋|へや}＿＿＿テレビがあります。",
+    "blank": "に",
+    "distractors": ["で", "が", "へ"],
+    "translation": "이 방에 TV가 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p017",
+    "category": "particle",
+    "sentence": "何＿＿＿食べますか。",
+    "sentenceRuby": "{何|なに}＿＿＿{食|た}べますか。",
+    "blank": "を",
+    "distractors": ["が", "は", "に"],
+    "translation": "무엇을 먹습니까?",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p018",
+    "category": "particle",
+    "sentence": "バス＿＿＿学校へ行きます。",
+    "sentenceRuby": "バス＿＿＿{学校|がっこう}へ{行|い}きます。",
+    "blank": "で",
+    "distractors": ["に", "から", "を"],
+    "translation": "버스로 학교에 갑니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p019",
+    "category": "particle",
+    "sentence": "九時＿＿＿始まります。",
+    "sentenceRuby": "{九時|くじ}＿＿＿{始|はじ}まります。",
+    "blank": "に",
+    "distractors": ["で", "まで", "から"],
+    "translation": "9시에 시작합니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p020",
+    "category": "particle",
+    "sentence": "友達＿＿＿一緒に遊びます。",
+    "sentenceRuby": "{友達|ともだち}＿＿＿{一緒|いっしょ}に{遊|あそ}びます。",
+    "blank": "と",
+    "distractors": ["も", "や", "の"],
+    "translation": "친구와 함께 놉니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p021",
+    "category": "particle",
+    "sentence": "鉛筆は机の上＿＿＿あります。",
+    "sentenceRuby": "{鉛筆|えんぴつ}は{机|つくえ}の{上|うえ}＿＿＿あります。",
+    "blank": "に",
+    "distractors": ["で", "を", "が"],
+    "translation": "연필은 책상 위에 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p022",
+    "category": "particle",
+    "sentence": "水＿＿＿ください。",
+    "sentenceRuby": "{水|みず}＿＿＿ください。",
+    "blank": "を",
+    "distractors": ["が", "は", "に"],
+    "translation": "물 주세요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p023",
+    "category": "particle",
+    "sentence": "雨＿＿＿降っています。",
+    "sentenceRuby": "{雨|あめ}＿＿＿{降|ふ}っています。",
+    "blank": "が",
+    "distractors": ["は", "を", "に"],
+    "translation": "비가 내리고 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p024",
+    "category": "particle",
+    "sentence": "これは日本語＿＿＿本です。",
+    "sentenceRuby": "これは{日本語|にほんご}＿＿＿{本|ほん}です。",
+    "blank": "の",
+    "distractors": ["は", "が", "に"],
+    "translation": "이것은 일본어 책입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p025",
+    "category": "particle",
+    "sentence": "朝九時＿＿＿五時まで働きます。",
+    "sentenceRuby": "{朝|あさ}{九時|くじ}＿＿＿{五時|ごじ}まで{働|はたら}きます。",
+    "blank": "から",
+    "distractors": ["まで", "に", "で"],
+    "translation": "아침 9시부터 5시까지 일합니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p026",
+    "category": "particle",
+    "sentence": "今週の金曜日＿＿＿待ちます。",
+    "sentenceRuby": "{今週|こんしゅう}の{金曜日|きんようび}＿＿＿{待|ま}ちます。",
+    "blank": "まで",
+    "distractors": ["から", "に", "で"],
+    "translation": "이번 주 금요일까지 기다립니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p027",
+    "category": "particle",
+    "sentence": "昨日は楽しかったです＿＿＿。",
+    "sentenceRuby": "{昨日|きのう}は{楽|たの}しかったです＿＿＿。",
+    "blank": "ね",
+    "distractors": ["よ", "か", "の"],
+    "translation": "어제는 즐거웠죠.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p028",
+    "category": "particle",
+    "sentence": "これは新しい車です＿＿＿。",
+    "sentenceRuby": "これは{新|あたら}しい{車|くるま}です＿＿＿。",
+    "blank": "よ",
+    "distractors": ["ね", "か", "の"],
+    "translation": "이것은 새 차예요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p029",
+    "category": "particle",
+    "sentence": "お茶＿＿＿コーヒーを飲みます。",
+    "sentenceRuby": "{お茶|おちゃ}＿＿＿コーヒーを{飲|の}みます。",
+    "blank": "と",
+    "distractors": ["や", "も", "の"],
+    "translation": "차와 커피를 마십니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "p030",
+    "category": "particle",
+    "sentence": "スーパー＿＿＿肉を買います。",
+    "sentenceRuby": "スーパー＿＿＿{肉|にく}を{買|か}います。",
+    "blank": "で",
+    "distractors": ["に", "を", "へ"],
+    "translation": "슈퍼에서 고기를 삽니다.",
+    "jlptLevel": 5
+  }
+]

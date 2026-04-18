@@ -1,0 +1,227 @@
+[
+  {
+    "id": "研究",
+    "word": "研究",
+    "reading": "けんきゅう",
+    "meanings": ["research", "study"],
+    "koreanMeanings": ["연구"],
+    "ruby": "{研究|けんきゅう}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "夫",
+    "word": "夫",
+    "reading": "おっと",
+    "meanings": ["husband"],
+    "koreanMeanings": ["남편"],
+    "ruby": "{夫|おっと}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "妻",
+    "word": "妻",
+    "reading": "つま",
+    "meanings": ["wife"],
+    "koreanMeanings": ["아내"],
+    "ruby": "{妻|つま}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "教室",
+    "word": "教室",
+    "reading": "きょうしつ",
+    "meanings": ["classroom"],
+    "koreanMeanings": ["교실"],
+    "ruby": "{教室|きょうしつ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "試験",
+    "word": "試験",
+    "reading": "しけん",
+    "meanings": ["exam"],
+    "koreanMeanings": ["시험"],
+    "ruby": "{試験|しけん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "勉強",
+    "word": "勉強",
+    "reading": "べんきょう",
+    "meanings": ["study"],
+    "koreanMeanings": ["공부"],
+    "ruby": "{勉強|べんきょう}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "注意",
+    "word": "注意",
+    "reading": "ちゅうい",
+    "meanings": ["attention", "caution"],
+    "koreanMeanings": ["주의"],
+    "ruby": "{注意|ちゅうい}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "意見",
+    "word": "意見",
+    "reading": "いけん",
+    "meanings": ["opinion"],
+    "koreanMeanings": ["의견"],
+    "ruby": "{意見|いけん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "受ける",
+    "word": "受ける",
+    "reading": "うける",
+    "meanings": ["receive", "take (an exam)"],
+    "koreanMeanings": ["받다"],
+    "ruby": "{受|う}ける",
+    "jlptLevel": 4
+  },
+  {
+    "id": "取る",
+    "word": "取る",
+    "reading": "とる",
+    "meanings": ["take", "grab"],
+    "koreanMeanings": ["잡다", "집다"],
+    "ruby": "{取|と}る",
+    "jlptLevel": 4
+  },
+  {
+    "id": "時代",
+    "word": "時代",
+    "reading": "じだい",
+    "meanings": ["era", "age"],
+    "koreanMeanings": ["시대"],
+    "ruby": "{時代|じだい}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "一度",
+    "word": "一度",
+    "reading": "いちど",
+    "meanings": ["once"],
+    "koreanMeanings": ["한 번"],
+    "ruby": "{一度|いちど}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "二階",
+    "word": "二階",
+    "reading": "にかい",
+    "meanings": ["second floor"],
+    "koreanMeanings": ["2층"],
+    "ruby": "{二階|にかい}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "全部",
+    "word": "全部",
+    "reading": "ぜんぶ",
+    "meanings": ["all", "whole"],
+    "koreanMeanings": ["전부"],
+    "ruby": "{全部|ぜんぶ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "予定",
+    "word": "予定",
+    "reading": "よてい",
+    "meanings": ["plan", "schedule"],
+    "koreanMeanings": ["예정"],
+    "ruby": "{予定|よてい}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "経験",
+    "word": "経験",
+    "reading": "けいけん",
+    "meanings": ["experience"],
+    "koreanMeanings": ["경험"],
+    "ruby": "{経験|けいけん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "辞書",
+    "word": "辞書",
+    "reading": "じしょ",
+    "meanings": ["dictionary"],
+    "koreanMeanings": ["사전"],
+    "ruby": "{辞書|じしょ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "新聞",
+    "word": "新聞",
+    "reading": "しんぶん",
+    "meanings": ["newspaper"],
+    "koreanMeanings": ["신문"],
+    "ruby": "{新聞|しんぶん}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "答え",
+    "word": "答え",
+    "reading": "こたえ",
+    "meanings": ["answer"],
+    "koreanMeanings": ["답"],
+    "ruby": "{答|こた}え",
+    "jlptLevel": 4
+  },
+  {
+    "id": "会議",
+    "word": "会議",
+    "reading": "かいぎ",
+    "meanings": ["meeting", "conference"],
+    "koreanMeanings": ["회의"],
+    "ruby": "{会議|かいぎ}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "終わる",
+    "word": "終わる",
+    "reading": "おわる",
+    "meanings": ["end", "finish"],
+    "koreanMeanings": ["끝나다"],
+    "ruby": "{終|お}わる",
+    "jlptLevel": 4
+  },
+  {
+    "id": "始める",
+    "word": "始める",
+    "reading": "はじめる",
+    "meanings": ["begin (transitive)"],
+    "koreanMeanings": ["시작하다"],
+    "ruby": "{始|はじ}める",
+    "jlptLevel": 4
+  },
+  {
+    "id": "使い方",
+    "word": "使い方",
+    "reading": "つかいかた",
+    "meanings": ["how to use"],
+    "koreanMeanings": ["사용법"],
+    "ruby": "{使|つか}い{方|かた}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "お弁当",
+    "word": "お弁当",
+    "reading": "おべんとう",
+    "meanings": ["boxed lunch"],
+    "koreanMeanings": ["도시락"],
+    "ruby": "お{弁当|べんとう}",
+    "jlptLevel": 4
+  },
+  {
+    "id": "お祭り",
+    "word": "お祭り",
+    "reading": "おまつり",
+    "meanings": ["festival"],
+    "koreanMeanings": ["축제"],
+    "ruby": "お{祭|まつ}り",
+    "jlptLevel": 4
+  }
+]

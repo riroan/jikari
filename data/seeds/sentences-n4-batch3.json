@@ -1,0 +1,202 @@
+[
+  {
+    "id": "s121",
+    "sentence": "学生が＿＿＿に入る。",
+    "sentenceRuby": "{学生|がくせい}が＿＿＿に{入|はい}る。",
+    "blank": "教室",
+    "blankRuby": "{教室|きょうしつ}",
+    "distractors": ["花", "傘", "時計"],
+    "translation": "학생이 교실에 들어간다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s122",
+    "sentence": "明日＿＿＿がある。",
+    "sentenceRuby": "{明日|あした}＿＿＿がある。",
+    "blank": "試験",
+    "blankRuby": "{試験|しけん}",
+    "distractors": ["花", "電話", "傘"],
+    "translation": "내일 시험이 있다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s123",
+    "sentence": "毎日＿＿＿する。",
+    "sentenceRuby": "{毎日|まいにち}＿＿＿する。",
+    "blank": "勉強",
+    "blankRuby": "{勉強|べんきょう}",
+    "distractors": ["傘", "花", "電話"],
+    "translation": "매일 공부한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s124",
+    "sentence": "車に＿＿＿する。",
+    "sentenceRuby": "{車|くるま}に＿＿＿する。",
+    "blank": "注意",
+    "blankRuby": "{注意|ちゅうい}",
+    "distractors": ["時計", "魚", "電話"],
+    "translation": "차를 주의한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s125",
+    "sentence": "先生の＿＿＿を聞く。",
+    "sentenceRuby": "{先生|せんせい}の＿＿＿を{聞|き}く。",
+    "blank": "意見",
+    "blankRuby": "{意見|いけん}",
+    "distractors": ["時計", "花", "傘"],
+    "translation": "선생님의 의견을 듣는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s126",
+    "sentence": "大学で＿＿＿する。",
+    "sentenceRuby": "{大学|だいがく}で＿＿＿する。",
+    "blank": "研究",
+    "blankRuby": "{研究|けんきゅう}",
+    "distractors": ["売る", "飲む", "歩く"],
+    "translation": "대학에서 연구한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s127",
+    "sentence": "プレゼントを＿＿＿。",
+    "sentenceRuby": "プレゼントを＿＿＿。",
+    "blank": "受ける",
+    "blankRuby": "{受|う}ける",
+    "distractors": ["売る", "飲む", "閉める"],
+    "translation": "선물을 받는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s128",
+    "sentence": "机の上の本を＿＿＿。",
+    "sentenceRuby": "{机|つくえ}の{上|うえ}の{本|ほん}を＿＿＿。",
+    "blank": "取る",
+    "blankRuby": "{取|と}る",
+    "distractors": ["泳ぐ", "寝る", "売る"],
+    "translation": "책상 위의 책을 집는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s129",
+    "sentence": "新しい＿＿＿が始まる。",
+    "sentenceRuby": "{新|あたら}しい＿＿＿が{始|はじ}まる。",
+    "blank": "時代",
+    "blankRuby": "{時代|じだい}",
+    "distractors": ["傘", "花", "公園"],
+    "translation": "새 시대가 시작된다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s130",
+    "sentence": "もう＿＿＿食べた。",
+    "sentenceRuby": "もう＿＿＿{食|た}べた。",
+    "blank": "一度",
+    "blankRuby": "{一度|いちど}",
+    "distractors": ["色", "花", "傘"],
+    "translation": "이미 한 번 먹었다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s131",
+    "sentence": "事務所は＿＿＿にある。",
+    "sentenceRuby": "{事務所|じむしょ}は＿＿＿にある。",
+    "blank": "二階",
+    "blankRuby": "{二階|にかい}",
+    "distractors": ["花", "傘", "電話"],
+    "translation": "사무실은 2층에 있다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s132",
+    "sentence": "野菜を＿＿＿食べる。",
+    "sentenceRuby": "{野菜|やさい}を＿＿＿{食|た}べる。",
+    "blank": "全部",
+    "blankRuby": "{全部|ぜんぶ}",
+    "distractors": ["公園", "手紙", "花"],
+    "translation": "야채를 전부 먹는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s133",
+    "sentence": "明日の＿＿＿を教えてください。",
+    "sentenceRuby": "{明日|あした}の＿＿＿を{教|おし}えてください。",
+    "blank": "予定",
+    "blankRuby": "{予定|よてい}",
+    "distractors": ["傘", "花", "色"],
+    "translation": "내일 일정을 알려주세요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s134",
+    "sentence": "＿＿＿で意味を調べる。",
+    "sentenceRuby": "＿＿＿で{意味|いみ}を{調|しら}べる。",
+    "blank": "辞書",
+    "blankRuby": "{辞書|じしょ}",
+    "distractors": ["傘", "花", "公園"],
+    "translation": "사전에서 뜻을 찾는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s135",
+    "sentence": "毎朝＿＿＿を読む。",
+    "sentenceRuby": "{毎朝|まいあさ}＿＿＿を{読|よ}む。",
+    "blank": "新聞",
+    "blankRuby": "{新聞|しんぶん}",
+    "distractors": ["花", "傘", "電話"],
+    "translation": "매일 아침 신문을 읽는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s136",
+    "sentence": "先生が＿＿＿を書く。",
+    "sentenceRuby": "{先生|せんせい}が＿＿＿を{書|か}く。",
+    "blank": "答え",
+    "blankRuby": "{答|こた}え",
+    "distractors": ["傘", "魚", "花"],
+    "translation": "선생님이 답을 쓴다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s137",
+    "sentence": "午後＿＿＿がある。",
+    "sentenceRuby": "{午後|ごご}＿＿＿がある。",
+    "blank": "会議",
+    "blankRuby": "{会議|かいぎ}",
+    "distractors": ["傘", "魚", "公園"],
+    "translation": "오후에 회의가 있다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s138",
+    "sentence": "授業が＿＿＿。",
+    "sentenceRuby": "{授業|じゅぎょう}が＿＿＿。",
+    "blank": "終わる",
+    "blankRuby": "{終|お}わる",
+    "distractors": ["泳ぐ", "寝る", "売る"],
+    "translation": "수업이 끝난다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s139",
+    "sentence": "運動を＿＿＿。",
+    "sentenceRuby": "{運動|うんどう}を＿＿＿。",
+    "blank": "始める",
+    "blankRuby": "{始|はじ}める",
+    "distractors": ["売る", "泳ぐ", "閉める"],
+    "translation": "운동을 시작한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s140",
+    "sentence": "＿＿＿を持って学校に行く。",
+    "sentenceRuby": "＿＿＿を{持|も}って{学校|がっこう}に{行|い}く。",
+    "blank": "お弁当",
+    "blankRuby": "お{弁当|べんとう}",
+    "distractors": ["花", "傘", "電話"],
+    "translation": "도시락을 들고 학교에 간다.",
+    "jlptLevel": 4
+  }
+]
