@@ -134,7 +134,7 @@ function SentenceQuiz({
       question={
         <div>
           <div
-            className="text-[28px] leading-[1.9] font-medium mb-4"
+            className="text-[20px] leading-[1.8] font-medium mb-3"
             style={{
               fontFamily: "var(--font-jp-serif)",
               color: "var(--fg)",
@@ -158,6 +158,7 @@ function SentenceQuiz({
       correct={choices.correct}
       back={<SentenceBack card={card} />}
       onResolved={onResolved}
+      minQuestionHeight={160}
     />
   );
 }
@@ -170,9 +171,9 @@ function SentenceStudyBody({ card }: { card: SentenceCard }) {
   const [before, after] = sentenceSrc.split(BLANK);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <div
-        className="text-[28px] leading-[1.9] font-medium"
+        className="text-[20px] leading-[1.8] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
@@ -199,9 +200,9 @@ function SentenceBack({ card }: { card: SentenceCard }) {
   const [before, after] = sentenceSrc.split(BLANK);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <div
-        className="text-[28px] leading-[1.9] font-medium"
+        className="text-[20px] leading-[1.8] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",

@@ -30,6 +30,8 @@ export interface QuizCardProps {
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean) => void;
   choiceFontFamily?: string;
+  /** Min height (px) reserved for the question block. Default 260. */
+  minQuestionHeight?: number;
 }
 
 const DISABLE_MS = 500;
@@ -44,6 +46,7 @@ export function QuizCard({
   back,
   onResolved,
   choiceFontFamily = "var(--font-jp-sans)",
+  minQuestionHeight = 260,
 }: QuizCardProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [disabled, setDisabled] = useState(false);
@@ -88,7 +91,7 @@ export function QuizCard({
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="min-h-[260px] relative">
+      <div className="relative" style={{ minHeight: minQuestionHeight }}>
         <AnimatePresence mode="wait" initial={false}>
           {showingBack && back ? (
             <motion.div
