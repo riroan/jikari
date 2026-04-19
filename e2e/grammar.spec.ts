@@ -54,7 +54,8 @@ test.describe("grammar quiz", () => {
       return;
     }
     await expect(page.getByText("빈칸에 들어갈 말은?")).toBeVisible();
-    const choices = page.getByRole("button").filter({ hasNot: page.getByText(/이전|다음/) });
+    // Choice buttons have no aria-label; dev/nav buttons do. Simple + robust.
+    const choices = page.locator("button:not([aria-label])");
     await expect(choices).toHaveCount(4, { timeout: 4000 });
   });
 });
