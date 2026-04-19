@@ -5,6 +5,22 @@ import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
 
+/**
+ * Home structure (post plan-design-review 2026-04-19):
+ * one row per subject with 공부 / 퀴즈 buttons on the right.
+ * Replaces the previous two-section layout (공부 / 퀴즈) which was
+ * growing linearly with each new mode.
+ */
+const SUBJECTS: ReadonlyArray<{ ko: string; jp: string; base: string }> = [
+  { ko: "한자", jp: "漢字", base: "/kanji" },
+  { ko: "단어", jp: "単語", base: "/vocab" },
+  { ko: "문장", jp: "文章", base: "/sentence" },
+  { ko: "조사", jp: "助詞", base: "/particle" },
+  { ko: "동사활용", jp: "活用", base: "/conjugation" },
+  { ko: "형용사", jp: "形容詞", base: "/adjective" },
+  { ko: "문법", jp: "文法", base: "/grammar" },
+];
+
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -38,26 +54,11 @@ export default function Home() {
           </div>
         </header>
 
-        {/* 공부 section */}
-        <SectionHeader ko="공부" jp="勉強" />
-        <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-10">
-          <EntryRow href="/kanji?mode=study" ko="한자" jp="漢字" />
-          <EntryRow href="/vocab?mode=study" ko="단어" jp="単語" />
-          <EntryRow href="/sentence?mode=study" ko="문장" jp="文章" />
-          <EntryRow href="/particle?mode=study" ko="조사" jp="助詞" />
-          <EntryRow href="/conjugation?mode=study" ko="동사활용" jp="活用" />
-          <EntryRow href="/adjective?mode=study" ko="형용사활용" jp="形容詞" />
-        </section>
-
-        {/* 퀴즈 section */}
-        <SectionHeader ko="퀴즈" jp="問題" />
+        {/* Subject rows — one per subject with 공부 / 퀴즈 actions */}
         <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-12">
-          <EntryRow href="/kanji" ko="한자" jp="漢字" />
-          <EntryRow href="/vocab" ko="단어" jp="単語" />
-          <EntryRow href="/sentence" ko="문장" jp="文章" />
-          <EntryRow href="/particle" ko="조사" jp="助詞" />
-          <EntryRow href="/conjugation" ko="동사활용" jp="活用" />
-          <EntryRow href="/adjective" ko="형용사활용" jp="形容詞" />
+          {SUBJECTS.map((s) => (
+            <SubjectRow key={s.base} {...s} />
+          ))}
         </section>
 
         {/* Heatmap */}
@@ -87,38 +88,43 @@ export default function Home() {
   );
 }
 
-function SectionHeader({ ko, jp }: { ko: string; jp: string }) {
+function SubjectRow({
+  ko,
+  jp,
+  base,
+}: {
+  ko: string;
+  jp: string;
+  base: string;
+}) {
   return (
-    <div className="flex items-baseline gap-2 mb-3 px-1">
-      <span className="text-[15px] font-medium tracking-wide text-[color:var(--fg)]">
-        {ko}
-      </span>
-      <span
-        className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.15em]"
-        style={{ fontFamily: "var(--font-jp-sans)" }}
-      >
-        {jp}
-      </span>
-    </div>
-  );
-}
-
-function EntryRow({ href, ko, jp }: { href: string; ko: string; jp: string }) {
-  return (
-    <Link
-      href={href}
-      className="block bg-[color:var(--bg)] px-4 py-5 flex justify-between items-center hover:bg-[color:var(--bg-deep)] transition-colors"
-    >
-      <div className="flex items-baseline gap-3">
-        <span className="text-[17px] font-medium text-[color:var(--fg)]">{ko}</span>
+    <div className="bg-[color:var(--bg)] flex items-center px-4 py-4">
+      <div className="flex-1 flex items-baseline gap-3 min-w-0">
+        <span className="text-[17px] font-medium text-[color:var(--fg)] truncate">
+          {ko}
+        </span>
         <span
-          className="text-[13px] text-[color:var(--fg-faint)] tracking-[0.08em]"
+          className="text-[12px] text-[color:var(--fg-faint)] tracking-[0.08em]"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {jp}
         </span>
       </div>
-      <span className="text-[color:var(--fg-faint)]">→</span>
+      <div className="flex items-center gap-1 shrink-0">
+        <ActionLink href={`${base}?mode=study`} label="공부" />
+        <ActionLink href={base} label="퀴즈" />
+      </div>
+    </div>
+  );
+}
+
+function ActionLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="text-[13px] text-[color:var(--fg-soft)] tracking-wide px-3 py-2 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] flex items-center"
+    >
+      {label}
     </Link>
   );
 }

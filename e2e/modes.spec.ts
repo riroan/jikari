@@ -16,6 +16,10 @@ const routes = [
   { path: "/conjugation", jp: null },
   { path: "/adjective", jp: null },
   { path: "/particle", jp: null },
+  { path: "/grammar", jp: "文法" },
+  { path: "/grammar?mode=study", jp: "文法" },
+  { path: "/grammar?tab=particle", jp: "文法" },
+  { path: "/grammar?mode=study&tab=particle", jp: "文法" },
   { path: "/progress", jp: null },
   { path: "/settings", jp: null },
 ];
