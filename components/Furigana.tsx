@@ -1,14 +1,18 @@
 "use client";
 
 import React, { createContext, useContext, useMemo } from "react";
+import { parseMarkup, stripMarkup, type Segment } from "@/lib/jp-markup";
 
 /**
  * Furigana ruby rendering with a global on/off switch.
  *
- * Markup: `{漢字|かんじ}` — braced segments render as <ruby><rt>, rest plain.
+ * Markup handled by `lib/jp-markup.ts`:
+ *   `{漢字|かんじ}`     ruby
+ *   `[[pattern]]`       highlight (delegated to <PatternHighlight>)
  *
  * Global toggle via <FuriganaProvider value={boolean}>. When disabled,
- * markup is stripped and only the kanji (first group) is shown as plain text.
+ * ruby markup is stripped and only the base is shown. Highlight markup
+ * is still rendered (it's a pedagogical cue, independent of furigana pref).
  *
  * DESIGN.md § 6: native <ruby>/<rt>, no external deps.
  */
@@ -29,11 +33,9 @@ export function FuriganaProvider({
   );
 }
 
-const RUBY_PATTERN = /\{([^|{}]+)\|([^|{}]+)\}/g;
-
-/** Strip ruby markup, keeping only kanji portion. */
+/** Strip ruby markup, keeping only kanji portion. Preserved for back-compat. */
 export function stripRuby(text: string): string {
-  return text.replace(RUBY_PATTERN, "$1");
+  return stripMarkup(parseMarkup(text));
 }
 
 export function RubyText({
@@ -51,23 +53,33 @@ export function RubyText({
   const contextShow = useContext(FuriganaContext);
   const show = forceShow ?? contextShow;
 
-  const nodes = useMemo(() => {
-    if (!show) {
-      return <>{stripRuby(text)}</>;
+  const segments = useMemo(() => parseMarkup(text), [text]);
+
+  return (
+    <span className={className}>
+      {renderSegments(segments, show, rtClassName)}
+    </span>
+  );
+}
+
+/**
+ * Internal renderer. Walks the Segment tree and emits React nodes.
+ * Exported for PatternHighlight and any future consumer.
+ */
+export function renderSegments(
+  segments: Segment[],
+  showRuby: boolean,
+  rtClassName?: string,
+): React.ReactNode {
+  return segments.map((seg, idx) => {
+    if (seg.kind === "text") {
+      return <span key={idx}>{seg.text}</span>;
     }
-    const parts: React.ReactNode[] = [];
-    let lastIndex = 0;
-    let match: RegExpExecArray | null;
-    let key = 0;
-    RUBY_PATTERN.lastIndex = 0;
-    while ((match = RUBY_PATTERN.exec(text)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push(<span key={`t${key++}`}>{text.slice(lastIndex, match.index)}</span>);
-      }
-      const [, kanji, reading] = match;
-      parts.push(
-        <ruby key={`r${key++}`} style={{ rubyPosition: "over" }}>
-          {kanji}
+    if (seg.kind === "ruby") {
+      if (!showRuby) return <span key={idx}>{seg.base}</span>;
+      return (
+        <ruby key={idx} style={{ rubyPosition: "over" }}>
+          {seg.base}
           <rt
             className={rtClassName}
             style={{
@@ -76,19 +88,21 @@ export function RubyText({
               fontWeight: 400,
             }}
           >
-            {reading}
+            {seg.furigana}
           </rt>
         </ruby>
       );
-      lastIndex = match.index + match[0].length;
     }
-    if (lastIndex < text.length) {
-      parts.push(<span key={`t${key++}`}>{text.slice(lastIndex)}</span>);
-    }
-    return <>{parts}</>;
-  }, [text, show]);
-
-  return <span className={className}>{nodes}</span>;
+    // highlight — <mark> with token color (see components/PatternHighlight)
+    return (
+      <mark
+        key={idx}
+        className="jp-highlight"
+      >
+        {renderSegments(seg.children, showRuby, rtClassName)}
+      </mark>
+    );
+  });
 }
 
 /** Single-pair convenience wrapper. Respects context toggle. */

@@ -99,3 +99,19 @@ body {
   20%, 60% { transform: translateX(-6px); }
   40%, 80% { transform: translateX(6px); }
 }
+
+/*
+ * Grammar pattern highlight — <mark class="jp-highlight"> from lib/jp-markup.ts
+ * Design review 2026-04-19: light = accent-clay @ 12%, dark = gold @ 15%.
+ * Default browser yellow is AI slop — override globally.
+ */
+mark.jp-highlight {
+  background: color-mix(in srgb, var(--accent-clay) 12%, transparent);
+  color: inherit;
+  padding: 0 0.1em;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] mark.jp-highlight {
+  background: color-mix(in srgb, var(--gold) 15%, transparent);
+}
