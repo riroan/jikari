@@ -53,9 +53,16 @@ function conjugateIAdj(stem: string, form: AdjectiveForm): string {
       return body + "くて";
     case "i_adv":
       return body + "く";
+    case "conditional":
+      return body + "ければ";
+    case "polite_negative":
+      // Colloquial-polite chosen as primary; textbook 〜くありません added as
+      // an accepted alternate in conjugateAdjAll.
+      return body + "くないです";
+    case "ni_adv":
     case "na_prenominal":
       throw new AdjectiveConjugationError(
-        `i-adj does not have na_prenominal form (stem '${stem}')`,
+        `i-adj does not have ${form} form (stem '${stem}')`,
       );
   }
 }
@@ -78,6 +85,14 @@ function conjugateNaAdj(stem: string, form: AdjectiveForm): string {
       return stem + "で";
     case "na_prenominal":
       return stem + "な";
+    case "ni_adv":
+      return stem + "に";
+    case "conditional":
+      return stem + "なら";
+    case "polite_negative":
+      // Textbook-formal chosen as primary; じゃないです / ではありません /
+      // ではないです added as accepted alternates in conjugateAdjAll.
+      return stem + "じゃありません";
     case "i_adv":
       throw new AdjectiveConjugationError(
         `na-adj does not have i_adv form (stem '${stem}')`,
@@ -136,6 +151,28 @@ export function conjugateAdjAll(
     } else if (form === "past_negative") {
       out.add(word + "ではなかった");
       out.add(reading + "ではなかった");
+    } else if (form === "polite_negative") {
+      // Primary is 〜じゃありません. Accept the other three register×politeness
+      // permutations too — they're all valid daily-speech polite negatives.
+      for (const stem of [word, reading]) {
+        out.add(stem + "じゃないです");
+        out.add(stem + "ではありません");
+        out.add(stem + "ではないです");
+      }
+    }
+  }
+
+  // I-adj: polite_negative has a textbook alternate 〜くありません.
+  if (group === "i_adj" && form === "polite_negative") {
+    for (const stem of [word, reading]) {
+      try {
+        const body = iAdjBody(stem);
+        out.add(body + "くありません");
+      } catch {
+        // Unreachable on valid stems; conjugateAdj above would have already
+        // thrown. Swallow to avoid leaking a second error path from the
+        // alternates branch.
+      }
     }
   }
 
@@ -164,6 +201,9 @@ export const ADJ_FORM_LABELS_KO: Record<AdjectiveForm, string> = {
   te: "て형",
   i_adv: "부사형",
   na_prenominal: "명사수식형",
+  ni_adv: "부사형",
+  conditional: "조건형",
+  polite_negative: "정중부정형",
 };
 
 /** Japanese labels for back-of-card display. */
@@ -172,6 +212,11 @@ export const ADJ_FORM_LABELS_JP: Record<AdjectiveForm, string> = {
   past: "過去形",
   past_negative: "過去否定形",
   te: "て形",
+  // i_adv (〜く) and ni_adv (〜に) are both 連用形 in traditional grammar;
+  // they never co-occur on one card (ADJ_FORMS_FOR splits by group).
   i_adv: "連用形",
+  ni_adv: "連用形",
   na_prenominal: "連体形",
+  conditional: "条件形",
+  polite_negative: "丁寧否定形",
 };

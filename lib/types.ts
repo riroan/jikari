@@ -98,10 +98,11 @@ export const ALL_CONJUGATION_FORMS: readonly ConjugationForm[] = [
  * Japanese adjective conjugation forms supported by the adjective quiz.
  *
  * Common core (both い and な):
- *   negative / past / past_negative / te
+ *   negative / past / past_negative / te / conditional / polite_negative
  * Type-specific:
- *   i_adv (〜く)    — i-adj only (adverbial)
+ *   i_adv (〜く)         — i-adj only (adverbial)
  *   na_prenominal (〜な) — na-adj only (noun modifier)
+ *   ni_adv (〜に)        — na-adj only (adverbial; parallel to i_adv)
  *
  * Callers should filter by group — see ADJ_FORMS_FOR.
  */
@@ -111,25 +112,33 @@ export type AdjectiveForm =
   | "past_negative"
   | "te"
   | "i_adv"
-  | "na_prenominal";
+  | "na_prenominal"
+  | "ni_adv"
+  | "conditional"
+  | "polite_negative";
 
 export const COMMON_ADJ_FORMS: readonly AdjectiveForm[] = [
   "negative",
   "past",
   "past_negative",
   "te",
+  "conditional",
+  "polite_negative",
 ];
 
 /**
  * Forms applicable to each adjective group. Used by page to filter form
  * sampling — an い-adj never gets na_prenominal, etc.
+ *
+ * Ordering is pedagogical: 부정 → 과거 → 과거부정 → て → 조건 → 정중부정 →
+ * group-specific tail (부사형·연체형). Study-mode table renders in this order.
  */
 export const ADJ_FORMS_FOR: Record<
   Exclude<AdjGroup, "not_adj">,
   readonly AdjectiveForm[]
 > = {
   i_adj: [...COMMON_ADJ_FORMS, "i_adv"],
-  na_adj: [...COMMON_ADJ_FORMS, "na_prenominal"],
+  na_adj: [...COMMON_ADJ_FORMS, "na_prenominal", "ni_adv"],
 };
 
 export type SentenceCategory = "vocab" | "particle";
