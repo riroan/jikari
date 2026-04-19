@@ -1,5 +1,31 @@
 # TODOS
 
+## Tailwind v4 / 디자인 시스템 인프라 (design-review 2026-04-19)
+
+### `text-{title,h1,display,hero}` 등 @theme inline 유틸이 CSS 룰로 안 만들어짐
+- **What:** `app/globals.css`의 `@theme inline { --text-title: var(--type-title) }` 정의가 Tailwind v4에서 `.text-title { font-size: 22px }` 룰을 *생성하지 않음*. 서빙 CSS에 0건.
+- **Why:** DESIGN.md 타입 스케일이 정의됐지만 *적용 안 됨*. 모든 `text-title` 사용처가 silently 16px 기본값으로 렌더링 중이었음. design-review가 `text-[22px]` arbitrary 값으로 우회 (5f7d924, 9a244fc).
+- **Pros:** 해결 시 9개 모드 페이지 H1 + 홈 브랜드의 magic number 22px이 디자인 토큰으로 회귀. type scale 일관성 회복.
+- **Cons:** Tailwind v4 `@theme inline` 의미 학습 필요. `--text-*: var(--type-*)` 패턴이 build-time 디리퍼런스 안 되는 게 원인일 가능성. 후보:
+  - (a) `@theme inline`에서 var() 안 쓰고 픽셀 값 직접 입력 (`--text-title: 22px`)
+  - (b) `@utility` 디렉티브로 타입 스케일 재정의
+  - (c) `@theme inline` 떼고 `@theme { ... }` 일반 블록으로
+- **Context:** font-size + tracking 영향. font-family는 inline `style={{ fontFamily: ... }}`로 우회되어 정상.
+- **Depends on:** Tailwind v4 docs 확인 + 작은 reproducer로 검증.
+
+### 9개 페이지에 ← HOME 블록 중복 (DRY)
+- **What:** `app/{grammar,vocab,kanji,sentence,conjugation,adjective,particle,progress,settings}/page.tsx` 9곳에 동일 `← HOME` 링크 (44px touch target 포함) 중복.
+- **Why:** 차후 헤더 변경 시 9곳 손대야 함. design-review 2026-04-19에서 9개 동일 인라인 수정 — 적기 신호.
+- **Pros:** `<BackToHome />` 또는 `<ModePageHeader />` 추출 시 헤더 변경 1곳.
+- **Cons:** props 설계 (statKey 다름, h1 라벨 다름) — 너무 많이 받으면 추상화 비용 > DRY 이득.
+- **Context:** 다음 헤더 변경 발생 시 자연스럽게 추출 권장.
+- **Depends on:** 헤더에 새 요소 추가 작업 발생.
+
+### F4 검증 (dev 재시작 후)
+- **What:** `app/globals.css`에 `html, body { font-family: Pretendard }` 추가 (5299e4d). dev server HMR이 globals.css를 안 픽업해서 audit 시점엔 미검증.
+- **Why:** DESIGN.md § 2 system-ui 금지. 적용 시 `<html>` 컴퓨티드 폰트가 Pretendard 시작으로 깨끗.
+- **Action:** `bun dev` 재시작 → `getComputedStyle(document.documentElement).fontFamily`이 `Pretendard Variable, ...`로 시작하는지 확인.
+
 ## Design Debt — 활용형 퀴즈 모드 (linked to `riroan-main-design-20260418-235301.md`)
 
 ### 대비비 실측 (구현 시)
@@ -43,3 +69,13 @@
 - **Cons:** 지금 미리 넣으면 복잡도만 증가, YAGNI 위반.
 - **Context:** 2026-04-19 plan-eng-review의 Performance 섹션에서 "현재 규모 불필요, 확장 시점에 고려"로 합의.
 - **Depends on:** 전체 카드 수(모든 모드 합산) 1500장 돌파 또는 모바일 로드 체감 저하.
+
+## Deferred — 일상표현 subject (linked to `riroan-main-design-20260419-220004.md`)
+
+### 홈 화면 8행 visual 실측
+- **What:** `/expressions` v1 착륙 후 `/design-review`로 홈 화면 subject row 8행에서 시각적 동작 실측 — 스크롤/행간/폰트 축소 필요 여부 판단.
+- **Why:** 현재 390px 폭에 7행 딱 맞는 레이아웃. 8행 = 576px 높이 추정. `app/page.tsx:58~62` 섹션 여백 포함 뷰포트 처리 실제로 봐야 알 수 있음.
+- **Pros:** 실측 기반 조정. 억측으로 미리 건드리지 않음.
+- **Cons:** /design-review 돌리는 3~5분.
+- **Context:** 2026-04-19 plan-eng-review Architecture 섹션에서 "실제 렌더링 안 보고는 못 정함"으로 deferred. Design doc Open Question #4와 동일 사안.
+- **Depends on:** /expressions 라우트 + 홈 SUBJECTS 배열 edit 구현 완료.
