@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
 import { RubyText } from "./Furigana";
@@ -16,9 +16,11 @@ import {
  *
  * Flow (identical across input modes):
  *   t=0      user answers → selected/disabled set, feedback shown
- *   t=500    crossfade to back (200ms fade)
- *   t=2000   crossfade back to front with NEW card content
- *   t=2200   unlock
+ *   t=500    crossfade to back (200ms fade) if `back` provided
+ *   wait     user clicks 다음 → / presses Space|Enter to advance
+ *
+ * Keyboard advance has a 250ms grace period so an Enter held from typed
+ * submission does not instantly skip the feedback.
  *
  * Two input modes via discriminated union:
  *   - 'choice': 4-way multiple choice (recognition).
@@ -56,7 +58,7 @@ export interface QuizCardProps {
 }
 
 const DISABLE_MS = 500;
-const ANSWER_HOLD_MS = 1500;
+const KEYBOARD_GRACE_MS = 250;
 const FADE_MS = 200;
 
 export function QuizCard({
@@ -73,32 +75,28 @@ export function QuizCard({
   // Track what the user did this turn (for feedback display + visual highlight).
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [typedUserAnswer, setTypedUserAnswer] = useState<string | null>(null);
+  const resolvedAtRef = useRef(0);
+
+  const advance = useCallback(() => {
+    if (result === null) return;
+    onResolved(result === "correct");
+    setResult(null);
+    setDisabled(false);
+    setShowingBack(false);
+    setSelectedChoice(null);
+    setTypedUserAnswer(null);
+  }, [result, onResolved]);
 
   const resolve = useCallback(
     (wasCorrect: boolean) => {
       setResult(wasCorrect ? "correct" : "wrong");
       setDisabled(true);
+      resolvedAtRef.current = Date.now();
       if (back) {
         setTimeout(() => setShowingBack(true), DISABLE_MS);
-        setTimeout(() => {
-          onResolved(wasCorrect);
-          setResult(null);
-          setDisabled(false);
-          setShowingBack(false);
-          setSelectedChoice(null);
-          setTypedUserAnswer(null);
-        }, DISABLE_MS + ANSWER_HOLD_MS);
-      } else {
-        setTimeout(() => {
-          onResolved(wasCorrect);
-          setResult(null);
-          setDisabled(false);
-          setSelectedChoice(null);
-          setTypedUserAnswer(null);
-        }, ANSWER_HOLD_MS);
       }
     },
-    [back, onResolved],
+    [back],
   );
 
   const handleChoice = useCallback(
@@ -136,6 +134,20 @@ export function QuizCard({
       setTypedUserAnswer(null);
     };
   }, []);
+
+  // Space/Enter to advance once feedback is shown. Grace period swallows the
+  // same Enter that submitted a typed answer (key-repeat would otherwise skip).
+  useEffect(() => {
+    if (!disabled || result === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key !== " " && e.key !== "Enter") return;
+      if (Date.now() - resolvedAtRef.current < KEYBOARD_GRACE_MS) return;
+      e.preventDefault();
+      advance();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [disabled, result, advance]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -187,19 +199,32 @@ export function QuizCard({
         />
       )}
 
-      <div className="min-h-[28px]">
-        <AnimatePresence>
-          {disabled && result !== null && (
-            <motion.div
-              key={result}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <AnswerFeedback correct={result === "correct"} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="flex items-center justify-between gap-3 min-h-[44px]">
+        <div>
+          <AnimatePresence>
+            {disabled && result !== null && (
+              <motion.div
+                key={result}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <AnswerFeedback correct={result === "correct"} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        {disabled && result !== null && (
+          <button
+            type="button"
+            onClick={advance}
+            className="px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            style={{ minHeight: 44 }}
+            aria-label="다음 문제"
+          >
+            다음 →
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,18 +1,16 @@
-import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
-import { render, screen, cleanup, fireEvent, act } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import { QuizCard } from "@/components/QuizCard";
 
 afterEach(() => {
   cleanup();
-  vi.useRealTimers();
 });
 
-describe("QuizCard — choice mode regression", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
+const clickNext = () =>
+  fireEvent.click(screen.getByRole("button", { name: "다음 문제" }));
 
-  it("renders choices and fires onResolved with correctness", () => {
+describe("QuizCard — choice mode regression", () => {
+  it("renders choices and fires onResolved with correctness after 다음", () => {
     const onResolved = vi.fn();
     render(
       <QuizCard
@@ -27,14 +25,12 @@ describe("QuizCard — choice mode regression", () => {
     );
 
     fireEvent.click(screen.getByText("にち"));
-    // Wait out the feedback hold (1500ms, no back)
-    act(() => {
-      vi.advanceTimersByTime(1500);
-    });
+    expect(onResolved).not.toHaveBeenCalled();
+    clickNext();
     expect(onResolved).toHaveBeenCalledWith(true);
   });
 
-  it("wrong choice resolves with false", () => {
+  it("wrong choice resolves with false after 다음", () => {
     const onResolved = vi.fn();
     render(
       <QuizCard
@@ -48,18 +44,13 @@ describe("QuizCard — choice mode regression", () => {
       />,
     );
     fireEvent.click(screen.getByText("ひ"));
-    act(() => {
-      vi.advanceTimersByTime(1500);
-    });
+    expect(onResolved).not.toHaveBeenCalled();
+    clickNext();
     expect(onResolved).toHaveBeenCalledWith(false);
   });
 });
 
 describe("QuizCard — typed mode", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
   it("typed Japanese matches acceptable answer via normalizer (romaji → hiragana)", () => {
     const onResolved = vi.fn();
     render(
@@ -76,9 +67,7 @@ describe("QuizCard — typed mode", () => {
     const input = screen.getByLabelText("読み入력");
     fireEvent.change(input, { target: { value: "nichi" } });
     fireEvent.click(screen.getByRole("button", { name: "제출" }));
-    act(() => {
-      vi.advanceTimersByTime(1500);
-    });
+    clickNext();
     expect(onResolved).toHaveBeenCalledWith(true);
   });
 
@@ -98,9 +87,7 @@ describe("QuizCard — typed mode", () => {
     const input = screen.getByLabelText("読み入력");
     fireEvent.change(input, { target: { value: "bogus" } });
     fireEvent.click(screen.getByRole("button", { name: "제출" }));
-    act(() => {
-      vi.advanceTimersByTime(1500);
-    });
+    clickNext();
     expect(onResolved).toHaveBeenCalledWith(false);
   });
 
@@ -120,9 +107,7 @@ describe("QuizCard — typed mode", () => {
     const input = screen.getByLabelText("뜻 입력");
     fireEvent.change(input, { target: { value: "먹다." } });
     fireEvent.click(screen.getByRole("button", { name: "제출" }));
-    act(() => {
-      vi.advanceTimersByTime(1500);
-    });
+    clickNext();
     expect(onResolved).toHaveBeenCalledWith(true);
   });
 });

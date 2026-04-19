@@ -20,19 +20,16 @@ import type { ConjugationForm, VerbGroup, VocabCard } from "@/lib/types";
  *
  * Flow:
  *   Idle     → typing target form label + hero verb + input (IME-safe)
- *   Submit   → lock for 0.3s, compute correctness
- *   Correct  → sage ✓ inline, auto-advance after 1s
+ *   Submit   → lock, compute correctness
+ *   Correct  → sage ✓ inline + 次へ button (Space/Enter to advance)
  *   Wrong    → clay ✕ + shake, fade in feedback block (correct answer + group + form),
- *              wait for user 次へ click
+ *              wait for user 次へ click (Space/Enter to advance)
  *
  * Feedback block visual (DESIGN.md):
  *   - No card / shadow / border-radius. Thin line separator only.
  *   - Inline group tag "─ 一段動詞 ─" (NOT a pill/colored badge).
  *   - Rule text uses Noto Sans JP for JP, Pretendard for KR.
  */
-
-const DISABLE_MS = 300;
-const CORRECT_HOLD_MS = 1000;
 
 export interface ConjugationCardProps {
   verb: VocabCard & { verbGroup: Exclude<VerbGroup, "not_verb"> };
@@ -79,27 +76,17 @@ export function ConjugationCard({
       setUserAnswer(value);
       setResult(isCorrect ? "correct" : "wrong");
       setDisabled(true);
-
-      if (isCorrect) {
-        // Auto-advance on correct.
-        setTimeout(() => {
-          onResolved(true);
-          setResult(null);
-          setDisabled(false);
-          setUserAnswer(null);
-        }, CORRECT_HOLD_MS);
-      }
-      // On wrong: stay until user clicks 次へ.
     },
-    [disabled, acceptableAnswers, onResolved],
+    [disabled, acceptableAnswers],
   );
 
   const handleNext = useCallback(() => {
-    onResolved(false);
+    if (result === null) return;
+    onResolved(result === "correct");
     setResult(null);
     setDisabled(false);
     setUserAnswer(null);
-  }, [onResolved]);
+  }, [result, onResolved]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -109,6 +96,24 @@ export function ConjugationCard({
       setUserAnswer(null);
     };
   }, []);
+
+  // Space/Enter to advance once feedback is shown. Deferred attach swallows
+  // the same Enter that submitted a typed answer.
+  useEffect(() => {
+    if (!disabled || result === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key !== " " && e.key !== "Enter") return;
+      e.preventDefault();
+      handleNext();
+    };
+    const id = window.setTimeout(() => {
+      window.addEventListener("keydown", handler);
+    }, 250);
+    return () => {
+      window.clearTimeout(id);
+      window.removeEventListener("keydown", handler);
+    };
+  }, [disabled, result, handleNext]);
 
   const groupLabelJp = GROUP_LABELS_JP[verb.verbGroup];
   const groupLabelKo = GROUP_LABELS_KO[verb.verbGroup];
@@ -221,7 +226,7 @@ export function ConjugationCard({
         )}
       </AnimatePresence>
 
-      {/* Correct inline flash (no back-face card flip) */}
+      {/* Correct inline flash + 次へ button */}
       <AnimatePresence>
         {result === "correct" && (
           <motion.div
@@ -230,21 +235,30 @@ export function ConjugationCard({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="inline-flex items-center gap-2 text-[color:var(--accent-progress)] font-medium"
+            className="flex items-center justify-between gap-3"
             aria-live="polite"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M5 13l4 4L19 7"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span style={{ fontFamily: "var(--font-jp-sans)" }}>
-              {primaryAnswer}
-            </span>
+            <div className="inline-flex items-center gap-2 text-[color:var(--accent-progress)] font-medium">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 13l4 4L19 7"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span style={{ fontFamily: "var(--font-jp-sans)" }}>
+                {primaryAnswer}
+              </span>
+            </div>
+            <button
+              onClick={handleNext}
+              className="px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              style={{ minHeight: 44 }}
+            >
+              次へ
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
