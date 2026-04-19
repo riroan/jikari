@@ -40,8 +40,8 @@ function ParticlePageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => shuffleIds(particleIds, seed + epoch * 7919),
-    [seed, epoch, particleIds]
+    () => (mode === "study" ? particleIds : shuffleIds(particleIds, seed + epoch * 7919)),
+    [mode, seed, epoch, particleIds]
   );
 
   const advance = () => {

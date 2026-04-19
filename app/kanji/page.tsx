@@ -37,14 +37,14 @@ function KanjiPageInner() {
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const kanjiIds = useCardsStore((s) => s.kanjiIds);
 
-  // Infinite random deck (reshuffles when exhausted)
+  // Quiz: infinite shuffled deck. Study: stable order for predictable browsing.
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => shuffleIds(kanjiIds, seed + epoch * 7919),
-    [seed, epoch, kanjiIds]
+    () => (mode === "study" ? kanjiIds : shuffleIds(kanjiIds, seed + epoch * 7919)),
+    [mode, seed, epoch, kanjiIds]
   );
 
   const advance = () => {

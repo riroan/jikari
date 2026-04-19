@@ -39,8 +39,8 @@ function SentencePageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => shuffleIds(sentenceIds, seed + epoch * 7919),
-    [seed, epoch, sentenceIds]
+    () => (mode === "study" ? sentenceIds : shuffleIds(sentenceIds, seed + epoch * 7919)),
+    [mode, seed, epoch, sentenceIds]
   );
 
   const advance = () => {

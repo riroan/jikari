@@ -40,8 +40,8 @@ function VocabPageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => shuffleIds(vocabIds, seed + epoch * 7919),
-    [seed, epoch, vocabIds]
+    () => (mode === "study" ? vocabIds : shuffleIds(vocabIds, seed + epoch * 7919)),
+    [mode, seed, epoch, vocabIds]
   );
 
   const advance = () => {
