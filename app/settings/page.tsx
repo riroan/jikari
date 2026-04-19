@@ -122,40 +122,32 @@ export default function SettingsPage() {
 
         <section className="mb-10">
           <h2 className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
-            일일 한도
+            학습
           </h2>
-          <div className="flex flex-col gap-3">
-            <label className="flex justify-between items-center text-[14px]">
-              <span className="text-[color:var(--fg-soft)]">신규 카드 / 일</span>
-              <input
-                type="number"
-                min={1}
-                max={500}
-                value={settings.dailyNewLimit}
-                onChange={(e) =>
-                  updateSettings({
-                    dailyNewLimit: Math.max(1, Math.min(500, Number(e.target.value) || 1)),
-                  })
-                }
-                className="w-20 px-2 py-1 text-right border border-[color:var(--line)] rounded-sm bg-transparent tabular-nums"
-              />
-            </label>
-            <label className="flex justify-between items-center text-[14px]">
-              <span className="text-[color:var(--fg-soft)]">복습 카드 / 일</span>
-              <input
-                type="number"
-                min={1}
-                max={2000}
-                value={settings.dailyReviewLimit}
-                onChange={(e) =>
-                  updateSettings({
-                    dailyReviewLimit: Math.max(1, Math.min(2000, Number(e.target.value) || 1)),
-                  })
-                }
-                className="w-20 px-2 py-1 text-right border border-[color:var(--line)] rounded-sm bg-transparent tabular-nums"
-              />
-            </label>
-          </div>
+          <label className="flex justify-between items-center text-[14px] py-2">
+            <span className="text-[color:var(--fg-soft)]">
+              타이핑 시작 박스
+              <span className="block text-[11px] text-[color:var(--fg-faint)] mt-0.5">
+                이 박스부터 4지선다 대신 직접 입력
+              </span>
+            </span>
+            <select
+              value={settings.typingThresholdBox}
+              onChange={(e) =>
+                updateSettings({
+                  typingThresholdBox: Number(e.target.value) as 2 | 3 | 4 | 5,
+                })
+              }
+              aria-label="타이핑 시작 박스"
+              className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 py-1.5 text-[14px] text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
+              style={{ minHeight: 36, minWidth: 64 }}
+            >
+              <option value={2}>2 (공격적)</option>
+              <option value={3}>3</option>
+              <option value={4}>4 (기본)</option>
+              <option value={5}>5 (보수적)</option>
+            </select>
+          </label>
         </section>
 
         <section className="mb-10">

@@ -25,9 +25,10 @@ const persistedStateSchema = z.object({
   currentStreak: z.number().int().nonnegative(),
   settings: z.object({
     theme: z.enum(["light", "dark"]),
-    dailyNewLimit: z.number().int().positive().max(500),
-    dailyReviewLimit: z.number().int().positive().max(2000),
     showFurigana: z.boolean().default(true),
+    typingThresholdBox: z
+      .union([z.literal(2), z.literal(3), z.literal(4), z.literal(5)])
+      .default(4),
   }),
 });
 

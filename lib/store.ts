@@ -13,20 +13,33 @@ import {
   cardKey,
   getTodayQueue as srsGetTodayQueue,
   newLearningState,
+  type AnswerMode,
   type TodayQueue,
 } from "./srs";
 import { incrementToday, currentStreak, toLocalDateKey } from "./heatmap";
 import { remoteStorage } from "./remote-storage";
 
 interface StoreActions {
-  /** Record a review result for a card. Creates state if new. */
-  review: (mode: CardMode, cardId: string, correct: boolean) => void;
+  /**
+   * Record a review result for a card. Creates state if new.
+   * `answerMode` defaults to 'choice'. Pass 'typed' for active-recall attempts —
+   * this softens the demotion on wrong answers (box-1 instead of box-1 reset).
+   */
+  review: (
+    mode: CardMode,
+    cardId: string,
+    correct: boolean,
+    answerMode?: AnswerMode,
+  ) => void;
 
   /** Get today's queue for a specific mode. */
   getQueueForMode: (mode: CardMode, allCardIds: string[]) => TodayQueue;
 
   /** Get a single card's learning state (or undefined if never seen). */
   getState: (mode: CardMode, cardId: string) => LearningState | undefined;
+
+  /** Get the Leitner box for a card, or 1 if never seen. */
+  getBox: (mode: CardMode, cardId: string) => LearningState["box"];
 
   /** Update settings. */
   updateSettings: (partial: Partial<PersistedState["settings"]>) => void;
@@ -54,13 +67,13 @@ export const useStore = create<Store>()(
     (set, get) => ({
       ...initialState,
 
-      review: (mode, cardId, correct) => {
+      review: (mode, cardId, correct, answerMode = "choice") => {
         const now = Date.now();
         const key = cardKey(mode, cardId);
         const states = get().learningStates;
         const existing = states[key];
         const base = existing ?? newLearningState(mode, cardId, now);
-        const next = srsAdvance(base, correct, now);
+        const next = srsAdvance(base, correct, now, answerMode);
         const heatmap = incrementToday(get().heatmap, now);
         set({
           learningStates: { ...states, [key]: next },
@@ -72,7 +85,6 @@ export const useStore = create<Store>()(
 
       getQueueForMode: (mode, allCardIds) => {
         const states = get().learningStates;
-        const settings = get().settings;
         const now = Date.now();
 
         const modeStates: LearningState[] = allCardIds.map((cardId) => {
@@ -80,10 +92,13 @@ export const useStore = create<Store>()(
           return states[key] ?? newLearningState(mode, cardId, now);
         });
 
-        return srsGetTodayQueue(modeStates, now, settings);
+        return srsGetTodayQueue(modeStates, now);
       },
 
       getState: (mode, cardId) => get().learningStates[cardKey(mode, cardId)],
+
+      getBox: (mode, cardId) =>
+        get().learningStates[cardKey(mode, cardId)]?.box ?? 1,
 
       updateSettings: (partial) =>
         set({ settings: { ...get().settings, ...partial } }),
@@ -105,15 +120,23 @@ export const useStore = create<Store>()(
       /**
        * Schema migration: pad missing settings fields with defaults.
        * v1 → v2: added settings.showFurigana (default true)
+       * v2 → v3: removed settings.dailyNewLimit / dailyReviewLimit
+       * v3 → v4: added settings.typingThresholdBox (default 4)
        */
       migrate: (persisted: unknown, _version: number) => {
         if (!persisted || typeof persisted !== "object") return initialState;
         const p = persisted as Partial<PersistedState> & { settings?: Partial<PersistedState["settings"]> };
+        const prev: Partial<PersistedState["settings"]> = p.settings ?? {};
         return {
           ...initialState,
           ...p,
           schemaVersion: SCHEMA_VERSION,
-          settings: { ...DEFAULT_SETTINGS, ...(p.settings ?? {}) },
+          settings: {
+            theme: prev.theme ?? DEFAULT_SETTINGS.theme,
+            showFurigana: prev.showFurigana ?? DEFAULT_SETTINGS.showFurigana,
+            typingThresholdBox:
+              prev.typingThresholdBox ?? DEFAULT_SETTINGS.typingThresholdBox,
+          },
         } as PersistedState;
       },
     }

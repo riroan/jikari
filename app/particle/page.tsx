@@ -154,9 +154,12 @@ function ParticleQuiz({
         </div>
       }
       subtitle="빈칸에 들어갈 조사는?"
-      choiceFontFamily="var(--font-jp-sans)"
-      choices={choices.choices}
-      correct={choices.correct}
+      input={{
+        mode: "choice",
+        choices: choices.choices,
+        correct: choices.correct,
+        choiceFontFamily: "var(--font-jp-sans)",
+      }}
       back={<ParticleBack card={card} />}
       onResolved={onResolved}
       minQuestionHeight={0}

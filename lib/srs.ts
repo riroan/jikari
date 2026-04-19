@@ -8,11 +8,10 @@ import type { CardMode, LearningState } from "./types";
  *
  * Rules:
  *   - Correct: box +1 (cap 5), nextDue = now + intervalDays(newBox)
- *   - Wrong:   box → 1,      nextDue = now + 1 day, correctStreak = 0
- *
- * Daily caps (outside voice catch — prevents day-14 review tsunami):
- *   - New cards: dailyNewLimit introduced per day
- *   - Review:    dailyReviewLimit reviewed per day
+ *   - Wrong (answerMode='choice'): box → 1, nextDue = now + 1 day
+ *   - Wrong (answerMode='typed'):  box → max(1, box-1), nextDue = now + 1 day
+ *     (typed은 오타·送り仮名·표기 변이로 box 5→1 리셋이 과함. -1 스텝이 공정.)
+ *   correctStreak → 0 on any wrong.
  */
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -24,6 +23,25 @@ const INTERVAL_DAYS: Record<1 | 2 | 3 | 4 | 5, number> = {
   4: 7,
   5: 14,
 };
+
+export type AnswerMode = "choice" | "typed";
+
+export type ThresholdBox = 2 | 3 | 4 | 5;
+
+/**
+ * Pick quiz input mode based on Leitner box.
+ * Box < threshold → 'choice' (recognition — 4지선다).
+ * Box ≥ threshold → 'typed'  (active recall — 자유 타이핑).
+ *
+ * Box 1 cards always stay in 'choice' even if threshold=2 — 신규 카드는 인지부터.
+ * threshold 2는 box 1 제외하고 box 2부터 typed.
+ */
+export function pickMode(
+  box: LearningState["box"],
+  threshold: ThresholdBox,
+): AnswerMode {
+  return box >= threshold ? "typed" : "choice";
+}
 
 export function cardKey(mode: CardMode, cardId: string): string {
   return `${mode}:${cardId}`;
@@ -56,7 +74,8 @@ export function newLearningState(
 export function advance(
   state: LearningState,
   correct: boolean,
-  now: number
+  now: number,
+  answerMode: AnswerMode = "choice",
 ): LearningState {
   if (correct) {
     const newBox = Math.min(5, state.box + 1) as 1 | 2 | 3 | 4 | 5;
@@ -68,9 +87,13 @@ export function advance(
       lastReviewed: now,
     };
   }
+  const demotedBox =
+    answerMode === "typed"
+      ? (Math.max(1, state.box - 1) as 1 | 2 | 3 | 4 | 5)
+      : 1;
   return {
     ...state,
-    box: 1,
+    box: demotedBox,
     nextDue: now + DAY_MS,
     correctStreak: 0,
     lastReviewed: now,
@@ -83,15 +106,14 @@ export interface TodayQueue {
 }
 
 /**
- * Get today's learning queue, respecting daily caps.
+ * Get today's learning queue.
  *
- * - `due`: cards where nextDue <= now, up to dailyReviewLimit
- * - `new`: never-reviewed cards (lastReviewed === 0), up to dailyNewLimit
+ * - `due`: cards where nextDue <= now (sorted oldest-due first)
+ * - `new`: never-reviewed cards (lastReviewed === 0)
  */
 export function getTodayQueue(
   states: LearningState[],
-  now: number,
-  limits: { dailyNewLimit: number; dailyReviewLimit: number }
+  now: number
 ): TodayQueue {
   const due: LearningState[] = [];
   const newCards: LearningState[] = [];
@@ -104,13 +126,9 @@ export function getTodayQueue(
     }
   }
 
-  // Due first (more urgent), then new
   due.sort((a, b) => a.nextDue - b.nextDue);
 
-  return {
-    due: due.slice(0, limits.dailyReviewLimit),
-    new: newCards.slice(0, limits.dailyNewLimit),
-  };
+  return { due, new: newCards };
 }
 
 /**

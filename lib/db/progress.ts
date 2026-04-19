@@ -35,7 +35,7 @@ export async function getProgress(): Promise<PersistedState> {
   for (const r of hmRows) heatmap[r.day as string] = Number(r.count);
 
   const [stRows] = await pool.query<RowDataPacket[]>(
-    "SELECT theme, daily_new_limit, daily_review_limit, show_furigana, last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1"
+    "SELECT theme, show_furigana, typing_threshold_box, last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1"
   );
   const st = stRows[0];
 
@@ -50,6 +50,12 @@ export async function getProgress(): Promise<PersistedState> {
     };
   }
 
+  const rawThreshold = Number(st.typing_threshold_box);
+  const typingThresholdBox: 2 | 3 | 4 | 5 =
+    rawThreshold === 2 || rawThreshold === 3 || rawThreshold === 5
+      ? rawThreshold
+      : 4;
+
   return {
     schemaVersion: Number(st.schema_version),
     learningStates,
@@ -58,9 +64,8 @@ export async function getProgress(): Promise<PersistedState> {
     currentStreak: Number(st.current_streak),
     settings: {
       theme: st.theme as "light" | "dark",
-      dailyNewLimit: Number(st.daily_new_limit),
-      dailyReviewLimit: Number(st.daily_review_limit),
       showFurigana: Boolean(st.show_furigana),
+      typingThresholdBox,
     },
   };
 }
@@ -96,21 +101,19 @@ export async function putProgress(state: PersistedState): Promise<void> {
     }
 
     await conn.query(
-      `INSERT INTO app_settings (id, theme, daily_new_limit, daily_review_limit, show_furigana, last_active_at, current_streak, schema_version)
-       VALUES (1, ?, ?, ?, ?, ?, ?, ?)
+      `INSERT INTO app_settings (id, theme, show_furigana, typing_threshold_box, last_active_at, current_streak, schema_version)
+       VALUES (1, ?, ?, ?, ?, ?, ?)
        ON DUPLICATE KEY UPDATE
          theme = VALUES(theme),
-         daily_new_limit = VALUES(daily_new_limit),
-         daily_review_limit = VALUES(daily_review_limit),
          show_furigana = VALUES(show_furigana),
+         typing_threshold_box = VALUES(typing_threshold_box),
          last_active_at = VALUES(last_active_at),
          current_streak = VALUES(current_streak),
          schema_version = VALUES(schema_version)`,
       [
         state.settings.theme,
-        state.settings.dailyNewLimit,
-        state.settings.dailyReviewLimit,
         state.settings.showFurigana,
+        state.settings.typingThresholdBox,
         state.lastActiveAt,
         state.currentStreak,
         state.schemaVersion,

@@ -21,9 +21,8 @@ const validState: PersistedState = {
   currentStreak: 3,
   settings: {
     theme: "light",
-    dailyNewLimit: 20,
-    dailyReviewLimit: 50,
     showFurigana: true,
+    typingThresholdBox: 4,
   },
 };
 
@@ -116,12 +115,4 @@ describe("parseBackup", () => {
     expect(result.ok).toBe(true);
   });
 
-  it("rejects dailyReviewLimit over max", () => {
-    const bad = {
-      ...validState,
-      settings: { ...validState.settings, dailyReviewLimit: 10000 },
-    };
-    const result = parseBackup(JSON.stringify(bad));
-    expect(result.ok).toBe(false);
-  });
 });

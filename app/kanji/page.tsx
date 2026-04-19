@@ -9,6 +9,8 @@ import { useStore } from "@/lib/store";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds } from "@/lib/deck";
+import { pickMode } from "@/lib/srs";
+import { normalizeJapanese } from "@/lib/normalize";
 import type { KanjiCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -31,6 +33,8 @@ function KanjiPageInner() {
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const getBox = useStore((s) => s.getBox);
+  const threshold = useStore((s) => s.settings.typingThresholdBox);
   const kanjiIds = useCardsStore((s) => s.kanjiIds);
 
   // Infinite random deck (reshuffles when exhausted)
@@ -85,8 +89,9 @@ function KanjiPageInner() {
         <KanjiQuiz
           card={card}
           seed={seed + index + epoch * 977}
-          onResolved={(wasCorrect) => {
-            review("kanji", card.id, wasCorrect);
+          answerMode={pickMode(getBox("kanji", card.id), threshold)}
+          onResolved={(wasCorrect, answerMode) => {
+            review("kanji", card.id, wasCorrect, answerMode);
             advance();
           }}
         />
@@ -122,11 +127,13 @@ function Shell({ children }: { children?: React.ReactNode }) {
 function KanjiQuiz({
   card,
   seed,
+  answerMode,
   onResolved,
 }: {
   card: KanjiCard;
   seed: number;
-  onResolved: (correct: boolean) => void;
+  answerMode: "choice" | "typed";
+  onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
   const qType: QType =
     card.onReadings.length > 0 && card.kunReadings.length > 0
@@ -137,7 +144,26 @@ function KanjiQuiz({
       ? "on"
       : "kun";
 
-  const choices = generateKanjiChoices(card, qType, seed);
+  const readings = qType === "on" ? card.onReadings : card.kunReadings;
+  const input =
+    answerMode === "choice"
+      ? (() => {
+          const choices = generateKanjiChoices(card, qType, seed);
+          return {
+            mode: "choice" as const,
+            choices: choices.choices,
+            correct: choices.correct,
+          };
+        })()
+      : {
+          mode: "typed" as const,
+          lang: "ja" as const,
+          // Pre-normalize to hiragana so comparison is deterministic.
+          // Okurigana in kun readings (e.g., "たべ.る") keep dot form — strip for answer set.
+          acceptableAnswers: readings.map((r) =>
+            normalizeJapanese(r.replace(/[.．]/g, "")),
+          ),
+        };
 
   return (
     <QuizCard
@@ -154,10 +180,9 @@ function KanjiQuiz({
         </div>
       }
       subtitle={qType === "on" ? "音読み" : "訓読み"}
-      choices={choices.choices}
-      correct={choices.correct}
+      input={input}
       back={<KanjiBack card={card} />}
-      onResolved={onResolved}
+      onResolved={(correct) => onResolved(correct, answerMode)}
     />
   );
 }

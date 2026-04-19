@@ -4,32 +4,53 @@ import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
 import { RubyText } from "./Furigana";
+import { TypingInput } from "./TypingInput";
+import {
+  matchesAnyAnswer,
+  normalizeJapanese,
+  normalizeKorean,
+} from "@/lib/normalize";
 
 /**
  * Common quiz card for all 3 modes.
  *
- * Flow:
- *   t=0      user clicks → selected/disabled set, button highlights + feedback
+ * Flow (identical across input modes):
+ *   t=0      user answers → selected/disabled set, feedback shown
  *   t=500    crossfade to back (200ms fade)
- *   t=2000   crossfade back to front — but with NEW card content (same instant)
- *   t=2200   unlock for next click
+ *   t=2000   crossfade back to front with NEW card content
+ *   t=2200   unlock
  *
- * No 3D flip. Just a subtle opacity crossfade via AnimatePresence mode="wait".
- * Back DOM only mounts after the user answers (prevents any chance of answer
- * leak during layout reflows on new card load).
+ * Two input modes via discriminated union:
+ *   - 'choice': 4-way multiple choice (recognition).
+ *   - 'typed':  free text input (active recall). Answer compared against
+ *               `acceptableAnswers` after running the language-appropriate
+ *               normalizer.
  */
+
+export type QuizCardInput =
+  | {
+      mode: "choice";
+      choices: string[];
+      correct: string;
+      choiceFontFamily?: string;
+    }
+  | {
+      mode: "typed";
+      acceptableAnswers: string[];
+      /** Determines IME hint + which normalizer runs for comparison. */
+      lang: "ja" | "ko";
+      placeholder?: string;
+    };
 
 export interface QuizCardProps {
   question: React.ReactNode;
   /** Optional secondary info shown below question — label like "音読み" */
   subtitle?: React.ReactNode;
-  choices: string[];
-  correct: string;
+  input: QuizCardInput;
   /** Optional back-face content shown after answering */
   back?: React.ReactNode;
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean) => void;
-  choiceFontFamily?: string;
   /** Min height (px) reserved for the question block. Default 260. */
   minQuestionHeight?: number;
 }
@@ -41,51 +62,78 @@ const FADE_MS = 200;
 export function QuizCard({
   question,
   subtitle,
-  choices,
-  correct,
+  input,
   back,
   onResolved,
-  choiceFontFamily = "var(--font-jp-sans)",
   minQuestionHeight = 260,
 }: QuizCardProps) {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [result, setResult] = useState<"correct" | "wrong" | null>(null);
   const [disabled, setDisabled] = useState(false);
   const [showingBack, setShowingBack] = useState(false);
+  // Track what the user did this turn (for feedback display + visual highlight).
+  const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+  const [typedUserAnswer, setTypedUserAnswer] = useState<string | null>(null);
 
-  const handleChoice = useCallback(
-    (choice: string) => {
-      if (disabled) return;
-      setSelected(choice);
+  const resolve = useCallback(
+    (wasCorrect: boolean) => {
+      setResult(wasCorrect ? "correct" : "wrong");
       setDisabled(true);
-      const wasCorrect = choice === correct;
-
       if (back) {
         setTimeout(() => setShowingBack(true), DISABLE_MS);
         setTimeout(() => {
-          // Load next card AND switch back to front in the same flush.
-          // AnimatePresence will crossfade.
           onResolved(wasCorrect);
-          setSelected(null);
+          setResult(null);
           setDisabled(false);
           setShowingBack(false);
+          setSelectedChoice(null);
+          setTypedUserAnswer(null);
         }, DISABLE_MS + ANSWER_HOLD_MS);
       } else {
         setTimeout(() => {
           onResolved(wasCorrect);
-          setSelected(null);
+          setResult(null);
           setDisabled(false);
+          setSelectedChoice(null);
+          setTypedUserAnswer(null);
         }, ANSWER_HOLD_MS);
       }
     },
-    [disabled, correct, back, onResolved]
+    [back, onResolved],
+  );
+
+  const handleChoice = useCallback(
+    (choice: string) => {
+      if (disabled || input.mode !== "choice") return;
+      setSelectedChoice(choice);
+      resolve(choice === input.correct);
+    },
+    [disabled, input, resolve],
+  );
+
+  const handleTypedSubmit = useCallback(
+    (value: string) => {
+      if (disabled || input.mode !== "typed") return;
+      const normalize =
+        input.lang === "ja" ? normalizeJapanese : normalizeKorean;
+      const isCorrect = matchesAnyAnswer(
+        value,
+        input.acceptableAnswers,
+        normalize,
+      );
+      setTypedUserAnswer(value);
+      resolve(isCorrect);
+    },
+    [disabled, input, resolve],
   );
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      setSelected(null);
+      setResult(null);
       setDisabled(false);
       setShowingBack(false);
+      setSelectedChoice(null);
+      setTypedUserAnswer(null);
     };
   }, []);
 
@@ -122,45 +170,125 @@ export function QuizCard({
         </AnimatePresence>
       </div>
 
-      <div className="flex flex-col gap-2" style={{ fontFamily: choiceFontFamily }}>
-        {choices.map((choice) => {
-          const isSelected = selected === choice;
-          const isCorrectChoice = choice === correct;
-          let stateClass = "border-[color:var(--line)] hover:bg-[color:var(--bg-deep)]";
-          if (disabled && isSelected && isCorrectChoice) {
-            stateClass = "border-[color:var(--accent-progress)] bg-[color:var(--accent-progress)]/10";
-          } else if (disabled && isSelected && !isCorrectChoice) {
-            stateClass = "border-[color:var(--accent-korean)] bg-[color:var(--accent-korean)]/10";
-          } else if (disabled && !isSelected && isCorrectChoice) {
-            stateClass = "border-[color:var(--accent-progress)] bg-[color:var(--accent-progress)]/5";
-          }
-          return (
-            <button
-              key={choice}
-              onClick={() => handleChoice(choice)}
-              disabled={disabled}
-              className={`text-left px-4 py-3.5 text-[17px] text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
-            >
-              <RubyText text={choice} />
-            </button>
-          );
-        })}
-      </div>
+      {input.mode === "choice" ? (
+        <ChoicePanel
+          input={input}
+          disabled={disabled}
+          selected={selectedChoice}
+          onChoice={handleChoice}
+        />
+      ) : (
+        <TypedPanel
+          input={input}
+          disabled={disabled}
+          onSubmit={handleTypedSubmit}
+          userAnswer={typedUserAnswer}
+          result={result}
+        />
+      )}
 
       <div className="min-h-[28px]">
         <AnimatePresence>
-          {disabled && selected !== null && (
+          {disabled && result !== null && (
             <motion.div
-              key={selected}
+              key={result}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <AnswerFeedback correct={selected === correct} />
+              <AnswerFeedback correct={result === "correct"} />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+    </div>
+  );
+}
+
+function ChoicePanel({
+  input,
+  disabled,
+  selected,
+  onChoice,
+}: {
+  input: Extract<QuizCardInput, { mode: "choice" }>;
+  disabled: boolean;
+  selected: string | null;
+  onChoice: (choice: string) => void;
+}) {
+  const { choices, correct, choiceFontFamily = "var(--font-jp-sans)" } = input;
+
+  return (
+    <div className="flex flex-col gap-2" style={{ fontFamily: choiceFontFamily }}>
+      {choices.map((choice) => {
+        const isSelected = selected === choice;
+        const isCorrectChoice = choice === correct;
+        let stateClass =
+          "border-[color:var(--line)] hover:bg-[color:var(--bg-deep)]";
+        if (disabled && isSelected && isCorrectChoice) {
+          stateClass =
+            "border-[color:var(--accent-progress)] bg-[color:var(--accent-progress)]/10";
+        } else if (disabled && isSelected && !isCorrectChoice) {
+          stateClass =
+            "border-[color:var(--accent-korean)] bg-[color:var(--accent-korean)]/10";
+        } else if (disabled && !isSelected && isCorrectChoice) {
+          stateClass =
+            "border-[color:var(--accent-progress)] bg-[color:var(--accent-progress)]/5";
+        }
+        return (
+          <button
+            key={choice}
+            onClick={() => onChoice(choice)}
+            disabled={disabled}
+            className={`text-left px-4 py-3.5 text-[17px] text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
+          >
+            <RubyText text={choice} />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function TypedPanel({
+  input,
+  disabled,
+  onSubmit,
+  userAnswer,
+  result,
+}: {
+  input: Extract<QuizCardInput, { mode: "typed" }>;
+  disabled: boolean;
+  onSubmit: (value: string) => void;
+  userAnswer: string | null;
+  result: "correct" | "wrong" | null;
+}) {
+  const ariaLabel = input.lang === "ja" ? "読み入력" : "뜻 입력";
+  return (
+    <div className="flex flex-col gap-3">
+      <TypingInput
+        ariaLabel={ariaLabel}
+        placeholder={input.placeholder}
+        lang={input.lang}
+        disabled={disabled}
+        onSubmit={onSubmit}
+      />
+      {disabled && result === "wrong" && userAnswer !== null && (
+        <div className="text-[13px] text-[color:var(--fg-faint)]">
+          입력:{" "}
+          <span
+            className="text-[color:var(--accent-korean)]"
+            style={{
+              fontFamily:
+                input.lang === "ja"
+                  ? "var(--font-jp-sans)"
+                  : "var(--font-kr-sans)",
+            }}
+          >
+            {userAnswer}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

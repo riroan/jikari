@@ -91,20 +91,21 @@ export interface PersistedState {
   /** User settings */
   settings: {
     theme: "light" | "dark";
-    /** Max new cards to introduce per day (outside voice catch) */
-    dailyNewLimit: number;
-    /** Max review cards per day */
-    dailyReviewLimit: number;
     /** Show furigana over kanji — beginners on, advanced off */
     showFurigana: boolean;
+    /**
+     * Leitner box at which the quiz switches from 4-choice to typing.
+     * 2 = aggressive (starts typing early), 5 = conservative.
+     * Default 4 — box 4 is active recall territory.
+     */
+    typingThresholdBox: 2 | 3 | 4 | 5;
   };
 }
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 4;
 
 export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   theme: "light",
-  dailyNewLimit: 20,
-  dailyReviewLimit: 50,
   showFurigana: true,
+  typingThresholdBox: 4,
 };

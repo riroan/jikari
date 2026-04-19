@@ -10,6 +10,7 @@ import { useStore } from "@/lib/store";
 import { generateVocabChoices, getVocab } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds } from "@/lib/deck";
+import { pickMode } from "@/lib/srs";
 import type { VocabCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -30,6 +31,8 @@ function VocabPageInner() {
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const getBox = useStore((s) => s.getBox);
+  const threshold = useStore((s) => s.settings.typingThresholdBox);
   const vocabIds = useCardsStore((s) => s.vocabIds);
 
   const [epoch, setEpoch] = useState(0);
@@ -83,8 +86,9 @@ function VocabPageInner() {
         <VocabQuiz
           card={card}
           seed={seed + index + epoch * 977}
-          onResolved={(wasCorrect) => {
-            review("vocab", card.id, wasCorrect);
+          answerMode={pickMode(getBox("vocab", card.id), threshold)}
+          onResolved={(wasCorrect, answerMode) => {
+            review("vocab", card.id, wasCorrect, answerMode);
             advance();
           }}
         />
@@ -120,13 +124,31 @@ function Shell({ children }: { children?: React.ReactNode }) {
 function VocabQuiz({
   card,
   seed,
+  answerMode,
   onResolved,
 }: {
   card: VocabCard;
   seed: number;
-  onResolved: (correct: boolean) => void;
+  answerMode: "choice" | "typed";
+  onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
-  const choices = generateVocabChoices(card, seed);
+  const input =
+    answerMode === "choice"
+      ? (() => {
+          const choices = generateVocabChoices(card, seed);
+          return {
+            mode: "choice" as const,
+            choices: choices.choices,
+            correct: choices.correct,
+            choiceFontFamily: "var(--font-kr-sans)",
+          };
+        })()
+      : {
+          mode: "typed" as const,
+          lang: "ko" as const,
+          acceptableAnswers: card.koreanMeanings,
+        };
+
   return (
     <QuizCard
       question={
@@ -152,11 +174,9 @@ function VocabQuiz({
         </div>
       }
       subtitle="의미는?"
-      choiceFontFamily="var(--font-kr-sans)"
-      choices={choices.choices}
-      correct={choices.correct}
+      input={input}
       back={<VocabBack card={card} />}
-      onResolved={onResolved}
+      onResolved={(correct) => onResolved(correct, answerMode)}
       minQuestionHeight={0}
     />
   );

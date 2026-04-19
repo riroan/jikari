@@ -6,6 +6,7 @@ import {
   newLearningState,
   parseCardKey,
   masteryLevel,
+  pickMode,
   INTERVALS,
 } from "@/lib/srs";
 import type { LearningState } from "@/lib/types";
@@ -50,7 +51,7 @@ describe("advance — correct answer", () => {
   });
 });
 
-describe("advance — wrong answer", () => {
+describe("advance — wrong answer (choice mode, default)", () => {
   it("resets to box 1 and resets streak", () => {
     const s: LearningState = {
       ...newLearningState("kanji", "日", NOW),
@@ -62,27 +63,90 @@ describe("advance — wrong answer", () => {
     expect(next.nextDue).toBe(NOW + DAY);
     expect(next.correctStreak).toBe(0);
   });
+
+  it("explicit choice mode resets to box 1", () => {
+    const s: LearningState = {
+      ...newLearningState("kanji", "日", NOW),
+      box: 5,
+      correctStreak: 5,
+    };
+    const next = advance(s, false, NOW, "choice");
+    expect(next.box).toBe(1);
+    expect(next.correctStreak).toBe(0);
+  });
 });
 
-describe("getTodayQueue — daily caps", () => {
-  const limits = { dailyNewLimit: 5, dailyReviewLimit: 10 };
+describe("advance — wrong answer (typed mode)", () => {
+  it("demotes box by 1 instead of resetting", () => {
+    const s: LearningState = {
+      ...newLearningState("kanji", "日", NOW),
+      box: 5,
+      correctStreak: 5,
+    };
+    const next = advance(s, false, NOW, "typed");
+    expect(next.box).toBe(4);
+    expect(next.nextDue).toBe(NOW + DAY);
+    expect(next.correctStreak).toBe(0);
+  });
 
-  it("caps due reviews at dailyReviewLimit", () => {
+  it("box 1 stays at 1 (floor)", () => {
+    const s: LearningState = {
+      ...newLearningState("kanji", "日", NOW),
+      box: 1,
+    };
+    const next = advance(s, false, NOW, "typed");
+    expect(next.box).toBe(1);
+  });
+
+  it("box 2 typed wrong → box 1", () => {
+    const s: LearningState = {
+      ...newLearningState("kanji", "日", NOW),
+      box: 2,
+    };
+    const next = advance(s, false, NOW, "typed");
+    expect(next.box).toBe(1);
+  });
+});
+
+describe("pickMode", () => {
+  it("returns 'choice' when box < threshold", () => {
+    expect(pickMode(1, 4)).toBe("choice");
+    expect(pickMode(3, 4)).toBe("choice");
+  });
+
+  it("returns 'typed' when box >= threshold", () => {
+    expect(pickMode(4, 4)).toBe("typed");
+    expect(pickMode(5, 4)).toBe("typed");
+  });
+
+  it("threshold 2 still keeps box 1 in choice", () => {
+    expect(pickMode(1, 2)).toBe("choice");
+    expect(pickMode(2, 2)).toBe("typed");
+  });
+
+  it("threshold 5 keeps box 4 in choice", () => {
+    expect(pickMode(4, 5)).toBe("choice");
+    expect(pickMode(5, 5)).toBe("typed");
+  });
+});
+
+describe("getTodayQueue", () => {
+  it("returns all due reviews", () => {
     const states: LearningState[] = Array.from({ length: 50 }, (_, i) => ({
       cardKey: `kanji:k${i}`,
       mode: "kanji" as const,
       cardId: `k${i}`,
       box: 2 as const,
-      nextDue: NOW - 1000, // all due
+      nextDue: NOW - 1000,
       correctStreak: 1,
       lastReviewed: NOW - DAY * 2,
     }));
-    const q = getTodayQueue(states, NOW, limits);
-    expect(q.due).toHaveLength(10);
+    const q = getTodayQueue(states, NOW);
+    expect(q.due).toHaveLength(50);
     expect(q.new).toHaveLength(0);
   });
 
-  it("caps new cards at dailyNewLimit", () => {
+  it("returns all new cards", () => {
     const states: LearningState[] = Array.from({ length: 30 }, (_, i) => ({
       cardKey: `kanji:k${i}`,
       mode: "kanji" as const,
@@ -92,8 +156,8 @@ describe("getTodayQueue — daily caps", () => {
       correctStreak: 0,
       lastReviewed: 0,
     }));
-    const q = getTodayQueue(states, NOW, limits);
-    expect(q.new).toHaveLength(5);
+    const q = getTodayQueue(states, NOW);
+    expect(q.new).toHaveLength(30);
     expect(q.due).toHaveLength(0);
   });
 
@@ -109,7 +173,7 @@ describe("getTodayQueue — daily caps", () => {
         lastReviewed: NOW - DAY,
       },
     ];
-    const q = getTodayQueue(states, NOW, limits);
+    const q = getTodayQueue(states, NOW);
     expect(q.due).toHaveLength(0);
     expect(q.new).toHaveLength(0);
   });
@@ -135,8 +199,8 @@ describe("getTodayQueue — daily caps", () => {
         lastReviewed: NOW - DAY * 11,
       },
     ];
-    const q = getTodayQueue(states, NOW, limits);
-    expect(q.due[0].cardId).toBe("b"); // older due first
+    const q = getTodayQueue(states, NOW);
+    expect(q.due[0].cardId).toBe("b");
     expect(q.due[1].cardId).toBe("a");
   });
 });
