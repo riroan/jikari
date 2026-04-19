@@ -1,5 +1,47 @@
 # TODOS
 
+## 챕터 v1.1 (chapters 2주 검증 후 재평가, 2026-04-19)
+
+### 공부 모드 버튼 + 동작
+- **What:** /chapters/[id]?mode=study — 카드를 답 없이 한 장씩 넘겨보는 *읽기* 모드. 기존 mode 페이지(/grammar 등)의 "공부" 패턴 그대로.
+- **Why:** Design doc Approach B 명시 스펙 ("'챕터 퀴즈 시작' 버튼 + '공부 모드' 버튼"). 퀴즈 풀기 전에 *외워서* 머리에 넣는 단계가 필요할 때 — 신규 카드 0박스 상태에서 한 번 보고 시작하는 흐름.
+- **Pros:** 챕터 진입 시점의 "처음 보는 카드 충격" 완화. SRS box 안 건드리고 둘러볼 수 있는 안전 모드.
+- **Cons:** 2주 실사용에서 "공부 모드 없어서 답답"이 안 나오면 영영 안 만들어도 됨. 퀴즈 자체가 학습 효과 더 큼.
+- **Trigger:** 본인이 "챕터 들어가서 바로 퀴즈 누르기 부담스러움", "전체 카드 한 번 훑고 싶음"이 한 번 이상 발생하면 추가.
+
+### 챕터 카드 미리보기 (개별 카드 표시)
+- **What:** /chapters/[id] 상세 페이지의 CARDS 섹션이 현재는 "단어 12장" 숫자만. 첫 3~5장 카드를 실제로 미리보기로 표시.
+- **Why:** Design doc B "챕터 카드 미리보기" 명시. 챕터에 어떤 카드들이 있는지 진입 전 감을 잡는 용도.
+- **Pros:** 챕터 선택 결정 도움.
+- **Cons:** 모드별 카드 미리보기 컴포넌트 통일 필요 (kanji 한자만 / vocab 단어+의미 / sentence 문장+빈칸 / grammar 패턴+한국어구조).
+- **Trigger:** 본인이 "이 챕터에 뭐 있는지 보고 싶음"이 발생하면.
+
+### intro 14개 마저 작성
+- **What:** chapters.config.ts의 `intro: null`인 14개 챕터에 2~3줄 한국어 설명 추가. (현재 6/20 작성: a2/a3/a4/a6/b1/c1)
+- **Why:** 모든 챕터가 같은 톤·길이의 ABOUT 섹션 가지면 챕터 선택 UX 일관됨.
+- **Pros:** 30분 손작업으로 끝남. LLM 도움 받아도 검토만 하면 됨.
+- **Cons:** 본인이 매일 쓰면서 자연스러운 문구가 떠오를 때마다 채우는 게 더 fresh. 일괄 작성하면 형식적이 될 위험.
+- **Trigger:** 한 챕터씩 자연스럽게 채워나가기 — 2주 후 몇 개 채워졌는지 보고 일괄 작업 여부 결정.
+
+### Dark mode 시각 검증
+- **What:** /chapters, /chapters/[id], /chapters/[id]?mode=quiz 다크 모드 스크린샷 + DESIGN.md `--gold` 토큰 적용 확인.
+- **Why:** DESIGN.md에 다크 토큰 정의 있는데 챕터 페이지 다크 안 봄. accent-progress가 light=sage(#7A8F6E) → dark=gold(#D4B76A)로 바뀌는데 mastery bar/intensity가 다크에서 적절한지 미검증.
+- **Pros:** 5분 체크.
+- **Trigger:** 다크 모드 토글 UI 도입 시점 (현재 light only). 또는 본인이 밤에 쓰면서 거슬리면.
+
+### 약한 챕터 자동 sort
+- **What:** /chapters 목록을 mastery 낮은 순서대로 정렬 옵션. 또는 "약한 챕터 N개" 강조 표시.
+- **Why:** 사용자가 "어디부터 더 풀어야 할까" 결정을 도구가 도와줌. 현재는 sortOrder(고정 학습 순서) 그대로.
+- **Pros:** "다음에 뭘 할지 자명해진다"는 design doc의 "What Makes This Cool" 핵심 가치 강화.
+- **Cons:** sortOrder 고정 = 습관 형성 ("내 다섯 번째 챕터" 일관성)과 충돌. 토글 옵션이 적절.
+- **Trigger:** 본인이 "어디 풀까 매번 고민됨" 또는 "약한 챕터 잊고 강한 챕터만 계속 풀게 됨" 패턴 발생 시.
+
+### 콘텐츠 시드 batch 추가 (137 unmatched refs 줄이기)
+- **What:** N4 한자 batch 3-7이 DB에 안 들어 있어서 e4-n4-body-action(34장 매칭, 14 missing) / e5(7장 매칭, 35 missing) / e6(19장 매칭, 30 missing) 챕터가 부분만 채워짐. `bun scripts/add-kanji.ts data/seeds/kanji-n4-batchN.json` 4회 + `bun scripts/import-chapters.ts` 1회로 자동 채워짐.
+- **Why:** 챕터 마스터리 분모가 작아서 "전체 챕터 마스터" 도달이 비현실적으로 빠름. 한자 챕터 마스터의 의미 약함.
+- **Pros:** 5분 작업. 즉시 의미 있는 마스터리 신호.
+- **Trigger:** 챕터 사용 시작 후 "한자 챕터가 너무 빨리 채워짐" 감지 시 또는 그냥 시간 날 때.
+
 ## Tailwind v4 / 디자인 시스템 인프라 (design-review 2026-04-19)
 
 ### `text-{title,h1,display,hero}` 등 @theme inline 유틸이 CSS 룰로 안 만들어짐
@@ -72,10 +114,10 @@
 
 ## Deferred — 일상표현 subject (linked to `riroan-main-design-20260419-220004.md`)
 
-### 홈 화면 8행 visual 실측
-- **What:** `/expressions` v1 착륙 후 `/design-review`로 홈 화면 subject row 8행에서 시각적 동작 실측 — 스크롤/행간/폰트 축소 필요 여부 판단.
-- **Why:** 현재 390px 폭에 7행 딱 맞는 레이아웃. 8행 = 576px 높이 추정. `app/page.tsx:58~62` 섹션 여백 포함 뷰포트 처리 실제로 봐야 알 수 있음.
-- **Pros:** 실측 기반 조정. 억측으로 미리 건드리지 않음.
+### 홈 화면 8행 visual 실측 + register 뱃지 dark mode 대비비
+- **What:** `/expressions` v1 착륙 후 `/design-review`로 (1) 홈 화면 subject row 8행 시각 동작 실측, (2) register 뱃지 3색(`--accent-korean`/`--fg-soft`/`--accent-progress`)이 light/dark 양 모드에서 판별 가능한지 대비비 체크.
+- **Why:** (1) 390px 폭에 7행 딱 맞는 레이아웃. 8행 = 576px 높이 추정. (2) 뱃지 10px 초소형 텍스트 + dark mode 배경 전환 시 색 차이가 수렴할 가능성. 색+텍스트 조합이라 최악이라도 영문 라벨은 읽히지만 시각 분류 기능이 약해짐.
+- **Pros:** 한 번의 /design-review로 두 가지 visual 회귀 포인트를 모두 커버.
 - **Cons:** /design-review 돌리는 3~5분.
-- **Context:** 2026-04-19 plan-eng-review Architecture 섹션에서 "실제 렌더링 안 보고는 못 정함"으로 deferred. Design doc Open Question #4와 동일 사안.
-- **Depends on:** /expressions 라우트 + 홈 SUBJECTS 배열 edit 구현 완료.
+- **Context:** 2026-04-19 plan-eng-review Architecture + plan-design-review Pass 7에서 deferred. Design doc Open Question #4와 동일 사안.
+- **Depends on:** /expressions 라우트 + 홈 SUBJECTS 배열 edit + 뒷면 register 뱃지 렌더 구현 완료.
