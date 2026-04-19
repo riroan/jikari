@@ -156,7 +156,7 @@ function Shell({
           <QuizStats statKey="grammar" />
           <div className="flex items-baseline gap-4">
             <h1
-              className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
+              className="text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)]"
               style={{ fontFamily: "var(--font-jp-serif)" }}
             >
               文法

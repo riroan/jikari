@@ -167,7 +167,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
           </Link>
           <QuizStats statKey="conjugation" />
           <h1
-            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
+            className="text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             活用
