@@ -1,0 +1,133 @@
+[
+  {
+    "id": "便利",
+    "word": "便利",
+    "reading": "べんり",
+    "meanings": ["convenient"],
+    "koreanMeanings": ["편리하다"],
+    "ruby": "{便|べん}{利|り}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "簡単",
+    "word": "簡単",
+    "reading": "かんたん",
+    "meanings": ["simple", "easy"],
+    "koreanMeanings": ["간단하다"],
+    "ruby": "{簡|かん}{単|たん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "親切",
+    "word": "親切",
+    "reading": "しんせつ",
+    "meanings": ["kind"],
+    "koreanMeanings": ["친절하다"],
+    "ruby": "{親|しん}{切|せつ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "静か",
+    "word": "静か",
+    "reading": "しずか",
+    "meanings": ["quiet"],
+    "koreanMeanings": ["조용하다"],
+    "ruby": "{静|しず}か",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "有名",
+    "word": "有名",
+    "reading": "ゆうめい",
+    "meanings": ["famous"],
+    "koreanMeanings": ["유명하다"],
+    "ruby": "{有|ゆう}{名|めい}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "大切",
+    "word": "大切",
+    "reading": "たいせつ",
+    "meanings": ["important", "precious"],
+    "koreanMeanings": ["소중하다"],
+    "ruby": "{大|たい}{切|せつ}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "上手",
+    "word": "上手",
+    "reading": "じょうず",
+    "meanings": ["skilled at"],
+    "koreanMeanings": ["능숙하다"],
+    "ruby": "{上|じょう}{手|ず}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "下手",
+    "word": "下手",
+    "reading": "へた",
+    "meanings": ["unskilled at"],
+    "koreanMeanings": ["서투르다"],
+    "ruby": "{下|へ}{手|た}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "きれい",
+    "word": "きれい",
+    "reading": "きれい",
+    "meanings": ["clean", "pretty"],
+    "koreanMeanings": ["예쁘다", "깨끗하다"],
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "自由",
+    "word": "自由",
+    "reading": "じゆう",
+    "meanings": ["free"],
+    "koreanMeanings": ["자유롭다"],
+    "ruby": "{自|じ}{由|ゆう}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "暇",
+    "word": "暇",
+    "reading": "ひま",
+    "meanings": ["free time", "idle"],
+    "koreanMeanings": ["한가하다"],
+    "ruby": "{暇|ひま}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "大変",
+    "word": "大変",
+    "reading": "たいへん",
+    "meanings": ["tough", "difficult"],
+    "koreanMeanings": ["힘들다"],
+    "ruby": "{大|たい}{変|へん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  }
+]
