@@ -1,0 +1,28 @@
+[
+  {
+    "id": "e001",
+    "situation_ko": "퇴근할 때 동료에게",
+    "expression_jp": "お疲れ様でした",
+    "ruby": "{お疲|つか}れ{様|さま}でした",
+    "register": "polite",
+    "translation_ko": "수고하셨습니다",
+    "note_ko": "연장자·상사에게. 동료끼리는 お疲れ様로 줄여도 됨"
+  },
+  {
+    "id": "e002",
+    "situation_ko": "집에 돌아왔을 때",
+    "expression_jp": "ただいま",
+    "register": "casual",
+    "translation_ko": "다녀왔습니다",
+    "note_ko": "혼자 살면 잘 안 씀. 가족에게 돌아왔음을 알리는 말"
+  },
+  {
+    "id": "e003",
+    "situation_ko": "업무 실수를 상사·고객에게 사과할 때",
+    "expression_jp": "申し訳ございません",
+    "ruby": "{申|もう}し{訳|わけ}ございません",
+    "register": "humble",
+    "translation_ko": "정말 죄송합니다",
+    "note_ko": "ごめんなさい보다 훨씬 격식. 비즈니스 기본 사과. 「ございません」이 겸양 조동사"
+  }
+]

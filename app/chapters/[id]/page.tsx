@@ -192,6 +192,7 @@ function Overview({
     grammar: 0,
     conjugation: 0,
     adjective: 0,
+    expression: 0,
   };
   for (const { member } of members) counts[member.mode]++;
 

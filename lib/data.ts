@@ -1,4 +1,5 @@
 import type {
+  ExpressionCard,
   GrammarCard,
   GrammarPatternCard,
   GrammarPatternQuiz,
@@ -9,6 +10,8 @@ import type {
   VocabCard,
 } from "./types";
 import { useCardsStore } from "./cards-store";
+
+export type QuizDirection = "recall" | "recognition";
 
 function cards() {
   return useCardsStore.getState();
@@ -28,6 +31,10 @@ export function getSentence(id: string): SentenceCard | undefined {
 
 export function getGrammar(id: string): GrammarCard | undefined {
   return cards().grammarById.get(id);
+}
+
+export function getExpression(id: string): ExpressionCard | undefined {
+  return cards().expressionById.get(id);
 }
 
 export function getGrammarPattern(id: string): GrammarPatternCard | undefined {
@@ -164,6 +171,66 @@ export function generateSentenceChoices(
   const correct = card.blankRuby ?? wordToRuby(card.blank);
   const distractorsRuby = card.distractors.map(wordToRuby);
   return generateChoices(correct, distractorsRuby, seed);
+}
+
+/**
+ * Deterministic 32-bit-ish hash of (id, epoch) for direction toggling.
+ * Used only for display/UX branching — not cryptographic.
+ */
+export function hashSeed(id: string, epoch: number): number {
+  let h = 2166136261 ^ epoch;
+  for (let i = 0; i < id.length; i++) {
+    h ^= id.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+/**
+ * Direction toggle for 일상표현 퀴즈 — recall-first 80/20 (post /plan-eng-review).
+ *   box ≤ 1 → `recognition` (warm-up for new cards, 진입 장벽 완화)
+ *   box ≥ 2 → 80% recall / 20% recognition, hash-stable within an epoch
+ *
+ * This subject's unique value is 상황 → 표현 recall. 50/50 would halve that.
+ */
+export function chooseDirection(
+  box: 1 | 2 | 3 | 4 | 5,
+  id: string,
+  epoch: number,
+): QuizDirection {
+  if (box <= 1) return "recognition";
+  return hashSeed(id, epoch) % 10 < 8 ? "recall" : "recognition";
+}
+
+/**
+ * 4-choice builder for 일상표현.
+ *   recall      → question = situation_ko, choices = expression_jp (ruby 포함)
+ *   recognition → question = expression_jp, choices = translation_ko (한국어)
+ * Distractor pool is the entire deck minus the correct card (v1 simplification
+ * per /plan-eng-review — same-register 규칙은 seed 50+에서 재도입).
+ */
+export function generateExpressionChoices(
+  card: ExpressionCard,
+  direction: QuizDirection,
+  seed: number = Math.random(),
+): { correct: string; choices: string[] } {
+  const all = cards().expressions;
+  const others = all.filter((e) => e.id !== card.id);
+
+  if (direction === "recall") {
+    const correct = card.ruby ?? card.expression_jp;
+    const pool = others.map((e) => e.ruby ?? e.expression_jp);
+    const distractors = sampleUnique(pool, 3, seed);
+    return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
+  }
+
+  // recognition
+  const correct = card.translation_ko;
+  const pool = others
+    .map((e) => e.translation_ko)
+    .filter((t) => t !== correct);
+  const distractors = sampleUnique(pool, 3, seed);
+  return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }
 
 /**

@@ -19,6 +19,7 @@ const SUBJECTS: ReadonlyArray<{ ko: string; jp: string; base: string }> = [
   { ko: "동사활용", jp: "活用", base: "/conjugation" },
   { ko: "형용사", jp: "形容詞", base: "/adjective" },
   { ko: "문법", jp: "文法", base: "/grammar" },
+  { ko: "일상표현", jp: "表現", base: "/expressions" },
 ];
 
 export default function Home() {

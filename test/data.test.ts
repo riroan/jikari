@@ -1,5 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { generateChoices, generateGrammarQuizChoices } from "@/lib/data";
+import {
+  chooseDirection,
+  generateChoices,
+  generateGrammarQuizChoices,
+  hashSeed,
+} from "@/lib/data";
 import type {
   GrammarPatternQuiz,
   ParticleContrastQuiz,
@@ -71,5 +76,67 @@ describe("generateGrammarQuizChoices", () => {
     expect(generateGrammarQuizChoices(quiz, 99).choices).toEqual(
       generateGrammarQuizChoices(quiz, 99).choices,
     );
+  });
+});
+
+describe("hashSeed", () => {
+  test("same (id, epoch) → same hash (deterministic)", () => {
+    expect(hashSeed("e001", 0)).toBe(hashSeed("e001", 0));
+    expect(hashSeed("e042", 7)).toBe(hashSeed("e042", 7));
+  });
+
+  test("different epoch → different hash (direction flips across epochs)", () => {
+    expect(hashSeed("e001", 0)).not.toBe(hashSeed("e001", 1));
+  });
+
+  test("different id → different hash (cards vary independently)", () => {
+    expect(hashSeed("e001", 0)).not.toBe(hashSeed("e002", 0));
+  });
+
+  test("returns non-negative integer", () => {
+    for (let i = 0; i < 50; i++) {
+      const h = hashSeed(`e${i.toString().padStart(3, "0")}`, i);
+      expect(Number.isInteger(h)).toBe(true);
+      expect(h).toBeGreaterThanOrEqual(0);
+    }
+  });
+});
+
+describe("chooseDirection", () => {
+  test("box 1 always returns recognition (warm-up)", () => {
+    for (let i = 0; i < 30; i++) {
+      expect(chooseDirection(1, `e${i}`, 0)).toBe("recognition");
+      expect(chooseDirection(1, `e${i}`, 42)).toBe("recognition");
+    }
+  });
+
+  test("box 2+ returns ~80% recall over many cards", () => {
+    let recall = 0;
+    const N = 500;
+    for (let i = 0; i < N; i++) {
+      if (chooseDirection(3, `e${i}`, 0) === "recall") recall++;
+    }
+    // 80/20 target — allow ±7% window for 500-sample noise.
+    expect(recall / N).toBeGreaterThan(0.73);
+    expect(recall / N).toBeLessThan(0.87);
+  });
+
+  test("direction stable within same epoch (no mid-epoch flip)", () => {
+    for (const box of [2, 3, 4, 5] as const) {
+      const a = chooseDirection(box, "e001", 0);
+      const b = chooseDirection(box, "e001", 0);
+      expect(a).toBe(b);
+    }
+  });
+
+  test("recognition is emitted at box ≥2 as well (not recall-only)", () => {
+    let sawRecognition = false;
+    for (let i = 0; i < 200; i++) {
+      if (chooseDirection(3, `e${i}`, 0) === "recognition") {
+        sawRecognition = true;
+        break;
+      }
+    }
+    expect(sawRecognition).toBe(true);
   });
 });

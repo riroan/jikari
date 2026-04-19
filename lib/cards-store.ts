@@ -5,6 +5,7 @@ import type {
   CardMode,
   Chapter,
   ChapterMember,
+  ExpressionCard,
   GrammarCard,
   GrammarPatternCard,
   KanjiCard,
@@ -41,6 +42,10 @@ interface CardsState {
   chapterMembers: ChapterMember[];
   /** chapterId → array of {mode, cardId} members (precomputed). */
   membersByChapter: Map<string, ChapterMember[]>;
+  /** 일상표현 카드. 0011 migration 미적용 또는 seed 없음 → 빈 배열 (soft-fail). */
+  expressions: ExpressionCard[];
+  expressionIds: string[];
+  expressionById: Map<string, ExpressionCard>;
   hydrate: () => Promise<void>;
 }
 
@@ -63,6 +68,9 @@ const emptyMaps = {
   chapters: [] as Chapter[],
   chapterMembers: [] as ChapterMember[],
   membersByChapter: new Map<string, ChapterMember[]>(),
+  expressions: [] as ExpressionCard[],
+  expressionIds: [] as string[],
+  expressionById: new Map<string, ExpressionCard>(),
 };
 
 function indexMembersByChapter(members: ChapterMember[]): Map<string, ChapterMember[]> {
@@ -92,6 +100,7 @@ export const useCardsStore = create<CardsState>((set, get) => ({
         grammar = [],
         chapters = [],
         chapterMembers = [],
+        expressions = [],
       } = (await res.json()) as {
         kanji: KanjiCard[];
         vocab: VocabCard[];
@@ -99,6 +108,7 @@ export const useCardsStore = create<CardsState>((set, get) => ({
         grammar?: GrammarCard[];
         chapters?: Chapter[];
         chapterMembers?: ChapterMember[];
+        expressions?: ExpressionCard[];
       };
       set({
         ready: true,
@@ -125,6 +135,9 @@ export const useCardsStore = create<CardsState>((set, get) => ({
         chapters,
         chapterMembers,
         membersByChapter: indexMembersByChapter(chapterMembers),
+        expressions,
+        expressionIds: expressions.map((c) => c.id),
+        expressionById: new Map(expressions.map((c) => [c.id, c])),
       });
     } catch (err) {
       set({ ready: false, error: err instanceof Error ? err.message : String(err) });

@@ -48,6 +48,10 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
           // Conjugation/adjective derive from vocab (verbs, adjectives).
           // chapter_members shouldn't reference these directly.
           return false;
+        case "expression":
+          // expression cards are not yet in chapter_members (v1 scope). When
+          // chapter integration lands, add expressionById lookup here.
+          return false;
       }
     };
 

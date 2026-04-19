@@ -258,14 +258,46 @@ export interface SentenceCard {
   jlptLevel: JLPTLevel;
 }
 
+/**
+ * 일상표현(관용구) register — 3 politeness tiers.
+ * Migration 0011_expression_cards constrains DB column to this ENUM.
+ */
+export type Register = "casual" | "polite" | "humble";
+
+/**
+ * 일상표현 카드 — 통째 암기형 관용구. Recall(상황→표현)과 Recognition(표현→뜻)
+ * 양방향 퀴즈 공유 `LearningState` (recall-first 80/20 선호).
+ * Design: ~/.gstack/projects/jikari/riroan-main-design-20260419-220004.md
+ */
+export interface ExpressionCard {
+  id: string;
+  /** "퇴근할 때 동료에게" — Recall 프롬프트. */
+  situation_ko: string;
+  /** "お疲れ様でした" — 통째 암기 대상. */
+  expression_jp: string;
+  /** Optional furigana markup: `{お疲れ様|おつかれさま}でした`. */
+  ruby?: string;
+  register: Register;
+  /** "수고하셨습니다" — Recognition 정답 + 뒷면 본문. */
+  translation_ko: string;
+  /** Optional 사용 노트 (존대 대상, 줄임말 팁 등). */
+  note_ko?: string;
+}
+
 export type CardMode =
   | "kanji"
   | "vocab"
   | "sentence"
   | "conjugation"
   | "adjective"
-  | "grammar";
-export type Card = KanjiCard | VocabCard | SentenceCard | GrammarCard;
+  | "grammar"
+  | "expression";
+export type Card =
+  | KanjiCard
+  | VocabCard
+  | SentenceCard
+  | GrammarCard
+  | ExpressionCard;
 
 export interface LearningState {
   /** Composite key: `${mode}:${cardId}` */
@@ -320,7 +352,8 @@ export type QuizStatKey =
   | "particle"
   | "grammar"
   | "conjugation"
-  | "adjective";
+  | "adjective"
+  | "expression";
 
 export interface QuizStat {
   correct: number;

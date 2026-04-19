@@ -20,6 +20,8 @@ const routes = [
   { path: "/grammar?mode=study", jp: "文法" },
   { path: "/grammar?tab=particle", jp: "文法" },
   { path: "/grammar?mode=study&tab=particle", jp: "文法" },
+  { path: "/expressions", jp: "表現" },
+  { path: "/expressions?mode=study", jp: "表現" },
   { path: "/progress", jp: null },
   { path: "/settings", jp: null },
 ];
