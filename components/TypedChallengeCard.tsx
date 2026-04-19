@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TypingInput } from "./TypingInput";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
+
+const KEYBOARD_GRACE_MS = 250;
 
 /**
  * Shared typed-challenge UI used by both ConjugationCard (verb 活用) and
@@ -37,6 +39,7 @@ export function TypedChallengeCard({
   const [result, setResult] = useState<"correct" | "wrong" | null>(null);
   const [disabled, setDisabled] = useState(false);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
+  const resolvedAtRef = useRef(0);
 
   const handleSubmit = useCallback(
     (value: string) => {
@@ -49,6 +52,7 @@ export function TypedChallengeCard({
       setUserAnswer(value);
       setResult(isCorrect ? "correct" : "wrong");
       setDisabled(true);
+      resolvedAtRef.current = Date.now();
     },
     [disabled, acceptableAnswers],
   );
@@ -69,21 +73,19 @@ export function TypedChallengeCard({
     };
   }, []);
 
-  // Deferred attach swallows the same Enter that submitted a typed answer.
+  // Space/Enter to advance. Inline grace check mirrors QuizCard so we don't
+  // rely on event-loop timing to swallow the Enter that submitted a typed
+  // answer.
   useEffect(() => {
     if (!disabled || result === null) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key !== " " && e.key !== "Enter") return;
+      if (Date.now() - resolvedAtRef.current < KEYBOARD_GRACE_MS) return;
       e.preventDefault();
       handleNext();
     };
-    const id = window.setTimeout(() => {
-      window.addEventListener("keydown", handler);
-    }, 250);
-    return () => {
-      window.clearTimeout(id);
-      window.removeEventListener("keydown", handler);
-    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, [disabled, result, handleNext]);
 
   const primaryAnswer = acceptableAnswers[0] ?? "";
