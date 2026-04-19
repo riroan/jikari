@@ -20,6 +20,13 @@ export interface KanjiCard {
   koreanMeaning: string;
 }
 
+/**
+ * Verb group for conjugation. Non-verbs use 'not_verb' so the pool query can
+ * filter on `verb_group IN ('godan','ichidan','irregular')` without nulls.
+ * Unset = not yet classified.
+ */
+export type VerbGroup = "godan" | "ichidan" | "irregular" | "not_verb";
+
 export interface VocabCard {
   id: string;
   word: string;
@@ -34,7 +41,50 @@ export interface VocabCard {
    */
   ruby?: string;
   jlptLevel: JLPTLevel;
+  /** Verb group for conjugation quiz — undefined until backfilled. */
+  verbGroup?: VerbGroup;
 }
+
+/**
+ * Japanese verb conjugation forms supported by the conjugation quiz.
+ *
+ * Basic 4 (SRS 동사-단위 샘플링):
+ *   masu / te / ta / nai
+ * Intermediate+advanced 6 (SRS 형-단위 per-form 독립):
+ *   potential / volitional / imperative / causative / passive / conditional
+ */
+export type ConjugationForm =
+  | "masu"
+  | "te"
+  | "ta"
+  | "nai"
+  | "potential"
+  | "volitional"
+  | "imperative"
+  | "causative"
+  | "passive"
+  | "conditional";
+
+export const BASIC_FORMS: readonly ConjugationForm[] = [
+  "masu",
+  "te",
+  "ta",
+  "nai",
+];
+
+export const ADVANCED_FORMS: readonly ConjugationForm[] = [
+  "potential",
+  "volitional",
+  "imperative",
+  "causative",
+  "passive",
+  "conditional",
+];
+
+export const ALL_CONJUGATION_FORMS: readonly ConjugationForm[] = [
+  ...BASIC_FORMS,
+  ...ADVANCED_FORMS,
+];
 
 export type SentenceCategory = "vocab" | "particle";
 
@@ -59,7 +109,7 @@ export interface SentenceCard {
   jlptLevel: JLPTLevel;
 }
 
-export type CardMode = "kanji" | "vocab" | "sentence";
+export type CardMode = "kanji" | "vocab" | "sentence" | "conjugation";
 export type Card = KanjiCard | VocabCard | SentenceCard;
 
 export interface LearningState {

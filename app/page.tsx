@@ -54,6 +54,7 @@ export default function Home() {
           <EntryRow href="/vocab" ko="단어" jp="単語" />
           <EntryRow href="/sentence" ko="문장" jp="文章" />
           <EntryRow href="/particle" ko="조사" jp="助詞" />
+          <EntryRow href="/conjugation" ko="활용" jp="活用" />
         </section>
 
         {/* Heatmap */}

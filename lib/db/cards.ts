@@ -6,6 +6,7 @@ import type {
   KanjiCard,
   SentenceCard,
   SentenceCategory,
+  VerbGroup,
   VocabCard,
 } from "../types";
 
@@ -38,9 +39,23 @@ export async function getAllKanji(): Promise<KanjiCard[]> {
   }));
 }
 
+const VERB_GROUPS: readonly VerbGroup[] = [
+  "godan",
+  "ichidan",
+  "irregular",
+  "not_verb",
+];
+
+function parseVerbGroup(value: unknown): VerbGroup | undefined {
+  if (typeof value !== "string") return undefined;
+  return (VERB_GROUPS as readonly string[]).includes(value)
+    ? (value as VerbGroup)
+    : undefined;
+}
+
 export async function getAllVocab(): Promise<VocabCard[]> {
   const [rows] = await getPool().query<RowDataPacket[]>(
-    "SELECT id, word, reading, meanings, korean_meanings, ruby, jlpt_level FROM vocab_cards ORDER BY id"
+    "SELECT id, word, reading, meanings, korean_meanings, ruby, jlpt_level, verb_group FROM vocab_cards ORDER BY id"
   );
   return rows.map((r) => ({
     id: r.id as string,
@@ -50,6 +65,7 @@ export async function getAllVocab(): Promise<VocabCard[]> {
     koreanMeanings: parseJson<string[]>(r.korean_meanings, []),
     ruby: (r.ruby as string | null) ?? undefined,
     jlptLevel: r.jlpt_level as JLPTLevel,
+    verbGroup: parseVerbGroup(r.verb_group),
   }));
 }
 

@@ -19,6 +19,13 @@ if (!inputPath) {
   process.exit(1);
 }
 
+const VALID_VERB_GROUPS = new Set([
+  "godan",
+  "ichidan",
+  "irregular",
+  "not_verb",
+]);
+
 function validate(c: unknown, idx: number): VocabCard {
   if (!c || typeof c !== "object") throw new Error(`#${idx}: not an object`);
   const r = c as Record<string, unknown>;
@@ -36,6 +43,13 @@ function validate(c: unknown, idx: number): VocabCard {
   need("jlptLevel", (v) => typeof v === "number" && v >= 1 && v <= 5);
   if (r.ruby !== undefined && !isStr(r.ruby)) {
     throw new Error(`#${idx}: invalid 'ruby' (must be string or omitted)`);
+  }
+  // verbGroup is required for new cards — this removes the continuous-backfill
+  // burden flagged in the eng review.
+  if (!isStr(r.verbGroup) || !VALID_VERB_GROUPS.has(r.verbGroup)) {
+    throw new Error(
+      `#${idx}: invalid 'verbGroup' (must be one of godan/ichidan/irregular/not_verb)`,
+    );
   }
   return r as unknown as VocabCard;
 }
@@ -74,8 +88,8 @@ async function main() {
     }
     await conn.query(
       `INSERT INTO vocab_cards
-         (id, word, reading, meanings, korean_meanings, ruby, jlpt_level)
-       VALUES (?, ?, ?, CAST(? AS JSON), CAST(? AS JSON), ?, ?)`,
+         (id, word, reading, meanings, korean_meanings, ruby, jlpt_level, verb_group)
+       VALUES (?, ?, ?, CAST(? AS JSON), CAST(? AS JSON), ?, ?, ?)`,
       [
         c.id,
         c.word,
@@ -84,10 +98,13 @@ async function main() {
         JSON.stringify(c.koreanMeanings),
         c.ruby ?? null,
         c.jlptLevel,
+        c.verbGroup ?? "not_verb",
       ]
     );
     inserted++;
-    console.log(`  + ${c.id}  (N${c.jlptLevel}, ${c.koreanMeanings.join(", ")})`);
+    console.log(
+      `  + ${c.id}  (N${c.jlptLevel}, ${c.verbGroup}, ${c.koreanMeanings.join(", ")})`
+    );
   }
 
   await conn.end();

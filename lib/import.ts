@@ -9,7 +9,8 @@ import { SCHEMA_VERSION } from "./types";
 
 const learningStateSchema = z.object({
   cardKey: z.string(),
-  mode: z.enum(["kanji", "vocab", "sentence"]),
+  // 'conjugation' accepted for future activation of the conjugation quiz mode.
+  mode: z.enum(["kanji", "vocab", "sentence", "conjugation"]),
   cardId: z.string(),
   box: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]),
   nextDue: z.number().int().nonnegative(),
