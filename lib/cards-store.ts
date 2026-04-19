@@ -2,6 +2,9 @@
 
 import { create } from "zustand";
 import type {
+  CardMode,
+  Chapter,
+  ChapterMember,
   GrammarCard,
   GrammarPatternCard,
   KanjiCard,
@@ -32,6 +35,12 @@ interface CardsState {
   sentenceById: Map<string, SentenceCard>;
   grammarById: Map<string, GrammarCard>;
   vocabByWord: Map<string, VocabCard>;
+  /** Chapters in display order. Empty until /api/cards seeds them. */
+  chapters: Chapter[];
+  /** All chapter↔card edges. Group by chapterId for membership. */
+  chapterMembers: ChapterMember[];
+  /** chapterId → array of {mode, cardId} members (precomputed). */
+  membersByChapter: Map<string, ChapterMember[]>;
   hydrate: () => Promise<void>;
 }
 
@@ -51,7 +60,20 @@ const emptyMaps = {
   sentenceById: new Map<string, SentenceCard>(),
   grammarById: new Map<string, GrammarCard>(),
   vocabByWord: new Map<string, VocabCard>(),
+  chapters: [] as Chapter[],
+  chapterMembers: [] as ChapterMember[],
+  membersByChapter: new Map<string, ChapterMember[]>(),
 };
+
+function indexMembersByChapter(members: ChapterMember[]): Map<string, ChapterMember[]> {
+  const m = new Map<string, ChapterMember[]>();
+  for (const member of members) {
+    const arr = m.get(member.chapterId);
+    if (arr) arr.push(member);
+    else m.set(member.chapterId, [member]);
+  }
+  return m;
+}
 
 export const useCardsStore = create<CardsState>((set, get) => ({
   ready: false,
@@ -68,11 +90,15 @@ export const useCardsStore = create<CardsState>((set, get) => ({
         vocab,
         sentences,
         grammar = [],
+        chapters = [],
+        chapterMembers = [],
       } = (await res.json()) as {
         kanji: KanjiCard[];
         vocab: VocabCard[];
         sentences: SentenceCard[];
         grammar?: GrammarCard[];
+        chapters?: Chapter[];
+        chapterMembers?: ChapterMember[];
       };
       set({
         ready: true,
@@ -96,6 +122,9 @@ export const useCardsStore = create<CardsState>((set, get) => ({
         sentenceById: new Map(sentences.map((c) => [c.id, c])),
         grammarById: new Map(grammar.map((c) => [c.id, c])),
         vocabByWord: new Map(vocab.map((c) => [c.word, c])),
+        chapters,
+        chapterMembers,
+        membersByChapter: indexMembersByChapter(chapterMembers),
       });
     } catch (err) {
       set({ ready: false, error: err instanceof Error ? err.message : String(err) });

@@ -281,6 +281,30 @@ export interface LearningState {
   lastReviewed: number;
 }
 
+/**
+ * Chapter (단원) — groups existing cards across modes for unit-level mastery
+ * signal. See ~/.gstack/projects/jikari/riroan-main-design-20260419-214009.md
+ *
+ * Members reference cards polymorphically across the 5 content modes
+ * (kanji/vocab/sentence/grammar — conjugation/adjective derive from vocab).
+ * Chapter membership lives in DB tables (0009_chapters, 0010_chapter_members)
+ * sourced from data/chapters.config.ts at seed time.
+ */
+export interface Chapter {
+  id: string;
+  name: string;
+  /** Optional 2-3 line intro (NULL until v1 hand-write pass) */
+  intro: string | null;
+  sortOrder: number;
+}
+
+/** Polymorphic card reference. mode + cardId uniquely identifies a card. */
+export interface ChapterMember {
+  chapterId: string;
+  mode: CardMode;
+  cardId: string;
+}
+
 /** Daily heatmap data — key is YYYY-MM-DD (browser local timezone) */
 export type HeatmapData = Record<string, number>;
 
