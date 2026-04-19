@@ -1,0 +1,159 @@
+[
+  {
+    "id": "pattern-nakereba-naranai",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜なければならない",
+    "koreanStructure": "〜지 않으면 안 된다 / 〜해야 한다",
+    "meaningKo": "의무·필요를 나타내는 문형",
+    "examples": [
+      {
+        "jp": "明日までに[[宿題をしなければならない]]",
+        "ko": "내일까지 숙제를 해야 한다"
+      },
+      {
+        "jp": "毎日[[薬を飲まなければならない]]",
+        "ko": "매일 약을 먹어야 한다"
+      },
+      {
+        "jp": "時間を[[守らなければならない]]",
+        "ko": "시간을 지켜야 한다"
+      }
+    ],
+    "quizzes": [
+      {
+        "sentence": "明日までに宿題を＿＿＿。",
+        "correct": "しなければならない",
+        "distractors": [
+          "してはいけない",
+          "してもいい",
+          "しようとする"
+        ],
+        "translation": "내일까지 숙제를 해야 한다"
+      },
+      {
+        "sentence": "毎日薬を＿＿＿。",
+        "correct": "飲まなければならない",
+        "distractors": [
+          "飲みたがる",
+          "飲まないで",
+          "飲みはじめる"
+        ],
+        "translation": "매일 약을 먹어야 한다"
+      },
+      {
+        "sentence": "約束を＿＿＿。",
+        "correct": "守らなければならない",
+        "distractors": [
+          "守りたい",
+          "守ってしまう",
+          "守ろうとする"
+        ],
+        "translation": "약속을 지켜야 한다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-temo-ii",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜てもいい",
+    "koreanStructure": "〜해도 된다 / 〜해도 괜찮다",
+    "meaningKo": "허가·허용을 나타내는 문형",
+    "examples": [
+      {
+        "jp": "ここで[[写真を撮ってもいい]]ですか",
+        "ko": "여기서 사진을 찍어도 돼요?"
+      },
+      {
+        "jp": "窓を[[開けてもいい]]よ",
+        "ko": "창문 열어도 돼"
+      },
+      {
+        "jp": "もう[[帰ってもいい]]ですよ",
+        "ko": "이제 돌아가도 돼요"
+      }
+    ],
+    "quizzes": [
+      {
+        "sentence": "ここで写真を＿＿＿ですか。",
+        "correct": "撮ってもいい",
+        "distractors": [
+          "撮ってはいけない",
+          "撮らなければならない",
+          "撮りたい"
+        ],
+        "translation": "여기서 사진을 찍어도 돼요?"
+      },
+      {
+        "sentence": "窓を＿＿＿よ。",
+        "correct": "開けてもいい",
+        "distractors": [
+          "開けてはいけない",
+          "開けたほうがいい",
+          "開けたがる"
+        ],
+        "translation": "창문 열어도 돼"
+      },
+      {
+        "sentence": "もう＿＿＿ですよ。",
+        "correct": "帰ってもいい",
+        "distractors": [
+          "帰らなければならない",
+          "帰ったばかり",
+          "帰ろうとする"
+        ],
+        "translation": "이제 돌아가도 돼요"
+      }
+    ]
+  },
+  {
+    "id": "particle-wa-ga",
+    "type": "particle_contrast",
+    "jlptLevel": 5,
+    "particles": ["は", "が"],
+    "rule": "は는 이미 알려진 주제, が는 새 정보의 주어를 표시",
+    "examples": [
+      {
+        "particle": "は",
+        "jp": "私は学生です",
+        "ko": "저는 학생입니다"
+      },
+      {
+        "particle": "は",
+        "jp": "この本は面白い",
+        "ko": "이 책은 재미있다"
+      },
+      {
+        "particle": "が",
+        "jp": "雨が降る",
+        "ko": "비가 온다"
+      },
+      {
+        "particle": "が",
+        "jp": "誰が来ましたか",
+        "ko": "누가 왔어요?"
+      }
+    ],
+    "quizzes": [
+      {
+        "sentence": "私＿＿＿学生です。",
+        "correct": "は",
+        "distractors": ["が", "に", "を"],
+        "translation": "저는 학생입니다"
+      },
+      {
+        "sentence": "雨＿＿＿降っている。",
+        "correct": "が",
+        "distractors": ["は", "を", "で"],
+        "translation": "비가 오고 있다"
+      },
+      {
+        "sentence": "誰＿＿＿来ましたか。",
+        "correct": "が",
+        "distractors": ["は", "に", "を"],
+        "translation": "누가 왔어요?"
+      }
+    ]
+  }
+]
