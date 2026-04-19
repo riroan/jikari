@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
+import { ChapterMastery } from "@/components/ChapterMastery";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -60,6 +61,9 @@ export default function Home() {
             <SubjectRow key={s.base} {...s} />
           ))}
         </section>
+
+        {/* Chapter mastery — unit-level signal across modes */}
+        <ChapterMastery mounted={mounted} />
 
         {/* Heatmap */}
         <section className="mb-10">
