@@ -45,6 +45,9 @@ const GODAN_LOOKALIKE_READINGS = new Set<string>([
  * - Homophones disambiguated by word (着る ichidan vs 切る godan).
  * - Non-verb interjections/expressions with verb-looking Korean meanings
  *   (ありがとう = 고맙다, but Japanese form is an interjection).
+ * - Na-adjectives with readings that end in verb-like tails
+ *   (大切/たいせつ, 自由/じゆう, 親切/しんせつ, 下手/へた — these trip
+ *   the reading-tail heuristic and get misclassified as godan without this).
  */
 const WORD_OVERRIDE: Record<string, VerbGroup> = {
   "着る": "ichidan",
@@ -57,6 +60,13 @@ const WORD_OVERRIDE: Record<string, VerbGroup> = {
   "こんにちは": "not_verb",
   "こんばんは": "not_verb",
   "おはよう": "not_verb",
+  // Na-adjectives whose readings end in verb tails (う/く/ぐ/す/つ…):
+  "大切": "not_verb",
+  "自由": "not_verb",
+  "親切": "not_verb",
+  "下手": "not_verb",
+  "上手": "not_verb",
+  "有名": "not_verb",
 };
 
 function classify(

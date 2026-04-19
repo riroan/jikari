@@ -57,6 +57,14 @@ function classify(
   koreanMeanings: string[],
   verbGroup: string | null,
 ): AdjGroup {
+  // Explicit na-adj override runs FIRST. Otherwise na-adjs whose readings end
+  // in verb-like tails (大切/たいせつ, 自由/じゆう, 親切/しんせつ…) get
+  // misclassified as godan by the sibling verb-group backfill, and then land
+  // here with verbGroup='godan' — which would short-circuit them to 'not_adj'
+  // before we ever consult KNOWN_NA_ADJ. Checking the set first makes the
+  // adj-side authoritative for listed na-adjs.
+  if (KNOWN_NA_ADJ.has(word)) return "na_adj";
+
   // Already a verb → not an adjective.
   if (
     verbGroup === "godan" ||
@@ -65,9 +73,6 @@ function classify(
   ) {
     return "not_adj";
   }
-
-  // Explicit na-adj override.
-  if (KNOWN_NA_ADJ.has(word)) return "na_adj";
 
   // Blocked words.
   if (I_ADJ_BLOCKLIST.has(word)) return "not_adj";
