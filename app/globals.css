@@ -106,7 +106,7 @@ body {
  * Default browser yellow is AI slop — override globally.
  */
 mark.jp-highlight {
-  background: color-mix(in srgb, var(--accent-clay) 12%, transparent);
+  background-color: color-mix(in srgb, var(--accent-clay) 12%, transparent);
   color: inherit;
   padding: 0 0.1em;
   border-radius: 2px;

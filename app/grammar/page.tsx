@@ -57,8 +57,8 @@ function GrammarPageInner() {
   }, [tab]);
 
   const deck = useMemo(
-    () => shuffleIds(ids, seed + epoch * 7919),
-    [seed, epoch, ids],
+    () => (mode === "study" ? ids : shuffleIds(ids, seed + epoch * 7919)),
+    [mode, seed, epoch, ids],
   );
 
   const advance = () => {
