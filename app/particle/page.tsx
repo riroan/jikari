@@ -76,10 +76,21 @@ function ParticlePageInner() {
     });
   };
 
+  if (!mounted) {
+    return <Shell />;
+  }
+
+  if (particleIds.length === 0) {
+    return (
+      <Shell>
+        <EmptyState />
+      </Shell>
+    );
+  }
+
   const cardId = deck[index] ?? particleIds[0];
   const card: SentenceCard | undefined = getSentence(cardId);
-
-  if (!mounted || !card) {
+  if (!card) {
     return <Shell />;
   }
 
@@ -130,6 +141,18 @@ function Shell({ children }: { children?: React.ReactNode }) {
         {children}
       </div>
     </main>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-[13px] leading-relaxed">
+      조사 빈칸 카드가 아직 없어요.
+      <br />
+      <span className="text-[11px] tracking-wider">
+        (sentence category=&quot;particle&quot; 시드 필요)
+      </span>
+    </div>
   );
 }
 

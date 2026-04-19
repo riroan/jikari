@@ -77,10 +77,21 @@ function KanjiPageInner() {
     });
   };
 
+  if (!mounted) {
+    return <Shell />;
+  }
+
+  if (kanjiIds.length === 0) {
+    return (
+      <Shell>
+        <EmptyState />
+      </Shell>
+    );
+  }
+
   const cardId = deck[index] ?? kanjiIds[0];
   const card: KanjiCard | undefined = getKanji(cardId);
-
-  if (!mounted || !card) {
+  if (!card) {
     return <Shell />;
   }
 
@@ -132,6 +143,18 @@ function Shell({ children }: { children?: React.ReactNode }) {
         {children}
       </div>
     </main>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-[13px] leading-relaxed">
+      한자 카드가 아직 없어요.
+      <br />
+      <span className="text-[11px] tracking-wider">
+        (scripts/add-kanji.ts로 시드 필요)
+      </span>
+    </div>
   );
 }
 
