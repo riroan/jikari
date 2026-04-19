@@ -296,6 +296,14 @@ export const GROUP_LABELS_JP: Record<VerbGroup, string> = {
   not_verb: "",
 };
 
+/** Korean Japanese-textbook convention: 1그룹 (godan) / 2그룹 (ichidan) / 3그룹 (irregular). */
+export const GROUP_LABELS_KO: Record<VerbGroup, string> = {
+  godan: "1그룹",
+  ichidan: "2그룹",
+  irregular: "3그룹",
+  not_verb: "",
+};
+
 /** Korean labels for the target form prompt ("명령형으로"). */
 export const FORM_LABELS_KO: Record<ConjugationForm, string> = {
   masu: "정중형",

@@ -10,6 +10,7 @@ import {
   FORM_LABELS_JP,
   FORM_LABELS_KO,
   GROUP_LABELS_JP,
+  GROUP_LABELS_KO,
 } from "@/lib/conjugation";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
 import type { ConjugationForm, VerbGroup, VocabCard } from "@/lib/types";
@@ -110,6 +111,7 @@ export function ConjugationCard({
   }, []);
 
   const groupLabelJp = GROUP_LABELS_JP[verb.verbGroup];
+  const groupLabelKo = GROUP_LABELS_KO[verb.verbGroup];
   const formLabelKo = FORM_LABELS_KO[form];
   const formLabelJp = FORM_LABELS_JP[form];
   const primaryAnswer = acceptableAnswers[0] ?? "";
@@ -136,11 +138,14 @@ export function ConjugationCard({
         >
           {verb.ruby ? <RubyText text={verb.ruby} /> : verb.word}
         </div>
-        <div
-          className="mt-3 text-[13px] text-[color:var(--fg-faint)]"
-          style={{ fontFamily: "var(--font-jp-sans)" }}
-        >
-          {groupLabelJp}
+        <div className="mt-3 text-[13px] text-[color:var(--fg-faint)]">
+          <span style={{ fontFamily: "var(--font-kr-sans)" }}>
+            {groupLabelKo}
+          </span>
+          <span className="mx-1.5">·</span>
+          <span style={{ fontFamily: "var(--font-jp-sans)" }}>
+            {groupLabelJp}
+          </span>
         </div>
       </div>
 
@@ -195,11 +200,15 @@ export function ConjugationCard({
                 {acceptableAnswers.slice(1).join(" · ")}
               </div>
             )}
-            <div
-              className="text-[13px] text-[color:var(--fg-soft)] tracking-wide"
-              style={{ fontFamily: "var(--font-jp-sans)" }}
-            >
-              ─ {groupLabelJp} · {formLabelJp} ─
+            <div className="text-[13px] text-[color:var(--fg-soft)] tracking-wide">
+              <span style={{ fontFamily: "var(--font-jp-sans)" }}>─ </span>
+              <span style={{ fontFamily: "var(--font-kr-sans)" }}>
+                {groupLabelKo}
+              </span>
+              <span className="mx-1">·</span>
+              <span style={{ fontFamily: "var(--font-jp-sans)" }}>
+                {groupLabelJp} · {formLabelJp} ─
+              </span>
             </div>
             <button
               onClick={handleNext}

@@ -14,6 +14,7 @@ import {
   ConjugationError,
   FORM_LABELS_KO,
   GROUP_LABELS_JP,
+  GROUP_LABELS_KO,
 } from "@/lib/conjugation";
 import type { ConjugationForm, VerbGroup, VocabCard } from "@/lib/types";
 import { ALL_CONJUGATION_FORMS, BASIC_FORMS } from "@/lib/types";
@@ -235,11 +236,14 @@ function ConjugationStudyBody({ verb }: { verb: ConjugatableVerb }) {
             {verb.reading}
           </div>
         )}
-        <div
-          className="mt-2 text-[13px] text-[color:var(--fg-faint)]"
-          style={{ fontFamily: "var(--font-jp-sans)" }}
-        >
-          {GROUP_LABELS_JP[verb.verbGroup]}
+        <div className="mt-2 text-[13px] text-[color:var(--fg-faint)]">
+          <span style={{ fontFamily: "var(--font-kr-sans)" }}>
+            {GROUP_LABELS_KO[verb.verbGroup]}
+          </span>
+          <span className="mx-1.5">·</span>
+          <span style={{ fontFamily: "var(--font-jp-sans)" }}>
+            {GROUP_LABELS_JP[verb.verbGroup]}
+          </span>
         </div>
         <div
           className="mt-3 text-[14px] text-[color:var(--fg-soft)] leading-relaxed"
