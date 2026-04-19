@@ -45,7 +45,8 @@ export default function Home() {
           <EntryRow href="/vocab?mode=study" ko="단어" jp="単語" />
           <EntryRow href="/sentence?mode=study" ko="문장" jp="文章" />
           <EntryRow href="/particle?mode=study" ko="조사" jp="助詞" />
-          <EntryRow href="/conjugation?mode=study" ko="활용" jp="活用" />
+          <EntryRow href="/conjugation?mode=study" ko="동사활용" jp="活用" />
+          <EntryRow href="/adjective?mode=study" ko="형용사활용" jp="形容詞" />
         </section>
 
         {/* 퀴즈 section */}
@@ -55,7 +56,8 @@ export default function Home() {
           <EntryRow href="/vocab" ko="단어" jp="単語" />
           <EntryRow href="/sentence" ko="문장" jp="文章" />
           <EntryRow href="/particle" ko="조사" jp="助詞" />
-          <EntryRow href="/conjugation" ko="활용" jp="活用" />
+          <EntryRow href="/conjugation" ko="동사활용" jp="活用" />
+          <EntryRow href="/adjective" ko="형용사활용" jp="形容詞" />
         </section>
 
         {/* Heatmap */}

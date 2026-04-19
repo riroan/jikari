@@ -2,6 +2,7 @@ import "server-only";
 import type { RowDataPacket } from "mysql2";
 import { getPool } from "./client";
 import type {
+  AdjGroup,
   JLPTLevel,
   KanjiCard,
   SentenceCard,
@@ -46,6 +47,8 @@ const VERB_GROUPS: readonly VerbGroup[] = [
   "not_verb",
 ];
 
+const ADJ_GROUPS: readonly AdjGroup[] = ["i_adj", "na_adj", "not_adj"];
+
 function parseVerbGroup(value: unknown): VerbGroup | undefined {
   if (typeof value !== "string") return undefined;
   return (VERB_GROUPS as readonly string[]).includes(value)
@@ -53,9 +56,16 @@ function parseVerbGroup(value: unknown): VerbGroup | undefined {
     : undefined;
 }
 
+function parseAdjGroup(value: unknown): AdjGroup | undefined {
+  if (typeof value !== "string") return undefined;
+  return (ADJ_GROUPS as readonly string[]).includes(value)
+    ? (value as AdjGroup)
+    : undefined;
+}
+
 export async function getAllVocab(): Promise<VocabCard[]> {
   const [rows] = await getPool().query<RowDataPacket[]>(
-    "SELECT id, word, reading, meanings, korean_meanings, ruby, jlpt_level, verb_group FROM vocab_cards ORDER BY id"
+    "SELECT id, word, reading, meanings, korean_meanings, ruby, jlpt_level, verb_group, adj_group FROM vocab_cards ORDER BY id"
   );
   return rows.map((r) => ({
     id: r.id as string,
@@ -66,6 +76,7 @@ export async function getAllVocab(): Promise<VocabCard[]> {
     ruby: (r.ruby as string | null) ?? undefined,
     jlptLevel: r.jlpt_level as JLPTLevel,
     verbGroup: parseVerbGroup(r.verb_group),
+    adjGroup: parseAdjGroup(r.adj_group),
   }));
 }
 

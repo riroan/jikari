@@ -26,6 +26,8 @@ const VALID_VERB_GROUPS = new Set([
   "not_verb",
 ]);
 
+const VALID_ADJ_GROUPS = new Set(["i_adj", "na_adj", "not_adj"]);
+
 function validate(c: unknown, idx: number): VocabCard {
   if (!c || typeof c !== "object") throw new Error(`#${idx}: not an object`);
   const r = c as Record<string, unknown>;
@@ -44,11 +46,16 @@ function validate(c: unknown, idx: number): VocabCard {
   if (r.ruby !== undefined && !isStr(r.ruby)) {
     throw new Error(`#${idx}: invalid 'ruby' (must be string or omitted)`);
   }
-  // verbGroup is required for new cards — this removes the continuous-backfill
-  // burden flagged in the eng review.
+  // verbGroup is required for new cards — removes continuous-backfill burden.
   if (!isStr(r.verbGroup) || !VALID_VERB_GROUPS.has(r.verbGroup)) {
     throw new Error(
       `#${idx}: invalid 'verbGroup' (must be one of godan/ichidan/irregular/not_verb)`,
+    );
+  }
+  // adjGroup is required for new cards — same reason.
+  if (!isStr(r.adjGroup) || !VALID_ADJ_GROUPS.has(r.adjGroup)) {
+    throw new Error(
+      `#${idx}: invalid 'adjGroup' (must be one of i_adj/na_adj/not_adj)`,
     );
   }
   return r as unknown as VocabCard;
@@ -88,8 +95,8 @@ async function main() {
     }
     await conn.query(
       `INSERT INTO vocab_cards
-         (id, word, reading, meanings, korean_meanings, ruby, jlpt_level, verb_group)
-       VALUES (?, ?, ?, CAST(? AS JSON), CAST(? AS JSON), ?, ?, ?)`,
+         (id, word, reading, meanings, korean_meanings, ruby, jlpt_level, verb_group, adj_group)
+       VALUES (?, ?, ?, CAST(? AS JSON), CAST(? AS JSON), ?, ?, ?, ?)`,
       [
         c.id,
         c.word,
@@ -99,11 +106,15 @@ async function main() {
         c.ruby ?? null,
         c.jlptLevel,
         c.verbGroup ?? "not_verb",
+        c.adjGroup ?? "not_adj",
       ]
     );
     inserted++;
+    const tags = [c.verbGroup, c.adjGroup].filter(
+      (t) => t && t !== "not_verb" && t !== "not_adj"
+    );
     console.log(
-      `  + ${c.id}  (N${c.jlptLevel}, ${c.verbGroup}, ${c.koreanMeanings.join(", ")})`
+      `  + ${c.id}  (N${c.jlptLevel}${tags.length ? `, ${tags.join(", ")}` : ""}, ${c.koreanMeanings.join(", ")})`
     );
   }
 
