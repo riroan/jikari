@@ -80,15 +80,18 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
   if (chapters.length === 0) return null;
 
   return (
-    <section className="mb-12" aria-labelledby="chapters-label">
+    <section
+      className="mb-12 flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden"
+      aria-labelledby="chapters-label"
+    >
       <div
         id="chapters-label"
-        className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium"
+        className="bg-[color:var(--bg)] px-4 pt-3 pb-2 text-xs text-[color:var(--fg-faint)] tracking-label font-medium"
       >
         UNITS
       </div>
 
-      <ul className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden">
+      <ul className="flex flex-col gap-px bg-[color:var(--line)]">
         {rows.map(({ chapter, summary }) => {
           const percent = mounted ? Math.round(summary.ratio * 100) : 0;
           const intensity = mounted ? ratioToIntensity(summary.ratio) : 0;
