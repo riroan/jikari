@@ -108,7 +108,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
             ← HOME
           </Link>
           <h1
-            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             助詞
@@ -135,7 +135,7 @@ function ParticleQuiz({
       question={
         <div>
           <div
-            className="text-[20px] leading-[1.8] font-medium mb-3"
+            className="text-h2 leading-[1.8] font-medium mb-3"
             style={{
               fontFamily: "var(--font-jp-serif)",
               color: "var(--fg)",
@@ -178,7 +178,7 @@ function ParticleStudyBody({ card }: { card: SentenceCard }) {
     <div className="flex flex-col gap-4">
       {info && <ParticleInfoBlock particle={card.blank} info={info} />}
       <div
-        className="text-[20px] leading-[1.8] font-medium"
+        className="text-h2 leading-[1.8] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
@@ -191,7 +191,7 @@ function ParticleStudyBody({ card }: { card: SentenceCard }) {
         </span>
         {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
       </div>
-      <div className="text-[14px] text-[color:var(--fg-soft)] leading-relaxed">
+      <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}
       </div>
     </div>
@@ -209,15 +209,15 @@ function ParticleInfoBlock({
     <div className="pl-3 border-l-2 border-[color:var(--accent-progress)] flex flex-col gap-1.5">
       <div className="flex items-baseline gap-2">
         <span
-          className="text-[22px] font-semibold text-[color:var(--accent-progress)]"
+          className="text-title font-semibold text-[color:var(--accent-progress)]"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {particle}
         </span>
-        <span className="text-[11px] tracking-[0.18em] text-[color:var(--fg-faint)] uppercase">
+        <span className="text-caption tracking-label text-[color:var(--fg-faint)] uppercase">
           {info.label}
         </span>
-        <span className="text-[12px] text-[color:var(--fg-soft)]">{info.gloss}</span>
+        <span className="text-label text-[color:var(--fg-soft)]">{info.gloss}</span>
       </div>
       <div className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed">
         {info.note}
@@ -235,7 +235,7 @@ function ParticleBack({ card }: { card: SentenceCard }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="text-[20px] leading-[1.8] font-medium"
+        className="text-h2 leading-[1.8] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
@@ -248,7 +248,7 @@ function ParticleBack({ card }: { card: SentenceCard }) {
         </span>
         {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
       </div>
-      <div className="text-[14px] text-[color:var(--fg-soft)] leading-relaxed">
+      <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}
       </div>
     </div>

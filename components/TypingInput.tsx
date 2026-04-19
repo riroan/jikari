@@ -112,7 +112,7 @@ export function TypingInput({
         }}
         onKeyDown={handleKeyDown}
         aria-label={ariaLabel}
-        className="flex-1 bg-transparent text-[20px] text-[color:var(--fg)] px-1 py-3 border-0 border-b border-[color:var(--line)] focus:border-[color:var(--fg)] focus:outline-none disabled:opacity-60"
+        className="flex-1 bg-transparent text-h2 text-[color:var(--fg)] px-1 py-3 border-0 border-b border-[color:var(--line)] focus:border-[color:var(--fg)] focus:outline-none disabled:opacity-60"
         style={{
           fontFamily,
           minHeight: 44,
@@ -124,7 +124,7 @@ export function TypingInput({
         type="button"
         onClick={submit}
         disabled={!canSubmit}
-        className="px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         style={{ minHeight: 44, minWidth: 44 }}
         aria-label="제출"
       >

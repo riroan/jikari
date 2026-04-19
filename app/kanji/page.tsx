@@ -112,7 +112,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
             ← HOME
           </Link>
           <h1
-            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             漢字
@@ -169,7 +169,7 @@ function KanjiQuiz({
     <QuizCard
       question={
         <div
-          className="text-[148px] leading-none font-semibold"
+          className="text-hero leading-none font-semibold"
           style={{
             fontFamily: "var(--font-jp-serif)",
             letterSpacing: "-0.02em",
@@ -199,7 +199,7 @@ function KanjiBack({ card }: { card: KanjiCard }) {
       style={{ fontFamily: "var(--font-jp-sans)" }}
     >
       <div
-        className="text-[148px] leading-none font-semibold"
+        className="text-hero leading-none font-semibold"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
@@ -211,20 +211,20 @@ function KanjiBack({ card }: { card: KanjiCard }) {
       <div className="flex flex-col gap-1.5 pl-1">
         {card.onReadings.length > 0 && (
           <div className="flex gap-3.5 items-baseline">
-            <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] w-9 font-medium">
+            <span className="text-caption text-[color:var(--fg-faint)] tracking-label w-9 font-medium">
               音
             </span>
-            <span className="text-[17px] text-[color:var(--fg-soft)]">
+            <span className="text-body text-[color:var(--fg-soft)]">
               {card.onReadings.join(" ・ ")}
             </span>
           </div>
         )}
         {card.kunReadings.length > 0 && (
           <div className="flex gap-3.5 items-baseline">
-            <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] w-9 font-medium">
+            <span className="text-caption text-[color:var(--fg-faint)] tracking-label w-9 font-medium">
               訓
             </span>
-            <span className="text-[17px] text-[color:var(--fg-soft)]">
+            <span className="text-body text-[color:var(--fg-soft)]">
               {card.kunReadings.join(" ・ ")}
             </span>
           </div>
@@ -236,7 +236,7 @@ function KanjiBack({ card }: { card: KanjiCard }) {
           >
             韓
           </span>
-          <span className="text-[14px] text-[color:var(--fg-soft)]">
+          <span className="text-small text-[color:var(--fg-soft)]">
             {card.koreanMeaning} {card.koreanSound.join("·")}
             {card.koreanHanja !== card.kanji && (
               <span className="ml-2 text-[color:var(--fg-faint)] text-xs">

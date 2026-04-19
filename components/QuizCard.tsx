@@ -173,7 +173,7 @@ export function QuizCard({
             >
               <div>{question}</div>
               {subtitle && (
-                <div className="mt-3 text-xs text-[color:var(--fg-faint)] tracking-[0.18em] font-medium">
+                <div className="mt-3 text-xs text-[color:var(--fg-faint)] tracking-label font-medium">
                   {subtitle}
                 </div>
               )}
@@ -218,7 +218,7 @@ export function QuizCard({
           <button
             type="button"
             onClick={advance}
-            className="px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            className="px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
             style={{ minHeight: 44 }}
             aria-label="다음 문제"
           >
@@ -265,7 +265,7 @@ function ChoicePanel({
             key={choice}
             onClick={() => onChoice(choice)}
             disabled={disabled}
-            className={`text-left px-4 py-3.5 text-[17px] text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
+            className={`text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
           >
             <RubyText text={choice} />
           </button>

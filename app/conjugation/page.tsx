@@ -163,7 +163,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
             ← HOME
           </Link>
           <h1
-            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             活用
@@ -185,14 +185,14 @@ function EmptyState() {
         공부할 동사가 아직 없어요.
       </div>
       <div
-        className="text-[14px] text-[color:var(--fg-faint)] leading-relaxed"
+        className="text-small text-[color:var(--fg-faint)] leading-relaxed"
         style={{ fontFamily: "var(--font-kr-sans)" }}
       >
         단어에 분류가 붙으면 이곳에 나타납니다.
       </div>
       <Link
         href="/vocab"
-        className="inline-block mt-4 px-4 py-3 text-[14px] text-center border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+        className="inline-block mt-4 px-4 py-3 text-small text-center border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
         style={{ fontFamily: "var(--font-kr-sans)" }}
       >
         단어로 가기
@@ -246,7 +246,7 @@ function ConjugationStudyBody({ verb }: { verb: ConjugatableVerb }) {
           </span>
         </div>
         <div
-          className="mt-3 text-[14px] text-[color:var(--fg-soft)] leading-relaxed"
+          className="mt-3 text-small text-[color:var(--fg-soft)] leading-relaxed"
           style={{ fontFamily: "var(--font-kr-sans)" }}
         >
           {verb.koreanMeanings.join(", ")}
@@ -261,7 +261,7 @@ function ConjugationStudyBody({ verb }: { verb: ConjugatableVerb }) {
             className="flex items-baseline justify-between gap-4 bg-[color:var(--bg)] px-4 py-2.5"
           >
             <span
-              className="text-[12px] text-[color:var(--fg-faint)] tracking-[0.15em] font-medium min-w-[56px]"
+              className="text-label text-[color:var(--fg-faint)] tracking-tab font-medium min-w-[56px]"
               style={{ fontFamily: "var(--font-kr-sans)" }}
             >
               {FORM_LABELS_KO[form]}

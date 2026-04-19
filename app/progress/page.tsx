@@ -40,7 +40,7 @@ export default function ProgressPage() {
             ← HOME
           </Link>
           <h1
-            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             進捗
@@ -50,7 +50,7 @@ export default function ProgressPage() {
         <section className="mb-8">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-1 font-medium">
+              <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium">
                 MASTERED
               </div>
               <div
@@ -68,7 +68,7 @@ export default function ProgressPage() {
               </div>
             </div>
             <div>
-              <div className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-1 font-medium">
+              <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium">
                 LEARNING
               </div>
               <div
@@ -86,7 +86,7 @@ export default function ProgressPage() {
         </section>
 
         <section>
-          <div className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
+          <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
             N5 KANJI ({kanjiCards.length})
           </div>
           <div className="grid grid-cols-10 gap-1">
@@ -100,7 +100,7 @@ export default function ProgressPage() {
           </div>
         </section>
 
-        <section className="mt-8 text-[11px] text-[color:var(--fg-faint)] leading-relaxed">
+        <section className="mt-8 text-caption text-[color:var(--fg-faint)] leading-relaxed">
           <p>
             풀 상용한자 2136자 그리드는 v2 확장. 현재는 데이터에 있는 N5 범위({kanjiCards.length}자)만 표시.
           </p>

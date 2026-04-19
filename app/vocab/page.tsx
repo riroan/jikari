@@ -109,7 +109,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
             ← HOME
           </Link>
           <h1
-            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             単語

@@ -125,7 +125,7 @@ export function ConjugationCard({
     <div className="flex flex-col gap-8">
       {/* Target form label — "活用 · 명령형으로" */}
       <div
-        className="text-[12px] text-[color:var(--fg-faint)] tracking-[0.25em] font-medium"
+        className="text-label text-[color:var(--fg-faint)] tracking-caption font-medium"
         style={{ fontFamily: "var(--font-kr-sans)" }}
       >
         活用 · {formLabelKo}으로
@@ -199,7 +199,7 @@ export function ConjugationCard({
             </div>
             {acceptableAnswers.length > 1 && (
               <div
-                className="text-[14px] text-[color:var(--fg-faint)]"
+                className="text-small text-[color:var(--fg-faint)]"
                 style={{ fontFamily: "var(--font-jp-sans)" }}
               >
                 {acceptableAnswers.slice(1).join(" · ")}
@@ -217,7 +217,7 @@ export function ConjugationCard({
             </div>
             <button
               onClick={handleNext}
-              className="self-end mt-2 px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              className="self-end mt-2 px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}
             >
               次へ
@@ -254,7 +254,7 @@ export function ConjugationCard({
             </div>
             <button
               onClick={handleNext}
-              className="px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              className="px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}
             >
               次へ

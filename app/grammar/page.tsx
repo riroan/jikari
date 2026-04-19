@@ -143,7 +143,7 @@ function Shell({
           </Link>
           <div className="flex items-baseline gap-4">
             <h1
-              className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+              className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
               style={{ fontFamily: "var(--font-jp-serif)" }}
             >
               文法
@@ -194,7 +194,7 @@ function TabLink({
       role="tab"
       aria-selected={active}
       href={href}
-      className={`text-[14px] pb-3 -mb-px border-b-2 transition-colors tracking-wide ${
+      className={`text-small pb-3 -mb-px border-b-2 transition-colors tracking-wide ${
         active
           ? "text-[color:var(--fg)] border-[color:var(--accent-korean)]"
           : "text-[color:var(--fg-faint)] border-transparent hover:text-[color:var(--fg-soft)]"
@@ -209,14 +209,14 @@ function EmptyState() {
   return (
     <div className="flex flex-col items-start gap-3 pt-16">
       <div
-        className="text-[28px] font-medium text-[color:var(--fg-soft)]"
+        className="text-h1 font-medium text-[color:var(--fg-soft)]"
         style={{ fontFamily: "var(--font-jp-serif)" }}
       >
         まだ
       </div>
       <p className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
         문법 카드 준비 중. <br />
-        <code className="text-[12px]">scripts/generate-grammar.ts</code>로 시드 후 다시 열어주세요.
+        <code className="text-label">scripts/generate-grammar.ts</code>로 시드 후 다시 열어주세요.
       </p>
     </div>
   );
@@ -243,16 +243,16 @@ function PatternStudyBody({ card }: { card: GrammarPatternCard }) {
       </div>
 
       <div className="flex flex-col gap-1">
-        <div className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.15em]">
+        <div className="text-caption text-[color:var(--fg-faint)] tracking-tab">
           韓
         </div>
-        <div className="text-[17px] text-[color:var(--accent-korean)] font-medium">
+        <div className="text-body text-[color:var(--accent-korean)] font-medium">
           {card.koreanStructure}
         </div>
       </div>
 
       <div className="flex flex-col gap-1">
-        <div className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.15em]">
+        <div className="text-caption text-[color:var(--fg-faint)] tracking-tab">
           意味
         </div>
         <div className="text-[15px] text-[color:var(--fg-soft)]">
@@ -263,7 +263,7 @@ function PatternStudyBody({ card }: { card: GrammarPatternCard }) {
       <div className="flex flex-col gap-4 border-t border-[color:var(--line)] pt-5">
         {card.examples.map((ex, idx) => (
           <div key={idx} className="flex flex-col gap-1">
-            <div className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.15em]">
+            <div className="text-caption text-[color:var(--fg-faint)] tracking-tab">
               例 {idx + 1}
             </div>
             <div
@@ -297,7 +297,7 @@ function ParticleStudyBody({ card }: { card: ParticleContrastCard }) {
       </div>
 
       <div className="flex flex-col gap-1">
-        <div className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.15em]">
+        <div className="text-caption text-[color:var(--fg-faint)] tracking-tab">
           規則
         </div>
         <div className="text-[15px] text-[color:var(--accent-korean)] leading-relaxed">
@@ -321,7 +321,7 @@ function ParticleGroup({
   return (
     <div className="flex flex-col gap-3 border-t border-[color:var(--line)] pt-4">
       <div
-        className="text-[14px] font-medium text-[color:var(--fg-soft)]"
+        className="text-small font-medium text-[color:var(--fg-soft)]"
         style={{ fontFamily: "var(--font-jp-sans)" }}
       >
         {particle}
@@ -334,7 +334,7 @@ function ParticleGroup({
           >
             <RubyText text={ex.jp} />
           </div>
-          <div className="text-[12px] text-[color:var(--fg-faint)]">{ex.ko}</div>
+          <div className="text-label text-[color:var(--fg-faint)]">{ex.ko}</div>
         </div>
       ))}
     </div>

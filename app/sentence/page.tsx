@@ -107,7 +107,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
             ← HOME
           </Link>
           <h1
-            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             文章
@@ -134,7 +134,7 @@ function SentenceQuiz({
       question={
         <div>
           <div
-            className="text-[20px] leading-[1.8] font-medium mb-3"
+            className="text-h2 leading-[1.8] font-medium mb-3"
             style={{
               fontFamily: "var(--font-jp-serif)",
               color: "var(--fg)",
@@ -176,7 +176,7 @@ function SentenceStudyBody({ card }: { card: SentenceCard }) {
   return (
     <div className="flex flex-col gap-4">
       <div
-        className="text-[20px] leading-[1.8] font-medium"
+        className="text-h2 leading-[1.8] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
@@ -189,7 +189,7 @@ function SentenceStudyBody({ card }: { card: SentenceCard }) {
         </span>
         {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
       </div>
-      <div className="text-[14px] text-[color:var(--fg-soft)] leading-relaxed">
+      <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}
       </div>
     </div>
@@ -205,7 +205,7 @@ function SentenceBack({ card }: { card: SentenceCard }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="text-[20px] leading-[1.8] font-medium"
+        className="text-h2 leading-[1.8] font-medium"
         style={{
           fontFamily: "var(--font-jp-serif)",
           color: "var(--fg)",
@@ -218,7 +218,7 @@ function SentenceBack({ card }: { card: SentenceCard }) {
         </span>
         {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
       </div>
-      <div className="text-[14px] text-[color:var(--fg-soft)] leading-relaxed">
+      <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}
       </div>
     </div>

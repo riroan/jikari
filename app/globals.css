@@ -98,6 +98,23 @@
   --font-jp-serif: var(--font-jp-serif);
   --font-jp-sans:  var(--font-jp-sans);
   --font-kr-sans:  "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+
+  /* Type scale utilities — text-hero, text-title, text-label, … */
+  --text-hero:    var(--type-hero);
+  --text-display: var(--type-display);
+  --text-title:   var(--type-title);
+  --text-h1:      var(--type-h1);
+  --text-h2:      var(--type-h2);
+  --text-body:    var(--type-body);
+  --text-reading: var(--type-reading);
+  --text-small:   var(--type-small);
+  --text-label:   var(--type-label);
+  --text-caption: var(--type-caption);
+
+  /* Tracking utilities — tracking-label, tracking-caption, tracking-tab */
+  --tracking-label:   var(--track-label);
+  --tracking-caption: var(--track-caption);
+  --tracking-tab:     var(--track-tab);
 }
 
 html, body {

@@ -64,7 +64,7 @@ export default function SettingsPage() {
             ← HOME
           </Link>
           <h1
-            className="text-[15px] tracking-[0.15em] text-[color:var(--fg-soft)]"
+            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             設定
@@ -72,7 +72,7 @@ export default function SettingsPage() {
         </header>
 
         <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
+          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
             백업 / 복원
           </h2>
           <p className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed mb-4">
@@ -107,10 +107,10 @@ export default function SettingsPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
+          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
             표시
           </h2>
-          <label className="flex justify-between items-center text-[14px] py-1">
+          <label className="flex justify-between items-center text-small py-1">
             <span className="text-[color:var(--fg-soft)]">후리가나 (한자 위 읽기)</span>
             <Toggle
               checked={settings.showFurigana}
@@ -121,13 +121,13 @@ export default function SettingsPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
+          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
             학습
           </h2>
-          <label className="flex justify-between items-center text-[14px] py-2">
+          <label className="flex justify-between items-center text-small py-2">
             <span className="text-[color:var(--fg-soft)]">
               타이핑 시작 박스
-              <span className="block text-[11px] text-[color:var(--fg-faint)] mt-0.5">
+              <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
                 이 박스부터 4지선다 대신 직접 입력
               </span>
             </span>
@@ -139,7 +139,7 @@ export default function SettingsPage() {
                 })
               }
               aria-label="타이핑 시작 박스"
-              className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 py-1.5 text-[14px] text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
+              className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 py-1.5 text-small text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
               style={{ minHeight: 36, minWidth: 64 }}
             >
               <option value={2}>2 (공격적)</option>
@@ -151,12 +151,12 @@ export default function SettingsPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-3 font-medium">
+          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
             위험 영역
           </h2>
           <button
             onClick={handleReset}
-            className="w-full px-4 py-3 text-[14px] text-left border border-[color:var(--line)] rounded-sm text-[color:var(--accent-korean)] hover:bg-[color:var(--accent-korean)]/5 transition-colors"
+            className="w-full px-4 py-3 text-small text-left border border-[color:var(--line)] rounded-sm text-[color:var(--accent-korean)] hover:bg-[color:var(--accent-korean)]/5 transition-colors"
           >
             모든 학습 기록 초기화
           </button>

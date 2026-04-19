@@ -35,12 +35,12 @@ export default function Home() {
         <header className="flex justify-between items-baseline mb-14">
           <div className="flex items-baseline">
             <span
-              className="text-[22px] font-semibold tracking-wide"
+              className="text-title font-semibold tracking-wide"
               style={{ fontFamily: "var(--font-jp-serif)" }}
             >
               jikari
             </span>
-            <span className="ml-1.5 text-xs text-[color:var(--fg-faint)] tracking-[0.15em]">
+            <span className="ml-1.5 text-xs text-[color:var(--fg-faint)] tracking-tab">
               じかり
             </span>
           </div>
@@ -63,14 +63,14 @@ export default function Home() {
 
         {/* Heatmap */}
         <section className="mb-10">
-          <div className="text-xs text-[color:var(--fg-faint)] tracking-[0.18em] mb-2.5 font-medium">
+          <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium">
             7 WEEKS
           </div>
           {mounted ? <Heatmap data={heatmap} /> : <div style={{ height: "14px" }} />}
         </section>
 
         {/* Footer nav */}
-        <nav className="text-center text-[11px] text-[color:var(--fg-faint)] tracking-[0.25em] font-medium">
+        <nav className="text-center text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
           <Link href="/" className="hover:text-[color:var(--fg-soft)]">
             HOME
           </Link>{" "}
@@ -100,11 +100,11 @@ function SubjectRow({
   return (
     <div className="bg-[color:var(--bg)] flex items-center px-4 py-4">
       <div className="flex-1 flex items-baseline gap-3 min-w-0">
-        <span className="text-[17px] font-medium text-[color:var(--fg)] truncate">
+        <span className="text-body font-medium text-[color:var(--fg)] truncate">
           {ko}
         </span>
         <span
-          className="text-[12px] text-[color:var(--fg-faint)] tracking-[0.08em]"
+          className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {jp}

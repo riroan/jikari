@@ -108,7 +108,7 @@ export function AdjectiveCard({ adj, form, onResolved }: AdjectiveCardProps) {
   return (
     <div className="flex flex-col gap-8">
       <div
-        className="text-[12px] text-[color:var(--fg-faint)] tracking-[0.25em] font-medium"
+        className="text-label text-[color:var(--fg-faint)] tracking-caption font-medium"
         style={{ fontFamily: "var(--font-kr-sans)" }}
       >
         形容詞 · {formLabelKo}으로
@@ -168,7 +168,7 @@ export function AdjectiveCard({ adj, form, onResolved }: AdjectiveCardProps) {
               </div>
             )}
             <div
-              className="text-[28px] leading-tight font-semibold"
+              className="text-h1 leading-tight font-semibold"
               style={{
                 fontFamily: "var(--font-jp-serif)",
                 color: "var(--fg)",
@@ -197,7 +197,7 @@ export function AdjectiveCard({ adj, form, onResolved }: AdjectiveCardProps) {
             </div>
             <button
               onClick={handleNext}
-              className="self-end mt-2 px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              className="self-end mt-2 px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}
             >
               次へ
@@ -233,7 +233,7 @@ export function AdjectiveCard({ adj, form, onResolved }: AdjectiveCardProps) {
             </div>
             <button
               onClick={handleNext}
-              className="px-4 py-2 text-[13px] tracking-[0.15em] text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              className="px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}
             >
               次へ
