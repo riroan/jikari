@@ -6,6 +6,8 @@ import type {
   CardMode,
   LearningState,
   PersistedState,
+  QuizStat,
+  QuizStatKey,
 } from "./types";
 import { DEFAULT_SETTINGS, SCHEMA_VERSION } from "./types";
 import {
@@ -31,6 +33,9 @@ interface StoreActions {
     correct: boolean,
     answerMode?: AnswerMode,
   ) => void;
+
+  /** Increment the lifetime ◯/✕ tally for a page. */
+  recordQuizResult: (key: QuizStatKey, correct: boolean) => void;
 
   /** Get today's queue for a specific mode. */
   getQueueForMode: (mode: CardMode, allCardIds: string[]) => TodayQueue;
@@ -59,6 +64,7 @@ const initialState: PersistedState = {
   heatmap: {},
   lastActiveAt: 0,
   currentStreak: 0,
+  quizStats: {},
   settings: { ...DEFAULT_SETTINGS },
 };
 
@@ -81,6 +87,14 @@ export const useStore = create<Store>()(
           lastActiveAt: now,
           currentStreak: currentStreak(heatmap, now),
         });
+      },
+
+      recordQuizResult: (key, correct) => {
+        const prev: QuizStat = get().quizStats[key] ?? { correct: 0, wrong: 0 };
+        const next: QuizStat = correct
+          ? { ...prev, correct: prev.correct + 1 }
+          : { ...prev, wrong: prev.wrong + 1 };
+        set({ quizStats: { ...get().quizStats, [key]: next } });
       },
 
       getQueueForMode: (mode, allCardIds) => {
@@ -122,6 +136,7 @@ export const useStore = create<Store>()(
        * v1 → v2: added settings.showFurigana (default true)
        * v2 → v3: removed settings.dailyNewLimit / dailyReviewLimit
        * v3 → v4: added settings.typingThresholdBox (default 4)
+       * v4 → v5: added quizStats (lifetime ◯/✕ per page)
        */
       migrate: (persisted: unknown, _version: number) => {
         if (!persisted || typeof persisted !== "object") return initialState;
@@ -131,6 +146,7 @@ export const useStore = create<Store>()(
           ...initialState,
           ...p,
           schemaVersion: SCHEMA_VERSION,
+          quizStats: p.quizStats ?? {},
           settings: {
             theme: prev.theme ?? DEFAULT_SETTINGS.theme,
             showFurigana: prev.showFurigana ?? DEFAULT_SETTINGS.showFurigana,
@@ -152,6 +168,7 @@ export function exportState(): string {
     heatmap: state.heatmap,
     lastActiveAt: state.lastActiveAt,
     currentStreak: state.currentStreak,
+    quizStats: state.quizStats,
     settings: state.settings,
   };
   return JSON.stringify(backup, null, 2);

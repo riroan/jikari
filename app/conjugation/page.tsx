@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ConjugationCard } from "@/components/ConjugationCard";
+import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
@@ -70,6 +71,7 @@ function ConjugationPageInner() {
     searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const recordQuizResult = useStore((s) => s.recordQuizResult);
   const vocab = useCardsStore((s) => s.vocab);
 
   const verbs = useMemo(() => vocab.filter(isConjugatable), [vocab]);
@@ -144,6 +146,7 @@ function ConjugationPageInner() {
         form={form}
         onResolved={(wasCorrect) => {
           review("conjugation", srsCardId(verb.id, form), wasCorrect, "typed");
+          recordQuizResult("conjugation", wasCorrect);
           advance();
         }}
       />
@@ -162,6 +165,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
           >
             ← HOME
           </Link>
+          <QuizStats statKey="conjugation" />
           <h1
             className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}

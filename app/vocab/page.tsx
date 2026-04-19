@@ -4,12 +4,13 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { QuizCard } from "@/components/QuizCard";
+import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { generateVocabChoices, getVocab } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { shuffleIds } from "@/lib/deck";
+import { weightedShuffleIds } from "@/lib/deck";
 import { pickMode } from "@/lib/srs";
 import type { VocabCard } from "@/lib/types";
 
@@ -31,6 +32,7 @@ function VocabPageInner() {
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const recordQuizResult = useStore((s) => s.recordQuizResult);
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const vocabIds = useCardsStore((s) => s.vocabIds);
@@ -40,8 +42,15 @@ function VocabPageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => (mode === "study" ? vocabIds : shuffleIds(vocabIds, seed + epoch * 7919)),
-    [mode, seed, epoch, vocabIds]
+    () =>
+      mode === "study"
+        ? vocabIds
+        : weightedShuffleIds(
+            vocabIds,
+            (id) => getBox("vocab", id),
+            seed + epoch * 7919,
+          ),
+    [mode, seed, epoch, vocabIds, getBox]
   );
 
   const advance = () => {
@@ -89,6 +98,7 @@ function VocabPageInner() {
           answerMode={pickMode(getBox("vocab", card.id), threshold)}
           onResolved={(wasCorrect, answerMode) => {
             review("vocab", card.id, wasCorrect, answerMode);
+            recordQuizResult("vocab", wasCorrect);
             advance();
           }}
         />
@@ -108,6 +118,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
           >
             ← HOME
           </Link>
+          <QuizStats statKey="vocab" />
           <h1
             className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}

@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { QuizCard } from "@/components/QuizCard";
+import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
@@ -12,7 +13,7 @@ import {
   getGrammar,
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { shuffleIds } from "@/lib/deck";
+import { weightedShuffleIds } from "@/lib/deck";
 import type {
   GrammarCard,
   GrammarPatternCard,
@@ -42,6 +43,8 @@ function GrammarPageInner() {
     searchParams.get("tab") === "particle" ? "particle" : "pattern";
 
   const review = useStore((s) => s.review);
+  const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const getBox = useStore((s) => s.getBox);
   const patternIds = useCardsStore((s) => s.grammarPatternIds);
   const particleIds = useCardsStore((s) => s.grammarParticleContrastIds);
   const ids = tab === "pattern" ? patternIds : particleIds;
@@ -56,9 +59,17 @@ function GrammarPageInner() {
     setEpoch(0);
   }, [tab]);
 
+  const boxPrefix = tab === "pattern" ? "pattern" : "particle";
   const deck = useMemo(
-    () => (mode === "study" ? ids : shuffleIds(ids, seed + epoch * 7919)),
-    [mode, seed, epoch, ids],
+    () =>
+      mode === "study"
+        ? ids
+        : weightedShuffleIds(
+            ids,
+            (id) => getBox("grammar", `${boxPrefix}:${id}`),
+            seed + epoch * 7919,
+          ),
+    [mode, seed, epoch, ids, getBox, boxPrefix],
   );
 
   const advance = () => {
@@ -116,6 +127,7 @@ function GrammarPageInner() {
             const subtypedId =
               card.type === "pattern" ? `pattern:${card.id}` : `particle:${card.id}`;
             review("grammar", subtypedId, wasCorrect);
+            recordQuizResult("grammar", wasCorrect);
             advance();
           }}
         />
@@ -141,6 +153,7 @@ function Shell({
           >
             ← HOME
           </Link>
+          <QuizStats statKey="grammar" />
           <div className="flex items-baseline gap-4">
             <h1
               className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"

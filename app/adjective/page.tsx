@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AdjectiveCard } from "@/components/AdjectiveCard";
+import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
@@ -51,6 +52,7 @@ function AdjectivePageInner() {
     searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const recordQuizResult = useStore((s) => s.recordQuizResult);
   const vocab = useCardsStore((s) => s.vocab);
 
   const adjs = useMemo(() => vocab.filter(isConjugatable), [vocab]);
@@ -124,6 +126,7 @@ function AdjectivePageInner() {
         form={form}
         onResolved={(wasCorrect) => {
           review("adjective", `${adj.id}:${form}`, wasCorrect, "typed");
+          recordQuizResult("adjective", wasCorrect);
           advance();
         }}
       />
@@ -142,6 +145,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
           >
             ← HOME
           </Link>
+          <QuizStats statKey="adjective" />
           <h1
             className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}

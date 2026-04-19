@@ -21,8 +21,6 @@ export function StudyCard({
 }) {
   return (
     <div className="flex flex-col gap-8 min-h-[520px]">
-      <div className="min-h-[360px]">{body}</div>
-
       <div className="flex items-center justify-between">
         <button
           onClick={onPrev}
@@ -47,6 +45,8 @@ export function StudyCard({
           다음 →
         </button>
       </div>
+
+      <div className="min-h-[360px]">{body}</div>
     </div>
   );
 }

@@ -19,6 +19,7 @@ const validState: PersistedState = {
   heatmap: { "2026-04-17": 5 },
   lastActiveAt: 1700000000000,
   currentStreak: 3,
+  quizStats: { kanji: { correct: 7, wrong: 2 } },
   settings: {
     theme: "light",
     showFurigana: true,

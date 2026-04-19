@@ -4,11 +4,12 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { QuizCard } from "@/components/QuizCard";
+import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { useStore } from "@/lib/store";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { shuffleIds } from "@/lib/deck";
+import { weightedShuffleIds } from "@/lib/deck";
 import { pickMode } from "@/lib/srs";
 import { normalizeJapanese } from "@/lib/normalize";
 import type { KanjiCard } from "@/lib/types";
@@ -33,6 +34,7 @@ function KanjiPageInner() {
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const recordQuizResult = useStore((s) => s.recordQuizResult);
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const kanjiIds = useCardsStore((s) => s.kanjiIds);
@@ -43,8 +45,15 @@ function KanjiPageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => (mode === "study" ? kanjiIds : shuffleIds(kanjiIds, seed + epoch * 7919)),
-    [mode, seed, epoch, kanjiIds]
+    () =>
+      mode === "study"
+        ? kanjiIds
+        : weightedShuffleIds(
+            kanjiIds,
+            (id) => getBox("kanji", id),
+            seed + epoch * 7919,
+          ),
+    [mode, seed, epoch, kanjiIds, getBox]
   );
 
   const advance = () => {
@@ -92,6 +101,7 @@ function KanjiPageInner() {
           answerMode={pickMode(getBox("kanji", card.id), threshold)}
           onResolved={(wasCorrect, answerMode) => {
             review("kanji", card.id, wasCorrect, answerMode);
+            recordQuizResult("kanji", wasCorrect);
             advance();
           }}
         />
@@ -111,6 +121,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
           >
             ← HOME
           </Link>
+          <QuizStats statKey="kanji" />
           <h1
             className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}

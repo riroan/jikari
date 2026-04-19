@@ -4,12 +4,13 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { QuizCard } from "@/components/QuizCard";
+import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { shuffleIds } from "@/lib/deck";
+import { weightedShuffleIds } from "@/lib/deck";
 import type { SentenceCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -32,6 +33,8 @@ function SentencePageInner() {
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const getBox = useStore((s) => s.getBox);
   const sentenceIds = useCardsStore((s) => s.sentenceIds);
 
   const [epoch, setEpoch] = useState(0);
@@ -39,8 +42,15 @@ function SentencePageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => (mode === "study" ? sentenceIds : shuffleIds(sentenceIds, seed + epoch * 7919)),
-    [mode, seed, epoch, sentenceIds]
+    () =>
+      mode === "study"
+        ? sentenceIds
+        : weightedShuffleIds(
+            sentenceIds,
+            (id) => getBox("sentence", id),
+            seed + epoch * 7919,
+          ),
+    [mode, seed, epoch, sentenceIds, getBox]
   );
 
   const advance = () => {
@@ -87,6 +97,7 @@ function SentencePageInner() {
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
             review("sentence", card.id, wasCorrect);
+            recordQuizResult("sentence", wasCorrect);
             advance();
           }}
         />
@@ -106,6 +117,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
           >
             ← HOME
           </Link>
+          <QuizStats statKey="sentence" />
           <h1
             className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}

@@ -275,6 +275,25 @@ export interface LearningState {
 /** Daily heatmap data — key is YYYY-MM-DD (browser local timezone) */
 export type HeatmapData = Record<string, number>;
 
+/**
+ * Cumulative per-page quiz tallies (lifetime, not session).
+ * Key is a page identifier — kept separate from CardMode because pages and SRS
+ * modes don't always align (e.g., particle page logs reviews under 'sentence').
+ */
+export type QuizStatKey =
+  | "kanji"
+  | "vocab"
+  | "sentence"
+  | "particle"
+  | "grammar"
+  | "conjugation"
+  | "adjective";
+
+export interface QuizStat {
+  correct: number;
+  wrong: number;
+}
+
 /** Root persisted state — bump schemaVersion on breaking change */
 export interface PersistedState {
   schemaVersion: number;
@@ -284,6 +303,8 @@ export interface PersistedState {
   lastActiveAt: number;
   /** Consecutive days of activity */
   currentStreak: number;
+  /** Lifetime ◯/✕ tallies per page */
+  quizStats: Record<string, QuizStat>;
   /** User settings */
   settings: {
     theme: "light" | "dark";
@@ -298,7 +319,7 @@ export interface PersistedState {
   };
 }
 
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
 
 export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   theme: "light",

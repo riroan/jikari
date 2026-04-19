@@ -5,6 +5,7 @@ import type {
   HeatmapData,
   LearningState,
   PersistedState,
+  QuizStat,
 } from "../types";
 import { DEFAULT_SETTINGS, SCHEMA_VERSION } from "../types";
 
@@ -34,6 +35,17 @@ export async function getProgress(): Promise<PersistedState> {
   const heatmap: HeatmapData = {};
   for (const r of hmRows) heatmap[r.day as string] = Number(r.count);
 
+  const [qsRows] = await pool.query<RowDataPacket[]>(
+    "SELECT stat_key, correct_count, wrong_count FROM quiz_stats"
+  );
+  const quizStats: Record<string, QuizStat> = {};
+  for (const r of qsRows) {
+    quizStats[r.stat_key as string] = {
+      correct: Number(r.correct_count),
+      wrong: Number(r.wrong_count),
+    };
+  }
+
   const [stRows] = await pool.query<RowDataPacket[]>(
     "SELECT theme, show_furigana, typing_threshold_box, last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1"
   );
@@ -46,6 +58,7 @@ export async function getProgress(): Promise<PersistedState> {
       heatmap,
       lastActiveAt: 0,
       currentStreak: 0,
+      quizStats,
       settings: { ...DEFAULT_SETTINGS },
     };
   }
@@ -62,6 +75,7 @@ export async function getProgress(): Promise<PersistedState> {
     heatmap,
     lastActiveAt: Number(st.last_active_at),
     currentStreak: Number(st.current_streak),
+    quizStats,
     settings: {
       theme: st.theme as "light" | "dark",
       showFurigana: Boolean(st.show_furigana),
@@ -98,6 +112,20 @@ export async function putProgress(state: PersistedState): Promise<void> {
     if (heatmapList.length > 0) {
       const rows = heatmapList.map(([day, count]) => [day, count]);
       await conn.query("INSERT INTO heatmap_days (day, count) VALUES ?", [rows]);
+    }
+
+    await conn.query("DELETE FROM quiz_stats");
+    const quizStatsList = Object.entries(state.quizStats);
+    if (quizStatsList.length > 0) {
+      const rows = quizStatsList.map(([key, stat]) => [
+        key,
+        stat.correct,
+        stat.wrong,
+      ]);
+      await conn.query(
+        "INSERT INTO quiz_stats (stat_key, correct_count, wrong_count) VALUES ?",
+        [rows]
+      );
     }
 
     await conn.query(

@@ -4,12 +4,13 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { QuizCard } from "@/components/QuizCard";
+import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { shuffleIds } from "@/lib/deck";
+import { weightedShuffleIds } from "@/lib/deck";
 import { PARTICLE_INFO } from "@/lib/particle-info";
 import type { SentenceCard } from "@/lib/types";
 
@@ -33,6 +34,8 @@ function ParticlePageInner() {
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
 
   const review = useStore((s) => s.review);
+  const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const getBox = useStore((s) => s.getBox);
   const particleIds = useCardsStore((s) => s.particleIds);
 
   const [epoch, setEpoch] = useState(0);
@@ -40,8 +43,16 @@ function ParticlePageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => (mode === "study" ? particleIds : shuffleIds(particleIds, seed + epoch * 7919)),
-    [mode, seed, epoch, particleIds]
+    () =>
+      mode === "study"
+        ? particleIds
+        : weightedShuffleIds(
+            particleIds,
+            // Particle review() also writes under mode 'sentence' — see onResolved.
+            (id) => getBox("sentence", id),
+            seed + epoch * 7919,
+          ),
+    [mode, seed, epoch, particleIds, getBox]
   );
 
   const advance = () => {
@@ -88,6 +99,7 @@ function ParticlePageInner() {
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
             review("sentence", card.id, wasCorrect);
+            recordQuizResult("particle", wasCorrect);
             advance();
           }}
         />
@@ -107,6 +119,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
           >
             ← HOME
           </Link>
+          <QuizStats statKey="particle" />
           <h1
             className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}

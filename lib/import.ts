@@ -18,12 +18,19 @@ const learningStateSchema = z.object({
   lastReviewed: z.number().int().nonnegative(),
 });
 
+const quizStatSchema = z.object({
+  correct: z.number().int().nonnegative(),
+  wrong: z.number().int().nonnegative(),
+});
+
 const persistedStateSchema = z.object({
   schemaVersion: z.number().int().positive(),
   learningStates: z.record(z.string(), learningStateSchema),
   heatmap: z.record(z.string().regex(/^\d{4}-\d{2}-\d{2}$/), z.number().int().nonnegative()),
   lastActiveAt: z.number().int().nonnegative(),
   currentStreak: z.number().int().nonnegative(),
+  // Older (v<5) backups don't carry quizStats — pad with empty object so they still import.
+  quizStats: z.record(z.string(), quizStatSchema).default({}),
   settings: z.object({
     theme: z.enum(["light", "dark"]),
     showFurigana: z.boolean().default(true),
