@@ -1,0 +1,202 @@
+[
+  {
+    "id": "s161",
+    "sentence": "アメリカに＿＿＿する。",
+    "sentenceRuby": "アメリカに＿＿＿する。",
+    "blank": "留学",
+    "blankRuby": "{留学|りゅうがく}",
+    "distractors": ["傘", "花", "時計"],
+    "translation": "미국에 유학한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s162",
+    "sentence": "日本での＿＿＿は楽しい。",
+    "sentenceRuby": "{日本|にほん}での＿＿＿は{楽|たの}しい。",
+    "blank": "生活",
+    "blankRuby": "{生活|せいかつ}",
+    "distractors": ["傘", "花", "電話"],
+    "translation": "일본에서의 생활은 즐겁다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s163",
+    "sentence": "明日の＿＿＿は十時から。",
+    "sentenceRuby": "{明日|あした}の＿＿＿は{十時|じゅうじ}から。",
+    "blank": "授業",
+    "blankRuby": "{授業|じゅぎょう}",
+    "distractors": ["傘", "魚", "花"],
+    "translation": "내일 수업은 10시부터.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s164",
+    "sentence": "毎日＿＿＿をする。",
+    "sentenceRuby": "{毎日|まいにち}＿＿＿をする。",
+    "blank": "宿題",
+    "blankRuby": "{宿題|しゅくだい}",
+    "distractors": ["傘", "花", "電話"],
+    "translation": "매일 숙제를 한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s165",
+    "sentence": "友達と＿＿＿をする。",
+    "sentenceRuby": "{友達|ともだち}と＿＿＿をする。",
+    "blank": "約束",
+    "blankRuby": "{約束|やくそく}",
+    "distractors": ["手紙", "傘", "時計"],
+    "translation": "친구와 약속을 한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s166",
+    "sentence": "母からの手紙に＿＿＿する。",
+    "sentenceRuby": "{母|はは}からの{手紙|てがみ}に＿＿＿する。",
+    "blank": "返事",
+    "blankRuby": "{返事|へんじ}",
+    "distractors": ["傘", "花", "色"],
+    "translation": "어머니의 편지에 답장한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s167",
+    "sentence": "新しい先生を＿＿＿する。",
+    "sentenceRuby": "{新|あたら}しい{先生|せんせい}を＿＿＿する。",
+    "blank": "紹介",
+    "blankRuby": "{紹介|しょうかい}",
+    "distractors": ["傘", "花", "魚"],
+    "translation": "새 선생님을 소개한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s168",
+    "sentence": "先生が意味を＿＿＿する。",
+    "sentenceRuby": "{先生|せんせい}が{意味|いみ}を＿＿＿する。",
+    "blank": "説明",
+    "blankRuby": "{説明|せつめい}",
+    "distractors": ["傘", "花", "魚"],
+    "translation": "선생님이 의미를 설명한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s169",
+    "sentence": "旅行の＿＿＿をする。",
+    "sentenceRuby": "{旅行|りょこう}の＿＿＿をする。",
+    "blank": "準備",
+    "blankRuby": "{準備|じゅんび}",
+    "distractors": ["傘", "花", "時計"],
+    "translation": "여행 준비를 한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s170",
+    "sentence": "＿＿＿とても忙しい。",
+    "sentenceRuby": "＿＿＿とても{忙|いそが}しい。",
+    "blank": "最近",
+    "blankRuby": "{最近|さいきん}",
+    "distractors": ["傘", "花", "色"],
+    "translation": "최근 매우 바쁘다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s171",
+    "sentence": "＿＿＿の問題が一番難しい。",
+    "sentenceRuby": "＿＿＿の{問題|もんだい}が{一番|いちばん}{難|むずか}しい。",
+    "blank": "最後",
+    "blankRuby": "{最後|さいご}",
+    "distractors": ["花", "傘", "色"],
+    "translation": "마지막 문제가 가장 어렵다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s172",
+    "sentence": "＿＿＿の夢を話す。",
+    "sentenceRuby": "＿＿＿の{夢|ゆめ}を{話|はな}す。",
+    "blank": "将来",
+    "blankRuby": "{将来|しょうらい}",
+    "distractors": ["傘", "花", "色"],
+    "translation": "장래의 꿈을 이야기한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s173",
+    "sentence": "三月に大学を＿＿＿する。",
+    "sentenceRuby": "{三月|さんがつ}に{大学|だいがく}を＿＿＿する。",
+    "blank": "卒業",
+    "blankRuby": "{卒業|そつぎょう}",
+    "distractors": ["傘", "花", "時計"],
+    "translation": "3월에 대학을 졸업한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s174",
+    "sentence": "＿＿＿に会いに行く。",
+    "sentenceRuby": "＿＿＿に{会|あ}いに{行|い}く。",
+    "blank": "社長",
+    "blankRuby": "{社長|しゃちょう}",
+    "distractors": ["傘", "花", "色"],
+    "translation": "사장님을 만나러 간다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s175",
+    "sentence": "遅れた＿＿＿を話す。",
+    "sentenceRuby": "{遅|おく}れた＿＿＿を{話|はな}す。",
+    "blank": "理由",
+    "blankRuby": "{理由|りゆう}",
+    "distractors": ["傘", "花", "色"],
+    "translation": "늦은 이유를 말한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s176",
+    "sentence": "試験の＿＿＿を聞く。",
+    "sentenceRuby": "{試験|しけん}の＿＿＿を{聞|き}く。",
+    "blank": "結果",
+    "blankRuby": "{結果|けっか}",
+    "distractors": ["傘", "花", "時計"],
+    "translation": "시험 결과를 듣는다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s177",
+    "sentence": "日本の＿＿＿を勉強する。",
+    "sentenceRuby": "{日本|にほん}の＿＿＿を{勉強|べんきょう}する。",
+    "blank": "歴史",
+    "blankRuby": "{歴史|れきし}",
+    "distractors": ["傘", "花", "魚"],
+    "translation": "일본의 역사를 공부한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s178",
+    "sentence": "答えを＿＿＿。",
+    "sentenceRuby": "{答|こた}えを＿＿＿。",
+    "blank": "間違える",
+    "blankRuby": "{間違|まちが}える",
+    "distractors": ["売る", "飲む", "閉める"],
+    "translation": "답을 틀린다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s179",
+    "sentence": "友達に本を＿＿＿。",
+    "sentenceRuby": "{友達|ともだち}に{本|ほん}を＿＿＿。",
+    "blank": "貸す",
+    "blankRuby": "{貸|か}す",
+    "distractors": ["飲む", "寝る", "泳ぐ"],
+    "translation": "친구에게 책을 빌려준다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s180",
+    "sentence": "この道は夜＿＿＿。",
+    "sentenceRuby": "この{道|みち}は{夜|よる}＿＿＿。",
+    "blank": "危ない",
+    "blankRuby": "{危|あぶ}ない",
+    "distractors": ["明るい", "楽しい", "難しい"],
+    "translation": "이 길은 밤에 위험하다.",
+    "jlptLevel": 4
+  }
+]
