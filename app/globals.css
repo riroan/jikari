@@ -30,6 +30,35 @@
 
   /* Bg gradient — DESIGN.md § 3 */
   --bg-gradient: radial-gradient(ellipse at top, #F9F4E8 0%, var(--paper) 60%);
+
+  /* Spacing scale — DESIGN.md § 4 */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   14px;
+  --space-lg:   22px;
+  --space-xl:   44px;
+  --space-xxl:  68px;
+
+  /* Radii — paper-tone; pill is settings-toggle exception only */
+  --radius-sm:   2px;
+  --radius-pill: 999px;
+
+  /* Type scale — DESIGN.md § 2 */
+  --type-hero:     148px;
+  --type-display:  48px;
+  --type-title:    22px;
+  --type-h1:       28px;
+  --type-h2:       20px;
+  --type-body:     17px;
+  --type-reading:  17px;
+  --type-small:    14px;
+  --type-label:    12px;
+  --type-caption:  11px;
+
+  /* Letter-spacing — all-caps tracking */
+  --track-label:   0.18em;
+  --track-caption: 0.25em;
+  --track-tab:     0.15em;
 }
 
 [data-theme="dark"] {
@@ -114,4 +143,16 @@ mark.jp-highlight {
 
 [data-theme="dark"] mark.jp-highlight {
   background: color-mix(in srgb, var(--gold) 15%, transparent);
+}
+
+/*
+ * Ruby baseline — DESIGN.md § 2 / design system colors_and_type.css
+ * Native <ruby>/<rt> rendering; rt at 45% size keeps readings quiet
+ * next to hero kanji at 148px.
+ */
+ruby { ruby-position: over; }
+ruby rt {
+  font-size: 0.45em;
+  letter-spacing: 0.04em;
+  font-weight: 400;
 }
