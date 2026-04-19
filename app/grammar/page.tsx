@@ -149,7 +149,7 @@ function Shell({
         <header className="flex justify-between items-center mb-8">
           <Link
             href="/"
-            className="text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
+            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
           >
             ← HOME
           </Link>
@@ -207,7 +207,7 @@ function TabLink({
       role="tab"
       aria-selected={active}
       href={href}
-      className={`text-small pb-3 -mb-px border-b-2 transition-colors tracking-wide ${
+      className={`inline-flex items-center min-h-[44px] py-2 -mb-px border-b-2 text-small transition-colors tracking-wide ${
         active
           ? "text-[color:var(--fg)] border-[color:var(--accent-korean)]"
           : "text-[color:var(--fg-faint)] border-transparent hover:text-[color:var(--fg-soft)]"

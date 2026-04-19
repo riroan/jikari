@@ -35,7 +35,7 @@ export default function ProgressPage() {
         <header className="flex justify-between items-baseline mb-10">
           <Link
             href="/"
-            className="text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
+            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
           >
             ← HOME
           </Link>
