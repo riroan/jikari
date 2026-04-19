@@ -45,6 +45,7 @@ export default function Home() {
           <EntryRow href="/vocab?mode=study" ko="단어" jp="単語" />
           <EntryRow href="/sentence?mode=study" ko="문장" jp="文章" />
           <EntryRow href="/particle?mode=study" ko="조사" jp="助詞" />
+          <EntryRow href="/conjugation?mode=study" ko="활용" jp="活用" />
         </section>
 
         {/* 퀴즈 section */}
