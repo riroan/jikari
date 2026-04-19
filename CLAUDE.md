@@ -32,9 +32,12 @@
 ## 테스트
 
 ```bash
-bun test         # vitest (단위 테스트)
-bun e2e          # playwright (스모크 E2E)
+bun run test        # vitest 단일 실행 (단위 테스트, 331 tests)
+bun run test:watch  # vitest watch 모드 (개발 중)
+bun run e2e         # playwright (스모크 E2E)
 ```
+
+> **주의:** `bun test`는 bun 빌트인 테스트 러너(vitest 아님)로 실행되어 Playwright `.spec.ts`까지 주워가 26 fail + config 에러로 깨짐. 항상 `bun run test` 사용.
 
 ## 개발
 
