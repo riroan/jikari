@@ -1,0 +1,202 @@
+[
+  {
+    "id": "s141",
+    "sentence": "大きな＿＿＿で話す。",
+    "sentenceRuby": "{大|おお}きな＿＿＿で{話|はな}す。",
+    "blank": "声",
+    "blankRuby": "{声|こえ}",
+    "distractors": ["花", "傘", "時計"],
+    "translation": "큰 목소리로 말한다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s142",
+    "sentence": "その映画はとても＿＿＿。",
+    "sentenceRuby": "その{映画|えいが}はとても＿＿＿。",
+    "blank": "悲しい",
+    "blankRuby": "{悲|かな}しい",
+    "distractors": ["速い", "明るい", "青い"],
+    "translation": "그 영화는 매우 슬프다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s143",
+    "sentence": "子供が大きな声で＿＿＿。",
+    "sentenceRuby": "{子供|こども}が{大|おお}きな{声|こえ}で＿＿＿。",
+    "blank": "笑う",
+    "blankRuby": "{笑|わら}う",
+    "distractors": ["泳ぐ", "寝る", "売る"],
+    "translation": "아이가 큰 소리로 웃는다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s144",
+    "sentence": "赤ちゃんが＿＿＿。",
+    "sentenceRuby": "{赤|あか}ちゃんが＿＿＿。",
+    "blank": "泣く",
+    "blankRuby": "{泣|な}く",
+    "distractors": ["歌う", "売る", "歩く"],
+    "translation": "아기가 운다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s145",
+    "sentence": "今日は傘を家に＿＿＿。",
+    "sentenceRuby": "{今日|きょう}は{傘|かさ}を{家|いえ}に＿＿＿。",
+    "blank": "忘れる",
+    "blankRuby": "{忘|わす}れる",
+    "distractors": ["売る", "泳ぐ", "歩く"],
+    "translation": "오늘은 우산을 집에 두고 왔다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s146",
+    "sentence": "試験の勉強は＿＿＿。",
+    "sentenceRuby": "{試験|しけん}の{勉強|べんきょう}は＿＿＿。",
+    "blank": "苦しい",
+    "blankRuby": "{苦|くる}しい",
+    "distractors": ["明るい", "青い", "早い"],
+    "translation": "시험 공부는 괴롭다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s147",
+    "sentence": "ノートに＿＿＿を描く。",
+    "sentenceRuby": "ノートに＿＿＿を{描|か}く。",
+    "blank": "絵",
+    "blankRuby": "{絵|え}",
+    "distractors": ["電話", "果物", "手紙"],
+    "translation": "노트에 그림을 그린다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s148",
+    "sentence": "景色をカメラで＿＿＿。",
+    "sentenceRuby": "{景色|けしき}をカメラで＿＿＿。",
+    "blank": "写す",
+    "blankRuby": "{写|うつ}す",
+    "distractors": ["売る", "歩く", "閉める"],
+    "translation": "풍경을 카메라로 찍는다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s149",
+    "sentence": "美しい音楽を＿＿＿。",
+    "sentenceRuby": "{美|うつく}しい{音楽|おんがく}を＿＿＿。",
+    "blank": "感じる",
+    "blankRuby": "{感|かん}じる",
+    "distractors": ["売る", "歩く", "閉める"],
+    "translation": "아름다운 음악을 느낀다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s150",
+    "sentence": "親を心から＿＿＿する。",
+    "sentenceRuby": "{親|おや}を{心|こころ}から＿＿＿する。",
+    "blank": "愛",
+    "blankRuby": "{愛|あい}",
+    "distractors": ["傘", "時計", "電話"],
+    "translation": "부모를 진심으로 사랑한다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s151",
+    "sentence": "先生から日本語を＿＿＿。",
+    "sentenceRuby": "{先生|せんせい}から{日本語|にほんご}を＿＿＿。",
+    "blank": "習う",
+    "blankRuby": "{習|なら}う",
+    "distractors": ["売る", "泳ぐ", "閉める"],
+    "translation": "선생님에게 일본어를 배운다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s152",
+    "sentence": "毎日ピアノの＿＿＿をする。",
+    "sentenceRuby": "{毎日|まいにち}ピアノの＿＿＿をする。",
+    "blank": "練習",
+    "blankRuby": "{練習|れんしゅう}",
+    "distractors": ["傘", "時計", "花"],
+    "translation": "매일 피아노 연습을 한다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s153",
+    "sentence": "兄は来年＿＿＿する。",
+    "sentenceRuby": "{兄|あに}は{来年|らいねん}＿＿＿する。",
+    "blank": "結婚",
+    "blankRuby": "{結婚|けっこん}",
+    "distractors": ["時計", "花", "電話"],
+    "translation": "형은 내년에 결혼한다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s154",
+    "sentence": "好きな色を＿＿＿。",
+    "sentenceRuby": "{好|す}きな{色|いろ}を＿＿＿。",
+    "blank": "選ぶ",
+    "blankRuby": "{選|えら}ぶ",
+    "distractors": ["売る", "寝る", "歩く"],
+    "translation": "좋아하는 색을 고른다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s155",
+    "sentence": "旅行の予定を＿＿＿。",
+    "sentenceRuby": "{旅行|りょこう}の{予定|よてい}を＿＿＿。",
+    "blank": "決める",
+    "blankRuby": "{決|き}める",
+    "distractors": ["売る", "寝る", "泳ぐ"],
+    "translation": "여행 일정을 정한다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s156",
+    "sentence": "季節が＿＿＿。",
+    "sentenceRuby": "{季節|きせつ}が＿＿＿。",
+    "blank": "変わる",
+    "blankRuby": "{変|か}わる",
+    "distractors": ["売る", "寝る", "閉める"],
+    "translation": "계절이 바뀐다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s157",
+    "sentence": "明日の予定を＿＿＿。",
+    "sentenceRuby": "{明日|あした}の{予定|よてい}を＿＿＿。",
+    "blank": "変える",
+    "blankRuby": "{変|か}える",
+    "distractors": ["売る", "寝る", "泳ぐ"],
+    "translation": "내일 일정을 바꾼다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s158",
+    "sentence": "バスが駅の前を＿＿＿。",
+    "sentenceRuby": "バスが{駅|えき}の{前|まえ}を＿＿＿。",
+    "blank": "通る",
+    "blankRuby": "{通|とお}る",
+    "distractors": ["売る", "寝る", "泳ぐ"],
+    "translation": "버스가 역 앞을 지나간다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s159",
+    "sentence": "机の上の猫が＿＿＿。",
+    "sentenceRuby": "{机|つくえ}の{上|うえ}の{猫|ねこ}が＿＿＿。",
+    "blank": "動く",
+    "blankRuby": "{動|うご}く",
+    "distractors": ["売る", "寝る", "閉める"],
+    "translation": "책상 위 고양이가 움직인다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s160",
+    "sentence": "信号で車が＿＿＿。",
+    "sentenceRuby": "{信号|しんごう}で{車|くるま}が＿＿＿。",
+    "blank": "止まる",
+    "blankRuby": "{止|と}まる",
+    "distractors": ["売る", "寝る", "閉める"],
+    "translation": "신호에서 차가 멈춘다.",
+    "jlptLevel": 3
+  }
+]
