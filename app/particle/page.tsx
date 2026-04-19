@@ -173,6 +173,7 @@ function ParticleStudyBody({ card }: { card: SentenceCard }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {info && <ParticleInfoBlock particle={card.blank} info={info} />}
       <div
         className="text-[20px] leading-[1.8] font-medium"
         style={{
@@ -190,7 +191,6 @@ function ParticleStudyBody({ card }: { card: SentenceCard }) {
       <div className="text-[14px] text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}
       </div>
-      {info && <ParticleInfoBlock particle={card.blank} info={info} />}
     </div>
   );
 }
@@ -203,7 +203,7 @@ function ParticleInfoBlock({
   info: { label: string; gloss: string; note: string };
 }) {
   return (
-    <div className="mt-2 pl-3 border-l-2 border-[color:var(--accent-progress)] flex flex-col gap-1.5">
+    <div className="pl-3 border-l-2 border-[color:var(--accent-progress)] flex flex-col gap-1.5">
       <div className="flex items-baseline gap-2">
         <span
           className="text-[22px] font-semibold text-[color:var(--accent-progress)]"
