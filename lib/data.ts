@@ -1,4 +1,13 @@
-import type { KanjiCard, SentenceCard, VocabCard } from "./types";
+import type {
+  GrammarCard,
+  GrammarPatternCard,
+  GrammarPatternQuiz,
+  KanjiCard,
+  ParticleContrastCard,
+  ParticleContrastQuiz,
+  SentenceCard,
+  VocabCard,
+} from "./types";
 import { useCardsStore } from "./cards-store";
 
 function cards() {
@@ -15,6 +24,22 @@ export function getVocab(id: string): VocabCard | undefined {
 
 export function getSentence(id: string): SentenceCard | undefined {
   return cards().sentenceById.get(id);
+}
+
+export function getGrammar(id: string): GrammarCard | undefined {
+  return cards().grammarById.get(id);
+}
+
+export function getGrammarPattern(id: string): GrammarPatternCard | undefined {
+  const c = cards().grammarById.get(id);
+  return c?.type === "pattern" ? c : undefined;
+}
+
+export function getGrammarParticleContrast(
+  id: string,
+): ParticleContrastCard | undefined {
+  const c = cards().grammarById.get(id);
+  return c?.type === "particle_contrast" ? c : undefined;
 }
 
 /**
@@ -119,13 +144,39 @@ export function generateVocabChoices(
   return { correct, choices };
 }
 
+/**
+ * Shared 4-choice builder. Shuffles `[correct, ...distractors]` with a
+ * stable seed and returns the same `{ correct, choices }` shape every
+ * quiz-flavored mode uses.
+ */
+export function generateChoices(
+  correct: string,
+  distractors: string[],
+  seed: number = Math.random(),
+): { correct: string; choices: string[] } {
+  return { correct, choices: shuffle([correct, ...distractors], seed) };
+}
+
 export function generateSentenceChoices(
   card: SentenceCard,
   seed: number = Math.random()
 ): { correct: string; choices: string[] } {
   const correct = card.blankRuby ?? wordToRuby(card.blank);
   const distractorsRuby = card.distractors.map(wordToRuby);
-  return { correct, choices: shuffle([correct, ...distractorsRuby], seed) };
+  return generateChoices(correct, distractorsRuby, seed);
+}
+
+/**
+ * Grammar quiz 4-choice — both pattern and particle_contrast quiz shapes
+ * already carry `correct` + `distractors: string[]`, so this is a thin
+ * wrapper over `generateChoices`. Exported as a named function so grammar
+ * callsites don't poke the generic helper directly.
+ */
+export function generateGrammarQuizChoices(
+  quiz: GrammarPatternQuiz | ParticleContrastQuiz,
+  seed: number = Math.random()
+): { correct: string; choices: string[] } {
+  return generateChoices(quiz.correct, quiz.distractors, seed);
 }
 
 // ─────────────────────────────────────────────────────────────

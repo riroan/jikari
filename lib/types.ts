@@ -134,6 +134,100 @@ export const ADJ_FORMS_FOR: Record<
 
 export type SentenceCategory = "vocab" | "particle";
 
+/**
+ * Grammar mode cards (문법 모드) — 문형 + 조사 대조.
+ * See design: ~/.gstack/projects/jikari/riroan-main-design-20260418-235448.md
+ *
+ * Data layout: one `grammar_cards` row per card, with a `type` discriminator
+ * and JSON payload. Two variants share an id namespace but render differently.
+ *
+ * Example/quiz strings may carry inline markup (see lib/jp-markup.ts):
+ *   {漢字|かんじ}    furigana ruby
+ *   [[〜なければ]]   pattern highlight
+ */
+export type GrammarCardType = "pattern" | "particle_contrast";
+
+export interface GrammarExample {
+  /** Japanese sentence with optional {kanji|kana} ruby markup */
+  jp: string;
+  /** Korean translation */
+  ko: string;
+}
+
+export interface GrammarPatternQuiz {
+  /** Japanese sentence with a ＿＿＿ blank */
+  sentence: string;
+  /** Optional ruby-marked version of `sentence` */
+  sentenceRuby?: string;
+  /** The correct fill-in for the blank (may carry [[...]] highlight markup) */
+  correct: string;
+  /** 3 semantically-distinct distractors */
+  distractors: string[];
+  /** Korean translation of the full sentence */
+  translation: string;
+}
+
+/**
+ * 문형 카드 — 一つの grammar pattern + 한국어 구조 매핑 + 예문 3 + 빈칸 퀴즈 3.
+ */
+export interface GrammarPatternCard {
+  id: string;
+  type: "pattern";
+  /** e.g., "〜なければならない" */
+  pattern: string;
+  /** Korean structural equivalent, e.g., "〜지 않으면 안 된다 / 〜해야 한다" */
+  koreanStructure: string;
+  /** One-line Korean meaning for card-front display */
+  meaningKo: string;
+  /** 3 example sentences (may contain {ruby} and [[highlight]]) */
+  examples: GrammarExample[];
+  /** 3 blank-fill quizzes */
+  quizzes: GrammarPatternQuiz[];
+  jlptLevel: JLPTLevel;
+}
+
+export interface ParticleContrastExample {
+  /** Which particle this example illustrates */
+  particle: string;
+  /** Japanese sentence with optional ruby markup */
+  jp: string;
+  /** Korean translation */
+  ko: string;
+}
+
+export interface ParticleContrastQuiz {
+  sentence: string;
+  sentenceRuby?: string;
+  /** The correct particle (one of `particles`) */
+  correct: string;
+  /**
+   * 3 distractors — may be the other particle from the same pair AND two
+   * particles borrowed from other pairs (per eng review 2026-04-19 #7:
+   * 4지선다 to avoid coin-flip memorization of 2-choice).
+   */
+  distractors: string[];
+  translation: string;
+}
+
+/**
+ * 조사 대조 카드 — 하나의 particle pair + 한국어 규칙 + 예문 2쌍(각 particle당 2) + 빈칸 퀴즈 3.
+ */
+export interface ParticleContrastCard {
+  id: string;
+  type: "particle_contrast";
+  /** Exactly two particles being contrasted, e.g., ["は","が"] */
+  particles: [string, string];
+  /** One-line Korean rule that distinguishes them */
+  rule: string;
+  /** 4 examples total — 2 per particle */
+  examples: ParticleContrastExample[];
+  /** 3 blank quizzes */
+  quizzes: ParticleContrastQuiz[];
+  jlptLevel: JLPTLevel;
+}
+
+export type GrammarCard = GrammarPatternCard | ParticleContrastCard;
+
 export interface SentenceCard {
   id: string;
   /** Which pool this card belongs to — default "vocab" (verbs/adjectives blanks). */
@@ -160,8 +254,9 @@ export type CardMode =
   | "vocab"
   | "sentence"
   | "conjugation"
-  | "adjective";
-export type Card = KanjiCard | VocabCard | SentenceCard;
+  | "adjective"
+  | "grammar";
+export type Card = KanjiCard | VocabCard | SentenceCard | GrammarCard;
 
 export interface LearningState {
   /** Composite key: `${mode}:${cardId}` */
