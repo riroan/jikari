@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { ModePageShell } from "@/components/ModePageShell";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { masteryLevel } from "@/lib/srs";
@@ -30,83 +30,66 @@ export default function ProgressPage() {
   ).length;
 
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
-        <header className="flex justify-between items-baseline mb-10">
-          <Link
-            href="/"
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
-          >
-            ← HOME
-          </Link>
-          <h1
-            className="text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)]"
-            style={{ fontFamily: "var(--font-jp-serif)" }}
-          >
-            進捗
-          </h1>
-        </header>
-
-        <section className="mb-8">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium">
-                MASTERED
-              </div>
-              <div
-                className="text-[40px] font-semibold tabular-nums leading-none"
-                style={{
-                  fontFamily: "var(--font-jp-serif)",
-                  letterSpacing: "-0.03em",
-                  color: "var(--accent-progress)",
-                }}
-              >
-                {mounted ? masteredCount : 0}
-                <span className="text-lg text-[color:var(--fg-faint)] font-normal ml-1">
-                  / {kanjiCards.length}
-                </span>
-              </div>
+    <ModePageShell title="進捗" headerMarginPx={40}>
+      <section className="mb-8">
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium">
+              MASTERED
             </div>
-            <div>
-              <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium">
-                LEARNING
-              </div>
-              <div
-                className="text-[40px] font-semibold tabular-nums leading-none"
-                style={{
-                  fontFamily: "var(--font-jp-serif)",
-                  letterSpacing: "-0.03em",
-                  color: "var(--fg-soft)",
-                }}
-              >
-                {mounted ? learningCount : 0}
-              </div>
+            <div
+              className="text-[40px] font-semibold tabular-nums leading-none"
+              style={{
+                fontFamily: "var(--font-jp-serif)",
+                letterSpacing: "-0.03em",
+                color: "var(--accent-progress)",
+              }}
+            >
+              {mounted ? masteredCount : 0}
+              <span className="text-lg text-[color:var(--fg-faint)] font-normal ml-1">
+                / {kanjiCards.length}
+              </span>
             </div>
           </div>
-        </section>
-
-        <section>
-          <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
-            N5 KANJI ({kanjiCards.length})
+          <div>
+            <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium">
+              LEARNING
+            </div>
+            <div
+              className="text-[40px] font-semibold tabular-nums leading-none"
+              style={{
+                fontFamily: "var(--font-jp-serif)",
+                letterSpacing: "-0.03em",
+                color: "var(--fg-soft)",
+              }}
+            >
+              {mounted ? learningCount : 0}
+            </div>
           </div>
-          <div className="grid grid-cols-10 gap-1">
-            {kanjiCards.map((card) => (
-              <KanjiCell
-                key={card.id}
-                card={card}
-                level={mounted ? masteryLevel(states[`kanji:${card.id}`]) : "new"}
-              />
-            ))}
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-8 text-caption text-[color:var(--fg-faint)] leading-relaxed">
-          <p>
-            풀 상용한자 2136자 그리드는 v2 확장. 현재는 데이터에 있는 N5 범위({kanjiCards.length}자)만 표시.
-          </p>
-        </section>
-      </div>
-    </main>
+      <section>
+        <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
+          N5 KANJI ({kanjiCards.length})
+        </div>
+        <div className="grid grid-cols-10 gap-1">
+          {kanjiCards.map((card) => (
+            <KanjiCell
+              key={card.id}
+              card={card}
+              level={mounted ? masteryLevel(states[`kanji:${card.id}`]) : "new"}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-8 text-caption text-[color:var(--fg-faint)] leading-relaxed">
+        <p>
+          풀 상용한자 2136자 그리드는 v2 확장. 현재는 데이터에 있는 N5 범위({kanjiCards.length}자)만 표시.
+        </p>
+      </section>
+    </ModePageShell>
   );
 }
 

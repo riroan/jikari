@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AdjectiveCard } from "@/components/AdjectiveCard";
-import { QuizStats } from "@/components/QuizStats";
+import { ModePageShell } from "@/components/ModePageShell";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
@@ -136,26 +136,9 @@ function AdjectivePageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
-        <header className="flex justify-between items-baseline mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
-          >
-            ← HOME
-          </Link>
-          <QuizStats statKey="adjective" />
-          <h1
-            className="text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)]"
-            style={{ fontFamily: "var(--font-jp-serif)" }}
-          >
-            形容詞
-          </h1>
-        </header>
-        {children}
-      </div>
-    </main>
+    <ModePageShell statKey="adjective" title="形容詞">
+      {children}
+    </ModePageShell>
   );
 }
 

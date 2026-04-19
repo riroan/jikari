@@ -3,8 +3,8 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
-import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
@@ -144,31 +144,13 @@ function Shell({
   children?: React.ReactNode;
 }) {
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
-        <header className="flex justify-between items-center mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
-          >
-            ← HOME
-          </Link>
-          <QuizStats statKey="grammar" />
-          <div className="flex items-baseline gap-4">
-            <h1
-              className="text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)]"
-              style={{ fontFamily: "var(--font-jp-serif)" }}
-            >
-              文法
-            </h1>
-          </div>
-        </header>
-
-        <TabBar active={tab} />
-
-        {children}
-      </div>
-    </main>
+    <ModePageShell
+      statKey="grammar"
+      title="文法"
+      afterHeader={<TabBar active={tab} />}
+    >
+      {children}
+    </ModePageShell>
   );
 }
 

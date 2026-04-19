@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
+import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { parseBackup } from "@/lib/import";
 
@@ -54,132 +54,115 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
-        <header className="flex justify-between items-baseline mb-12">
-          <Link
-            href="/"
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
-          >
-            ← HOME
-          </Link>
-          <h1
-            className="text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)]"
-            style={{ fontFamily: "var(--font-jp-serif)" }}
-          >
-            設定
-          </h1>
-        </header>
-
-        <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
-            백업 / 복원
-          </h2>
-          <p className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed mb-4">
-            localStorage는 브라우저가 캐시를 정리하면 사라집니다. 정기적으로 JSON을 내보내 저장해두세요.
-            iOS Safari는 7일 이상 앱 미사용 시 데이터를 삭제할 수 있습니다.
-          </p>
-          <div className="flex flex-col gap-2">
-            <button
-              onClick={handleExport}
-              className="px-4 py-3 text-[15px] text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
-            >
-              JSON으로 내보내기
-            </button>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="application/json,.json"
-              hidden
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) void handleImport(f);
-                e.target.value = "";
-              }}
-            />
-            <button
-              onClick={() => fileRef.current?.click()}
-              className="px-4 py-3 text-[15px] text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
-            >
-              JSON에서 불러오기
-            </button>
-          </div>
-        </section>
-
-        <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
-            표시
-          </h2>
-          <label className="flex justify-between items-center text-small py-1">
-            <span className="text-[color:var(--fg-soft)]">후리가나 (한자 위 읽기)</span>
-            <Toggle
-              checked={settings.showFurigana}
-              onChange={(checked) => updateSettings({ showFurigana: checked })}
-              ariaLabel="후리가나 표시"
-            />
-          </label>
-        </section>
-
-        <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
-            학습
-          </h2>
-          <label className="flex justify-between items-center text-small py-2">
-            <span className="text-[color:var(--fg-soft)]">
-              타이핑 시작 박스
-              <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
-                이 박스부터 4지선다 대신 직접 입력
-              </span>
-            </span>
-            <select
-              value={settings.typingThresholdBox}
-              onChange={(e) =>
-                updateSettings({
-                  typingThresholdBox: Number(e.target.value) as 2 | 3 | 4 | 5,
-                })
-              }
-              aria-label="타이핑 시작 박스"
-              className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 py-1.5 text-small text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
-              style={{ minHeight: 36, minWidth: 64 }}
-            >
-              <option value={2}>2 (공격적)</option>
-              <option value={3}>3</option>
-              <option value={4}>4 (기본)</option>
-              <option value={5}>5 (보수적)</option>
-            </select>
-          </label>
-        </section>
-
-        <section className="mb-10">
-          <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
-            위험 영역
-          </h2>
+    <ModePageShell title="設定" headerMarginPx={48}>
+      <section className="mb-10">
+        <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
+          백업 / 복원
+        </h2>
+        <p className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed mb-4">
+          localStorage는 브라우저가 캐시를 정리하면 사라집니다. 정기적으로 JSON을 내보내 저장해두세요.
+          iOS Safari는 7일 이상 앱 미사용 시 데이터를 삭제할 수 있습니다.
+        </p>
+        <div className="flex flex-col gap-2">
           <button
-            onClick={handleReset}
-            className="w-full px-4 py-3 text-small text-left border border-[color:var(--line)] rounded-sm text-[color:var(--accent-korean)] hover:bg-[color:var(--accent-korean)]/5 transition-colors"
+            onClick={handleExport}
+            className="px-4 py-3 text-[15px] text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           >
-            모든 학습 기록 초기화
+            JSON으로 내보내기
           </button>
-        </section>
-
-        {message && (
-          <div
-            className="p-3 text-[13px] rounded-sm"
-            style={{
-              background:
-                message.kind === "ok"
-                  ? "color-mix(in oklab, var(--accent-progress) 15%, transparent)"
-                  : "color-mix(in oklab, var(--accent-korean) 15%, transparent)",
-              color: message.kind === "ok" ? "var(--accent-progress)" : "var(--accent-korean)",
+          <input
+            ref={fileRef}
+            type="file"
+            accept="application/json,.json"
+            hidden
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) void handleImport(f);
+              e.target.value = "";
             }}
-            role="status"
-            aria-live="polite"
+          />
+          <button
+            onClick={() => fileRef.current?.click()}
+            className="px-4 py-3 text-[15px] text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           >
-            {message.text}
-          </div>
-        )}
-      </div>
-    </main>
+            JSON에서 불러오기
+          </button>
+        </div>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
+          표시
+        </h2>
+        <label className="flex justify-between items-center text-small py-1">
+          <span className="text-[color:var(--fg-soft)]">후리가나 (한자 위 읽기)</span>
+          <Toggle
+            checked={settings.showFurigana}
+            onChange={(checked) => updateSettings({ showFurigana: checked })}
+            ariaLabel="후리가나 표시"
+          />
+        </label>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
+          학습
+        </h2>
+        <label className="flex justify-between items-center text-small py-2">
+          <span className="text-[color:var(--fg-soft)]">
+            타이핑 시작 박스
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
+              이 박스부터 4지선다 대신 직접 입력
+            </span>
+          </span>
+          <select
+            value={settings.typingThresholdBox}
+            onChange={(e) =>
+              updateSettings({
+                typingThresholdBox: Number(e.target.value) as 2 | 3 | 4 | 5,
+              })
+            }
+            aria-label="타이핑 시작 박스"
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 py-1.5 text-small text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
+            style={{ minHeight: 36, minWidth: 64 }}
+          >
+            <option value={2}>2 (공격적)</option>
+            <option value={3}>3</option>
+            <option value={4}>4 (기본)</option>
+            <option value={5}>5 (보수적)</option>
+          </select>
+        </label>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
+          위험 영역
+        </h2>
+        <button
+          onClick={handleReset}
+          className="w-full px-4 py-3 text-small text-left border border-[color:var(--line)] rounded-sm text-[color:var(--accent-korean)] hover:bg-[color:var(--accent-korean)]/5 transition-colors"
+        >
+          모든 학습 기록 초기화
+        </button>
+      </section>
+
+      {message && (
+        <div
+          className="p-3 text-[13px] rounded-sm"
+          style={{
+            background:
+              message.kind === "ok"
+                ? "color-mix(in oklab, var(--accent-progress) 15%, transparent)"
+                : "color-mix(in oklab, var(--accent-korean) 15%, transparent)",
+            color: message.kind === "ok" ? "var(--accent-progress)" : "var(--accent-korean)",
+          }}
+          role="status"
+          aria-live="polite"
+        >
+          {message.text}
+        </div>
+      )}
+    </ModePageShell>
   );
 }
 

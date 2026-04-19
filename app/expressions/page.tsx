@@ -1,10 +1,9 @@
 "use client";
 
 import { Suspense, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
-import { QuizStats } from "@/components/QuizStats";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
@@ -139,26 +138,9 @@ function ExpressionsPageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
-        <header className="flex justify-between items-baseline mb-8">
-          <Link
-            href="/"
-            className="text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
-          >
-            ← HOME
-          </Link>
-          <QuizStats statKey="expression" />
-          <h1
-            className="text-[15px] tracking-tab text-[color:var(--fg-soft)]"
-            style={{ fontFamily: "var(--font-jp-serif)" }}
-          >
-            表現
-          </h1>
-        </header>
-        {children}
-      </div>
-    </main>
+    <ModePageShell statKey="expression" title="表現" titleVariant="subdued">
+      {children}
+    </ModePageShell>
   );
 }
 
