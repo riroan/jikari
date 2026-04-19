@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
-import { ChapterMastery } from "@/components/ChapterMastery";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -62,9 +61,6 @@ export default function Home() {
           ))}
         </section>
 
-        {/* Chapter mastery — unit-level signal across modes */}
-        <ChapterMastery mounted={mounted} />
-
         {/* Heatmap */}
         <section className="mb-10">
           <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium">
@@ -80,6 +76,13 @@ export default function Home() {
             className="inline-flex items-center justify-center min-h-[44px] px-3 hover:text-[color:var(--fg-soft)]"
           >
             HOME
+          </Link>
+          <span aria-hidden="true">・</span>
+          <Link
+            href="/chapters"
+            className="inline-flex items-center justify-center min-h-[44px] px-3 hover:text-[color:var(--fg-soft)]"
+          >
+            UNITS
           </Link>
           <span aria-hidden="true">・</span>
           <Link
