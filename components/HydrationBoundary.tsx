@@ -26,7 +26,7 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
 
   if (error) {
     return (
-      <div className="min-h-full flex items-center justify-center p-8 text-center">
+      <div className="min-h-full flex flex-col items-center justify-center gap-5 p-8 text-center">
         <p
           className="text-[13px] text-[color:var(--accent-korean)] leading-relaxed"
           style={{ fontFamily: "var(--font-jp-sans)" }}
@@ -35,6 +35,14 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
           <br />
           <span className="text-[color:var(--fg-faint)]">{error}</span>
         </p>
+        <button
+          type="button"
+          onClick={() => void hydrate()}
+          className="inline-flex items-center min-h-[44px] px-4 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+          style={{ fontFamily: "var(--font-kr-sans)" }}
+        >
+          다시 시도
+        </button>
       </div>
     );
   }

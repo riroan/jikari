@@ -90,57 +90,75 @@ export const useCardsStore = create<CardsState>((set, get) => ({
 
   hydrate: async () => {
     if (get().ready) return;
-    try {
-      const res = await fetch("/api/cards", { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const {
-        kanji,
-        vocab,
-        sentences,
-        grammar = [],
-        chapters = [],
-        chapterMembers = [],
-        expressions = [],
-      } = (await res.json()) as {
-        kanji: KanjiCard[];
-        vocab: VocabCard[];
-        sentences: SentenceCard[];
-        grammar?: GrammarCard[];
-        chapters?: Chapter[];
-        chapterMembers?: ChapterMember[];
-        expressions?: ExpressionCard[];
-      };
-      set({
-        ready: true,
-        error: null,
-        kanji,
-        vocab,
-        sentences,
-        grammar,
-        kanjiIds: kanji.map((c) => c.id),
-        vocabIds: vocab.map((c) => c.id),
-        sentenceIds: sentences.filter((c) => c.category === "vocab").map((c) => c.id),
-        particleIds: sentences.filter((c) => c.category === "particle").map((c) => c.id),
-        grammarPatternIds: grammar
-          .filter((c): c is GrammarPatternCard => c.type === "pattern")
-          .map((c) => c.id),
-        grammarParticleContrastIds: grammar
-          .filter((c): c is ParticleContrastCard => c.type === "particle_contrast")
-          .map((c) => c.id),
-        kanjiById: new Map(kanji.map((c) => [c.id, c])),
-        vocabById: new Map(vocab.map((c) => [c.id, c])),
-        sentenceById: new Map(sentences.map((c) => [c.id, c])),
-        grammarById: new Map(grammar.map((c) => [c.id, c])),
-        vocabByWord: new Map(vocab.map((c) => [c.word, c])),
-        chapters,
-        chapterMembers,
-        membersByChapter: indexMembersByChapter(chapterMembers),
-        expressions,
-        expressionIds: expressions.map((c) => c.id),
-        expressionById: new Map(expressions.map((c) => [c.id, c])),
-      });
-    } catch (err) {
-      set({ ready: false, error: err instanceof Error ? err.message : String(err) });
+    // Clear any prior error so the boundary re-renders the loading state
+    // while we retry.
+    set({ error: null });
+
+    const MAX_ATTEMPTS = 3;
+    const BACKOFF_MS = [500, 1500];
+
+    let lastErr: unknown;
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      try {
+        const res = await fetch("/api/cards", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const {
+          kanji,
+          vocab,
+          sentences,
+          grammar = [],
+          chapters = [],
+          chapterMembers = [],
+          expressions = [],
+        } = (await res.json()) as {
+          kanji: KanjiCard[];
+          vocab: VocabCard[];
+          sentences: SentenceCard[];
+          grammar?: GrammarCard[];
+          chapters?: Chapter[];
+          chapterMembers?: ChapterMember[];
+          expressions?: ExpressionCard[];
+        };
+        set({
+          ready: true,
+          error: null,
+          kanji,
+          vocab,
+          sentences,
+          grammar,
+          kanjiIds: kanji.map((c) => c.id),
+          vocabIds: vocab.map((c) => c.id),
+          sentenceIds: sentences.filter((c) => c.category === "vocab").map((c) => c.id),
+          particleIds: sentences.filter((c) => c.category === "particle").map((c) => c.id),
+          grammarPatternIds: grammar
+            .filter((c): c is GrammarPatternCard => c.type === "pattern")
+            .map((c) => c.id),
+          grammarParticleContrastIds: grammar
+            .filter((c): c is ParticleContrastCard => c.type === "particle_contrast")
+            .map((c) => c.id),
+          kanjiById: new Map(kanji.map((c) => [c.id, c])),
+          vocabById: new Map(vocab.map((c) => [c.id, c])),
+          sentenceById: new Map(sentences.map((c) => [c.id, c])),
+          grammarById: new Map(grammar.map((c) => [c.id, c])),
+          vocabByWord: new Map(vocab.map((c) => [c.word, c])),
+          chapters,
+          chapterMembers,
+          membersByChapter: indexMembersByChapter(chapterMembers),
+          expressions,
+          expressionIds: expressions.map((c) => c.id),
+          expressionById: new Map(expressions.map((c) => [c.id, c])),
+        });
+        return;
+      } catch (err) {
+        lastErr = err;
+        if (attempt < MAX_ATTEMPTS - 1) {
+          await new Promise((r) => setTimeout(r, BACKOFF_MS[attempt]));
+        }
+      }
     }
+    set({
+      ready: false,
+      error: lastErr instanceof Error ? lastErr.message : String(lastErr),
+    });
   },
 }));
