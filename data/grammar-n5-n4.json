@@ -1,0 +1,1058 @@
+[
+  {
+    "id": "pattern-tai",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜たい",
+    "koreanStructure": "〜고 싶다",
+    "meaningKo": "화자의 희망·욕구를 나타내는 문형",
+    "examples": [
+      { "jp": "日本へ[[行きたい]]です", "ko": "일본에 가고 싶어요" },
+      { "jp": "水が[[飲みたい]]", "ko": "물 마시고 싶어" },
+      { "jp": "今日は早く[[帰りたい]]", "ko": "오늘은 일찍 돌아가고 싶어" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "日本へ＿＿＿です。",
+        "correct": "行きたい",
+        "distractors": ["行きましょう", "行ってください", "行ったら"],
+        "translation": "일본에 가고 싶어요"
+      },
+      {
+        "sentence": "寿司が＿＿＿。",
+        "correct": "食べたい",
+        "distractors": ["食べている", "食べなさい", "食べてもいい"],
+        "translation": "초밥이 먹고 싶다"
+      },
+      {
+        "sentence": "もっと＿＿＿です。",
+        "correct": "知りたい",
+        "distractors": ["知っている", "知るまで", "知るたびに"],
+        "translation": "더 알고 싶어요"
+      }
+    ]
+  },
+  {
+    "id": "pattern-mashou",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜ましょう",
+    "koreanStructure": "〜합시다 / 같이 〜해요",
+    "meaningKo": "권유·제안을 정중하게 나타내는 문형",
+    "examples": [
+      { "jp": "一緒に[[行きましょう]]", "ko": "같이 갑시다" },
+      { "jp": "そろそろ[[始めましょう]]", "ko": "슬슬 시작합시다" },
+      { "jp": "ここで[[休みましょう]]", "ko": "여기서 쉬어요" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "一緒に＿＿＿。",
+        "correct": "行きましょう",
+        "distractors": ["行きたい", "行ってください", "行っている"],
+        "translation": "같이 갑시다"
+      },
+      {
+        "sentence": "そろそろ＿＿＿。",
+        "correct": "始めましょう",
+        "distractors": ["始めたい", "始めてください", "始めるから"],
+        "translation": "슬슬 시작합시다"
+      },
+      {
+        "sentence": "明日また＿＿＿。",
+        "correct": "会いましょう",
+        "distractors": ["会いたい", "会っている", "会ってもいい"],
+        "translation": "내일 또 만나요"
+      }
+    ]
+  },
+  {
+    "id": "pattern-te-kudasai",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜てください",
+    "koreanStructure": "〜해 주세요",
+    "meaningKo": "정중한 부탁·지시를 나타내는 문형",
+    "examples": [
+      { "jp": "ちょっと[[待ってください]]", "ko": "잠깐만 기다려 주세요" },
+      { "jp": "これを[[見てください]]", "ko": "이것을 봐 주세요" },
+      { "jp": "静かに[[してください]]", "ko": "조용히 해 주세요" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "ちょっと＿＿＿。",
+        "correct": "待ってください",
+        "distractors": ["待ちたい", "待ちましょう", "待っている"],
+        "translation": "잠깐만 기다려 주세요"
+      },
+      {
+        "sentence": "もう一度＿＿＿。",
+        "correct": "言ってください",
+        "distractors": ["言いたい", "言いましょう", "言ってもいい"],
+        "translation": "다시 한 번 말해 주세요"
+      },
+      {
+        "sentence": "名前を＿＿＿。",
+        "correct": "書いてください",
+        "distractors": ["書きたい", "書きましょう", "書いてもいい"],
+        "translation": "이름을 써 주세요"
+      }
+    ]
+  },
+  {
+    "id": "pattern-te-iru",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜ている",
+    "koreanStructure": "〜고 있다 / 〜어 있다",
+    "meaningKo": "진행 중이거나 지속되는 상태를 나타내는 문형",
+    "examples": [
+      { "jp": "今、ご飯を[[食べている]]", "ko": "지금 밥을 먹고 있다" },
+      { "jp": "彼は東京に[[住んでいる]]", "ko": "그는 도쿄에 살고 있다" },
+      { "jp": "窓が[[開いている]]", "ko": "창문이 열려 있다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "今、ご飯を＿＿＿。",
+        "correct": "食べている",
+        "distractors": ["食べたい", "食べましょう", "食べたら"],
+        "translation": "지금 밥을 먹고 있다"
+      },
+      {
+        "sentence": "彼はソウルに＿＿＿。",
+        "correct": "住んでいる",
+        "distractors": ["住みたい", "住むから", "住んでもいい"],
+        "translation": "그는 서울에 살고 있다"
+      },
+      {
+        "sentence": "雨が＿＿＿。",
+        "correct": "降っている",
+        "distractors": ["降りたい", "降ったら", "降ってもいい"],
+        "translation": "비가 오고 있다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-kara-reason",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜から (이유)",
+    "koreanStructure": "〜니까 / 〜기 때문에 (주관적 이유)",
+    "meaningKo": "화자의 판단·주관적 이유를 나타내는 접속",
+    "examples": [
+      { "jp": "寒い[[から]]、コートを着る", "ko": "추우니까 코트를 입는다" },
+      { "jp": "疲れた[[から]]、休みたい", "ko": "피곤하니까 쉬고 싶다" },
+      { "jp": "友達だ[[から]]、助ける", "ko": "친구니까 도와준다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "寒い＿＿＿、コートを着ます。",
+        "correct": "から",
+        "distractors": ["まで", "のに", "ながら"],
+        "translation": "추우니까 코트를 입어요"
+      },
+      {
+        "sentence": "今日は忙しい＿＿＿、行けません。",
+        "correct": "から",
+        "distractors": ["まで", "ても", "たら"],
+        "translation": "오늘은 바쁘니까 갈 수 없어요"
+      },
+      {
+        "sentence": "時間がない＿＿＿、急ぎましょう。",
+        "correct": "から",
+        "distractors": ["まで", "なら", "ながら"],
+        "translation": "시간이 없으니까 서두릅시다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-to-omou",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜と思う",
+    "koreanStructure": "〜라고 생각하다",
+    "meaningKo": "화자의 생각·의견을 나타내는 문형",
+    "examples": [
+      { "jp": "明日は雨だ[[と思う]]", "ko": "내일은 비가 올 거라고 생각한다" },
+      { "jp": "これはいい本だ[[と思います]]", "ko": "이것은 좋은 책이라고 생각합니다" },
+      { "jp": "彼は来ない[[と思う]]", "ko": "그는 오지 않을 거라고 생각한다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "明日は雨だ＿＿＿。",
+        "correct": "と思う",
+        "distractors": ["と言う", "ことになる", "みたい"],
+        "translation": "내일은 비가 올 거라고 생각한다"
+      },
+      {
+        "sentence": "これはいい映画だ＿＿＿。",
+        "correct": "と思います",
+        "distractors": ["ことです", "ばかりです", "そうです"],
+        "translation": "이것은 좋은 영화라고 생각합니다"
+      },
+      {
+        "sentence": "彼は来ない＿＿＿。",
+        "correct": "と思う",
+        "distractors": ["と言う", "ばかりだ", "つもりだ"],
+        "translation": "그는 오지 않을 거라고 생각한다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-deshou",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜でしょう",
+    "koreanStructure": "〜겠지요 / 〜일 것이다",
+    "meaningKo": "추측이나 완곡한 동의를 구하는 문형",
+    "examples": [
+      { "jp": "明日は雨[[でしょう]]", "ko": "내일은 비가 오겠지요" },
+      { "jp": "きっと来る[[でしょう]]", "ko": "분명 올 거예요" },
+      { "jp": "大丈夫[[でしょう]]", "ko": "괜찮겠지요" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "明日は雨＿＿＿。",
+        "correct": "でしょう",
+        "distractors": ["でした", "ですか", "だから"],
+        "translation": "내일은 비가 오겠지요"
+      },
+      {
+        "sentence": "きっと来る＿＿＿。",
+        "correct": "でしょう",
+        "distractors": ["つもり", "ながら", "ばかり"],
+        "translation": "분명 올 거예요"
+      },
+      {
+        "sentence": "彼は元気＿＿＿。",
+        "correct": "でしょう",
+        "distractors": ["だから", "ながら", "でした"],
+        "translation": "그는 잘 지내고 있겠지요"
+      }
+    ]
+  },
+  {
+    "id": "pattern-kata",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜方 (〜かた)",
+    "koreanStructure": "〜하는 법 / 〜하는 방법",
+    "meaningKo": "동사 ます형 + 方 — 하는 방법",
+    "examples": [
+      { "jp": "漢字の[[書き方]]を教えてください", "ko": "한자 쓰는 법을 가르쳐 주세요" },
+      { "jp": "この料理の[[作り方]]は簡単です", "ko": "이 요리 만드는 법은 간단합니다" },
+      { "jp": "箸の[[使い方]]がわからない", "ko": "젓가락 사용법을 모른다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "漢字の＿＿＿を教えてください。",
+        "correct": "書き方",
+        "distractors": ["書きたい", "書きながら", "書いてから"],
+        "translation": "한자 쓰는 법을 가르쳐 주세요"
+      },
+      {
+        "sentence": "この料理の＿＿＿は簡単です。",
+        "correct": "作り方",
+        "distractors": ["作りたい", "作るため", "作ってから"],
+        "translation": "이 요리 만드는 법은 간단합니다"
+      },
+      {
+        "sentence": "駅までの＿＿＿を聞く。",
+        "correct": "行き方",
+        "distractors": ["行きたい", "行くから", "行きましょう"],
+        "translation": "역까지 가는 법을 묻는다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-mashou-ka",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜ましょうか",
+    "koreanStructure": "〜할까요?",
+    "meaningKo": "권유 또는 상대방에 대한 제안",
+    "examples": [
+      { "jp": "荷物を[[持ちましょうか]]", "ko": "짐을 들어드릴까요?" },
+      { "jp": "窓を[[開けましょうか]]", "ko": "창문을 열까요?" },
+      { "jp": "一緒に[[行きましょうか]]", "ko": "같이 갈까요?" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "荷物を＿＿＿。",
+        "correct": "持ちましょうか",
+        "distractors": ["持ちたい", "持っている", "持ってもいい"],
+        "translation": "짐을 들어드릴까요?"
+      },
+      {
+        "sentence": "窓を＿＿＿。",
+        "correct": "開けましょうか",
+        "distractors": ["開けたい", "開けたら", "開けるから"],
+        "translation": "창문을 열까요?"
+      },
+      {
+        "sentence": "手伝い＿＿＿。",
+        "correct": "ましょうか",
+        "distractors": ["たい", "そうだ", "たら"],
+        "translation": "도와드릴까요?"
+      }
+    ]
+  },
+  {
+    "id": "pattern-koto-ga-dekiru",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜ことができる",
+    "koreanStructure": "〜할 수 있다",
+    "meaningKo": "동사 기본형 + ことができる — 능력·가능성",
+    "examples": [
+      { "jp": "日本語を話す[[ことができる]]", "ko": "일본어를 말할 수 있다" },
+      { "jp": "ここで泳ぐ[[ことができる]]", "ko": "여기서 수영할 수 있다" },
+      { "jp": "漢字を読む[[ことができます]]", "ko": "한자를 읽을 수 있습니다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "日本語を話す＿＿＿。",
+        "correct": "ことができる",
+        "distractors": ["ことになる", "つもりだ", "ばかりだ"],
+        "translation": "일본어를 말할 수 있다"
+      },
+      {
+        "sentence": "ここで写真を撮る＿＿＿。",
+        "correct": "ことができる",
+        "distractors": ["つもりだ", "ばかりだ", "らしい"],
+        "translation": "여기서 사진을 찍을 수 있다"
+      },
+      {
+        "sentence": "漢字を読む＿＿＿。",
+        "correct": "ことができます",
+        "distractors": ["つもりです", "ばかりです", "らしいです"],
+        "translation": "한자를 읽을 수 있습니다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-kara-made",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜から〜まで",
+    "koreanStructure": "〜부터 〜까지",
+    "meaningKo": "시작점과 끝점을 나타내는 문형",
+    "examples": [
+      { "jp": "月曜日[[から]]金曜[[まで]]働きます", "ko": "월요일부터 금요일까지 일합니다" },
+      { "jp": "東京[[から]]大阪[[まで]]新幹線で行く", "ko": "도쿄에서 오사카까지 신칸센으로 간다" },
+      { "jp": "9時[[から]]5時[[まで]]授業だ", "ko": "9시부터 5시까지 수업이다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "月曜日＿＿＿金曜日まで働きます。",
+        "correct": "から",
+        "distractors": ["まで", "で", "に"],
+        "translation": "월요일부터 금요일까지 일합니다"
+      },
+      {
+        "sentence": "家から駅＿＿＿歩きます。",
+        "correct": "まで",
+        "distractors": ["から", "で", "が"],
+        "translation": "집에서 역까지 걷습니다"
+      },
+      {
+        "sentence": "9時から5時＿＿＿授業です。",
+        "correct": "まで",
+        "distractors": ["から", "に", "で"],
+        "translation": "9시부터 5시까지 수업입니다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-yori",
+    "type": "pattern",
+    "jlptLevel": 5,
+    "pattern": "〜より",
+    "koreanStructure": "〜보다",
+    "meaningKo": "비교의 기준을 나타내는 문형",
+    "examples": [
+      { "jp": "彼は私[[より]]背が高い", "ko": "그는 나보다 키가 크다" },
+      { "jp": "冬[[より]]夏のほうが好きだ", "ko": "겨울보다 여름이 더 좋다" },
+      { "jp": "去年[[より]]忙しい", "ko": "작년보다 바쁘다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "彼は私＿＿＿背が高い。",
+        "correct": "より",
+        "distractors": ["まで", "から", "ので"],
+        "translation": "그는 나보다 키가 크다"
+      },
+      {
+        "sentence": "冬＿＿＿夏のほうが好きです。",
+        "correct": "より",
+        "distractors": ["から", "まで", "ながら"],
+        "translation": "겨울보다 여름을 더 좋아합니다"
+      },
+      {
+        "sentence": "去年＿＿＿今年は忙しい。",
+        "correct": "より",
+        "distractors": ["まで", "から", "ので"],
+        "translation": "작년보다 올해는 바쁘다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-tara",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜たら",
+    "koreanStructure": "〜하면 / 〜했더니",
+    "meaningKo": "가정·일회적 조건을 나타내는 조건절",
+    "examples": [
+      { "jp": "雨が[[降ったら]]、行きません", "ko": "비가 오면 안 가겠습니다" },
+      { "jp": "家に[[着いたら]]、電話する", "ko": "집에 도착하면 전화할게" },
+      { "jp": "窓を[[開けたら]]、涼しくなった", "ko": "창문을 열었더니 시원해졌다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "雨が＿＿＿、行きません。",
+        "correct": "降ったら",
+        "distractors": ["降るから", "降りながら", "降るまで"],
+        "translation": "비가 오면 안 가겠습니다"
+      },
+      {
+        "sentence": "家に＿＿＿、電話してね。",
+        "correct": "着いたら",
+        "distractors": ["着くから", "着いている", "着くまで"],
+        "translation": "집에 도착하면 전화해"
+      },
+      {
+        "sentence": "時間があっ＿＿＿、見に行く。",
+        "correct": "たら",
+        "distractors": ["てから", "ている", "そうだ"],
+        "translation": "시간이 있으면 보러 간다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-ba",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜ば",
+    "koreanStructure": "〜하면 (일반 조건)",
+    "meaningKo": "일반적·논리적 조건을 나타내는 조건절",
+    "examples": [
+      { "jp": "安[[ければ]]買います", "ko": "싸면 사겠습니다" },
+      { "jp": "急[[げば]]間に合う", "ko": "서두르면 늦지 않는다" },
+      { "jp": "練習[[すれば]]上手になる", "ko": "연습하면 잘하게 된다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "安＿＿＿買います。",
+        "correct": "ければ",
+        "distractors": ["いから", "いたら", "かった"],
+        "translation": "싸면 사겠습니다"
+      },
+      {
+        "sentence": "急＿＿＿間に合う。",
+        "correct": "げば",
+        "distractors": ["いで", "いでいる", "ぎながら"],
+        "translation": "서두르면 늦지 않는다"
+      },
+      {
+        "sentence": "毎日勉強＿＿＿上手になる。",
+        "correct": "すれば",
+        "distractors": ["したら", "してから", "していると"],
+        "translation": "매일 공부하면 잘하게 된다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-nara",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜なら",
+    "koreanStructure": "〜라면 / 〜한다면",
+    "meaningKo": "상대방 발화·전제를 받아 조건을 제시",
+    "examples": [
+      { "jp": "日本へ行く[[なら]]、京都がいい", "ko": "일본에 간다면 교토가 좋다" },
+      { "jp": "飲み物[[なら]]、お茶が好きだ", "ko": "음료라면 차를 좋아한다" },
+      { "jp": "あなたが行く[[なら]]、私も行く", "ko": "당신이 간다면 나도 간다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "日本へ行く＿＿＿、京都がいいです。",
+        "correct": "なら",
+        "distractors": ["から", "まで", "ながら"],
+        "translation": "일본에 간다면 교토가 좋아요"
+      },
+      {
+        "sentence": "飲み物＿＿＿、お茶が好きだ。",
+        "correct": "なら",
+        "distractors": ["から", "まで", "ので"],
+        "translation": "음료라면 차를 좋아한다"
+      },
+      {
+        "sentence": "あなたが行く＿＿＿、私も行く。",
+        "correct": "なら",
+        "distractors": ["から", "ので", "ながら"],
+        "translation": "당신이 간다면 나도 간다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-mae-ni",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜前に",
+    "koreanStructure": "〜하기 전에",
+    "meaningKo": "어떤 동작보다 먼저 일어난 일을 나타냄",
+    "examples": [
+      { "jp": "寝る[[前に]]、歯を磨く", "ko": "자기 전에 이를 닦는다" },
+      { "jp": "食事の[[前に]]手を洗う", "ko": "식사 전에 손을 씻는다" },
+      { "jp": "家を出る[[前に]]鍵を確認する", "ko": "집을 나가기 전에 열쇠를 확인한다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "寝る＿＿＿、歯を磨きます。",
+        "correct": "前に",
+        "distractors": ["後で", "ながら", "から"],
+        "translation": "자기 전에 이를 닦습니다"
+      },
+      {
+        "sentence": "食事の＿＿＿手を洗います。",
+        "correct": "前に",
+        "distractors": ["後で", "たび", "まで"],
+        "translation": "식사 전에 손을 씻습니다"
+      },
+      {
+        "sentence": "家を出る＿＿＿、鍵をチェックする。",
+        "correct": "前に",
+        "distractors": ["後で", "ところで", "ながら"],
+        "translation": "집을 나가기 전에 열쇠를 확인한다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-ato-de",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜後で",
+    "koreanStructure": "〜한 후에 / 〜한 다음에",
+    "meaningKo": "어떤 동작이 끝난 뒤의 시점을 나타냄",
+    "examples": [
+      { "jp": "ご飯を食べた[[後で]]、散歩する", "ko": "밥을 먹은 후에 산책한다" },
+      { "jp": "仕事の[[後で]]飲みに行く", "ko": "일이 끝난 후에 술 마시러 간다" },
+      { "jp": "宿題を[[した後で]]テレビを見る", "ko": "숙제를 한 후에 텔레비전을 본다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "ご飯を食べた＿＿＿、散歩します。",
+        "correct": "後で",
+        "distractors": ["前に", "ながら", "たび"],
+        "translation": "밥을 먹은 후에 산책합니다"
+      },
+      {
+        "sentence": "仕事の＿＿＿飲みに行こう。",
+        "correct": "後で",
+        "distractors": ["前に", "ながら", "まで"],
+        "translation": "일이 끝난 후에 술 마시러 가자"
+      },
+      {
+        "sentence": "宿題をした＿＿＿テレビを見る。",
+        "correct": "後で",
+        "distractors": ["前に", "ながら", "まで"],
+        "translation": "숙제를 한 후에 텔레비전을 본다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-aida-ni",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜間に",
+    "koreanStructure": "〜하는 동안에 / 〜사이에",
+    "meaningKo": "두 시점 사이에 벌어진 일",
+    "examples": [
+      { "jp": "子供が寝ている[[間に]]、本を読む", "ko": "아이가 자는 동안에 책을 읽는다" },
+      { "jp": "夏休みの[[間に]]旅行する", "ko": "여름 방학 동안에 여행한다" },
+      { "jp": "母が出かけている[[間に]]、掃除した", "ko": "어머니가 나가 있는 동안에 청소했다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "子供が寝ている＿＿＿、本を読む。",
+        "correct": "間に",
+        "distractors": ["前に", "後で", "ながら"],
+        "translation": "아이가 자는 동안에 책을 읽는다"
+      },
+      {
+        "sentence": "夏休みの＿＿＿旅行しましょう。",
+        "correct": "間に",
+        "distractors": ["前に", "後で", "ばかり"],
+        "translation": "여름 방학 동안에 여행합시다"
+      },
+      {
+        "sentence": "母が出かけている＿＿＿掃除した。",
+        "correct": "間に",
+        "distractors": ["前に", "後で", "なら"],
+        "translation": "어머니가 나가 있는 동안에 청소했다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-nagara",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜ながら",
+    "koreanStructure": "〜하면서 (동시 동작)",
+    "meaningKo": "한 주어가 두 동작을 동시에 하는 문형",
+    "examples": [
+      { "jp": "音楽を聞き[[ながら]]勉強する", "ko": "음악을 들으면서 공부한다" },
+      { "jp": "お茶を飲み[[ながら]]話す", "ko": "차를 마시면서 이야기한다" },
+      { "jp": "歩き[[ながら]]電話する", "ko": "걸으면서 전화한다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "音楽を聞き＿＿＿勉強する。",
+        "correct": "ながら",
+        "distractors": ["たら", "ので", "から"],
+        "translation": "음악을 들으면서 공부한다"
+      },
+      {
+        "sentence": "お茶を飲み＿＿＿話しましょう。",
+        "correct": "ながら",
+        "distractors": ["たら", "なら", "までに"],
+        "translation": "차를 마시면서 이야기합시다"
+      },
+      {
+        "sentence": "歩き＿＿＿電話するのは危ない。",
+        "correct": "ながら",
+        "distractors": ["たら", "てから", "ばかり"],
+        "translation": "걸으면서 전화하는 것은 위험하다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-tameni",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜ために",
+    "koreanStructure": "〜하기 위해 / 〜을(를) 위해서",
+    "meaningKo": "목적을 나타내는 문형",
+    "examples": [
+      { "jp": "健康の[[ために]]運動する", "ko": "건강을 위해 운동한다" },
+      { "jp": "試験に合格する[[ために]]勉強する", "ko": "시험에 합격하기 위해 공부한다" },
+      { "jp": "家族の[[ために]]働く", "ko": "가족을 위해 일한다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "健康の＿＿＿運動します。",
+        "correct": "ために",
+        "distractors": ["ながら", "なら", "ように"],
+        "translation": "건강을 위해 운동합니다"
+      },
+      {
+        "sentence": "試験に合格する＿＿＿毎日勉強する。",
+        "correct": "ために",
+        "distractors": ["ながら", "までに", "ばかり"],
+        "translation": "시험에 합격하기 위해 매일 공부한다"
+      },
+      {
+        "sentence": "家族の＿＿＿働く。",
+        "correct": "ために",
+        "distractors": ["なら", "ながら", "までに"],
+        "translation": "가족을 위해 일한다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-youni",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜ように",
+    "koreanStructure": "〜하도록 / 〜하게끔",
+    "meaningKo": "목적·결과·기원을 나타내는 문형",
+    "examples": [
+      { "jp": "忘れない[[ように]]メモする", "ko": "잊지 않도록 메모한다" },
+      { "jp": "聞こえる[[ように]]大きな声で話す", "ko": "들릴 수 있도록 큰 소리로 말한다" },
+      { "jp": "早く治る[[ように]]祈る", "ko": "빨리 낫기를 기원한다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "忘れない＿＿＿メモします。",
+        "correct": "ように",
+        "distractors": ["ために", "ながら", "ても"],
+        "translation": "잊지 않도록 메모합니다"
+      },
+      {
+        "sentence": "よく聞こえる＿＿＿大きな声で話す。",
+        "correct": "ように",
+        "distractors": ["ために", "ながら", "から"],
+        "translation": "잘 들리도록 큰 소리로 말한다"
+      },
+      {
+        "sentence": "早く治る＿＿＿祈る。",
+        "correct": "ように",
+        "distractors": ["ために", "なら", "ながら"],
+        "translation": "빨리 낫기를 기원한다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-tewa-ikenai",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜てはいけない",
+    "koreanStructure": "〜해서는 안 된다 / 〜하면 안 된다",
+    "meaningKo": "금지를 나타내는 문형",
+    "examples": [
+      { "jp": "ここで写真を[[撮ってはいけない]]", "ko": "여기서 사진을 찍어서는 안 된다" },
+      { "jp": "授業中に[[話してはいけない]]", "ko": "수업 중에 이야기해서는 안 된다" },
+      { "jp": "嘘を[[ついてはいけない]]", "ko": "거짓말을 해서는 안 된다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "ここで写真を＿＿＿。",
+        "correct": "撮ってはいけない",
+        "distractors": ["撮ってもいい", "撮りたい", "撮りながら"],
+        "translation": "여기서 사진을 찍어서는 안 된다"
+      },
+      {
+        "sentence": "授業中に＿＿＿。",
+        "correct": "話してはいけない",
+        "distractors": ["話してもいい", "話したい", "話しながら"],
+        "translation": "수업 중에 이야기해서는 안 된다"
+      },
+      {
+        "sentence": "嘘を＿＿＿。",
+        "correct": "ついてはいけない",
+        "distractors": ["つきたい", "つきながら", "ついたばかり"],
+        "translation": "거짓말을 해서는 안 된다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-tsumori",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜つもり",
+    "koreanStructure": "〜할 생각 / 〜할 작정",
+    "meaningKo": "화자의 의지·계획을 나타내는 문형",
+    "examples": [
+      { "jp": "来年留学する[[つもりだ]]", "ko": "내년에 유학갈 생각이다" },
+      { "jp": "今日は早く帰る[[つもりです]]", "ko": "오늘은 일찍 돌아갈 생각입니다" },
+      { "jp": "タバコをやめる[[つもりだ]]", "ko": "담배를 끊을 작정이다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "来年留学する＿＿＿。",
+        "correct": "つもりだ",
+        "distractors": ["はずだ", "ところだ", "ばかりだ"],
+        "translation": "내년에 유학갈 생각이다"
+      },
+      {
+        "sentence": "今日は早く帰る＿＿＿。",
+        "correct": "つもりです",
+        "distractors": ["ばかりです", "ところです", "そうです"],
+        "translation": "오늘은 일찍 돌아갈 생각입니다"
+      },
+      {
+        "sentence": "来月タバコをやめる＿＿＿。",
+        "correct": "つもりだ",
+        "distractors": ["ばかりだ", "ところだ", "はずだ"],
+        "translation": "다음 달에 담배를 끊을 작정이다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-yotei",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜予定",
+    "koreanStructure": "〜할 예정",
+    "meaningKo": "이미 정해진 일정을 나타내는 문형",
+    "examples": [
+      { "jp": "来週、出張に行く[[予定です]]", "ko": "다음 주에 출장 갈 예정입니다" },
+      { "jp": "3時から会議の[[予定だ]]", "ko": "3시부터 회의 예정이다" },
+      { "jp": "明日、友達と会う[[予定です]]", "ko": "내일 친구와 만날 예정입니다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "来週、出張に行く＿＿＿。",
+        "correct": "予定です",
+        "distractors": ["つもりです", "ばかりです", "らしいです"],
+        "translation": "다음 주에 출장 갈 예정입니다"
+      },
+      {
+        "sentence": "3時から会議の＿＿＿。",
+        "correct": "予定だ",
+        "distractors": ["ところだ", "つもりだ", "そうだ"],
+        "translation": "3시부터 회의 예정이다"
+      },
+      {
+        "sentence": "明日、友達と会う＿＿＿。",
+        "correct": "予定です",
+        "distractors": ["ばかりです", "ところです", "らしいです"],
+        "translation": "내일 친구와 만날 예정입니다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-bakari",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜たばかり",
+    "koreanStructure": "〜한 지 얼마 되지 않음 / 방금 〜함",
+    "meaningKo": "어떤 동작이 끝난 직후임을 강조",
+    "examples": [
+      { "jp": "今、食べた[[ばかりです]]", "ko": "방금 먹었습니다" },
+      { "jp": "日本に来た[[ばかりだ]]", "ko": "일본에 온 지 얼마 안 된다" },
+      { "jp": "起きた[[ばかりで]]、まだ眠い", "ko": "방금 일어나서 아직 졸리다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "今、食べた＿＿＿です。",
+        "correct": "ばかり",
+        "distractors": ["ところ", "あと", "まま"],
+        "translation": "방금 먹었습니다"
+      },
+      {
+        "sentence": "日本に来た＿＿＿だ。",
+        "correct": "ばかり",
+        "distractors": ["ところ", "はず", "そう"],
+        "translation": "일본에 온 지 얼마 안 된다"
+      },
+      {
+        "sentence": "起きた＿＿＿で、まだ眠い。",
+        "correct": "ばかり",
+        "distractors": ["まま", "はず", "つもり"],
+        "translation": "방금 일어나서 아직 졸리다"
+      }
+    ]
+  },
+  {
+    "id": "pattern-rashii",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜らしい",
+    "koreanStructure": "〜라고 한다 / 〜인 것 같다 (전문·추측)",
+    "meaningKo": "들은 정보를 근거로 한 추측이나 전달",
+    "examples": [
+      { "jp": "彼は来月結婚する[[らしい]]", "ko": "그는 다음 달에 결혼한다고 한다" },
+      { "jp": "明日は雨が降る[[らしい]]", "ko": "내일은 비가 올 것 같다" },
+      { "jp": "あの店は有名[[らしい]]", "ko": "저 가게는 유명한 것 같다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "彼は来月結婚する＿＿＿。",
+        "correct": "らしい",
+        "distractors": ["つもりだ", "ばかりだ", "ところだ"],
+        "translation": "그는 다음 달에 결혼한다고 한다"
+      },
+      {
+        "sentence": "明日は雨が降る＿＿＿です。",
+        "correct": "らしい",
+        "distractors": ["ばかり", "つもり", "ところ"],
+        "translation": "내일은 비가 올 것 같아요"
+      },
+      {
+        "sentence": "あの店は有名＿＿＿ですね。",
+        "correct": "らしい",
+        "distractors": ["ばかり", "つもり", "ところ"],
+        "translation": "저 가게는 유명한 것 같네요"
+      }
+    ]
+  },
+  {
+    "id": "pattern-sou-appearance",
+    "type": "pattern",
+    "jlptLevel": 4,
+    "pattern": "〜そう(모양)",
+    "koreanStructure": "〜할 것 같다 / 〜해 보인다 (양태)",
+    "meaningKo": "보고 판단한 인상·직접적 추측",
+    "examples": [
+      { "jp": "このケーキはおいし[[そう]]だ", "ko": "이 케이크는 맛있어 보인다" },
+      { "jp": "雨が降り[[そう]]です", "ko": "비가 올 것 같아요" },
+      { "jp": "彼は元気[[そう]]だ", "ko": "그는 건강해 보인다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "このケーキはおいし＿＿＿。",
+        "correct": "そうだ",
+        "distractors": ["らしい", "そうです", "ようだ"],
+        "translation": "이 케이크는 맛있어 보인다"
+      },
+      {
+        "sentence": "雨が降り＿＿＿ですね。",
+        "correct": "そう",
+        "distractors": ["らしい", "はず", "つもり"],
+        "translation": "비가 올 것 같네요"
+      },
+      {
+        "sentence": "彼は元気＿＿＿だ。",
+        "correct": "そう",
+        "distractors": ["らしい", "はず", "つもり"],
+        "translation": "그는 건강해 보인다"
+      }
+    ]
+  },
+  {
+    "id": "particle-ni-de",
+    "type": "particle_contrast",
+    "jlptLevel": 5,
+    "particles": ["に", "で"],
+    "rule": "に는 존재·도착·시간 지점, で는 행위가 일어나는 장소·수단",
+    "examples": [
+      { "particle": "に", "jp": "家に犬がいる", "ko": "집에 개가 있다" },
+      { "particle": "に", "jp": "7時に起きる", "ko": "7시에 일어난다" },
+      { "particle": "で", "jp": "図書館で勉強する", "ko": "도서관에서 공부한다" },
+      { "particle": "で", "jp": "バスで学校に行く", "ko": "버스로 학교에 간다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "家＿＿＿犬がいる。",
+        "correct": "に",
+        "distractors": ["で", "が", "を"],
+        "translation": "집에 개가 있다"
+      },
+      {
+        "sentence": "図書館＿＿＿勉強する。",
+        "correct": "で",
+        "distractors": ["に", "を", "が"],
+        "translation": "도서관에서 공부한다"
+      },
+      {
+        "sentence": "バス＿＿＿学校へ行く。",
+        "correct": "で",
+        "distractors": ["に", "が", "を"],
+        "translation": "버스로 학교에 간다"
+      }
+    ]
+  },
+  {
+    "id": "particle-wo-ga",
+    "type": "particle_contrast",
+    "jlptLevel": 4,
+    "particles": ["を", "が"],
+    "rule": "を는 타동사의 대상, が는 감정·가능·好き/きらい 등의 대상",
+    "examples": [
+      { "particle": "を", "jp": "本を読む", "ko": "책을 읽는다" },
+      { "particle": "を", "jp": "水を飲む", "ko": "물을 마신다" },
+      { "particle": "が", "jp": "日本語が好きだ", "ko": "일본어를 좋아한다" },
+      { "particle": "が", "jp": "車が欲しい", "ko": "차를 갖고 싶다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "本＿＿＿読む。",
+        "correct": "を",
+        "distractors": ["が", "に", "で"],
+        "translation": "책을 읽는다"
+      },
+      {
+        "sentence": "日本語＿＿＿好きだ。",
+        "correct": "が",
+        "distractors": ["を", "に", "で"],
+        "translation": "일본어를 좋아한다"
+      },
+      {
+        "sentence": "新しい車＿＿＿欲しい。",
+        "correct": "が",
+        "distractors": ["を", "に", "で"],
+        "translation": "새 차를 갖고 싶다"
+      }
+    ]
+  },
+  {
+    "id": "particle-he-ni",
+    "type": "particle_contrast",
+    "jlptLevel": 5,
+    "particles": ["へ", "に"],
+    "rule": "へ는 이동 방향, に는 도달 지점·상대 — 이동 동사에서 자주 겹침",
+    "examples": [
+      { "particle": "へ", "jp": "東京へ行く", "ko": "도쿄로 간다" },
+      { "particle": "へ", "jp": "母へ手紙を送る", "ko": "어머니에게 편지를 보낸다" },
+      { "particle": "に", "jp": "駅に着いた", "ko": "역에 도착했다" },
+      { "particle": "に", "jp": "友達に会う", "ko": "친구를 만난다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "駅＿＿＿着いた。",
+        "correct": "に",
+        "distractors": ["へ", "を", "で"],
+        "translation": "역에 도착했다"
+      },
+      {
+        "sentence": "友達＿＿＿会う。",
+        "correct": "に",
+        "distractors": ["へ", "を", "で"],
+        "translation": "친구를 만난다"
+      },
+      {
+        "sentence": "東京＿＿＿行きます。",
+        "correct": "へ",
+        "distractors": ["を", "が", "で"],
+        "translation": "도쿄로 갑니다"
+      }
+    ]
+  },
+  {
+    "id": "particle-to-ya",
+    "type": "particle_contrast",
+    "jlptLevel": 5,
+    "particles": ["と", "や"],
+    "rule": "と는 나열의 전부, や는 예시(〜などと 함께 자주 사용)",
+    "examples": [
+      { "particle": "と", "jp": "パンと牛乳を買う", "ko": "빵과 우유를 산다 (그 둘만)" },
+      { "particle": "と", "jp": "父と母と行く", "ko": "아버지와 어머니와 함께 간다" },
+      { "particle": "や", "jp": "りんごやみかんなどがある", "ko": "사과나 귤 등이 있다" },
+      { "particle": "や", "jp": "本やノートを持ってきた", "ko": "책이나 노트를 가져왔다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "パン＿＿＿牛乳を買います (두 개만).",
+        "correct": "と",
+        "distractors": ["や", "に", "で"],
+        "translation": "빵과 우유를 삽니다 (그 둘만)"
+      },
+      {
+        "sentence": "りんご＿＿＿みかんなどがあります.",
+        "correct": "や",
+        "distractors": ["と", "に", "で"],
+        "translation": "사과나 귤 등이 있습니다"
+      },
+      {
+        "sentence": "本＿＿＿ノートなどを持ってくる.",
+        "correct": "や",
+        "distractors": ["と", "を", "で"],
+        "translation": "책이나 노트 등을 가져온다"
+      }
+    ]
+  },
+  {
+    "id": "particle-kara-node",
+    "type": "particle_contrast",
+    "jlptLevel": 4,
+    "particles": ["から", "ので"],
+    "rule": "から는 주관적 이유·권유·명령과 어울림, ので는 객관적 이유·공손",
+    "examples": [
+      { "particle": "から", "jp": "寒いから、窓を閉めて", "ko": "추우니까 창문을 닫아 (지시)" },
+      { "particle": "から", "jp": "急ぎますから、帰ります", "ko": "바쁘니까 가겠습니다" },
+      { "particle": "ので", "jp": "雨が降ったので、試合は中止だ", "ko": "비가 왔기 때문에 시합은 중지다" },
+      { "particle": "ので", "jp": "日本語ができるので、通訳を頼まれた", "ko": "일본어를 할 수 있어서 통역을 부탁받았다" }
+    ],
+    "quizzes": [
+      {
+        "sentence": "寒い＿＿＿、窓を閉めて。",
+        "correct": "から",
+        "distractors": ["ので", "のに", "ながら"],
+        "translation": "추우니까 창문을 닫아 (지시)"
+      },
+      {
+        "sentence": "雨が降った＿＿＿、試合は中止だ。",
+        "correct": "ので",
+        "distractors": ["から", "のに", "ながら"],
+        "translation": "비가 왔기 때문에 시합은 중지다"
+      },
+      {
+        "sentence": "日本語ができる＿＿＿通訳を頼まれた。",
+        "correct": "ので",
+        "distractors": ["のに", "まで", "ながら"],
+        "translation": "일본어를 할 수 있어서 통역을 부탁받았다"
+      }
+    ]
+  }
+]
