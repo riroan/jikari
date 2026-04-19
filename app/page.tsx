@@ -34,12 +34,12 @@ export default function Home() {
         {/* Top: brand + streak */}
         <header className="flex justify-between items-baseline mb-14">
           <div className="flex items-baseline">
-            <span
-              className="text-title font-semibold tracking-wide"
+            <h1
+              className="text-[22px] leading-none font-semibold tracking-wide"
               style={{ fontFamily: "var(--font-jp-serif)" }}
             >
               jikari
-            </span>
+            </h1>
             <span className="ml-1.5 text-xs text-[color:var(--fg-faint)] tracking-tab">
               じかり
             </span>
