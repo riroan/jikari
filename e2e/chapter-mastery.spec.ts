@@ -5,10 +5,8 @@ import { test, expect } from "@playwright/test";
  *
  * Self-gating: if no chapters seeded, deeper /chapters assertions skip.
  */
-test.describe("home — UNITS footer link", () => {
-  test("home shows UNITS link in footer (alongside HOME/PROGRESS/SETTINGS)", async ({
-    page,
-  }) => {
+test.describe("home — 단원 entry button", () => {
+  test("home shows 단원 button between header and subject rows", async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (err) => errors.push(err.message));
 
@@ -20,19 +18,19 @@ test.describe("home — UNITS footer link", () => {
     await expect(page.getByRole("link", { name: "퀴즈" })).toHaveCount(7);
     await expect(page.getByText("7 WEEKS")).toBeVisible();
 
-    // New footer entry. Use exact text to avoid matching the back-link "← HOME".
-    const unitsLink = page.getByRole("link", { name: /^UNITS$/ });
+    // 단원 entry — top of page, not in footer.
+    const unitsLink = page.getByRole("link", { name: /단원/ });
     await expect(unitsLink).toBeVisible();
     await expect(unitsLink).toHaveAttribute("href", "/chapters");
 
-    // Existing footer items still present.
-    await expect(page.getByRole("link", { name: /^HOME$/ })).toBeVisible();
-    await expect(page.getByRole("link", { name: /^PROGRESS$/ })).toBeVisible();
-    await expect(page.getByRole("link", { name: /^SETTINGS$/ })).toBeVisible();
+    // Footer no longer carries UNITS — only HOME/PROGRESS/SETTINGS.
+    const footer = page.locator("nav").last();
+    await expect(footer.getByRole("link", { name: /^HOME$/ })).toBeVisible();
+    await expect(footer.getByRole("link", { name: /^PROGRESS$/ })).toBeVisible();
+    await expect(footer.getByRole("link", { name: /^SETTINGS$/ })).toBeVisible();
+    await expect(footer.getByRole("link", { name: /^UNITS$/ })).toHaveCount(0);
 
-    // UNITS section is NOT rendered inline on home anymore (moved to /chapters).
-    await expect(page.getByText("UNITS").first()).toBeVisible();
-    // The inline chapter list (section[aria-labelledby='chapters-label']) should be absent.
+    // Inline chapter list NOT rendered on home (moved to /chapters route).
     await expect(page.locator("section[aria-labelledby='chapters-label']")).toHaveCount(0);
 
     expect(errors, `unexpected pageerrors: ${errors.join(" | ")}`).toEqual([]);

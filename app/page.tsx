@@ -32,7 +32,7 @@ export default function Home() {
     <main className="flex-1 flex justify-center">
       <div className="w-[390px] px-6 pt-8 pb-10">
         {/* Top: brand + streak */}
-        <header className="flex justify-between items-baseline mb-14">
+        <header className="flex justify-between items-baseline mb-6">
           <div className="flex items-baseline">
             <h1
               className="text-[22px] leading-none font-semibold tracking-wide"
@@ -53,6 +53,27 @@ export default function Home() {
             </span>
           </div>
         </header>
+
+        {/* Units entry — chapter mastery view (uses subject-row visual language) */}
+        <Link
+          href="/chapters"
+          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-8 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
+        >
+          <span className="flex items-baseline gap-3">
+            <span className="text-body font-medium text-[color:var(--fg)]">
+              단원
+            </span>
+            <span
+              className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
+              style={{ fontFamily: "var(--font-jp-sans)" }}
+            >
+              単元
+            </span>
+          </span>
+          <span className="text-[13px] text-[color:var(--fg-soft)] tracking-wide">
+            →
+          </span>
+        </Link>
 
         {/* Subject rows — one per subject with 공부 / 퀴즈 actions */}
         <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-12">
@@ -76,13 +97,6 @@ export default function Home() {
             className="inline-flex items-center justify-center min-h-[44px] px-3 hover:text-[color:var(--fg-soft)]"
           >
             HOME
-          </Link>
-          <span aria-hidden="true">・</span>
-          <Link
-            href="/chapters"
-            className="inline-flex items-center justify-center min-h-[44px] px-3 hover:text-[color:var(--fg-soft)]"
-          >
-            UNITS
           </Link>
           <span aria-hidden="true">・</span>
           <Link
