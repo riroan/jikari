@@ -45,6 +45,9 @@ async function main() {
   );
   const applied = new Set(rows.map((r) => r.filename as string));
 
+  // DDL files use numeric prefixes (0001_, 0002_, …). DML-only (content/data)
+  // files use the `A_` prefix so they sort after all DDL and never collide on
+  // number. ASCII '0' < 'A', so default alphabetical sort runs DDL first.
   const dir = path.join(process.cwd(), "lib/db/migrations");
   const files = (await readdir(dir)).filter((f) => f.endsWith(".sql")).sort();
 
