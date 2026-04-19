@@ -1,6 +1,7 @@
 "use client";
 
 import { generateCells } from "@/lib/heatmap";
+import { intensityBg } from "@/lib/intensity";
 import type { HeatmapData } from "@/lib/types";
 
 /**
@@ -17,13 +18,6 @@ export function Heatmap({
   weeks?: number;
 }) {
   const cells = generateCells(data, now, weeks * 7);
-  const intensityBg = (i: 0 | 1 | 2 | 3 | 4): string => {
-    if (i === 0) return "rgba(26, 25, 21, 0.06)";
-    if (i === 1) return "color-mix(in oklab, var(--accent-progress) 28%, transparent)";
-    if (i === 2) return "color-mix(in oklab, var(--accent-progress) 50%, transparent)";
-    if (i === 3) return "color-mix(in oklab, var(--accent-progress) 75%, transparent)";
-    return "var(--accent-progress)";
-  };
 
   return (
     <div
