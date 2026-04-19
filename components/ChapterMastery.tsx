@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { aggregateChapterMastery } from "@/lib/chapter-mastery";
@@ -98,36 +99,38 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
           const memberCount = summary.validMembers;
 
           return (
-            <li
-              key={chapter.id}
-              className="bg-[color:var(--bg)] flex items-center px-4 py-2.5 gap-3"
-            >
-              <span className="flex-1 text-small text-[color:var(--fg)] truncate min-w-0">
-                {chapter.name}
-              </span>
-
-              {/* Mastery bar — fixed width, fills proportionally. */}
-              <div
-                className="relative shrink-0 h-1.5 w-20 rounded-full overflow-hidden"
-                style={{ background: intensityBg(0) }}
-                role="img"
-                aria-label={`마스터리 ${percent}퍼센트, ${summary.masteredCount} / ${memberCount} 카드`}
+            <li key={chapter.id}>
+              <Link
+                href={`/chapters/${chapter.id}`}
+                className="bg-[color:var(--bg)] flex items-center px-4 py-2.5 gap-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
+                aria-label={`${chapter.name} — 마스터리 ${percent}퍼센트, ${summary.masteredCount} / ${memberCount} 카드`}
               >
+                <span className="flex-1 text-small text-[color:var(--fg)] truncate min-w-0">
+                  {chapter.name}
+                </span>
+
+                {/* Mastery bar — fixed width, fills proportionally. */}
                 <div
-                  className="absolute inset-y-0 left-0 transition-[width] duration-300"
-                  style={{
-                    width: `${Math.max(0, Math.min(100, percent))}%`,
-                    background: intensityBg(intensity),
-                  }}
-                />
-              </div>
+                  className="relative shrink-0 h-1.5 w-20 rounded-full overflow-hidden"
+                  style={{ background: intensityBg(0) }}
+                  aria-hidden="true"
+                >
+                  <div
+                    className="absolute inset-y-0 left-0 transition-[width] duration-300"
+                    style={{
+                      width: `${Math.max(0, Math.min(100, percent))}%`,
+                      background: intensityBg(intensity),
+                    }}
+                  />
+                </div>
 
-              <span
-                className="shrink-0 text-caption text-[color:var(--fg-faint)] tabular-nums w-14 text-right"
-                aria-hidden="true"
-              >
-                {memberCount > 0 ? `${percent}% · ${memberCount}` : "—"}
-              </span>
+                <span
+                  className="shrink-0 text-caption text-[color:var(--fg-faint)] tabular-nums w-14 text-right"
+                  aria-hidden="true"
+                >
+                  {memberCount > 0 ? `${percent}% · ${memberCount}` : "—"}
+                </span>
+              </Link>
             </li>
           );
         })}

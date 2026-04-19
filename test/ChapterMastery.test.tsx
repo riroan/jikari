@@ -160,7 +160,7 @@ describe("ChapterMastery — populated state", () => {
     expect(screen.getByText("50% · 4")).toBeDefined();
   });
 
-  it("ARIA label exposes mastery percent and counts to screen readers", () => {
+  it("ARIA label on link exposes mastery percent and counts to screen readers", () => {
     const chapters: Chapter[] = [
       { id: "ch1", name: "x", intro: null, sortOrder: 10 },
     ];
@@ -179,7 +179,8 @@ describe("ChapterMastery — populated state", () => {
     });
 
     render(<ChapterMastery />);
-    expect(screen.getByLabelText(/마스터리 0퍼센트, 0 \/ 2 카드/)).toBeDefined();
+    const link = screen.getByLabelText(/x — 마스터리 0퍼센트, 0 \/ 2 카드/);
+    expect(link.getAttribute("href")).toBe("/chapters/ch1");
   });
 
   it("shows em dash when chapter has 0 valid members (all stale)", () => {

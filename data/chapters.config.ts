@@ -42,7 +42,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "a2-food",
     name: "음식·식사",
-    intro: null,
+    intro:
+      "ご飯·肉·魚 같은 가장 자주 쓰는 음식 어휘. 식당·집에서 매일 한두 번은 입에 오르는 단어들이 대부분이라 SRS 박스가 빨리 올라가요.",
     sortOrder: 10,
     match: {
       vocabWords: [
@@ -55,7 +56,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "a3-home",
     name: "집·일상 사물",
-    intro: null,
+    intro:
+      "家·部屋·机·窓 등 집 안과 일상에서 보이는 명사. 한자 자체가 단순한 게 많고 韓자와 거의 일치해서 한국 화자에겐 가장 부담 적은 묶음이에요.",
     sortOrder: 20,
     match: {
       vocabWords: ["家", "部屋", "いす", "机", "窓", "傘", "紙", "電話", "時計", "台所"],
@@ -65,7 +67,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "a4-transport",
     name: "교통·이동",
-    intro: null,
+    intro:
+      "車·電車·飛行機 같은 교통 수단 + 乗る·行く 같은 이동 동사 + 関連 입자(に·で·へ). 일본 여행·통근 콘텐츠에서 가장 먼저 마주치는 묶음.",
     sortOrder: 30,
     match: {
       vocabWords: ["車", "電車", "地下鉄", "飛行機", "自転車", "空港", "駅", "道", "乗る", "行く", "来る"],
@@ -85,7 +88,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "a6-adjectives",
     name: "형용사 기초 (색깔 포함)",
-    intro: null,
+    intro:
+      "好き·おいしい·難しい 같은 い·な형용사 어휘. 활용 자체는 /형용사 모드에서 따로 — 여기는 *의미*만 익힙니다. 색깔(赤い·青い…)도 포함.",
     sortOrder: 50,
     match: {
       vocabWords: [
@@ -131,7 +135,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "b1-wa-ga",
     name: "は vs が (주제 vs 주어)",
-    intro: null,
+    intro:
+      "한국어 화자가 가장 자주 헷갈리는 입자. \"私は学生です\"의 は는 *주제*, \"犬が好きです\"의 が는 *대상/주어*. 규칙·예문·빈칸 퀴즈로 감 잡기.",
     sortOrder: 110,
     match: {
       particles: ["は", "が"],
@@ -173,7 +178,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "c1-polite-want-request",
     name: "정중·욕구·요청",
-    intro: null,
+    intro:
+      "〜たい(고 싶다), 〜ましょう(합시다), 〜てください(해 주세요). 일본어 정중체의 입문 묶음. 회화에서 이 셋만 알아도 부탁·제안 다 됨.",
     sortOrder: 210,
     match: {
       grammarIds: [
