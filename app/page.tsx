@@ -70,16 +70,25 @@ export default function Home() {
         </section>
 
         {/* Footer nav */}
-        <nav className="text-center text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
-          <Link href="/" className="hover:text-[color:var(--fg-soft)]">
+        <nav className="flex justify-center items-center gap-1 text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center min-h-[44px] px-3 hover:text-[color:var(--fg-soft)]"
+          >
             HOME
-          </Link>{" "}
-          ・{" "}
-          <Link href="/progress" className="hover:text-[color:var(--fg-soft)]">
+          </Link>
+          <span aria-hidden="true">・</span>
+          <Link
+            href="/progress"
+            className="inline-flex items-center justify-center min-h-[44px] px-3 hover:text-[color:var(--fg-soft)]"
+          >
             PROGRESS
-          </Link>{" "}
-          ・{" "}
-          <Link href="/settings" className="hover:text-[color:var(--fg-soft)]">
+          </Link>
+          <span aria-hidden="true">・</span>
+          <Link
+            href="/settings"
+            className="inline-flex items-center justify-center min-h-[44px] px-3 hover:text-[color:var(--fg-soft)]"
+          >
             SETTINGS
           </Link>
         </nav>
