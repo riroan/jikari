@@ -315,6 +315,9 @@ function TypedPanel({
     userAnswer !== null &&
     input.lang === "ja" &&
     typedInKoreanByMistake(userAnswer);
+  const answerFontFamily =
+    input.lang === "ja" ? "var(--font-jp-sans)" : "var(--font-kr-sans)";
+  const canonicalAnswer = input.acceptableAnswers[0];
   return (
     <div className="flex flex-col gap-3">
       <TypingInput
@@ -330,16 +333,22 @@ function TypedPanel({
             입력:{" "}
             <span
               className="text-[color:var(--accent-korean)]"
-              style={{
-                fontFamily:
-                  input.lang === "ja"
-                    ? "var(--font-jp-sans)"
-                    : "var(--font-kr-sans)",
-              }}
+              style={{ fontFamily: answerFontFamily }}
             >
               {userAnswer}
             </span>
           </div>
+          {canonicalAnswer && (
+            <div>
+              정답:{" "}
+              <span
+                className="text-[color:var(--accent-progress)]"
+                style={{ fontFamily: answerFontFamily }}
+              >
+                {canonicalAnswer}
+              </span>
+            </div>
+          )}
           {showImeHint && (
             <div className="text-[color:var(--accent-korean)]">
               한국어로 입력하셨나요? 日本語 키보드로 전환해 주세요.
