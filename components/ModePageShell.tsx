@@ -44,7 +44,7 @@ export function ModePageShell({
 
   return (
     <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-4 md:pt-8 pb-10">
+      <div className="w-[390px] px-6 pt-4 md:pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
         <header
           className="flex justify-between items-baseline mb-[var(--header-mb-mobile)] md:mb-[var(--header-mb)]"
           style={

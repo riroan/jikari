@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
+      <div className="w-[390px] px-6 pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
         {/* Top: brand + streak */}
         <header className="flex justify-between items-baseline mb-6">
           <div className="flex items-baseline">
