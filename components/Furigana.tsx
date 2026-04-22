@@ -83,7 +83,7 @@ export function renderSegments(
           <rt
             className={rtClassName}
             style={{
-              fontSize: "0.45em",
+              fontSize: "0.4em",
               letterSpacing: "0.04em",
               fontWeight: 400,
             }}
@@ -122,7 +122,7 @@ export function Furigana({
   return (
     <ruby className={className} style={{ rubyPosition: "over" }}>
       {kanji}
-      <rt style={{ fontSize: "0.45em", letterSpacing: "0.04em" }}>{reading}</rt>
+      <rt style={{ fontSize: "0.4em", letterSpacing: "0.04em" }}>{reading}</rt>
     </ruby>
   );
 }
