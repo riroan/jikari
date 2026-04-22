@@ -286,6 +286,15 @@ function ChoicePanel({
   );
 }
 
+// Hint trigger: user answered wrong in Japanese-expected mode but typed zero
+// Japanese characters (no hiragana/katakana/kanji) and at least one Hangul —
+// classic Korean-IME-active-by-mistake symptom.
+const HANGUL_RE = /[가-힯ᄀ-ᇿ㄰-㆏]/;
+const JP_RE = /[぀-ゟ゠-ヿ一-鿿]/;
+function typedInKoreanByMistake(s: string): boolean {
+  return !JP_RE.test(s) && HANGUL_RE.test(s);
+}
+
 function TypedPanel({
   input,
   disabled,
@@ -300,6 +309,12 @@ function TypedPanel({
   result: "correct" | "wrong" | null;
 }) {
   const ariaLabel = input.lang === "ja" ? "読み入력" : "뜻 입력";
+  const showImeHint =
+    disabled &&
+    result === "wrong" &&
+    userAnswer !== null &&
+    input.lang === "ja" &&
+    typedInKoreanByMistake(userAnswer);
   return (
     <div className="flex flex-col gap-3">
       <TypingInput
@@ -310,19 +325,26 @@ function TypedPanel({
         onSubmit={onSubmit}
       />
       {disabled && result === "wrong" && userAnswer !== null && (
-        <div className="text-[13px] text-[color:var(--fg-faint)]">
-          입력:{" "}
-          <span
-            className="text-[color:var(--accent-korean)]"
-            style={{
-              fontFamily:
-                input.lang === "ja"
-                  ? "var(--font-jp-sans)"
-                  : "var(--font-kr-sans)",
-            }}
-          >
-            {userAnswer}
-          </span>
+        <div className="flex flex-col gap-1 text-[13px] text-[color:var(--fg-faint)]">
+          <div>
+            입력:{" "}
+            <span
+              className="text-[color:var(--accent-korean)]"
+              style={{
+                fontFamily:
+                  input.lang === "ja"
+                    ? "var(--font-jp-sans)"
+                    : "var(--font-kr-sans)",
+              }}
+            >
+              {userAnswer}
+            </span>
+          </div>
+          {showImeHint && (
+            <div className="text-[color:var(--accent-korean)]">
+              한국어로 입력하셨나요? 日本語 키보드로 전환해 주세요.
+            </div>
+          )}
         </div>
       )}
     </div>

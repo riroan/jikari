@@ -114,8 +114,15 @@ export function TypingInput({
     lang === "ja" ? "var(--font-jp-sans)" : "var(--font-kr-sans)";
 
   return (
-    <div className="flex items-center gap-3">
-      <input
+    <div>
+      <div
+        className="mb-2 text-[11px] tracking-label text-[color:var(--fg-faint)]"
+        aria-hidden="true"
+      >
+        {lang === "ja" ? "日本語入力" : "한국어 입력"}
+      </div>
+      <div className="flex items-center gap-3">
+        <input
         ref={inputRef}
         type="text"
         inputMode="text"
@@ -154,6 +161,7 @@ export function TypingInput({
       >
         確認
       </button>
+      </div>
     </div>
   );
 }
