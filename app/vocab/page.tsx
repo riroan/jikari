@@ -7,7 +7,12 @@ import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
-import { generateVocabChoices, getVocab } from "@/lib/data";
+import {
+  chooseDirection,
+  generateVocabChoices,
+  getVocab,
+  type QuizDirection,
+} from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { weightedShuffleIds } from "@/lib/deck";
 import { pickMode } from "@/lib/srs";
@@ -106,6 +111,7 @@ function VocabPageInner() {
           card={card}
           seed={seed + index + epoch * 977}
           answerMode={pickMode(getBox("vocab", card.id), threshold)}
+          direction={chooseDirection(getBox("vocab", card.id), card.id, epoch)}
           onResolved={(wasCorrect, answerMode) => {
             review("vocab", card.id, wasCorrect, answerMode);
             recordQuizResult("vocab", wasCorrect);
@@ -141,22 +147,31 @@ function VocabQuiz({
   card,
   seed,
   answerMode,
+  direction,
   onResolved,
 }: {
   card: VocabCard;
   seed: number;
   answerMode: "choice" | "typed";
+  direction: QuizDirection;
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
+  // Typed 모드는 한국어 답만 받으므로 항상 recognition 방향.
+  const effectiveDirection: QuizDirection =
+    answerMode === "typed" ? "recognition" : direction;
+
   const input =
     answerMode === "choice"
       ? (() => {
-          const choices = generateVocabChoices(card, seed);
+          const choices = generateVocabChoices(card, effectiveDirection, seed);
           return {
             mode: "choice" as const,
             choices: choices.choices,
             correct: choices.correct,
-            choiceFontFamily: "var(--font-kr-sans)",
+            choiceFontFamily:
+              effectiveDirection === "recall"
+                ? "var(--font-jp-sans)"
+                : "var(--font-kr-sans)",
           };
         })()
       : {
@@ -168,33 +183,53 @@ function VocabQuiz({
   return (
     <QuizCard
       question={
-        <div>
-          <div
-            className="text-[56px] leading-tight font-semibold mb-2"
-            style={{
-              fontFamily: "var(--font-jp-serif)",
-              letterSpacing: "-0.02em",
-              color: "var(--fg)",
-            }}
-          >
-            {card.ruby ? <RubyText text={card.ruby} /> : card.word}
-          </div>
-          {!card.ruby && (
-            <div
-              className="text-[16px] text-[color:var(--fg-faint)]"
-              style={{ fontFamily: "var(--font-jp-sans)" }}
-            >
-              {card.reading}
-            </div>
-          )}
-        </div>
+        effectiveDirection === "recall" ? (
+          <VocabRecallQuestion card={card} />
+        ) : (
+          <VocabRecognitionQuestion card={card} />
+        )
       }
-      subtitle="의미는?"
+      subtitle={effectiveDirection === "recall" ? "어떤 단어?" : "의미는?"}
       input={input}
-      back={<VocabBack card={card} />}
       onResolved={(correct) => onResolved(correct, answerMode)}
       minQuestionHeight={0}
     />
+  );
+}
+
+function VocabRecognitionQuestion({ card }: { card: VocabCard }) {
+  return (
+    <div>
+      <div
+        className="text-[56px] leading-tight font-semibold mb-2"
+        style={{
+          fontFamily: "var(--font-jp-serif)",
+          letterSpacing: "-0.02em",
+          color: "var(--fg)",
+        }}
+      >
+        {card.ruby ? <RubyText text={card.ruby} /> : card.word}
+      </div>
+      {!card.ruby && (
+        <div
+          className="text-[16px] text-[color:var(--fg-faint)]"
+          style={{ fontFamily: "var(--font-jp-sans)" }}
+        >
+          {card.reading}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function VocabRecallQuestion({ card }: { card: VocabCard }) {
+  return (
+    <div
+      className="text-[32px] leading-snug font-medium text-[color:var(--fg)]"
+      style={{ letterSpacing: "-0.01em" }}
+    >
+      {card.koreanMeanings.join(", ")}
+    </div>
   );
 }
 

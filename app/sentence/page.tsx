@@ -176,7 +176,6 @@ function SentenceQuiz({
         correct: choices.correct,
         choiceFontFamily: "var(--font-jp-sans)",
       }}
-      back={<SentenceBack card={card} />}
       onResolved={onResolved}
       minQuestionHeight={0}
     />
@@ -213,31 +212,3 @@ function SentenceStudyBody({ card }: { card: SentenceCard }) {
   );
 }
 
-function SentenceBack({ card }: { card: SentenceCard }) {
-  const hasRuby = Boolean(card.sentenceRuby);
-  const sentenceSrc = card.sentenceRuby ?? card.sentence;
-  const answerSrc = card.blankRuby ?? card.blank;
-  const [before, after] = sentenceSrc.split(BLANK);
-
-  return (
-    <div className="flex flex-col gap-3">
-      <div
-        className="text-h2 leading-[1.8] font-medium"
-        style={{
-          fontFamily: "var(--font-jp-serif)",
-          color: "var(--fg)",
-          letterSpacing: "-0.01em",
-        }}
-      >
-        {hasRuby ? <RubyText text={before ?? ""} /> : before}
-        <span className="text-[color:var(--accent-progress)] font-semibold underline decoration-dotted underline-offset-4">
-          {hasRuby ? <RubyText text={answerSrc} /> : answerSrc}
-        </span>
-        {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
-      </div>
-      <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
-        {card.translation}
-      </div>
-    </div>
-  );
-}

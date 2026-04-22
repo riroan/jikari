@@ -135,7 +135,7 @@ function VocabSlot({
   const input =
     answerMode === "choice"
       ? (() => {
-          const c = generateVocabChoices(card, seed);
+          const c = generateVocabChoices(card, "recognition", seed);
           return {
             mode: "choice" as const,
             choices: c.choices,

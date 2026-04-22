@@ -199,6 +199,7 @@ function KanjiQuiz({
       input={input}
       back={<KanjiBack card={card} />}
       onResolved={(correct) => onResolved(correct, answerMode)}
+      minQuestionHeight={320}
     />
   );
 }

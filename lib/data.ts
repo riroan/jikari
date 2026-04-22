@@ -133,22 +133,37 @@ export function generateKanjiChoices(
   return { correct, choices };
 }
 
+/**
+ * 4-choice builder for 単語.
+ *   recognition → question = JP word, choices = 한국어 뜻
+ *   recall      → question = 한국어 뜻, choices = JP word (ruby 있으면 ruby 문자열)
+ */
 export function generateVocabChoices(
   card: VocabCard,
+  direction: QuizDirection,
   seed: number = Math.random()
 ): { correct: string; choices: string[] } {
-  const correct = card.koreanMeanings[0];
   const all = cards().vocab;
+  const others = all.filter((v) => v.id !== card.id);
+
+  if (direction === "recall") {
+    const correct = card.ruby ?? card.word;
+    const pool = others
+      .map((v) => v.ruby ?? v.word)
+      .filter((w) => w !== correct);
+    const distractors = sampleUnique(pool, 3, seed);
+    return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
+  }
+
+  const correct = card.koreanMeanings[0];
   const pool: string[] = [];
-  for (const other of all) {
-    if (other.id === card.id) continue;
+  for (const other of others) {
     for (const m of other.koreanMeanings) {
       if (!card.koreanMeanings.includes(m)) pool.push(m);
     }
   }
   const distractors = sampleUnique(pool, 3, seed);
-  const choices = shuffle([correct, ...distractors], seed + 1);
-  return { correct, choices };
+  return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }
 
 /**
