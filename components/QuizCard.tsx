@@ -53,7 +53,10 @@ export interface QuizCardProps {
   back?: React.ReactNode;
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean) => void;
-  /** Min height (px) reserved for the question block. Default 260. */
+  /**
+   * Min height (px) reserved for the question block. Default 260.
+   * On mobile (<md) the value is capped at 180 so choices stay visible without scrolling.
+   */
   minQuestionHeight?: number;
 }
 
@@ -151,7 +154,15 @@ export function QuizCard({
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="relative" style={{ minHeight: minQuestionHeight }}>
+      <div
+        className="relative min-h-[var(--qc-min-mobile)] md:min-h-[var(--qc-min)]"
+        style={
+          {
+            "--qc-min-mobile": `${Math.min(minQuestionHeight, 180)}px`,
+            "--qc-min": `${minQuestionHeight}px`,
+          } as React.CSSProperties
+        }
+      >
         <AnimatePresence mode="wait" initial={false}>
           {showingBack && back ? (
             <motion.div
