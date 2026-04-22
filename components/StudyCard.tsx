@@ -24,7 +24,7 @@ export function StudyCard({
       <div className="flex items-center justify-between">
         <button
           onClick={onPrev}
-          className="text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors px-3 py-2"
+          className="text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors px-4 py-3 min-h-[44px] inline-flex items-center"
           aria-label="이전 카드"
         >
           ← 이전
@@ -39,7 +39,7 @@ export function StudyCard({
 
         <button
           onClick={onNext}
-          className="text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors px-3 py-2"
+          className="text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors px-4 py-3 min-h-[44px] inline-flex items-center"
           aria-label="다음 카드"
         >
           다음 →

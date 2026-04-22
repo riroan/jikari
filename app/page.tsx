@@ -153,7 +153,7 @@ function ActionLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="text-[13px] text-[color:var(--fg-soft)] tracking-wide px-3 py-2 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] flex items-center"
+      className="text-[13px] text-[color:var(--fg-soft)] tracking-wide px-4 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] flex items-center"
     >
       {label}
     </Link>
