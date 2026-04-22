@@ -55,6 +55,30 @@ export function TypingInput({
     }
   }, [autoFocus, disabled]);
 
+  // iOS soft keyboard covers the input. Re-scroll into view when the visual
+  // viewport shrinks (keyboard shows) or on focus (handles keyboard-already-open case).
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+
+    const scrollToInput = () => {
+      if (document.activeElement === input) {
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    };
+    const handleFocus = () => {
+      window.setTimeout(scrollToInput, 300);
+    };
+
+    const vv = window.visualViewport;
+    vv?.addEventListener("resize", scrollToInput);
+    input.addEventListener("focus", handleFocus);
+    return () => {
+      vv?.removeEventListener("resize", scrollToInput);
+      input.removeEventListener("focus", handleFocus);
+    };
+  }, []);
+
   // Clear input when the card rotates (disabled toggles false → true → false).
   // Caller remounts us for a new card normally, but if they reuse us, reset on disable → enable transition.
   const prevDisabledRef = useRef(disabled);
