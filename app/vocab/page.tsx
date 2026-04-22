@@ -14,7 +14,7 @@ import {
   type QuizDirection,
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { weightedShuffleIds } from "@/lib/deck";
+import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { pickMode } from "@/lib/srs";
 import type { VocabCard } from "@/lib/types";
 
@@ -48,7 +48,7 @@ function VocabPageInner() {
   const deck = useMemo(
     () =>
       mode === "study"
-        ? vocabIds
+        ? shuffleIds(vocabIds, seed + epoch * 7919)
         : weightedShuffleIds(
             vocabIds,
             (id) => getBox("vocab", id),

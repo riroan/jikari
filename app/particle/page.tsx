@@ -9,7 +9,7 @@ import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { weightedShuffleIds } from "@/lib/deck";
+import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { PARTICLE_INFO } from "@/lib/particle-info";
 import type { SentenceCard } from "@/lib/types";
 
@@ -44,7 +44,7 @@ function ParticlePageInner() {
   const deck = useMemo(
     () =>
       mode === "study"
-        ? particleIds
+        ? shuffleIds(particleIds, seed + epoch * 7919)
         : weightedShuffleIds(
             particleIds,
             // Particle review() also writes under mode 'sentence' — see onResolved.

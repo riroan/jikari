@@ -85,12 +85,9 @@ function ConjugationPageInner() {
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
-  // For quiz: shuffled. For study: stable alphabetical ordering so the user
-  // can browse predictably.
   const deck = useMemo(
-    () =>
-      mode === "study" ? verbIds : shuffleIds(verbIds, seed + epoch * 7919),
-    [mode, seed, epoch, verbIds],
+    () => shuffleIds(verbIds, seed + epoch * 7919),
+    [seed, epoch, verbIds],
   );
 
   const advance = () => {

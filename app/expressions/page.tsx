@@ -14,7 +14,7 @@ import {
   type QuizDirection,
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { weightedShuffleIds } from "@/lib/deck";
+import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import type { ExpressionCard, Register } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -58,7 +58,7 @@ function ExpressionsPageInner() {
   const deck = useMemo(
     () =>
       mode === "study"
-        ? expressionIds
+        ? shuffleIds(expressionIds, seed + epoch * 7919)
         : weightedShuffleIds(
             expressionIds,
             (id) => getBox("expression", id),

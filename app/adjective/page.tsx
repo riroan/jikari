@@ -67,8 +67,8 @@ function AdjectivePageInner() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   const deck = useMemo(
-    () => (mode === "study" ? adjIds : shuffleIds(adjIds, seed + epoch * 7919)),
-    [mode, seed, epoch, adjIds],
+    () => shuffleIds(adjIds, seed + epoch * 7919),
+    [seed, epoch, adjIds],
   );
 
   const advance = () => {

@@ -13,7 +13,7 @@ import {
   getGrammar,
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { weightedShuffleIds } from "@/lib/deck";
+import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import type {
   GrammarCard,
   GrammarPatternCard,
@@ -63,7 +63,7 @@ function GrammarPageInner() {
   const deck = useMemo(
     () =>
       mode === "study"
-        ? ids
+        ? shuffleIds(ids, seed + epoch * 7919)
         : weightedShuffleIds(
             ids,
             (id) => getBox("grammar", `${boxPrefix}:${id}`),

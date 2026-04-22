@@ -8,7 +8,7 @@ import { StudyCard } from "@/components/StudyCard";
 import { useStore } from "@/lib/store";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { weightedShuffleIds } from "@/lib/deck";
+import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { pickMode } from "@/lib/srs";
 import { normalizeJapanese } from "@/lib/normalize";
 import type { KanjiCard } from "@/lib/types";
@@ -38,7 +38,7 @@ function KanjiPageInner() {
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const kanjiIds = useCardsStore((s) => s.kanjiIds);
 
-  // Quiz: infinite shuffled deck. Study: stable order for predictable browsing.
+  // Quiz: SRS-weighted shuffle. Study: plain random shuffle (stable per epoch).
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
@@ -46,7 +46,7 @@ function KanjiPageInner() {
   const deck = useMemo(
     () =>
       mode === "study"
-        ? kanjiIds
+        ? shuffleIds(kanjiIds, seed + epoch * 7919)
         : weightedShuffleIds(
             kanjiIds,
             (id) => getBox("kanji", id),

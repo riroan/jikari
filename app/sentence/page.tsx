@@ -9,7 +9,7 @@ import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
-import { weightedShuffleIds } from "@/lib/deck";
+import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import type { SentenceCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -43,7 +43,7 @@ function SentencePageInner() {
   const deck = useMemo(
     () =>
       mode === "study"
-        ? sentenceIds
+        ? shuffleIds(sentenceIds, seed + epoch * 7919)
         : weightedShuffleIds(
             sentenceIds,
             (id) => getBox("sentence", id),
