@@ -121,46 +121,47 @@ export function TypingInput({
       >
         {lang === "ja" ? "日本語入力" : "한국어 입력"}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center">
         <input
-        ref={inputRef}
-        type="text"
-        inputMode="text"
-        lang={lang}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck={false}
-        disabled={disabled}
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) => setValue(e.target.value)}
-        onCompositionStart={() => {
-          composingRef.current = true;
-        }}
-        onCompositionEnd={() => {
-          composingRef.current = false;
-        }}
-        onKeyDown={handleKeyDown}
-        aria-label={ariaLabel}
-        className="flex-1 bg-transparent text-h2 text-[color:var(--fg)] px-1 py-3 border-0 border-b border-[color:var(--line)] focus:border-[color:var(--fg)] focus:outline-none disabled:opacity-60"
-        style={{
-          fontFamily,
-          minHeight: 44,
-          // Focus ring via outline fallback for users who override border in forced-colors mode.
-          outlineOffset: 2,
-        }}
-      />
-      <button
-        type="button"
-        onClick={submit}
-        disabled={!canSubmit}
-        className="px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-        style={{ minHeight: 44, minWidth: 60 }}
-        aria-label="제출"
-      >
-        確認
-      </button>
+          ref={inputRef}
+          type="text"
+          inputMode="text"
+          enterKeyHint="done"
+          lang={lang}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          disabled={disabled}
+          value={value}
+          placeholder={placeholder}
+          onChange={(e) => setValue(e.target.value)}
+          onCompositionStart={() => {
+            composingRef.current = true;
+          }}
+          onCompositionEnd={() => {
+            composingRef.current = false;
+          }}
+          onKeyDown={handleKeyDown}
+          aria-label={ariaLabel}
+          className="flex-1 bg-transparent text-h2 text-[color:var(--fg)] px-1 py-3 border-0 border-b border-[color:var(--line)] focus:border-[color:var(--fg)] focus:outline-none disabled:opacity-60"
+          style={{
+            fontFamily,
+            minHeight: 44,
+            // Focus ring via outline fallback for users who override border in forced-colors mode.
+            outlineOffset: 2,
+          }}
+        />
+        <button
+          type="button"
+          onClick={submit}
+          disabled={!canSubmit}
+          className="w-full md:w-auto px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          style={{ minHeight: 44, minWidth: 60 }}
+          aria-label="제출"
+        >
+          確認
+        </button>
       </div>
     </div>
   );
