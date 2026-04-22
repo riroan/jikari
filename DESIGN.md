@@ -62,8 +62,8 @@ display       48px    Noto Serif JP 600   tabular-nums (숫자)
 title         22px    Noto Serif JP 600   브랜드 / 섹션 타이틀
 body          17px    Pretendard 500      일반 텍스트
 reading       17px    Noto Sans JP 400    가나 읽기
-label         12-13px Pretendard 500      letter-spacing: 0.18em (올캡 라벨)
-caption       11px    Pretendard 500      letter-spacing: 0.25em (네비 힌트)
+label         13px    Pretendard 500      letter-spacing: 0.18em (올캡 라벨)
+caption       13px    Pretendard 500      letter-spacing: 0.25em (네비 힌트·보조 텍스트)
 ```
 
 ### 텍스트 규칙
