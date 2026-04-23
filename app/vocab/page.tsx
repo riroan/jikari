@@ -156,40 +156,43 @@ function VocabQuiz({
   direction: QuizDirection;
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
-  // Typed 모드는 한국어 답만 받으므로 항상 recognition 방향.
-  const effectiveDirection: QuizDirection =
-    answerMode === "typed" ? "recognition" : direction;
-
   const input =
     answerMode === "choice"
       ? (() => {
-          const choices = generateVocabChoices(card, effectiveDirection, seed);
+          const choices = generateVocabChoices(card, direction, seed);
           return {
             mode: "choice" as const,
             choices: choices.choices,
             correct: choices.correct,
             choiceFontFamily:
-              effectiveDirection === "recall"
+              direction === "recall"
                 ? "var(--font-jp-sans)"
                 : "var(--font-kr-sans)",
           };
         })()
-      : {
-          mode: "typed" as const,
-          lang: "ko" as const,
-          acceptableAnswers: card.koreanMeanings,
-        };
+      : direction === "recall"
+        ? {
+            mode: "typed" as const,
+            lang: "ja" as const,
+            // KR → JP 타이핑: 한자형과 가나형 모두 허용 (동일하면 dedupe).
+            acceptableAnswers: Array.from(new Set([card.word, card.reading])),
+          }
+        : {
+            mode: "typed" as const,
+            lang: "ko" as const,
+            acceptableAnswers: card.koreanMeanings,
+          };
 
   return (
     <QuizCard
       question={
-        effectiveDirection === "recall" ? (
+        direction === "recall" ? (
           <VocabRecallQuestion card={card} />
         ) : (
           <VocabRecognitionQuestion card={card} />
         )
       }
-      subtitle={effectiveDirection === "recall" ? "어떤 단어?" : "의미는?"}
+      subtitle={direction === "recall" ? "어떤 단어?" : "의미는?"}
       input={input}
       onResolved={(correct) => onResolved(correct, answerMode)}
       minQuestionHeight={0}
