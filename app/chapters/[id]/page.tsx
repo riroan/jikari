@@ -148,7 +148,7 @@ function Shell({
 }) {
   return (
     <main className="flex-1 flex justify-center">
-      <div className="w-[390px] px-6 pt-8 pb-10">
+      <div className="w-full max-w-[390px] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-8 pb-10">
         <header className="flex justify-between items-baseline mb-8">
           <Link
             href="/chapters"
