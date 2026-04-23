@@ -121,6 +121,7 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   min-height: 100%;
+  overflow-x: hidden;
   /* Block Tailwind preflight system-ui fallback from leaking into the cascade.
      DESIGN.md § 2 bans system-ui — Pretendard is the only Korean/UI font. */
   font-family: "Pretendard Variable", Pretendard, sans-serif;
