@@ -116,7 +116,7 @@ export function TypingInput({
   return (
     <div>
       <div
-        className="mb-2 text-[11px] tracking-label text-[color:var(--fg-faint)]"
+        className="mb-2 text-tiny tracking-label text-[color:var(--fg-faint)]"
         aria-hidden="true"
       >
         {lang === "ja" ? "日本語入力" : "한국어 입력"}

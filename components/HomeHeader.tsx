@@ -58,7 +58,7 @@ export function HomeHeader({
         </span>
         {hydrated && dueCount > 0 && (
           <span
-            className="text-[11px] text-[color:var(--accent-progress)] font-medium tabular-nums tracking-wide"
+            className="text-tiny text-[color:var(--accent-progress)] font-medium tabular-nums tracking-wide"
             aria-hidden="true"
           >
             復習 {dueCount}

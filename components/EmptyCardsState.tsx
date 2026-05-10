@@ -20,7 +20,7 @@ export function EmptyCardsState({
     <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
       {label}
       <br />
-      <span className="text-[11px] tracking-wider">({hint})</span>
+      <span className="text-tiny tracking-wider">({hint})</span>
     </div>
   );
 }

@@ -199,7 +199,7 @@ function ExpressionQuiz({
 function RecallQuestion({ card }: { card: ExpressionCard }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] font-medium uppercase">
+      <div className="text-tiny text-[color:var(--fg-faint)] tracking-[0.18em] font-medium uppercase">
         SITUATION
       </div>
       <div
@@ -260,7 +260,7 @@ function ExpressionBack({ card }: { card: ExpressionCard }) {
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] uppercase font-medium">
+        <span className="text-tiny text-[color:var(--fg-faint)] tracking-[0.18em] uppercase font-medium">
           SITUATION
         </span>
         <span className="text-caption text-[color:var(--fg-soft)] leading-relaxed">

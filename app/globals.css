@@ -59,6 +59,7 @@
   --type-small:    14px;
   --type-label:    13px;
   --type-caption:  13px;
+  --type-tiny:     11px;  /* due-count chips · register tags · typing hint */
 
   /* Letter-spacing — all-caps tracking */
   --track-label:   0.18em;
@@ -165,6 +166,7 @@
   --text-small:   var(--type-small);
   --text-label:   var(--type-label);
   --text-caption: var(--type-caption);
+  --text-tiny:    var(--type-tiny);
 
   /* Tracking utilities — tracking-label, tracking-caption, tracking-tab */
   --tracking-label:   var(--track-label);

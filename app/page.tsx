@@ -168,7 +168,7 @@ function SubjectRow({
         </span>
         {dueCount > 0 && (
           <span
-            className="text-[11px] tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium"
+            className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium"
             aria-label={`복습 ${dueCount}장 대기`}
           >
             ・{dueCount}
