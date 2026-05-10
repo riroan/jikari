@@ -76,7 +76,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "a5-nature",
     name: "자연·날씨·계절",
-    intro: null,
+    intro:
+      "天気·空·海·山과 春夏秋冬 계절 어휘. 날씨·풍경·계절감을 표현하는 단어가 모여 있어 일기·여행 메모에 바로 써먹기 좋아요.",
     sortOrder: 40,
     match: {
       vocabWords: ["天気", "空", "雪", "風", "海", "山", "川", "春", "夏", "秋", "冬", "色", "花"],
@@ -102,7 +103,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "a7-school",
     name: "학교·공부·일",
-    intro: null,
+    intro:
+      "勉強·試験·宿題·会議 같은 학습·업무 어휘. 한국어 한자어와 거의 1:1로 대응돼 의미는 빠르게 잡히지만 음독은 별도로 익혀야 해요.",
     sortOrder: 60,
     match: {
       vocabWords: [
@@ -116,7 +118,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "a8-action-verbs",
     name: "기본 동작 동사",
-    intro: null,
+    intro:
+      "会う·待つ·作る·終わる 같은 매일 등장하는 동사 모음. 활용은 /활용 모드에서 따로 — 여기서는 *기본형의 의미*를 먼저 머리에 박아 두는 묶음이에요.",
     sortOrder: 70,
     match: {
       vocabWords: [
@@ -144,7 +147,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "b2-ni-de-he",
     name: "に / で / へ (장소·시간·방향)",
-    intro: null,
+    intro:
+      "셋 다 \"에\"로 번역되니까 한국 화자에게 가장 헷갈리는 입자. に는 *도착점/시점*, で는 *수단/장소(동작이 일어나는)*, へ는 *방향*. 빈칸 퀴즈로 감각을 분리해 두기.",
     sortOrder: 120,
     match: {
       particles: ["に", "で", "へ"],
@@ -154,7 +158,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "b3-wo-ga",
     name: "を vs が (대상·감정·가능)",
-    intro: null,
+    intro:
+      "한국어로는 모두 \"을/를\"이라 헷갈리지만, 일본어는 *감정·기호·가능* 동사(好き·できる·分かる) 앞에 が를 써요. 이 예외 패턴만 잡으면 を는 평범한 목적어로 단순해집니다.",
     sortOrder: 130,
     match: {
       particles: ["を"],
@@ -164,7 +169,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "b4-other-particles",
     name: "기타 조사 (から·まで·より·と·も)",
-    intro: null,
+    intro:
+      "から·まで로 *시작·끝*, より로 *비교*, と로 *동반·인용*, も로 *역시*. 위 4개 조사가 잡혀 있으면 일상 회화 입자 사용은 거의 다 커버돼요.",
     sortOrder: 140,
     match: {
       particles: ["から", "まで", "より", "と", "も"],
@@ -196,7 +202,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "c2-conditions-time",
     name: "조건·시간 (たら/ば/なら + 前に·後で·間に·ながら)",
-    intro: null,
+    intro:
+      "한국어 \"~면\" 하나가 일본어에선 たら·ば·なら 셋으로 갈라져요. 시간 표현 前に·後で·間に·ながら까지 같이 묶어 *일이 일어나는 시간 축* 표현을 한 번에 잡는 묶음.",
     sortOrder: 220,
     match: {
       grammarIds: [
@@ -213,7 +220,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "c3-intent-guess-scope",
     name: "의도·추측·범위",
-    intro: null,
+    intro:
+      "つもり·予定(의도), らしい·そう·でしょう(추측), から·まで·より(범위·비교). 단정하지 않고 말의 *세기*를 조절하는 패턴들 — 이걸 알아야 일본어가 부드러워져요.",
     sortOrder: 230,
     match: {
       grammarIds: [
@@ -238,7 +246,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "e1-n5-direction-family",
     name: "N5 한자: 방위·가족·사람",
-    intro: null,
+    intro:
+      "東西南北과 父母兄弟姉妹 같은 가족·사람·방향 한자. 한국어 한자어 의미와 거의 똑같아 한국 화자에겐 N5 중에서도 가장 부담 적은 진입 묶음이에요.",
     sortOrder: 310,
     match: {
       kanji: ["東", "西", "南", "北", "女", "男", "父", "母", "子", "兄", "姉", "弟", "妹", "友"],
@@ -247,7 +256,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "e2-n5-action-comm",
     name: "N5 한자: 일상 동작·소통",
-    intro: null,
+    intro:
+      "食·飲·見·行·来 같은 기초 동작과 聞·読·話·書 같은 소통 한자. 매일 쓰이는 동사의 *어간 한자*라 단어 모드에서도 자주 다시 만나요.",
     sortOrder: 320,
     match: {
       kanji: ["食", "飲", "見", "行", "来", "会", "出", "入", "立", "休", "聞", "読", "話", "言", "語", "書"],
@@ -256,7 +266,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "e3-n5-school-place",
     name: "N5 한자: 학교·장소·기본",
-    intro: null,
+    intro:
+      "学·校·駅·道·社 같은 장소·소속 한자와 高·安·長·新·古 같은 기초 형용사 한자. N5 마무리 묶음 — 여기까지 잡히면 일상 표지판·지하철 안내가 절반은 읽힙니다.",
     sortOrder: 330,
     match: {
       kanji: ["学", "校", "生", "先", "国", "外", "駅", "道", "社", "新", "古", "高", "安", "長", "白", "黒", "気", "円", "電"],
@@ -265,7 +276,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "e4-n4-body-action",
     name: "N4 한자: 신체·일상 동작",
-    intro: null,
+    intro:
+      "体·頭·顔 같은 신체와 走·乗·起·寝·使·作 같은 일상 동작 한자. 50자 정도로 큰 단위 — 한 번에 다 외우려 하지 말고 박스 1·2 채우면서 천천히 올리세요.",
     sortOrder: 340,
     match: {
       // 신체 + 동작 + 의료 (50자 큰 단위)
@@ -282,7 +294,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "e5-n4-culture-life",
     name: "N4 한자: 문화·생활·음식",
-    intro: null,
+    intro:
+      "歌·映画·音楽·料理 같은 문화·취미 한자와 服·靴·野菜·薬 같은 생활 한자. 한국어 한자어와 동일한 의미가 많아 *읽기*만 익히면 의미는 자연스러워요.",
     sortOrder: 350,
     match: {
       kanji: [
@@ -297,7 +310,8 @@ export const CHAPTERS: ChapterDef[] = [
   {
     id: "e6-n4-abstract-time",
     name: "N4 한자: 추상·자연·시간",
-    intro: null,
+    intro:
+      "時·間·朝·昼·夜·曜 같은 시간 표현과 春夏秋冬·雨·雪·海·山 자연, 多·少·強·弱·明·暗 같은 대비 형용사 한자까지. N4의 *추상 어휘 토대*가 되는 묶음이에요.",
     sortOrder: 360,
     match: {
       kanji: [
