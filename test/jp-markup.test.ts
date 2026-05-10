@@ -126,6 +126,91 @@ describe("parseMarkup — malformed input (fallback + warn)", () => {
   });
 });
 
+describe("parseMarkup — adjacent / nested edge cases", () => {
+  test("two highlights back-to-back stay separate", () => {
+    expect(parseMarkup("[[a]][[b]]")).toEqual<Segment[]>([
+      { kind: "highlight", children: [{ kind: "text", text: "a" }] },
+      { kind: "highlight", children: [{ kind: "text", text: "b" }] },
+    ]);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  test("highlight directly followed by ruby", () => {
+    expect(parseMarkup("[[x]]{食|た}")).toEqual<Segment[]>([
+      { kind: "highlight", children: [{ kind: "text", text: "x" }] },
+      { kind: "ruby", base: "食", furigana: "た" },
+    ]);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  test("ruby directly followed by highlight", () => {
+    expect(parseMarkup("{食|た}[[べる]]")).toEqual<Segment[]>([
+      { kind: "ruby", base: "食", furigana: "た" },
+      { kind: "highlight", children: [{ kind: "text", text: "べる" }] },
+    ]);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  test("two adjacent rubies merge surrounding text correctly", () => {
+    expect(parseMarkup("{私|わたし}{学生|がくせい}")).toEqual<Segment[]>([
+      { kind: "ruby", base: "私", furigana: "わたし" },
+      { kind: "ruby", base: "学生", furigana: "がくせい" },
+    ]);
+  });
+
+  test("text fragments around a ruby stay merged across the boundary", () => {
+    // Implementation detail: parser pushes text before the ruby and after as
+    // separate spans; mergeAdjacentText collapses them when no inline markup
+    // splits them. Here a ruby is in the middle so we expect 3 segments.
+    const out = parseMarkup("ab{x|y}cd");
+    expect(out).toEqual<Segment[]>([
+      { kind: "text", text: "ab" },
+      { kind: "ruby", base: "x", furigana: "y" },
+      { kind: "text", text: "cd" },
+    ]);
+  });
+
+  test("stray `{` before a valid ruby strips the outer brace, keeps the inner ruby", () => {
+    // `findMatchingBrace` short-circuits on the stray `{`, so the outer
+    // brace at index 0 is dropped (with a warning). Parsing then resumes
+    // at the inner `{b|c}` which is a valid ruby.
+    const out = parseMarkup("{a{b|c}d");
+    expect(stripMarkup(out)).toBe("abd");
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  test("ruby with empty furigana is stripped", () => {
+    expect(parseMarkup("{x|}post")).toEqual<Segment[]>([
+      { kind: "text", text: "xpost" },
+    ]);
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  test("empty highlight `[[]]` collapses to an empty highlight segment", () => {
+    expect(parseMarkup("[[]]end")).toEqual<Segment[]>([
+      { kind: "highlight", children: [] },
+      { kind: "text", text: "end" },
+    ]);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  test("complex grammar example: prefix + highlight(ruby+text) + suffix", () => {
+    const out = parseMarkup("もう[[{食|た}べた]]の?");
+    expect(out).toEqual<Segment[]>([
+      { kind: "text", text: "もう" },
+      {
+        kind: "highlight",
+        children: [
+          { kind: "ruby", base: "食", furigana: "た" },
+          { kind: "text", text: "べた" },
+        ],
+      },
+      { kind: "text", text: "の?" },
+    ]);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+});
+
 describe("stripMarkup", () => {
   test("plain text round-trip", () => {
     const segs = parseMarkup("hello");
