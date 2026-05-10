@@ -183,6 +183,83 @@ describe("ChapterMastery — populated state", () => {
     expect(link.getAttribute("href")).toBe("/chapters/ch1");
   });
 
+  it("shows due indicator when at least one member's review is due", () => {
+    const chapters: Chapter[] = [
+      { id: "ch1", name: "due-test", intro: null, sortOrder: 10 },
+    ];
+    const members: ChapterMember[] = [
+      { chapterId: "ch1", mode: "vocab", cardId: "v1" },
+      { chapterId: "ch1", mode: "vocab", cardId: "v2" },
+    ];
+    useCardsStore.setState({
+      chapters,
+      chapterMembers: members,
+      membersByChapter: new Map([["ch1", members]]),
+      vocabById: new Map([
+        ["v1", makeVocab("v1")],
+        ["v2", makeVocab("v2")],
+      ]),
+    });
+    // v1 is due (nextDue ≤ now); v2 is not due yet (far future).
+    useStore.setState({
+      learningStates: {
+        "vocab:v1": {
+          cardKey: "vocab:v1",
+          mode: "vocab",
+          cardId: "v1",
+          box: 2,
+          nextDue: 1,
+          correctStreak: 0,
+          lastReviewed: 1,
+        },
+        "vocab:v2": {
+          cardKey: "vocab:v2",
+          mode: "vocab",
+          cardId: "v2",
+          box: 2,
+          nextDue: Number.MAX_SAFE_INTEGER,
+          correctStreak: 0,
+          lastReviewed: 1,
+        },
+      },
+    });
+
+    render(<ChapterMastery />);
+    // The "・1" chip carries the single due card (only v1 is past nextDue).
+    expect(screen.getByText("・1")).toBeDefined();
+  });
+
+  it("hides due indicator when nothing is due", () => {
+    const chapters: Chapter[] = [
+      { id: "ch1", name: "no-due", intro: null, sortOrder: 10 },
+    ];
+    const members: ChapterMember[] = [
+      { chapterId: "ch1", mode: "vocab", cardId: "v1" },
+    ];
+    useCardsStore.setState({
+      chapters,
+      chapterMembers: members,
+      membersByChapter: new Map([["ch1", members]]),
+      vocabById: new Map([["v1", makeVocab("v1")]]),
+    });
+    // Mastered + not yet due → should NOT show the due chip.
+    useStore.setState({
+      learningStates: {
+        "vocab:v1": {
+          cardKey: "vocab:v1",
+          mode: "vocab",
+          cardId: "v1",
+          box: 5,
+          nextDue: Number.MAX_SAFE_INTEGER,
+          correctStreak: 0,
+          lastReviewed: 1,
+        },
+      },
+    });
+    render(<ChapterMastery />);
+    expect(screen.queryByText(/^・\d+/)).toBeNull();
+  });
+
   it("shows em dash when chapter has 0 valid members (all stale)", () => {
     const chapters: Chapter[] = [
       { id: "ghost-ch", name: "유령 챕터", intro: null, sortOrder: 99 },
