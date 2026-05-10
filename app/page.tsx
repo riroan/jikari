@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
+import { toLocalDateKey } from "@/lib/heatmap";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -30,6 +31,9 @@ export default function Home() {
   const heatmap = useStore((s) => s.heatmap);
   const currentStreak = useStore((s) => s.currentStreak);
 
+  const todayCount = mounted ? heatmap[toLocalDateKey(Date.now())] ?? 0 : 0;
+  const studiedToday = mounted && todayCount > 0;
+
   return (
     <main className="flex-1 flex justify-center">
       <div className="w-full max-w-[390px] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
@@ -49,8 +53,23 @@ export default function Home() {
           <div
             className="text-caption text-[color:var(--fg-faint)] tracking-wider"
             style={{ fontFamily: "var(--font-jp-sans)" }}
+            aria-label={
+              !mounted
+                ? undefined
+                : studiedToday
+                ? `${currentStreak}일 연속 학습, 오늘 ${todayCount}장`
+                : currentStreak > 0
+                ? `${currentStreak}일 연속 학습, 오늘 아직 시작 안 함`
+                : "연속 학습 없음"
+            }
           >
-            <span className="text-[color:var(--accent-korean)] font-medium mr-1 tabular-nums">
+            <span
+              className={`font-medium mr-1 tabular-nums ${
+                studiedToday
+                  ? "text-[color:var(--accent-korean)]"
+                  : "text-[color:var(--fg-faint)]"
+              }`}
+            >
               連続 {mounted ? currentStreak : 0}日
             </span>
           </div>
