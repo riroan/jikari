@@ -33,7 +33,7 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
             strokeLinejoin="round"
           />
         </svg>
-        <span>正解</span>
+        <span lang="ja">正解</span>
       </motion.div>
     );
   }
@@ -60,7 +60,7 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
           strokeLinecap="round"
         />
       </svg>
-      <span>不正解</span>
+      <span lang="ja">不正解</span>
     </div>
   );
 }

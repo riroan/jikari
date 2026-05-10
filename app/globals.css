@@ -186,6 +186,19 @@ body {
   background-attachment: fixed;
 }
 
+/*
+ * DESIGN.md § 8 — keyboard focus ring.
+ * Tailwind preflight strips the UA outline on buttons; restore a single,
+ * consistent ring via :focus-visible so mouse clicks stay quiet but keyboard
+ * users get a visible target. Tracks the foreground token so it adapts to
+ * light/dark automatically.
+ */
+:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 /* DESIGN.md § 7 — respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
