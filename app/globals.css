@@ -14,6 +14,7 @@
   /* Light — Quiet Paper */
   --paper:       #F5EFE4;
   --paper-deep:  #EDE5D4;
+  --paper-light: #F9F4E8;
   --ink:         #1A1915;
   --ink-soft:    #3A3631;
   --ink-faint:   #8A8275;
@@ -31,7 +32,7 @@
   --accent-progress: var(--accent-sage);
 
   /* Bg gradient — DESIGN.md § 3 */
-  --bg-gradient: radial-gradient(ellipse at top, #F9F4E8 0%, var(--paper) 60%);
+  --bg-gradient: radial-gradient(ellipse at top, var(--paper-light) 0%, var(--paper) 60%);
 
   /* Spacing scale — DESIGN.md § 4 */
   --space-xs:   4px;
@@ -71,18 +72,37 @@
  *   (b) OS-default :root:not([data-theme="light"]) inside prefers-color-scheme:dark
  * "system" theme leaves data-theme unset → (b) applies. Explicit "light" sets
  * data-theme="light" so (b) doesn't trigger.
+ *
+ * The two selectors share the same overrides; CSS can't combine an element
+ * selector with @media in one rule, so we share the body via a custom property
+ * group. Edit dark colors in :root (private --_dark-* tokens) — both blocks
+ * pick them up automatically.
  */
+:root {
+  /* Dark palette — applied below; private to keep light :root above clean. */
+  --_dark-bg-deep:  #0E141E;
+  --_dark-bg:       #121A26;
+  --_dark-bg-soft:  #1A2332;
+  --_dark-bone:     #E8E2D2;
+  --_dark-bone-soft:#B8B0A0;
+  --_dark-bone-faint:#6A6358;
+  --_dark-gold:     #D4B76A;
+  --_dark-gold-deep:#B89550;
+  --_dark-crimson:  #C47A6E;
+  --_dark-line:     rgba(232, 226, 210, 0.08);
+}
+
 [data-theme="dark"] {
-  --bg-deep:  #0E141E;
-  --bg:       #121A26;
-  --bg-soft:  #1A2332;
-  --bone:     #E8E2D2;
-  --bone-soft:#B8B0A0;
-  --bone-faint:#6A6358;
-  --gold:     #D4B76A;
-  --gold-deep:#B89550;
-  --crimson:  #C47A6E;
-  --line:     rgba(232, 226, 210, 0.08);
+  --bg-deep:  var(--_dark-bg-deep);
+  --bg:       var(--_dark-bg);
+  --bg-soft:  var(--_dark-bg-soft);
+  --bone:     var(--_dark-bone);
+  --bone-soft:var(--_dark-bone-soft);
+  --bone-faint:var(--_dark-bone-faint);
+  --gold:     var(--_dark-gold);
+  --gold-deep:var(--_dark-gold-deep);
+  --crimson:  var(--_dark-crimson);
+  --line:     var(--_dark-line);
 
   --fg:          var(--bone);
   --fg-soft:     var(--bone-soft);
@@ -90,21 +110,21 @@
   --accent-korean:   var(--crimson);
   --accent-progress: var(--gold);
 
-  --bg-gradient: radial-gradient(ellipse at top, #1A2332 0%, var(--bg-deep) 55%);
+  --bg-gradient: radial-gradient(ellipse at top, var(--bg-soft) 0%, var(--bg-deep) 55%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg-deep:  #0E141E;
-    --bg:       #121A26;
-    --bg-soft:  #1A2332;
-    --bone:     #E8E2D2;
-    --bone-soft:#B8B0A0;
-    --bone-faint:#6A6358;
-    --gold:     #D4B76A;
-    --gold-deep:#B89550;
-    --crimson:  #C47A6E;
-    --line:     rgba(232, 226, 210, 0.08);
+    --bg-deep:  var(--_dark-bg-deep);
+    --bg:       var(--_dark-bg);
+    --bg-soft:  var(--_dark-bg-soft);
+    --bone:     var(--_dark-bone);
+    --bone-soft:var(--_dark-bone-soft);
+    --bone-faint:var(--_dark-bone-faint);
+    --gold:     var(--_dark-gold);
+    --gold-deep:var(--_dark-gold-deep);
+    --crimson:  var(--_dark-crimson);
+    --line:     var(--_dark-line);
 
     --fg:          var(--bone);
     --fg-soft:     var(--bone-soft);
@@ -112,7 +132,7 @@
     --accent-korean:   var(--crimson);
     --accent-progress: var(--gold);
 
-    --bg-gradient: radial-gradient(ellipse at top, #1A2332 0%, var(--bg-deep) 55%);
+    --bg-gradient: radial-gradient(ellipse at top, var(--bg-soft) 0%, var(--bg-deep) 55%);
   }
 }
 
