@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
+import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { useStore } from "@/lib/store";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
@@ -130,13 +131,10 @@ function Shell({ children }: { children?: React.ReactNode }) {
 
 function EmptyState() {
   return (
-    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
-      한자 카드가 아직 없어요.
-      <br />
-      <span className="text-[11px] tracking-wider">
-        (scripts/add-kanji.ts로 시드 필요)
-      </span>
-    </div>
+    <EmptyCardsState
+      label="한자 카드가 아직 없어요."
+      hint="scripts/add-kanji.ts로 시드 필요"
+    />
   );
 }
 

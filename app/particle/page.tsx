@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
+import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
@@ -128,13 +129,10 @@ function Shell({ children }: { children?: React.ReactNode }) {
 
 function EmptyState() {
   return (
-    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
-      조사 빈칸 카드가 아직 없어요.
-      <br />
-      <span className="text-[11px] tracking-wider">
-        (sentence category=&quot;particle&quot; 시드 필요)
-      </span>
-    </div>
+    <EmptyCardsState
+      label="조사 빈칸 카드가 아직 없어요."
+      hint='sentence category="particle" 시드 필요'
+    />
   );
 }
 

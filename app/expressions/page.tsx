@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
+import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import {
@@ -146,13 +147,10 @@ function Shell({ children }: { children?: React.ReactNode }) {
 
 function EmptyState() {
   return (
-    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
-      아직 일상표현 카드가 없어요.
-      <br />
-      <span className="text-[11px] tracking-wider">
-        (migration 0011 + seed import 필요)
-      </span>
-    </div>
+    <EmptyCardsState
+      label="아직 일상표현 카드가 없어요."
+      hint="migration 0011 + seed import 필요"
+    />
   );
 }
 
