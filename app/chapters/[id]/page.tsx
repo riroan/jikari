@@ -325,17 +325,26 @@ function Overview({
         </ul>
       </section>
 
-      {/* Quiz button */}
-      {members.length > 0 && (
-        <section>
-          <Link
-            href={`/chapters/${chapter.id}?mode=quiz`}
-            className="flex items-center justify-center text-body font-medium px-4 py-3 rounded-sm bg-[color:var(--bg-deep)] text-[color:var(--fg)] hover:bg-[color:var(--accent-korean)] hover:text-[color:var(--bg)] transition-colors min-h-[44px]"
-          >
-            이 챕터 퀴즈 시작 →
-          </Link>
-        </section>
-      )}
+      {/* Quiz button — label reflects review backlog when there is one. */}
+      {members.length > 0 &&
+        (() => {
+          const totalDue = Object.values(dueCountsByMode).reduce(
+            (a, b) => a + b,
+            0,
+          );
+          return (
+            <section>
+              <Link
+                href={`/chapters/${chapter.id}?mode=quiz`}
+                className="flex items-center justify-center text-body font-medium px-4 py-3 rounded-sm bg-[color:var(--bg-deep)] text-[color:var(--fg)] hover:bg-[color:var(--accent-korean)] hover:text-[color:var(--bg)] transition-colors min-h-[44px]"
+              >
+                {totalDue > 0
+                  ? `복습 ${totalDue}장 시작 →`
+                  : "이 챕터 퀴즈 시작 →"}
+              </Link>
+            </section>
+          );
+        })()}
 
       {members.length === 0 && (
         <section className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
