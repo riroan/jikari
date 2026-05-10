@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
+import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -92,7 +93,7 @@ export default function Home() {
         </section>
 
         {/* Footer nav */}
-        <nav className="flex justify-center items-center gap-1 text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
+        <nav className="flex flex-wrap justify-center items-center gap-1 text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
           <Link
             href="/"
             className="inline-flex items-center justify-center min-h-[44px] px-2 hover:text-[color:var(--fg-soft)]"
@@ -113,6 +114,8 @@ export default function Home() {
           >
             SETTINGS
           </Link>
+          <span aria-hidden="true">・</span>
+          <ThemeCycleButton />
         </nav>
       </div>
     </main>
