@@ -95,10 +95,13 @@ export default function ProgressPage() {
           id="progress-year-heading"
           className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium"
         >
-          52 WEEKS
+          26 WEEKS
         </div>
+        {/* 26 weeks (half year) keeps cells ≥ 10px on a 390px viewport so
+            individual days stay tappable / readable. Home keeps the
+            tighter 7-week view; progress is the zoom-out. */}
         {mounted ? (
-          <Heatmap data={heatmap} weeks={52} />
+          <Heatmap data={heatmap} weeks={26} />
         ) : (
           <div style={{ height: "14px" }} />
         )}
