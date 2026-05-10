@@ -1,5 +1,5 @@
 import { getProgress, putProgress } from "@/lib/db/progress";
-import type { PersistedState } from "@/lib/types";
+import { persistedStateSchema } from "@/lib/import";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +9,21 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const state = (await request.json()) as PersistedState;
-  await putProgress(state);
+  let raw: unknown;
+  try {
+    raw = await request.json();
+  } catch {
+    return Response.json({ ok: false, error: "invalid json" }, { status: 400 });
+  }
+
+  const parsed = persistedStateSchema.safeParse(raw);
+  if (!parsed.success) {
+    return Response.json(
+      { ok: false, error: "schema validation failed", details: parsed.error.issues },
+      { status: 400 },
+    );
+  }
+
+  await putProgress(parsed.data);
   return Response.json({ ok: true });
 }

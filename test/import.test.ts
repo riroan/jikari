@@ -116,4 +116,39 @@ describe("parseBackup", () => {
     expect(result.ok).toBe(true);
   });
 
+  it("accepts backup with theme system", () => {
+    const sys = { ...validState, settings: { ...validState.settings, theme: "system" as const } };
+    const result = parseBackup(JSON.stringify(sys));
+    expect(result.ok).toBe(true);
+  });
+
+  it("accepts learning states for adjective / grammar / expression modes", () => {
+    const wide = {
+      ...validState,
+      learningStates: {
+        ...validState.learningStates,
+        "adjective:i:寒い": {
+          cardKey: "adjective:i:寒い",
+          mode: "adjective" as const,
+          cardId: "i:寒い",
+          box: 1, nextDue: 0, correctStreak: 0, lastReviewed: 0,
+        },
+        "grammar:pattern:p1": {
+          cardKey: "grammar:pattern:p1",
+          mode: "grammar" as const,
+          cardId: "pattern:p1",
+          box: 1, nextDue: 0, correctStreak: 0, lastReviewed: 0,
+        },
+        "expression:e1": {
+          cardKey: "expression:e1",
+          mode: "expression" as const,
+          cardId: "e1",
+          box: 1, nextDue: 0, correctStreak: 0, lastReviewed: 0,
+        },
+      },
+    };
+    const result = parseBackup(JSON.stringify(wide));
+    expect(result.ok).toBe(true);
+  });
+
 });

@@ -9,8 +9,15 @@ import { SCHEMA_VERSION } from "./types";
 
 const learningStateSchema = z.object({
   cardKey: z.string(),
-  // 'conjugation' accepted for future activation of the conjugation quiz mode.
-  mode: z.enum(["kanji", "vocab", "sentence", "conjugation"]),
+  mode: z.enum([
+    "kanji",
+    "vocab",
+    "sentence",
+    "conjugation",
+    "adjective",
+    "grammar",
+    "expression",
+  ]),
   cardId: z.string(),
   box: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]),
   nextDue: z.number().int().nonnegative(),
@@ -32,13 +39,15 @@ const persistedStateSchema = z.object({
   // Older (v<5) backups don't carry quizStats — pad with empty object so they still import.
   quizStats: z.record(z.string(), quizStatSchema).default({}),
   settings: z.object({
-    theme: z.enum(["light", "dark"]),
+    theme: z.enum(["light", "dark", "system"]).default("system"),
     showFurigana: z.boolean().default(true),
     typingThresholdBox: z
       .union([z.literal(2), z.literal(3), z.literal(4), z.literal(5)])
       .default(4),
   }),
 });
+
+export { persistedStateSchema };
 
 export type ImportResult =
   | { ok: true; state: PersistedState }
