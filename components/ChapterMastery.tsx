@@ -6,6 +6,7 @@ import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { aggregateChapterMastery } from "@/lib/chapter-mastery";
 import { intensityBg, ratioToIntensity } from "@/lib/intensity";
+import { useClientNow } from "@/lib/use-is-client";
 import type { CardMode } from "@/lib/types";
 
 /**
@@ -28,6 +29,7 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
   const sentenceById = useCardsStore((s) => s.sentenceById);
   const grammarById = useCardsStore((s) => s.grammarById);
   const learningStates = useStore((s) => s.learningStates);
+  const now = useClientNow();
 
   // Build the data view. Recomputes only when sources change (not on hover).
   const rows = useMemo(() => {
@@ -62,6 +64,17 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
 
     const grammarLookup = (id: string) => grammarById.get(id);
 
+    // For grammar members the SRS key is grammar:pattern:{id} or
+    // grammar:particle:{id} per ChapterQuizCard. Mirror that here so the
+    // due count picks the right rows out of learningStates.
+    const stateKeyFor = (mode: CardMode, cardId: string): string => {
+      if (mode !== "grammar") return `${mode}:${cardId}`;
+      const card = grammarLookup(cardId);
+      if (!card) return `grammar:${cardId}`;
+      const sub = card.type === "pattern" ? "pattern" : "particle";
+      return `grammar:${sub}:${card.id}`;
+    };
+
     return chapters.map((chapter) => {
       const members = membersByChapter.get(chapter.id) ?? [];
       const summary = aggregateChapterMastery(
@@ -70,7 +83,15 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
         getBox,
         grammarLookup,
       );
-      return { chapter, summary };
+      let dueCount = 0;
+      if (now !== null) {
+        for (const m of members) {
+          if (!cardExists(m.mode, m.cardId)) continue;
+          const s = learningStates[stateKeyFor(m.mode, m.cardId)];
+          if (s && s.lastReviewed > 0 && s.nextDue <= now) dueCount++;
+        }
+      }
+      return { chapter, summary, dueCount };
     });
   }, [
     chapters,
@@ -80,6 +101,7 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
     sentenceById,
     grammarById,
     learningStates,
+    now,
   ]);
 
   if (chapters.length === 0) return null;
@@ -97,20 +119,33 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
       </div>
 
       <ul className="flex flex-col gap-px bg-[color:var(--line)]">
-        {rows.map(({ chapter, summary }) => {
+        {rows.map(({ chapter, summary, dueCount }) => {
           const percent = mounted ? Math.round(summary.ratio * 100) : 0;
           const intensity = mounted ? ratioToIntensity(summary.ratio) : 0;
           const memberCount = summary.validMembers;
+          const showDue = mounted && dueCount > 0;
 
           return (
             <li key={chapter.id}>
               <Link
                 href={`/chapters/${chapter.id}`}
                 className="bg-[color:var(--bg)] flex items-center px-4 py-2.5 gap-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
-                aria-label={`${chapter.name} — 마스터리 ${percent}퍼센트, ${summary.masteredCount} / ${memberCount} 카드`}
+                aria-label={`${chapter.name} — 마스터리 ${percent}퍼센트, ${summary.masteredCount} / ${memberCount} 카드${
+                  showDue ? `, 복습 ${dueCount}장 대기` : ""
+                }`}
               >
-                <span className="flex-1 text-small text-[color:var(--fg)] truncate min-w-0">
-                  {chapter.name}
+                <span className="flex-1 flex items-baseline gap-2 min-w-0">
+                  <span className="text-small text-[color:var(--fg)] truncate min-w-0">
+                    {chapter.name}
+                  </span>
+                  {showDue && (
+                    <span
+                      className="shrink-0 text-[11px] tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium"
+                      aria-hidden="true"
+                    >
+                      ・{dueCount}
+                    </span>
+                  )}
                 </span>
 
                 {/* Mastery bar — fixed width, fills proportionally. */}
