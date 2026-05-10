@@ -145,13 +145,19 @@ export function ChapterMastery({
           const intensity = mounted ? ratioToIntensity(summary.ratio) : 0;
           const memberCount = summary.validMembers;
           const showDue = mounted && dueCount > 0;
+          // ≥ 95% counts as "달성" — leaves a small head-room so a single
+          // demoted card mid-streak doesn't drop the chapter out of the
+          // mastered category every other day.
+          const mastered = mounted && memberCount > 0 && summary.ratio >= 0.95;
 
           return (
             <li key={chapter.id}>
               <Link
                 href={`/chapters/${chapter.id}`}
                 className="bg-[color:var(--bg)] flex items-center px-4 py-2.5 gap-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
-                aria-label={`${chapter.name} — 마스터리 ${percent}퍼센트, ${summary.masteredCount} / ${memberCount} 카드${
+                aria-label={`${chapter.name} — ${
+                  mastered ? "달성, " : ""
+                }마스터리 ${percent}퍼센트, ${summary.masteredCount} / ${memberCount} 카드${
                   showDue ? `, 복습 ${dueCount}장 대기` : ""
                 }`}
               >
@@ -159,6 +165,15 @@ export function ChapterMastery({
                   <span className="text-small text-[color:var(--fg)] truncate min-w-0">
                     {chapter.name}
                   </span>
+                  {mastered && !showDue && (
+                    <span
+                      className="shrink-0 text-[11px] tracking-wide text-[color:var(--accent-progress)]"
+                      aria-hidden="true"
+                      style={{ fontFamily: "var(--font-jp-serif)" }}
+                    >
+                      達
+                    </span>
+                  )}
                   {showDue && (
                     <span
                       className="shrink-0 text-[11px] tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium"
