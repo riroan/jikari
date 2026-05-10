@@ -196,6 +196,12 @@ mark.jp-highlight {
   background: color-mix(in srgb, var(--gold) 15%, transparent);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) mark.jp-highlight {
+    background: color-mix(in srgb, var(--gold) 15%, transparent);
+  }
+}
+
 /*
  * Ruby baseline — DESIGN.md § 2 / design system colors_and_type.css
  * Native <ruby>/<rt> rendering; rt at 45% size keeps readings quiet

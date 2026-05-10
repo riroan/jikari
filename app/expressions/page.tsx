@@ -286,7 +286,9 @@ function RegisterPill({ register }: { register: Register }) {
       className="shrink-0 inline-flex items-center gap-1 text-[10px] tracking-wider font-medium uppercase px-1.5 py-0.5 rounded-sm border"
       style={{
         color,
-        borderColor: `color-mix(in srgb, ${color} 40%, transparent)`,
+        // 60% border (was 40%): 10px badge + 4.5:1 AA target was borderline
+        // in light mode against paper. Higher mix is safer in both palettes.
+        borderColor: `color-mix(in srgb, ${color} 60%, transparent)`,
       }}
     >
       <span>{register}</span>
