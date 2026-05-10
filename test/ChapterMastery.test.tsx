@@ -318,6 +318,98 @@ describe("ChapterMastery — populated state", () => {
     expect(links[1].getAttribute("href")).toBe("/chapters/small");
   });
 
+  it("shows 達 indicator at ≥ 95% mastery with no due cards", () => {
+    const chapters: Chapter[] = [
+      { id: "ch1", name: "정복", intro: null, sortOrder: 1 },
+    ];
+    const members: ChapterMember[] = [
+      { chapterId: "ch1", mode: "vocab", cardId: "v1" },
+    ];
+    useCardsStore.setState({
+      chapters,
+      chapterMembers: members,
+      membersByChapter: new Map([["ch1", members]]),
+      vocabById: new Map([["v1", makeVocab("v1")]]),
+    });
+    useStore.setState({
+      learningStates: {
+        "vocab:v1": {
+          cardKey: "vocab:v1", mode: "vocab", cardId: "v1",
+          box: 5, nextDue: Number.MAX_SAFE_INTEGER, correctStreak: 1,
+          lastReviewed: 1,
+        },
+      },
+    });
+    render(<ChapterMastery />);
+    expect(screen.getByText("達")).toBeDefined();
+  });
+
+  it("hides 達 when there's a due indicator (due wins the chip slot)", () => {
+    const chapters: Chapter[] = [
+      { id: "ch1", name: "정복-due", intro: null, sortOrder: 1 },
+    ];
+    const members: ChapterMember[] = [
+      { chapterId: "ch1", mode: "vocab", cardId: "v1" },
+      { chapterId: "ch1", mode: "vocab", cardId: "v2" },
+    ];
+    useCardsStore.setState({
+      chapters,
+      chapterMembers: members,
+      membersByChapter: new Map([["ch1", members]]),
+      vocabById: new Map([
+        ["v1", makeVocab("v1")],
+        ["v2", makeVocab("v2")],
+      ]),
+    });
+    useStore.setState({
+      learningStates: {
+        // Both mastered → ratio 1.0 ≥ 0.95.
+        "vocab:v1": {
+          cardKey: "vocab:v1", mode: "vocab", cardId: "v1",
+          box: 5, nextDue: 1, correctStreak: 1, lastReviewed: 1,
+        },
+        "vocab:v2": {
+          cardKey: "vocab:v2", mode: "vocab", cardId: "v2",
+          box: 5, nextDue: Number.MAX_SAFE_INTEGER, correctStreak: 1,
+          lastReviewed: 1,
+        },
+      },
+    });
+    render(<ChapterMastery />);
+    expect(screen.queryByText("達")).toBeNull();
+    expect(screen.getByText("・1")).toBeDefined();
+  });
+
+  it("hides 達 below the 95% threshold", () => {
+    const chapters: Chapter[] = [
+      { id: "ch1", name: "절반", intro: null, sortOrder: 1 },
+    ];
+    const members: ChapterMember[] = [
+      { chapterId: "ch1", mode: "vocab", cardId: "v1" },
+      { chapterId: "ch1", mode: "vocab", cardId: "v2" },
+    ];
+    useCardsStore.setState({
+      chapters,
+      chapterMembers: members,
+      membersByChapter: new Map([["ch1", members]]),
+      vocabById: new Map([
+        ["v1", makeVocab("v1")],
+        ["v2", makeVocab("v2")],
+      ]),
+    });
+    useStore.setState({
+      learningStates: {
+        "vocab:v1": {
+          cardKey: "vocab:v1", mode: "vocab", cardId: "v1",
+          box: 5, nextDue: Number.MAX_SAFE_INTEGER, correctStreak: 1,
+          lastReviewed: 1,
+        },
+      },
+    });
+    render(<ChapterMastery />);
+    expect(screen.queryByText("達")).toBeNull();
+  });
+
   it("hides due indicator when nothing is due", () => {
     const chapters: Chapter[] = [
       { id: "ch1", name: "no-due", intro: null, sortOrder: 10 },
