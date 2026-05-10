@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, use, useMemo, useState } from "react";
-import { useIsClient } from "@/lib/use-is-client";
+import { useIsClient, useClientNow } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ChapterQuizCard } from "@/components/ChapterQuizCard";
@@ -42,6 +42,7 @@ export default function ChapterDetailPage({
 
 function ChapterDetailInner({ id }: { id: string }) {
   const mounted = useIsClient();
+  const now = useClientNow();
 
   const searchParams = useSearchParams();
   const mode: Mode = searchParams.get("mode") === "quiz" ? "quiz" : "overview";
@@ -63,6 +64,37 @@ function ChapterDetailInner({ id }: { id: string }) {
     }
     return out;
   }, [allMembers, grammarById]);
+
+  // Per-mode due breakdown for the Overview's CARDS panel. Uses the same
+  // grammar-key convention ChapterQuizCard does (pattern:/particle: prefix).
+  const dueCountsByMode = useMemo<Record<CardMode, number>>(() => {
+    const empty: Record<CardMode, number> = {
+      kanji: 0,
+      vocab: 0,
+      sentence: 0,
+      grammar: 0,
+      conjugation: 0,
+      adjective: 0,
+      expression: 0,
+    };
+    if (!mounted || now === null) return empty;
+    const counts = { ...empty };
+    for (const { member } of validMembers) {
+      let key: string;
+      if (member.mode === "grammar") {
+        const card = grammarById.get(member.cardId);
+        const sub = card?.type === "pattern" ? "pattern" : "particle";
+        key = `grammar:${sub}:${member.cardId}`;
+      } else {
+        key = `${member.mode}:${member.cardId}`;
+      }
+      const s = learningStates[key];
+      if (s && s.lastReviewed > 0 && s.nextDue <= now) {
+        counts[member.mode]++;
+      }
+    }
+    return counts;
+  }, [validMembers, learningStates, grammarById, mounted, now]);
 
   // Mastery summary — reuses the same aggregation as the home list.
   const mastery = useMemo(() => {
@@ -113,6 +145,7 @@ function ChapterDetailInner({ id }: { id: string }) {
         members={validMembers}
         mastery={mastery}
         mounted={mounted}
+        dueCountsByMode={dueCountsByMode}
       />
     </Shell>
   );
@@ -175,11 +208,13 @@ function Overview({
   members,
   mastery,
   mounted,
+  dueCountsByMode,
 }: {
   chapter: { id: string; name: string; intro: string | null };
   members: Array<{ member: ChapterMember; card: AnyCard }>;
   mastery: { masteredCount: number; validMembers: number; ratio: number };
   mounted: boolean;
+  dueCountsByMode: Record<CardMode, number>;
 }) {
   const percent = mounted ? Math.round(mastery.ratio * 100) : 0;
   const intensity = mounted ? ratioToIntensity(mastery.ratio) : 0;
@@ -263,19 +298,30 @@ function Overview({
             ] as const
           )
             .filter(([m]) => counts[m] > 0)
-            .map(([m, label]) => (
-              <li
-                key={m}
-                className="bg-[color:var(--bg)] flex items-baseline justify-between px-4 py-2.5"
-              >
-                <span className="text-small text-[color:var(--fg)]">
-                  {label}
-                </span>
-                <span className="text-caption text-[color:var(--fg-faint)] tabular-nums">
-                  {counts[m]}장
-                </span>
-              </li>
-            ))}
+            .map(([m, label]) => {
+              const due =
+                m === "sentence"
+                  ? dueCountsByMode.sentence
+                  : dueCountsByMode[m];
+              return (
+                <li
+                  key={m}
+                  className="bg-[color:var(--bg)] flex items-baseline justify-between px-4 py-2.5"
+                >
+                  <span className="text-small text-[color:var(--fg)]">
+                    {label}
+                  </span>
+                  <span className="text-caption text-[color:var(--fg-faint)] tabular-nums">
+                    {counts[m]}장
+                    {due > 0 && (
+                      <span className="ml-2 text-[color:var(--accent-progress)] font-medium">
+                        ・{due} 복습
+                      </span>
+                    )}
+                  </span>
+                </li>
+              );
+            })}
         </ul>
       </section>
 
