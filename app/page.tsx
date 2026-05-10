@@ -1,6 +1,6 @@
 "use client";
 
-import { useIsClient, useClientNow } from "@/lib/use-is-client";
+import { useClientNow } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
@@ -25,14 +25,17 @@ const SUBJECTS: ReadonlyArray<{ ko: string; jp: string; base: string }> = [
 ];
 
 export default function Home() {
-  const mounted = useIsClient();
+  // useClientNow() returns null on the server / before hydration, so it
+  // doubles as the "have we hydrated" gate — no separate useIsClient
+  // call needed here.
   const now = useClientNow();
+  const hydrated = now !== null;
 
   const heatmap = useStore((s) => s.heatmap);
   const currentStreak = useStore((s) => s.currentStreak);
 
-  const todayCount = now !== null ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
-  const studiedToday = mounted && todayCount > 0;
+  const todayCount = hydrated ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
+  const studiedToday = todayCount > 0;
 
   return (
     <main className="flex-1 flex justify-center">
@@ -54,7 +57,7 @@ export default function Home() {
             className="text-caption text-[color:var(--fg-faint)] tracking-wider"
             style={{ fontFamily: "var(--font-jp-sans)" }}
             aria-label={
-              !mounted
+              !hydrated
                 ? undefined
                 : studiedToday
                 ? `${currentStreak}일 연속 학습, 오늘 ${todayCount}장`
@@ -70,7 +73,7 @@ export default function Home() {
                   : "text-[color:var(--fg-faint)]"
               }`}
             >
-              連続 {mounted ? currentStreak : 0}日
+              連続 {hydrated ? currentStreak : 0}日
             </span>
           </div>
         </header>
@@ -108,7 +111,7 @@ export default function Home() {
           <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium">
             7 WEEKS
           </div>
-          {mounted ? <Heatmap data={heatmap} /> : <div style={{ height: "14px" }} />}
+          {hydrated ? <Heatmap data={heatmap} /> : <div style={{ height: "14px" }} />}
         </section>
 
         {/* Footer nav */}
