@@ -332,13 +332,21 @@ function Overview({
             (a, b) => a + b,
             0,
           );
+          // When there's a backlog the CTA goes "live" — accent-progress fill
+          // signals "this is the action to take right now". Otherwise the
+          // muted bg-deep keeps the page calm.
+          const live = totalDue > 0;
           return (
             <section>
               <Link
                 href={`/chapters/${chapter.id}?mode=quiz`}
-                className="flex items-center justify-center text-body font-medium px-4 py-3 rounded-sm bg-[color:var(--bg-deep)] text-[color:var(--fg)] hover:bg-[color:var(--accent-korean)] hover:text-[color:var(--bg)] transition-colors min-h-[44px]"
+                className={`flex items-center justify-center text-body font-medium px-4 py-3 rounded-sm transition-colors min-h-[44px] ${
+                  live
+                    ? "bg-[color:var(--accent-progress)] text-[color:var(--bg)] hover:opacity-90"
+                    : "bg-[color:var(--bg-deep)] text-[color:var(--fg)] hover:bg-[color:var(--accent-korean)] hover:text-[color:var(--bg)]"
+                }`}
               >
-                {totalDue > 0
+                {live
                   ? `복습 ${totalDue}장 시작 →`
                   : "이 챕터 퀴즈 시작 →"}
               </Link>
