@@ -69,19 +69,23 @@ export default function ProgressPage() {
         </div>
       </section>
 
-      <section>
-        <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
+      <section aria-labelledby="progress-grid-heading">
+        <div
+          id="progress-grid-heading"
+          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium"
+        >
           N5 KANJI ({kanjiCards.length})
         </div>
-        <div className="grid grid-cols-10 gap-1">
+        <ul role="list" className="grid grid-cols-10 gap-1">
           {kanjiCards.map((card) => (
-            <KanjiCell
-              key={card.id}
-              card={card}
-              level={mounted ? masteryLevel(states[`kanji:${card.id}`]) : "new"}
-            />
+            <li key={card.id}>
+              <KanjiCell
+                card={card}
+                level={mounted ? masteryLevel(states[`kanji:${card.id}`]) : "new"}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <section className="mt-8 text-caption text-[color:var(--fg-faint)] leading-relaxed">
@@ -92,6 +96,12 @@ export default function ProgressPage() {
     </ModePageShell>
   );
 }
+
+const LEVEL_LABEL_KO: Record<"new" | "learning" | "mastered", string> = {
+  new: "미학습",
+  learning: "학습 중",
+  mastered: "마스터",
+};
 
 function KanjiCell({
   card,
@@ -107,9 +117,13 @@ function KanjiCell({
       ? "color-mix(in oklab, var(--accent-progress) 25%, transparent)"
       : "color-mix(in oklab, var(--fg) 5%, transparent)";
   const color = level === "new" ? "var(--fg-faint)" : "var(--fg)";
+  const meaning = card.meanings.slice(0, 2).join(", ");
+  const ariaLabel = `${card.kanji}${meaning ? ` (${meaning})` : ""} — ${LEVEL_LABEL_KO[level]}`;
   return (
     <div
-      title={`${card.kanji} — ${card.meanings.join(", ")} (${level})`}
+      role="img"
+      aria-label={ariaLabel}
+      title={ariaLabel}
       className="aspect-square flex items-center justify-center rounded-[2px] text-[18px] font-semibold"
       style={{
         fontFamily: "var(--font-jp-serif)",
@@ -118,7 +132,7 @@ function KanjiCell({
         letterSpacing: "-0.02em",
       }}
     >
-      {card.kanji}
+      <span aria-hidden="true">{card.kanji}</span>
     </div>
   );
 }
