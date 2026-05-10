@@ -229,6 +229,95 @@ describe("ChapterMastery — populated state", () => {
     expect(screen.getByText("・1")).toBeDefined();
   });
 
+  it("sort='mastery-asc' lists weakest chapter first", () => {
+    const chapters: Chapter[] = [
+      { id: "high", name: "고-마스터리", intro: null, sortOrder: 1 },
+      { id: "low", name: "저-마스터리", intro: null, sortOrder: 2 },
+    ];
+    const members: ChapterMember[] = [
+      { chapterId: "high", mode: "vocab", cardId: "h" },
+      { chapterId: "low", mode: "vocab", cardId: "l" },
+    ];
+    useCardsStore.setState({
+      chapters,
+      chapterMembers: members,
+      membersByChapter: new Map([
+        ["high", members.slice(0, 1)],
+        ["low", members.slice(1)],
+      ]),
+      vocabById: new Map([
+        ["h", makeVocab("h")],
+        ["l", makeVocab("l")],
+      ]),
+    });
+    // high mastered (box 5), low untouched (box 1).
+    useStore.setState({
+      learningStates: {
+        "vocab:h": {
+          cardKey: "vocab:h",
+          mode: "vocab",
+          cardId: "h",
+          box: 5,
+          nextDue: 0,
+          correctStreak: 1,
+          lastReviewed: 1,
+        },
+      },
+    });
+
+    render(<ChapterMastery sort="mastery-asc" />);
+    const links = screen.getAllByRole("link");
+    expect(links[0].getAttribute("href")).toBe("/chapters/low");
+    expect(links[1].getAttribute("href")).toBe("/chapters/high");
+  });
+
+  it("sort='due-desc' lists biggest review backlog first", () => {
+    const chapters: Chapter[] = [
+      { id: "small", name: "작은", intro: null, sortOrder: 1 },
+      { id: "big", name: "큰", intro: null, sortOrder: 2 },
+    ];
+    const members: ChapterMember[] = [
+      { chapterId: "small", mode: "vocab", cardId: "s1" },
+      { chapterId: "big", mode: "vocab", cardId: "b1" },
+      { chapterId: "big", mode: "vocab", cardId: "b2" },
+    ];
+    useCardsStore.setState({
+      chapters,
+      chapterMembers: members,
+      membersByChapter: new Map([
+        ["small", members.slice(0, 1)],
+        ["big", members.slice(1)],
+      ]),
+      vocabById: new Map([
+        ["s1", makeVocab("s1")],
+        ["b1", makeVocab("b1")],
+        ["b2", makeVocab("b2")],
+      ]),
+    });
+    // 1 due in small, 2 due in big.
+    useStore.setState({
+      learningStates: {
+        "vocab:s1": {
+          cardKey: "vocab:s1", mode: "vocab", cardId: "s1",
+          box: 1, nextDue: 1, correctStreak: 0, lastReviewed: 1,
+        },
+        "vocab:b1": {
+          cardKey: "vocab:b1", mode: "vocab", cardId: "b1",
+          box: 1, nextDue: 1, correctStreak: 0, lastReviewed: 1,
+        },
+        "vocab:b2": {
+          cardKey: "vocab:b2", mode: "vocab", cardId: "b2",
+          box: 1, nextDue: 1, correctStreak: 0, lastReviewed: 1,
+        },
+      },
+    });
+
+    render(<ChapterMastery sort="due-desc" />);
+    const links = screen.getAllByRole("link");
+    expect(links[0].getAttribute("href")).toBe("/chapters/big");
+    expect(links[1].getAttribute("href")).toBe("/chapters/small");
+  });
+
   it("hides due indicator when nothing is due", () => {
     const chapters: Chapter[] = [
       { id: "ch1", name: "no-due", intro: null, sortOrder: 10 },
