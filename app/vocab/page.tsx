@@ -259,7 +259,7 @@ function VocabBack({ card }: { card: VocabCard }) {
           {card.reading}
         </div>
       )}
-      <div className="text-[18px] text-[color:var(--fg)] leading-relaxed font-medium mt-1">
+      <div className="text-em text-[color:var(--fg)] leading-relaxed font-medium mt-1">
         {card.koreanMeanings.join(", ")}
       </div>
     </div>

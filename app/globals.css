@@ -52,6 +52,7 @@
   --type-title:    22px;
   --type-h1:       28px;
   --type-h2:       20px;
+  --type-em:       18px;  /* answer text / kanji cell / prominent reading */
   --type-body:     17px;
   --type-reading:  17px;
   --type-meta:     15px;  /* button label / intro copy / subdued title */
@@ -157,6 +158,7 @@
   --text-title:   var(--type-title);
   --text-h1:      var(--type-h1);
   --text-h2:      var(--type-h2);
+  --text-em:      var(--type-em);
   --text-body:    var(--type-body);
   --text-reading: var(--type-reading);
   --text-meta:    var(--type-meta);

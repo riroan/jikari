@@ -162,7 +162,7 @@ function KanjiCell({
       role="img"
       aria-label={ariaLabel}
       title={ariaLabel}
-      className="aspect-square flex items-center justify-center rounded-[2px] text-[18px] font-semibold"
+      className="aspect-square flex items-center justify-center rounded-[2px] text-em font-semibold"
       style={{
         fontFamily: "var(--font-jp-serif)",
         background: bg,

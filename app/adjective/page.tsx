@@ -146,7 +146,7 @@ function EmptyState() {
   return (
     <div className="flex flex-col gap-5 pt-8 text-[color:var(--fg-soft)]">
       <div
-        className="text-[18px] font-medium leading-relaxed"
+        className="text-em font-medium leading-relaxed"
         style={{ fontFamily: "var(--font-kr-sans)" }}
       >
         공부할 형용사가 아직 없어요.
@@ -235,7 +235,7 @@ function AdjectiveStudyBody({ adj }: { adj: ConjugatableAdj }) {
               {ADJ_FORM_LABELS_KO[form]}
             </span>
             <span
-              className="text-[18px] text-[color:var(--fg)] text-right"
+              className="text-em text-[color:var(--fg)] text-right"
               style={{ fontFamily: "var(--font-jp-sans)" }}
             >
               {answer}
