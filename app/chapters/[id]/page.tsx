@@ -9,7 +9,7 @@ import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { aggregateChapterMastery } from "@/lib/chapter-mastery";
 import { intensityBg, ratioToIntensity } from "@/lib/intensity";
-import { shuffleIds } from "@/lib/deck";
+import { weightedShuffleIds } from "@/lib/deck";
 import {
   getKanji,
   getVocab,
@@ -382,9 +382,31 @@ function ChapterQuizDeck({
     () => members.map(({ member }) => `${member.mode}:${member.cardId}`),
     [members],
   );
+  // Box-weighted: low-box (due/struggling) cards surface every epoch, box-5
+  // mastered ones appear ~1/14. Matches the same SRS cadence the dedicated
+  // mode pages use, so chapter-mode review feels identical to vocab/kanji
+  // review without a separate "due-only" path.
   const deck = useMemo(
-    () => shuffleIds(ids, seed + epoch * 7919),
-    [ids, seed, epoch],
+    () =>
+      weightedShuffleIds(
+        ids,
+        (id) => {
+          // Map "{mode}:{cardId}" back to the SRS state key (grammar uses the
+          // pattern:/particle: subtype prefix).
+          const colonIdx = id.indexOf(":");
+          const mode = id.slice(0, colonIdx);
+          const cardId = id.slice(colonIdx + 1);
+          const states = useStore.getState().learningStates;
+          if (mode === "grammar") {
+            const card = grammarById.get(cardId);
+            const sub = card?.type === "pattern" ? "pattern" : "particle";
+            return (states[`grammar:${sub}:${cardId}`]?.box ?? 1) as 1 | 2 | 3 | 4 | 5;
+          }
+          return (states[`${mode}:${cardId}`]?.box ?? 1) as 1 | 2 | 3 | 4 | 5;
+        },
+        seed + epoch * 7919,
+      ),
+    [ids, seed, epoch, grammarById],
   );
 
   const currentKey = deck[index];
