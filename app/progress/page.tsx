@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useIsClient } from "@/lib/use-is-client";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore } from "@/lib/store";
@@ -20,13 +21,25 @@ export default function ProgressPage() {
   const states = useStore((s) => s.learningStates);
   const kanjiCards = useCardsStore((s) => s.kanji);
 
-  const masteredCount = kanjiCards.filter(
-    (c) => mounted && masteryLevel(states[`kanji:${c.id}`]) === "mastered"
-  ).length;
-
-  const learningCount = kanjiCards.filter(
-    (c) => mounted && masteryLevel(states[`kanji:${c.id}`]) === "learning"
-  ).length;
+  // Single pass — earlier two filters scanned the deck twice.
+  // Pre-hydration we return 0/0/0 instead of "all fresh" so the NEW chip
+  // doesn't flicker (total → remaining) when the store rehydrates.
+  const counts = useMemo(() => {
+    if (!mounted) return { mastered: 0, learning: 0, fresh: 0 };
+    let mastered = 0;
+    let learning = 0;
+    for (const c of kanjiCards) {
+      const lvl = masteryLevel(states[`kanji:${c.id}`]);
+      if (lvl === "mastered") mastered++;
+      else if (lvl === "learning") learning++;
+    }
+    return {
+      mastered,
+      learning,
+      fresh: kanjiCards.length - mastered - learning,
+    };
+  }, [mounted, states, kanjiCards]);
+  const { mastered: masteredCount, learning: learningCount, fresh: freshCount } = counts;
 
   return (
     <ModePageShell title="進捗" headerMarginPx={40}>
@@ -44,7 +57,7 @@ export default function ProgressPage() {
                 color: "var(--accent-progress)",
               }}
             >
-              {mounted ? masteredCount : 0}
+              {masteredCount}
               <span className="text-lg text-[color:var(--fg-faint)] font-normal ml-1">
                 / {kanjiCards.length}
               </span>
@@ -62,7 +75,14 @@ export default function ProgressPage() {
                 color: "var(--fg-soft)",
               }}
             >
-              {mounted ? learningCount : 0}
+              {learningCount}
+            </div>
+            <div
+              className="mt-2 text-caption text-[color:var(--fg-faint)] tabular-nums tracking-wide"
+              aria-label={`미학습 ${freshCount}장`}
+            >
+              <span className="tracking-label font-medium">NEW</span>{" "}
+              <span className="ml-1">{freshCount}</span>
             </div>
           </div>
         </div>
