@@ -7,10 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "e2e": "playwright test",
+    "verify": "bun run typecheck && bun run lint && bun run test",
     "db:migrate": "bun scripts/migrate.ts"
   },
   "dependencies": {
