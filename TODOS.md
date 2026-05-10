@@ -23,11 +23,11 @@
 - **Cons:** 본인이 매일 쓰면서 자연스러운 문구가 떠오를 때마다 채우는 게 더 fresh. 일괄 작성하면 형식적이 될 위험.
 - **Trigger:** 한 챕터씩 자연스럽게 채워나가기 — 2주 후 몇 개 채워졌는지 보고 일괄 작업 여부 결정.
 
-### Dark mode 시각 검증
+### Dark mode 시각 검증 (트리거 발생: 토글 UI 추가됨 2026-05-10)
 - **What:** /chapters, /chapters/[id], /chapters/[id]?mode=quiz 다크 모드 스크린샷 + DESIGN.md `--gold` 토큰 적용 확인.
-- **Why:** DESIGN.md에 다크 토큰 정의 있는데 챕터 페이지 다크 안 봄. accent-progress가 light=sage(#7A8F6E) → dark=gold(#D4B76A)로 바뀌는데 mastery bar/intensity가 다크에서 적절한지 미검증.
+- **Why:** 토글 UI 추가됨 (커밋 6fbefd1). `intensity.ts` case 0과 `progress` KanjiCell 비활성 색은 `var(--fg)` 기반으로 보정됨 (커밋 cc576ee). 그러나 `mark.jp-highlight`, `RegisterPill`, mastery bar 다크 시각 미검증.
 - **Pros:** 5분 체크.
-- **Trigger:** 다크 모드 토글 UI 도입 시점 (현재 light only). 또는 본인이 밤에 쓰면서 거슬리면.
+- **Trigger:** **활성** — 다크 모드로 한 번 둘러보기.
 
 ### 약한 챕터 자동 sort
 - **What:** /chapters 목록을 mastery 낮은 순서대로 정렬 옵션. 또는 "약한 챕터 N개" 강조 표시.
@@ -44,24 +44,11 @@
 
 ## Tailwind v4 / 디자인 시스템 인프라 (design-review 2026-04-19)
 
-### `text-{title,h1,display,hero}` 등 @theme inline 유틸이 CSS 룰로 안 만들어짐
-- **What:** `app/globals.css`의 `@theme inline { --text-title: var(--type-title) }` 정의가 Tailwind v4에서 `.text-title { font-size: 22px }` 룰을 *생성하지 않음*. 서빙 CSS에 0건.
-- **Why:** DESIGN.md 타입 스케일이 정의됐지만 *적용 안 됨*. 모든 `text-title` 사용처가 silently 16px 기본값으로 렌더링 중이었음. design-review가 `text-[22px]` arbitrary 값으로 우회 (5f7d924, 9a244fc).
-- **Pros:** 해결 시 9개 모드 페이지 H1 + 홈 브랜드의 magic number 22px이 디자인 토큰으로 회귀. type scale 일관성 회복.
-- **Cons:** Tailwind v4 `@theme inline` 의미 학습 필요. `--text-*: var(--type-*)` 패턴이 build-time 디리퍼런스 안 되는 게 원인일 가능성. 후보:
-  - (a) `@theme inline`에서 var() 안 쓰고 픽셀 값 직접 입력 (`--text-title: 22px`)
-  - (b) `@utility` 디렉티브로 타입 스케일 재정의
-  - (c) `@theme inline` 떼고 `@theme { ... }` 일반 블록으로
-- **Context:** font-size + tracking 영향. font-family는 inline `style={{ fontFamily: ... }}`로 우회되어 정상.
-- **Depends on:** Tailwind v4 docs 확인 + 작은 reproducer로 검증.
+### ~~`text-{title,h1,display,hero}` 등 @theme inline 유틸이 CSS 룰로 안 만들어짐~~ ✓ DONE (2026-05-10)
+- **상태:** Tailwind 4.2.2에서 `@theme inline { --text-*: var(--type-*) }` 패턴이 정상 컴파일됨을 빌드 산출물(.next/dev) 직접 확인. arbitrary 값 45개 (`text-[13px]`, `text-[22px]`)를 의미 토큰으로 일괄 마이그레이션 (커밋 4fb1e4c).
 
-### 9개 페이지에 ← HOME 블록 중복 (DRY)
-- **What:** `app/{grammar,vocab,kanji,sentence,conjugation,adjective,particle,progress,settings}/page.tsx` 9곳에 동일 `← HOME` 링크 (44px touch target 포함) 중복.
-- **Why:** 차후 헤더 변경 시 9곳 손대야 함. design-review 2026-04-19에서 9개 동일 인라인 수정 — 적기 신호.
-- **Pros:** `<BackToHome />` 또는 `<ModePageHeader />` 추출 시 헤더 변경 1곳.
-- **Cons:** props 설계 (statKey 다름, h1 라벨 다름) — 너무 많이 받으면 추상화 비용 > DRY 이득.
-- **Context:** 다음 헤더 변경 발생 시 자연스럽게 추출 권장.
-- **Depends on:** 헤더에 새 요소 추가 작업 발생.
+### ~~9개 페이지에 ← HOME 블록 중복 (DRY)~~ ✓ DONE (이전 세션)
+- **상태:** `components/ModePageShell.tsx`로 추출 완료. 9개 페이지 모두 ModePageShell 사용 중 (검증 2026-05-10). 챕터 상세 페이지만 별도 헤더 (의도된 차이).
 
 ### F4 검증 (dev 재시작 후)
 - **What:** `app/globals.css`에 `html, body { font-family: Pretendard }` 추가 (5299e4d). dev server HMR이 globals.css를 안 픽업해서 audit 시점엔 미검증.

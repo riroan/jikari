@@ -4,14 +4,16 @@ import { toHiragana } from "wanakana";
  * Normalize a Japanese reading input for answer comparison.
  *
  * Accepts romaji / katakana / hiragana — all collapse to hiragana.
- * Applies Unicode NFC + trims whitespace.
+ * Applies Unicode NFC, trims, and removes ALL inner whitespace
+ * (mobile IMEs sometimes emit "き っ て" between syllables).
  *
- *   "NICHI"  → "にち"
- *   "ニチ"   → "にち"
- *   " にち " → "にち"
+ *   "NICHI"     → "にち"
+ *   "ニチ"      → "にち"
+ *   " にち "    → "にち"
+ *   "き っ て"  → "きって"
  */
 export function normalizeJapanese(input: string): string {
-  return toHiragana(input.normalize("NFC").trim());
+  return toHiragana(input.normalize("NFC").replace(/\s+/g, ""));
 }
 
 /**

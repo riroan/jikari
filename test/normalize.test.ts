@@ -23,6 +23,11 @@ describe("normalizeJapanese", () => {
     expect(normalizeJapanese("\tにち\n")).toBe("にち");
   });
 
+  test("strips inner whitespace from IME output", () => {
+    expect(normalizeJapanese("き っ て")).toBe("きって");
+    expect(normalizeJapanese("ラー メン")).toBe(normalizeJapanese("ラーメン"));
+  });
+
   test("NFC normalization — composed vs decomposed", () => {
     // が (composed U+304C) vs が (か + ゛, U+304B + U+3099)
     const composed = "\u304C";
