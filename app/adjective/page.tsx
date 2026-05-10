@@ -136,7 +136,7 @@ function AdjectivePageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <ModePageShell statKey="adjective" title="形容詞">
+    <ModePageShell statKey="adjective" dueKey="adjective" title="形容詞">
       {children}
     </ModePageShell>
   );

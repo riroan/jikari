@@ -122,7 +122,7 @@ function KanjiPageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <ModePageShell statKey="kanji" title="漢字">
+    <ModePageShell statKey="kanji" dueKey="kanji" title="漢字">
       {children}
     </ModePageShell>
   );

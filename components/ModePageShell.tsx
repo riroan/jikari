@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { QuizStats } from "./QuizStats";
+import { useDueByKey } from "@/lib/use-due-by-key";
 import type { QuizStatKey } from "@/lib/types";
 
 /**
@@ -23,6 +24,13 @@ import type { QuizStatKey } from "@/lib/types";
 export interface ModePageShellProps {
   title: React.ReactNode;
   statKey?: QuizStatKey;
+  /**
+   * Subject key into the per-mode due-count map (see lib/due.ts).
+   * Pages with a 1:1 SRS mode pass the mode name; sentence/particle pages
+   * pass "sentence_vocab"/"sentence_particle" to disambiguate the shared mode.
+   * When provided + > 0, a small 復習 N chip appears next to QuizStats.
+   */
+  dueKey?: string;
   titleVariant?: "default" | "subdued";
   headerMarginPx?: number;
   afterHeader?: React.ReactNode;
@@ -32,11 +40,14 @@ export interface ModePageShellProps {
 export function ModePageShell({
   title,
   statKey,
+  dueKey,
   titleVariant = "default",
   headerMarginPx = 32,
   afterHeader,
   children,
 }: ModePageShellProps) {
+  const dueByKey = useDueByKey();
+  const dueCount = dueKey ? dueByKey[dueKey] ?? 0 : 0;
   const titleClass =
     titleVariant === "subdued"
       ? "text-[15px] tracking-tab text-[color:var(--fg-soft)]"
@@ -60,7 +71,17 @@ export function ModePageShell({
           >
             ← HOME
           </Link>
-          {statKey && <QuizStats statKey={statKey} />}
+          <div className="flex items-baseline gap-2">
+            {statKey && <QuizStats statKey={statKey} />}
+            {dueCount > 0 && (
+              <span
+                className="text-[12px] tracking-tab tabular-nums text-[color:var(--accent-progress)] font-medium"
+                aria-label={`복습 ${dueCount}장 대기`}
+              >
+                復習 {dueCount}
+              </span>
+            )}
+          </div>
           <h1
             className={titleClass}
             style={{ fontFamily: "var(--font-jp-serif)" }}

@@ -4,11 +4,11 @@ import { useMemo } from "react";
 import { useClientNow } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
-import { useCardsStore } from "@/lib/cards-store";
 import { Heatmap } from "@/components/Heatmap";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 import { toLocalDateKey } from "@/lib/heatmap";
-import { aggregateDueByKey, totalDue } from "@/lib/due";
+import { totalDue } from "@/lib/due";
+import { useDueByKey } from "@/lib/use-due-by-key";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -47,25 +47,11 @@ export default function Home() {
 
   const heatmap = useStore((s) => s.heatmap);
   const currentStreak = useStore((s) => s.currentStreak);
-  const learningStates = useStore((s) => s.learningStates);
-  const sentenceIds = useCardsStore((s) => s.sentenceIds);
-  const particleIds = useCardsStore((s) => s.particleIds);
 
   const todayCount = hydrated ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
   const studiedToday = todayCount > 0;
 
-  // Per-subject due breakdown — pure aggregation lives in lib/due.ts so
-  // it can be unit-tested without React rendering.
-  const dueByKey = useMemo(() => {
-    if (!hydrated || now === null) return {};
-    return aggregateDueByKey(
-      learningStates,
-      now,
-      new Set(sentenceIds),
-      new Set(particleIds),
-    );
-  }, [learningStates, hydrated, now, sentenceIds, particleIds]);
-
+  const dueByKey = useDueByKey();
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
 
   return (

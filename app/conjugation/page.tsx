@@ -153,7 +153,7 @@ function ConjugationPageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <ModePageShell statKey="conjugation" title="活用">
+    <ModePageShell statKey="conjugation" dueKey="conjugation" title="活用">
       {children}
     </ModePageShell>
   );

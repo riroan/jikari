@@ -120,7 +120,7 @@ function ParticlePageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <ModePageShell statKey="particle" title="助詞">
+    <ModePageShell statKey="particle" dueKey="sentence_particle" title="助詞">
       {children}
     </ModePageShell>
   );

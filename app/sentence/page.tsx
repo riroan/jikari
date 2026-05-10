@@ -118,7 +118,7 @@ function SentencePageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <ModePageShell statKey="sentence" title="文章">
+    <ModePageShell statKey="sentence" dueKey="sentence_vocab" title="文章">
       {children}
     </ModePageShell>
   );

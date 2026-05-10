@@ -151,6 +151,7 @@ function Shell({
   return (
     <ModePageShell
       statKey="grammar"
+      dueKey="grammar"
       title="文法"
       afterHeader={<TabBar active={tab} />}
     >

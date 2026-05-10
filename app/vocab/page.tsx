@@ -125,7 +125,7 @@ function VocabPageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <ModePageShell statKey="vocab" title="単語">
+    <ModePageShell statKey="vocab" dueKey="vocab" title="単語">
       {children}
     </ModePageShell>
   );

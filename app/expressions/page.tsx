@@ -138,7 +138,7 @@ function ExpressionsPageInner() {
 
 function Shell({ children }: { children?: React.ReactNode }) {
   return (
-    <ModePageShell statKey="expression" title="表現" titleVariant="subdued">
+    <ModePageShell statKey="expression" dueKey="expression" title="表現" titleVariant="subdued">
       {children}
     </ModePageShell>
   );
