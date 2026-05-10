@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
-import { toLocalDateKey } from "@/lib/heatmap";
+import { currentStreak as computeStreak, toLocalDateKey } from "@/lib/heatmap";
 import { totalDue } from "@/lib/due";
 import { useDueByKey } from "@/lib/use-due-by-key";
 
@@ -46,10 +46,16 @@ export default function Home() {
   const hydrated = now !== null;
 
   const heatmap = useStore((s) => s.heatmap);
-  const currentStreak = useStore((s) => s.currentStreak);
 
   const todayCount = hydrated ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
   const studiedToday = todayCount > 0;
+  // Recompute streak live so the chip stays accurate even if the user
+  // opens the app on a new day without reviewing yet (the persisted
+  // store.currentStreak only updates on review).
+  const currentStreak = useMemo(
+    () => (hydrated ? computeStreak(heatmap, now) : 0),
+    [hydrated, heatmap, now],
+  );
 
   const dueByKey = useDueByKey();
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
