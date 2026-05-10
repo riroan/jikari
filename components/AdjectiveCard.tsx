@@ -28,11 +28,13 @@ export function AdjectiveCard({ adj, form, onResolved }: AdjectiveCardProps) {
       form,
     );
   } catch (e) {
-    if (e instanceof AdjectiveConjugationError) {
-      console.error(
-        `[AdjectiveCard] ${e.message} — adj ${adj.word} (${adj.adjGroup})`,
-      );
-    }
+    // Known: this adj/form combination has no valid output. Log + render
+    // an empty quiz so the page survives. Anything else is a real bug —
+    // surface it instead of swallowing.
+    if (!(e instanceof AdjectiveConjugationError)) throw e;
+    console.error(
+      `[AdjectiveCard] ${e.message} — adj ${adj.word} (${adj.adjGroup})`,
+    );
     acceptableAnswers = [];
   }
 

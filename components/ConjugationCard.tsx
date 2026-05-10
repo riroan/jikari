@@ -32,11 +32,13 @@ export function ConjugationCard({
       form,
     );
   } catch (e) {
-    if (e instanceof ConjugationError) {
-      console.error(
-        `[ConjugationCard] ${e.message} — verb ${verb.word} (${verb.verbGroup})`,
-      );
-    }
+    // Known: this verb/form combination has no valid output. Log + render
+    // an empty quiz so the page survives. Anything else is a real bug —
+    // surface it instead of swallowing.
+    if (!(e instanceof ConjugationError)) throw e;
+    console.error(
+      `[ConjugationCard] ${e.message} — verb ${verb.word} (${verb.verbGroup})`,
+    );
     acceptableAnswers = [];
   }
 
