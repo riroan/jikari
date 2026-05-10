@@ -105,7 +105,7 @@ function KanjiCell({
       ? "color-mix(in oklab, var(--accent-progress) 65%, transparent)"
       : level === "learning"
       ? "color-mix(in oklab, var(--accent-progress) 25%, transparent)"
-      : "rgba(26, 25, 21, 0.05)";
+      : "color-mix(in oklab, var(--fg) 5%, transparent)";
   const color = level === "new" ? "var(--fg-faint)" : "var(--fg)";
   return (
     <div

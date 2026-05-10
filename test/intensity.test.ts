@@ -2,8 +2,12 @@ import { describe, it, expect } from "vitest";
 import { intensityBg, ratioToIntensity } from "@/lib/intensity";
 
 describe("intensityBg", () => {
-  it("level 0 returns subtle inactive background (no accent)", () => {
-    expect(intensityBg(0)).toBe("rgba(26, 25, 21, 0.06)");
+  it("level 0 returns subtle inactive background tied to --fg (theme-aware)", () => {
+    const bg = intensityBg(0);
+    expect(bg).toContain("color-mix");
+    expect(bg).toContain("var(--fg)");
+    expect(bg).toContain("6%");
+    expect(bg).not.toContain("var(--accent-progress)");
   });
 
   it("levels 1–3 use color-mix with --accent-progress at increasing alpha", () => {

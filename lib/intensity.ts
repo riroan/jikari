@@ -17,7 +17,9 @@ export type IntensityLevel = 0 | 1 | 2 | 3 | 4;
 export function intensityBg(level: IntensityLevel): string {
   switch (level) {
     case 0:
-      return "rgba(26, 25, 21, 0.06)";
+      // 6% of --fg → adapts to light (ink) and dark (bone) so empty cells
+      // never become invisible-against-bg or wrong-tone in dark mode.
+      return "color-mix(in oklab, var(--fg) 6%, transparent)";
     case 1:
       return "color-mix(in oklab, var(--accent-progress) 28%, transparent)";
     case 2:
