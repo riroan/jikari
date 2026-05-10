@@ -69,6 +69,15 @@ export async function getProgress(): Promise<PersistedState> {
       ? rawThreshold
       : 4;
 
+  // Validate theme — old rows may carry just "light"/"dark"; new ones can
+  // also carry "system". Anything else falls back to "system" so a stray
+  // value never makes it into the typed PersistedState.
+  const rawTheme = String(st.theme ?? "");
+  const theme: "light" | "dark" | "system" =
+    rawTheme === "light" || rawTheme === "dark" || rawTheme === "system"
+      ? rawTheme
+      : "system";
+
   return {
     schemaVersion: Number(st.schema_version),
     learningStates,
@@ -77,7 +86,7 @@ export async function getProgress(): Promise<PersistedState> {
     currentStreak: Number(st.current_streak),
     quizStats,
     settings: {
-      theme: st.theme as "light" | "dark",
+      theme,
       showFurigana: Boolean(st.show_furigana),
       typingThresholdBox,
     },
