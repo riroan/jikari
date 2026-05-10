@@ -204,7 +204,13 @@ export function TypedChallengeCard({
             aria-live="polite"
           >
             <div className="inline-flex items-center gap-2 text-[color:var(--accent-progress)] font-medium">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
                 <path
                   d="M5 13l4 4L19 7"
                   stroke="currentColor"

@@ -18,7 +18,13 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
         className="inline-flex items-center gap-2 text-[color:var(--accent-progress)] font-medium"
         aria-live="polite"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
           <path
             d="M5 13l4 4L19 7"
             stroke="currentColor"
@@ -40,7 +46,13 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
       }}
       aria-live="polite"
     >
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
         <path
           d="M6 6l12 12M6 18L18 6"
           stroke="currentColor"
