@@ -373,7 +373,8 @@ export interface PersistedState {
   quizStats: Record<string, QuizStat>;
   /** User settings */
   settings: {
-    theme: "light" | "dark";
+    /** "system" follows OS prefers-color-scheme; "light"/"dark" override. */
+    theme: "light" | "dark" | "system";
     /** Show furigana over kanji — beginners on, advanced off */
     showFurigana: boolean;
     /**
@@ -388,7 +389,7 @@ export interface PersistedState {
 export const SCHEMA_VERSION = 5;
 
 export const DEFAULT_SETTINGS: PersistedState["settings"] = {
-  theme: "light",
+  theme: "system",
   showFurigana: true,
   typingThresholdBox: 4,
 };

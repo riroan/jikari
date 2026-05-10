@@ -94,6 +94,15 @@ export default function SettingsPage() {
         <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
           표시
         </h2>
+
+        <label className="flex justify-between items-center text-small py-2 gap-4">
+          <span className="text-[color:var(--fg-soft)]">테마</span>
+          <ThemeChoice
+            value={settings.theme}
+            onChange={(theme) => updateSettings({ theme })}
+          />
+        </label>
+
         <label className="flex justify-between items-center text-small py-1">
           <span className="text-[color:var(--fg-soft)]">후리가나 (한자 위 읽기)</span>
           <Toggle
@@ -163,6 +172,51 @@ export default function SettingsPage() {
         </div>
       )}
     </ModePageShell>
+  );
+}
+
+type ThemeOption = "light" | "dark" | "system";
+
+function ThemeChoice({
+  value,
+  onChange,
+}: {
+  value: ThemeOption;
+  onChange: (next: ThemeOption) => void;
+}) {
+  const opts: { id: ThemeOption; label: string }[] = [
+    { id: "light", label: "라이트" },
+    { id: "dark", label: "다크" },
+    { id: "system", label: "시스템" },
+  ];
+  return (
+    <div
+      role="radiogroup"
+      aria-label="테마 선택"
+      className="inline-flex border border-[color:var(--line)] rounded-sm overflow-hidden"
+    >
+      {opts.map((o, i) => {
+        const active = value === o.id;
+        return (
+          <button
+            key={o.id}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            onClick={() => onChange(o.id)}
+            className={`px-3 py-1.5 text-caption tracking-wide min-h-[36px] transition-colors ${
+              i > 0 ? "border-l border-[color:var(--line)]" : ""
+            } ${
+              active
+                ? "bg-[color:var(--bg-deep)] text-[color:var(--fg)]"
+                : "text-[color:var(--fg-faint)] hover:text-[color:var(--fg)]"
+            }`}
+          >
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 

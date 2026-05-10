@@ -2,7 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import { FuriganaBoundary } from "@/components/FuriganaBoundary";
 import { HydrationBoundary } from "@/components/HydrationBoundary";
+import { ThemeApplier } from "@/components/ThemeApplier";
 import "./globals.css";
+
+/**
+ * Pre-paint theme script. Reads the localStorage hint set by ThemeApplier
+ * and applies data-theme before the first paint to avoid a light→dark flash.
+ * No hint = no attr → globals.css's prefers-color-scheme media query handles it.
+ */
+const themeBootScript = `(function(){try{var t=localStorage.getItem('jikari-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`;
 
 const notoSerifJP = Noto_Serif_JP({
   variable: "--font-jp-serif",
@@ -40,8 +48,13 @@ export default function RootLayout({
     <html
       lang="ko"
       className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body className="min-h-full flex flex-col">
+        <ThemeApplier />
         <HydrationBoundary>
           <FuriganaBoundary>{children}</FuriganaBoundary>
         </HydrationBoundary>

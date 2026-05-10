@@ -9,6 +9,8 @@
  */
 
 :root {
+  color-scheme: light dark;
+
   /* Light — Quiet Paper */
   --paper:       #F5EFE4;
   --paper-deep:  #EDE5D4;
@@ -61,8 +63,15 @@
   --track-tab:     0.15em;
 }
 
+/*
+ * Dark — Dark Study
+ * Two activation paths:
+ *   (a) explicit  [data-theme="dark"]            — user-chosen dark
+ *   (b) OS-default :root:not([data-theme="light"]) inside prefers-color-scheme:dark
+ * "system" theme leaves data-theme unset → (b) applies. Explicit "light" sets
+ * data-theme="light" so (b) doesn't trigger.
+ */
 [data-theme="dark"] {
-  /* Dark — Dark Study */
   --bg-deep:  #0E141E;
   --bg:       #121A26;
   --bg-soft:  #1A2332;
@@ -74,7 +83,6 @@
   --crimson:  #C47A6E;
   --line:     rgba(232, 226, 210, 0.08);
 
-  /* Semantic remap */
   --fg:          var(--bone);
   --fg-soft:     var(--bone-soft);
   --fg-faint:    var(--bone-faint);
@@ -82,6 +90,29 @@
   --accent-progress: var(--gold);
 
   --bg-gradient: radial-gradient(ellipse at top, #1A2332 0%, var(--bg-deep) 55%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-deep:  #0E141E;
+    --bg:       #121A26;
+    --bg-soft:  #1A2332;
+    --bone:     #E8E2D2;
+    --bone-soft:#B8B0A0;
+    --bone-faint:#6A6358;
+    --gold:     #D4B76A;
+    --gold-deep:#B89550;
+    --crimson:  #C47A6E;
+    --line:     rgba(232, 226, 210, 0.08);
+
+    --fg:          var(--bone);
+    --fg-soft:     var(--bone-soft);
+    --fg-faint:    var(--bone-faint);
+    --accent-korean:   var(--crimson);
+    --accent-progress: var(--gold);
+
+    --bg-gradient: radial-gradient(ellipse at top, #1A2332 0%, var(--bg-deep) 55%);
+  }
 }
 
 /* Tailwind 4 theme tokens — exposes CSS vars as Tailwind utilities */
