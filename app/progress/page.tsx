@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useIsClient } from "@/lib/use-is-client";
 import { ModePageShell } from "@/components/ModePageShell";
+import { Heatmap } from "@/components/Heatmap";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { masteryLevel } from "@/lib/srs";
@@ -19,6 +20,7 @@ export default function ProgressPage() {
   const mounted = useIsClient();
 
   const states = useStore((s) => s.learningStates);
+  const heatmap = useStore((s) => s.heatmap);
   const kanjiCards = useCardsStore((s) => s.kanji);
 
   // Single pass — earlier two filters scanned the deck twice.
@@ -86,6 +88,20 @@ export default function ProgressPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="mb-8" aria-labelledby="progress-year-heading">
+        <div
+          id="progress-year-heading"
+          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium"
+        >
+          52 WEEKS
+        </div>
+        {mounted ? (
+          <Heatmap data={heatmap} weeks={52} />
+        ) : (
+          <div style={{ height: "14px" }} />
+        )}
       </section>
 
       <section aria-labelledby="progress-grid-heading">
