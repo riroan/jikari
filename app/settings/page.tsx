@@ -317,6 +317,18 @@ function ResetDialog({
         type="text"
         value={phrase}
         onChange={(e) => setPhrase(e.target.value)}
+        onKeyDown={(e) => {
+          // Enter on a fully-typed phrase = confirm. Otherwise no-op so a
+          // misfired keystroke during typing doesn't fire the destroy.
+          if (
+            e.key === "Enter" &&
+            !e.nativeEvent.isComposing &&
+            phrase.trim() === "초기화"
+          ) {
+            e.preventDefault();
+            onConfirm();
+          }
+        }}
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
