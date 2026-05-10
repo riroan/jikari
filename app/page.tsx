@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useClientNow } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
@@ -33,9 +34,21 @@ export default function Home() {
 
   const heatmap = useStore((s) => s.heatmap);
   const currentStreak = useStore((s) => s.currentStreak);
+  const learningStates = useStore((s) => s.learningStates);
 
   const todayCount = hydrated ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
   const studiedToday = todayCount > 0;
+
+  // Count cards whose review window has opened. New (never-reviewed) cards
+  // are excluded — they're effectively unbounded and would drown the signal.
+  const dueCount = useMemo(() => {
+    if (!hydrated || now === null) return 0;
+    let n = 0;
+    for (const s of Object.values(learningStates)) {
+      if (s.lastReviewed > 0 && s.nextDue <= now) n++;
+    }
+    return n;
+  }, [learningStates, hydrated, now]);
 
   return (
     <main className="flex-1 flex justify-center">
@@ -54,20 +67,22 @@ export default function Home() {
             </span>
           </div>
           <div
-            className="text-caption text-[color:var(--fg-faint)] tracking-wider"
+            className="text-caption text-[color:var(--fg-faint)] tracking-wider text-right flex flex-col items-end gap-0.5"
             style={{ fontFamily: "var(--font-jp-sans)" }}
             aria-label={
               !hydrated
                 ? undefined
-                : studiedToday
-                ? `${currentStreak}일 연속 학습, 오늘 ${todayCount}장`
-                : currentStreak > 0
-                ? `${currentStreak}일 연속 학습, 오늘 아직 시작 안 함`
-                : "연속 학습 없음"
+                : `${
+                    studiedToday
+                      ? `${currentStreak}일 연속 학습, 오늘 ${todayCount}장`
+                      : currentStreak > 0
+                        ? `${currentStreak}일 연속 학습, 오늘 아직 시작 안 함`
+                        : "연속 학습 없음"
+                  }${dueCount > 0 ? `, 복습 대기 ${dueCount}장` : ""}`
             }
           >
             <span
-              className={`font-medium mr-1 tabular-nums ${
+              className={`font-medium tabular-nums ${
                 studiedToday
                   ? "text-[color:var(--accent-korean)]"
                   : "text-[color:var(--fg-faint)]"
@@ -75,6 +90,14 @@ export default function Home() {
             >
               連続 {hydrated ? currentStreak : 0}日
             </span>
+            {hydrated && dueCount > 0 && (
+              <span
+                className="text-[11px] text-[color:var(--fg-soft)] tabular-nums tracking-wide"
+                aria-hidden="true"
+              >
+                復習 {dueCount}
+              </span>
+            )}
           </div>
         </header>
 
