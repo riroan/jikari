@@ -2,12 +2,35 @@ import "server-only";
 import type { RowDataPacket } from "mysql2";
 import { getPool } from "./client";
 import type {
+  CardMode,
   HeatmapData,
   LearningState,
   PersistedState,
   QuizStat,
 } from "../types";
 import { DEFAULT_SETTINGS, SCHEMA_VERSION } from "../types";
+
+const VALID_MODES: ReadonlySet<CardMode> = new Set([
+  "kanji",
+  "vocab",
+  "sentence",
+  "conjugation",
+  "adjective",
+  "grammar",
+  "expression",
+]);
+
+function coerceMode(raw: unknown): CardMode | null {
+  if (typeof raw !== "string") return null;
+  return (VALID_MODES as Set<string>).has(raw) ? (raw as CardMode) : null;
+}
+
+function coerceBox(raw: unknown): 1 | 2 | 3 | 4 | 5 | null {
+  const n = Number(raw);
+  return n >= 1 && n <= 5 && Number.isInteger(n)
+    ? (n as 1 | 2 | 3 | 4 | 5)
+    : null;
+}
 
 export async function getProgress(): Promise<PersistedState> {
   const pool = getPool();
@@ -17,11 +40,17 @@ export async function getProgress(): Promise<PersistedState> {
   );
   const learningStates: Record<string, LearningState> = {};
   for (const r of lsRows) {
+    const mode = coerceMode(r.mode);
+    const box = coerceBox(r.box);
+    // Skip rows with malformed enums rather than blindly typing them — the
+    // PUT side validates via Zod, but the DB might still hold drift from
+    // older versions. Better to lose a row than to type-launder garbage.
+    if (mode === null || box === null) continue;
     const state: LearningState = {
       cardKey: r.card_key as string,
-      mode: r.mode as LearningState["mode"],
+      mode,
       cardId: r.card_id as string,
-      box: r.box as LearningState["box"],
+      box,
       nextDue: Number(r.next_due),
       correctStreak: Number(r.correct_streak),
       lastReviewed: Number(r.last_reviewed),
