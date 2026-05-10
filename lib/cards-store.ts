@@ -2,7 +2,6 @@
 
 import { create } from "zustand";
 import type {
-  CardMode,
   Chapter,
   ChapterMember,
   ExpressionCard,

@@ -18,7 +18,7 @@ import {
   AdjectiveConjugationError,
   conjugateAdj,
 } from "@/lib/adjective";
-import type { AdjectiveForm, AdjGroup, VocabCard } from "@/lib/types";
+import type { AdjGroup, VocabCard } from "@/lib/types";
 import { ADJ_FORMS_FOR } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";

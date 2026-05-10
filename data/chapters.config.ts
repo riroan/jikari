@@ -13,8 +13,6 @@
  * 한 카드가 여러 챕터에 속해도 OK — 매핑은 OR 합집합.
  */
 
-import type { CardMode } from "@/lib/types";
-
 export interface ChapterDef {
   id: string;
   name: string;
