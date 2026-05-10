@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useIsClient, useClientNow } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
@@ -25,13 +25,13 @@ const SUBJECTS: ReadonlyArray<{ ko: string; jp: string; base: string }> = [
 ];
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
+  const now = useClientNow();
 
   const heatmap = useStore((s) => s.heatmap);
   const currentStreak = useStore((s) => s.currentStreak);
 
-  const todayCount = mounted ? heatmap[toLocalDateKey(Date.now())] ?? 0 : 0;
+  const todayCount = now !== null ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
   const studiedToday = mounted && todayCount > 0;
 
   return (

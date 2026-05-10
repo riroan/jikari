@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useIsClient } from "@/lib/use-is-client";
 import { useStore } from "@/lib/store";
 import type { PersistedState } from "@/lib/types";
 
@@ -25,8 +25,7 @@ export function ThemeCycleButton({ className }: { className?: string }) {
   const theme = useStore((s) => s.settings.theme);
   const updateSettings = useStore((s) => s.updateSettings);
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   const display: Theme = mounted ? theme : "system";
 

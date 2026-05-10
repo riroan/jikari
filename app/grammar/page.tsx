@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useIsClient } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ModePageShell } from "@/components/ModePageShell";
@@ -34,8 +35,7 @@ export default function GrammarPage() {
 }
 
 function GrammarPageInner() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   const searchParams = useSearchParams();
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
@@ -53,11 +53,16 @@ function GrammarPageInner() {
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
-  // Reset index when tab switches so we start from the first card.
-  useEffect(() => {
+  // Reset index/epoch when tab switches via the React-blessed
+  // "store info from previous renders" pattern (setState in render
+  // guarded by a snapshot check). Avoids the cascading-render trap of
+  // doing the reset inside a useEffect.
+  const [tabSnapshot, setTabSnapshot] = useState(tab);
+  if (tab !== tabSnapshot) {
+    setTabSnapshot(tab);
     setIndex(0);
     setEpoch(0);
-  }, [tab]);
+  }
 
   const boxPrefix = tab === "pattern" ? "pattern" : "particle";
   const deck = useMemo(

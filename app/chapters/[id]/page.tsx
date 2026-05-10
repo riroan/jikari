@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, use, useEffect, useMemo, useState } from "react";
+import { Suspense, use, useMemo, useState } from "react";
+import { useIsClient } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ChapterQuizCard } from "@/components/ChapterQuizCard";
@@ -40,8 +41,7 @@ export default function ChapterDetailPage({
 }
 
 function ChapterDetailInner({ id }: { id: string }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   const searchParams = useSearchParams();
   const mode: Mode = searchParams.get("mode") === "quiz" ? "quiz" : "overview";

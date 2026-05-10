@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useIsClient } from "@/lib/use-is-client";
 import { useSearchParams } from "next/navigation";
 import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
@@ -26,8 +27,7 @@ export default function KanjiPage() {
 }
 
 function KanjiPageInner() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   const searchParams = useSearchParams();
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";

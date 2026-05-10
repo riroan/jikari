@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useIsClient } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ConjugationCard } from "@/components/ConjugationCard";
@@ -63,8 +64,7 @@ export default function ConjugationPage() {
 }
 
 function ConjugationPageInner() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   const searchParams = useSearchParams();
   const mode: StudyMode =

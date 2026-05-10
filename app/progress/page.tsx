@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useIsClient } from "@/lib/use-is-client";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
@@ -15,8 +15,7 @@ import type { KanjiCard } from "@/lib/types";
  */
 
 export default function ProgressPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   const states = useStore((s) => s.learningStates);
   const kanjiCards = useCardsStore((s) => s.kanji);

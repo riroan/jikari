@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useIsClient } from "@/lib/use-is-client";
 import { ChapterMastery } from "@/components/ChapterMastery";
 import { ModePageShell } from "@/components/ModePageShell";
 
 export default function ChaptersPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   return (
     <ModePageShell title="単元">

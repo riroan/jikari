@@ -15,11 +15,14 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     void hydrate();
-    if (useStore.persist.hasHydrated()) {
-      setProgressHydrated(true);
-      return;
-    }
-    const unsub = useStore.persist.onFinishHydration(() => setProgressHydrated(true));
+    // If hydration finished between the lazy-init snapshot and this
+    // effect firing, the listener path below handles it — no
+    // synchronous setState in the effect body (lint rule
+    // react-hooks/set-state-in-effect).
+    if (useStore.persist.hasHydrated()) return;
+    const unsub = useStore.persist.onFinishHydration(() =>
+      setProgressHydrated(true),
+    );
     void useStore.persist.rehydrate();
     return unsub;
   }, [hydrate]);

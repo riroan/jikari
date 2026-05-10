@@ -2,22 +2,28 @@
 
 import { generateCells } from "@/lib/heatmap";
 import { intensityBg } from "@/lib/intensity";
+import { useClientNow } from "@/lib/use-is-client";
 import type { HeatmapData } from "@/lib/types";
 
 /**
  * 7-week × 7-day learning heatmap.
  * DESIGN.md § 6: self-contained, CSS grid, 4-level intensity.
+ *
+ * `now` is optional; when omitted, falls back to a stable client-side
+ * timestamp. Tests pass an explicit `now` for determinism.
  */
 export function Heatmap({
   data,
-  now = Date.now(),
+  now,
   weeks = 7,
 }: {
   data: HeatmapData;
   now?: number;
   weeks?: number;
 }) {
-  const cells = generateCells(data, now, weeks * 7);
+  const clientNow = useClientNow();
+  const ts = now ?? clientNow ?? 0;
+  const cells = generateCells(data, ts, weeks * 7);
 
   return (
     <div
