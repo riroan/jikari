@@ -21,7 +21,15 @@ import type { CardMode } from "@/lib/types";
  *
  * Empty state: render nothing if chapters is empty (DB not seeded yet).
  */
-export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
+export type ChapterSort = "default" | "mastery-asc" | "due-desc";
+
+export function ChapterMastery({
+  mounted = true,
+  sort = "default",
+}: {
+  mounted?: boolean;
+  sort?: ChapterSort;
+}) {
   const chapters = useCardsStore((s) => s.chapters);
   const membersByChapter = useCardsStore((s) => s.membersByChapter);
   const kanjiById = useCardsStore((s) => s.kanjiById);
@@ -104,6 +112,19 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
     now,
   ]);
 
+  // Sort is a *view* concern only — derive a copy so the underlying
+  // `rows` reference stays stable and downstream memoization isn't busted.
+  const sortedRows = useMemo(() => {
+    if (sort === "default" || !mounted) return rows;
+    const copy = [...rows];
+    if (sort === "mastery-asc") {
+      copy.sort((a, b) => a.summary.ratio - b.summary.ratio);
+    } else if (sort === "due-desc") {
+      copy.sort((a, b) => b.dueCount - a.dueCount);
+    }
+    return copy;
+  }, [rows, sort, mounted]);
+
   if (chapters.length === 0) return null;
 
   return (
@@ -119,7 +140,7 @@ export function ChapterMastery({ mounted = true }: { mounted?: boolean }) {
       </div>
 
       <ul className="flex flex-col gap-px bg-[color:var(--line)]">
-        {rows.map(({ chapter, summary, dueCount }) => {
+        {sortedRows.map(({ chapter, summary, dueCount }) => {
           const percent = mounted ? Math.round(summary.ratio * 100) : 0;
           const intensity = mounted ? ratioToIntensity(summary.ratio) : 0;
           const memberCount = summary.validMembers;
