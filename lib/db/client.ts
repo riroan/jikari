@@ -8,7 +8,6 @@ function envOrThrow(key: string): string {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var __jikariPool: mysql.Pool | undefined;
 }
 
