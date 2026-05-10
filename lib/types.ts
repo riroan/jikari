@@ -80,7 +80,7 @@ export const BASIC_FORMS: readonly ConjugationForm[] = [
   "nai",
 ];
 
-export const ADVANCED_FORMS: readonly ConjugationForm[] = [
+const ADVANCED_FORMS: readonly ConjugationForm[] = [
   "potential",
   "volitional",
   "imperative",
@@ -117,7 +117,7 @@ export type AdjectiveForm =
   | "conditional"
   | "polite_negative";
 
-export const COMMON_ADJ_FORMS: readonly AdjectiveForm[] = [
+const COMMON_ADJ_FORMS: readonly AdjectiveForm[] = [
   "negative",
   "past",
   "past_negative",
@@ -154,9 +154,7 @@ export type SentenceCategory = "vocab" | "particle";
  *   {漢字|かんじ}    furigana ruby
  *   [[〜なければ]]   pattern highlight
  */
-export type GrammarCardType = "pattern" | "particle_contrast";
-
-export interface GrammarExample {
+interface GrammarExample {
   /** Japanese sentence with optional {kanji|kana} ruby markup */
   jp: string;
   /** Korean translation */
@@ -195,7 +193,7 @@ export interface GrammarPatternCard {
   jlptLevel: JLPTLevel;
 }
 
-export interface ParticleContrastExample {
+interface ParticleContrastExample {
   /** Which particle this example illustrates */
   particle: string;
   /** Japanese sentence with optional ruby markup */
@@ -292,13 +290,6 @@ export type CardMode =
   | "adjective"
   | "grammar"
   | "expression";
-export type Card =
-  | KanjiCard
-  | VocabCard
-  | SentenceCard
-  | GrammarCard
-  | ExpressionCard;
-
 export interface LearningState {
   /** Composite key: `${mode}:${cardId}` */
   cardKey: string;

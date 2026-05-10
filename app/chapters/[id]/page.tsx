@@ -56,6 +56,7 @@ function ChapterDetailInner({ id }: { id: string }) {
   const allMembers = membersByChapter.get(id) ?? [];
 
   // Filter to members whose card actually exists in cards-store (fail-soft).
+  // grammarById is in deps so store updates re-trigger lookupCard's reads.
   const validMembers = useMemo(() => {
     const out: Array<{ member: ChapterMember; card: AnyCard }> = [];
     for (const m of allMembers) {
@@ -63,6 +64,7 @@ function ChapterDetailInner({ id }: { id: string }) {
       if (card) out.push({ member: m, card });
     }
     return out;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMembers, grammarById]);
 
   // Per-mode due breakdown for the Overview's CARDS panel. Uses the same
@@ -116,6 +118,8 @@ function ChapterDetailInner({ id }: { id: string }) {
       useStore.getState().learningStates[`${mode}:${cardId}`]?.box ?? 1;
     const grammarLookup = (gid: string) => grammarById.get(gid);
     return aggregateChapterMastery(allMembers, cardExists, getBox, grammarLookup);
+    // grammarById drives grammarLookup; learningStates drives getBox via getState().
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMembers, learningStates, grammarById]);
 
   if (!chapter) {

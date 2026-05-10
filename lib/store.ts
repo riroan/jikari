@@ -18,7 +18,7 @@ import {
   type AnswerMode,
   type TodayQueue,
 } from "./srs";
-import { incrementToday, currentStreak, toLocalDateKey } from "./heatmap";
+import { incrementToday, currentStreak } from "./heatmap";
 import { remoteStorage } from "./remote-storage";
 
 interface StoreActions {
@@ -174,4 +174,3 @@ export function exportState(): string {
   return JSON.stringify(backup, null, 2);
 }
 
-export { toLocalDateKey };

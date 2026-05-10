@@ -1,10 +1,8 @@
 import type {
   ExpressionCard,
   GrammarCard,
-  GrammarPatternCard,
   GrammarPatternQuiz,
   KanjiCard,
-  ParticleContrastCard,
   ParticleContrastQuiz,
   SentenceCard,
   VocabCard,
@@ -37,18 +35,6 @@ export function getExpression(id: string): ExpressionCard | undefined {
   return cards().expressionById.get(id);
 }
 
-export function getGrammarPattern(id: string): GrammarPatternCard | undefined {
-  const c = cards().grammarById.get(id);
-  return c?.type === "pattern" ? c : undefined;
-}
-
-export function getGrammarParticleContrast(
-  id: string,
-): ParticleContrastCard | undefined {
-  const c = cards().grammarById.get(id);
-  return c?.type === "particle_contrast" ? c : undefined;
-}
-
 /**
  * Look up ruby markup for a word. Tries:
  *   1. Exact match on word (食べる → "{食|た}べる")
@@ -56,7 +42,7 @@ export function getGrammarParticleContrast(
  *      (飲んだ → 飲む → "{飲|の}む")
  *   3. Fall back to the word as-is (no ruby).
  */
-export function wordToRuby(word: string): string {
+function wordToRuby(word: string): string {
   const byWord = cards().vocabByWord;
 
   const direct = byWord.get(word);
@@ -283,8 +269,3 @@ function shuffle<T>(arr: T[], seed: number): T[] {
   return copy;
 }
 
-export function pickRandom<T>(arr: T[], seed: number = Math.random()): T | undefined {
-  if (arr.length === 0) return undefined;
-  const s = (seed * 9301 + 49297) % 233280;
-  return arr[Math.floor((s / 233280) * arr.length)];
-}

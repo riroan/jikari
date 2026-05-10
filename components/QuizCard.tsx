@@ -29,7 +29,7 @@ import {
  *               normalizer.
  */
 
-export type QuizCardInput =
+type QuizCardInput =
   | {
       mode: "choice";
       choices: string[];

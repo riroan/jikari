@@ -114,12 +114,7 @@ export const grammarCardSchema = z.discriminatedUnion("type", [
   particleCardSchema,
 ]);
 
-export const grammarCardArraySchema = z.array(grammarCardSchema);
-
-/** Narrowing helper — throws a friendly error if validation fails. */
-export function parseGrammarCard(raw: unknown): GrammarCard {
-  return grammarCardSchema.parse(raw) as GrammarCard;
-}
+const grammarCardArraySchema = z.array(grammarCardSchema);
 
 export function parseGrammarCardArray(raw: unknown): GrammarCard[] {
   return grammarCardArraySchema.parse(raw) as GrammarCard[];

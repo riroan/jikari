@@ -62,11 +62,8 @@ export function RubyText({
   );
 }
 
-/**
- * Internal renderer. Walks the Segment tree and emits React nodes.
- * Exported for PatternHighlight and any future consumer.
- */
-export function renderSegments(
+/** Internal renderer. Walks the Segment tree and emits React nodes. */
+function renderSegments(
   segments: Segment[],
   showRuby: boolean,
   rtClassName?: string,

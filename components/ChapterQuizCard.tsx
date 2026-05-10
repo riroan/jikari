@@ -1,7 +1,6 @@
 "use client";
 
 import { QuizCard } from "@/components/QuizCard";
-import { ConjugationCard } from "@/components/ConjugationCard";
 import { RubyText } from "@/components/Furigana";
 import {
   generateGrammarQuizChoices,
@@ -25,7 +24,7 @@ import type {
  * (conjugation/adjective derive from vocab — chapter_members never references them.)
  *
  * Each mode renders its own quiz UI by reusing the same primitives as the
- * top-level mode pages (QuizCard, ConjugationCard). On answer:
+ * top-level mode pages (QuizCard). On answer:
  *   - SRS key is computed mode-appropriately (grammar gets pattern:/particle: prefix)
  *   - parent's onResolved receives (cardKey, wasCorrect, answerMode)
  */
@@ -274,5 +273,3 @@ function GrammarSlot({
   );
 }
 
-// ─── ConjugationCard re-export not needed — chapter_members never references conjugation/adjective.
-export { ConjugationCard };
