@@ -29,12 +29,9 @@
 - **Pros:** 5분 체크.
 - **Trigger:** **활성** — 다크 모드로 한 번 둘러보기.
 
-### 약한 챕터 자동 sort
-- **What:** /chapters 목록을 mastery 낮은 순서대로 정렬 옵션. 또는 "약한 챕터 N개" 강조 표시.
-- **Why:** 사용자가 "어디부터 더 풀어야 할까" 결정을 도구가 도와줌. 현재는 sortOrder(고정 학습 순서) 그대로.
-- **Pros:** "다음에 뭘 할지 자명해진다"는 design doc의 "What Makes This Cool" 핵심 가치 강화.
-- **Cons:** sortOrder 고정 = 습관 형성 ("내 다섯 번째 챕터" 일관성)과 충돌. 토글 옵션이 적절.
-- **Trigger:** 본인이 "어디 풀까 매번 고민됨" 또는 "약한 챕터 잊고 강한 챕터만 계속 풀게 됨" 패턴 발생 시.
+### ~~약한 챕터 자동 sort~~ ✓ DONE (2026-05-10)
+- **상태:** /chapters에 3-way 정렬 토글 추가 (기본 / 약한 순 / 복습 순). localStorage 저장 (DB 컬럼 없음, UI 환경설정 성격). 커밋 992c984.
+- **추가로:** 홈 SubjectRow + ChapterMastery 행 + /chapters/[id] CARDS 섹션 모두에 due-count chip이 surface됨. "어디부터 풀까" 결정 도구 강화.
 
 ### 콘텐츠 시드 batch 추가 (137 unmatched refs 줄이기)
 - **What:** N4 한자 batch 3-7이 DB에 안 들어 있어서 e4-n4-body-action(34장 매칭, 14 missing) / e5(7장 매칭, 35 missing) / e6(19장 매칭, 30 missing) 챕터가 부분만 채워짐. `bun scripts/add-kanji.ts data/seeds/kanji-n4-batchN.json` 4회 + `bun scripts/import-chapters.ts` 1회로 자동 채워짐.

@@ -8,6 +8,7 @@ import { useCardsStore } from "@/lib/cards-store";
 import { Heatmap } from "@/components/Heatmap";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 import { toLocalDateKey } from "@/lib/heatmap";
+import { aggregateDueByKey, totalDue } from "@/lib/due";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -53,35 +54,19 @@ export default function Home() {
   const todayCount = hydrated ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
   const studiedToday = todayCount > 0;
 
-  // Per-subject due breakdown. New (never-reviewed) cards are excluded —
-  // they're effectively unbounded and would drown the signal. /sentence
-  // and /particle share SRS mode "sentence", so they're split out by
-  // matching against the card-id lists from cards-store.
-  const dueByKey = useMemo<Record<string, number>>(() => {
+  // Per-subject due breakdown — pure aggregation lives in lib/due.ts so
+  // it can be unit-tested without React rendering.
+  const dueByKey = useMemo(() => {
     if (!hydrated || now === null) return {};
-    const counts: Record<string, number> = {};
-    const sentenceVocabSet = new Set(sentenceIds);
-    const sentenceParticleSet = new Set(particleIds);
-    for (const s of Object.values(learningStates)) {
-      if (s.lastReviewed === 0 || s.nextDue > now) continue;
-      if (s.mode === "sentence") {
-        if (sentenceVocabSet.has(s.cardId)) {
-          counts.sentence_vocab = (counts.sentence_vocab ?? 0) + 1;
-        } else if (sentenceParticleSet.has(s.cardId)) {
-          counts.sentence_particle = (counts.sentence_particle ?? 0) + 1;
-        }
-        continue;
-      }
-      counts[s.mode] = (counts[s.mode] ?? 0) + 1;
-    }
-    return counts;
+    return aggregateDueByKey(
+      learningStates,
+      now,
+      new Set(sentenceIds),
+      new Set(particleIds),
+    );
   }, [learningStates, hydrated, now, sentenceIds, particleIds]);
 
-  // Total due across all subjects, kept for the header chip.
-  const dueCount = useMemo(
-    () => Object.values(dueByKey).reduce((a, b) => a + b, 0),
-    [dueByKey],
-  );
+  const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
 
   return (
     <main className="flex-1 flex justify-center">
