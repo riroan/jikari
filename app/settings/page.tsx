@@ -18,15 +18,25 @@ export default function SettingsPage() {
   function handleExport() {
     try {
       const json = exportState();
+      const state = useStore.getState();
+      const cardCount = Object.keys(state.learningStates).length;
+      const streak = state.currentStreak;
       const blob = new Blob([json], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       const date = new Date().toISOString().slice(0, 10);
+      // Filename embeds card count so a folder of weekly backups is
+      // sortable by snapshot size at a glance.
       a.href = url;
-      a.download = `jikari-backup-${date}.json`;
+      a.download = `jikari-backup-${date}-${cardCount}cards.json`;
       a.click();
       URL.revokeObjectURL(url);
-      setMessage({ kind: "ok", text: "백업 파일이 다운로드되었습니다." });
+      setMessage({
+        kind: "ok",
+        text: `백업 다운로드 완료 — ${cardCount}장${
+          streak > 0 ? `, 연속 ${streak}일` : ""
+        }.`,
+      });
     } catch (e) {
       setMessage({ kind: "err", text: `내보내기 실패: ${String(e)}` });
     }
@@ -41,7 +51,11 @@ export default function SettingsPage() {
         return;
       }
       replaceAll(result.state);
-      setMessage({ kind: "ok", text: "백업을 복원했습니다." });
+      const cardCount = Object.keys(result.state.learningStates).length;
+      setMessage({
+        kind: "ok",
+        text: `복원 완료 — ${cardCount}장.`,
+      });
     } catch (e) {
       setMessage({ kind: "err", text: `가져오기 실패: ${String(e)}` });
     }
