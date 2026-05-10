@@ -175,7 +175,11 @@ function AdjectiveStudyBody({ adj }: { adj: ConjugatableAdj }) {
     try {
       answer = conjugateAdj(adj.reading, adj.adjGroup, form);
     } catch (e) {
-      answer = e instanceof AdjectiveConjugationError ? "—" : "—";
+      // AdjectiveConjugationError = "this adj/form combination has no valid
+      // output" and is the expected failure mode. Anything else is a real
+      // bug; surface it instead of silently swallowing.
+      if (!(e instanceof AdjectiveConjugationError)) throw e;
+      answer = "—";
     }
     return { form, answer };
   });

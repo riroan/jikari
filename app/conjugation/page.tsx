@@ -193,7 +193,11 @@ function ConjugationStudyBody({ verb }: { verb: ConjugatableVerb }) {
     try {
       answer = conjugate(verb.reading, verb.verbGroup, form);
     } catch (e) {
-      answer = e instanceof ConjugationError ? "—" : "—";
+      // ConjugationError = "this verb/form combination has no valid output"
+      // and is the expected failure mode. Anything else is a real bug;
+      // surface it instead of silently swallowing.
+      if (!(e instanceof ConjugationError)) throw e;
+      answer = "—";
     }
     return { form, answer };
   });
