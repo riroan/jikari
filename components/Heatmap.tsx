@@ -31,7 +31,11 @@ export function Heatmap({
           key={cell.key}
           dateTime={cell.key}
           role="listitem"
-          aria-label={`${cell.key}, ${cell.count} cards`}
+          aria-label={
+            cell.count === 0
+              ? `${cell.key}, 학습 없음`
+              : `${cell.key}, ${cell.count}장`
+          }
           className="block rounded-[2px]"
           style={{
             aspectRatio: "1 / 1",
