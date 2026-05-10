@@ -126,7 +126,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
 
 function EmptyState() {
   return (
-    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-[13px] leading-relaxed">
+    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
       문장 카드가 아직 없어요.
       <br />
       <span className="text-[11px] tracking-wider">
@@ -164,7 +164,7 @@ function SentenceQuiz({
               card.sentence
             )}
           </div>
-          <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+          <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
             {card.translation}
           </div>
         </div>

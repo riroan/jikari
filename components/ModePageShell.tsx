@@ -40,7 +40,7 @@ export function ModePageShell({
   const titleClass =
     titleVariant === "subdued"
       ? "text-[15px] tracking-tab text-[color:var(--fg-soft)]"
-      : "text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)]";
+      : "text-title leading-none font-semibold tracking-tab text-[color:var(--fg)]";
 
   return (
     <main className="flex-1 flex justify-center">
@@ -56,7 +56,7 @@ export function ModePageShell({
         >
           <Link
             href="/"
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
+            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
           >
             ← HOME
           </Link>

@@ -229,7 +229,7 @@ export function QuizCard({
           <button
             type="button"
             onClick={advance}
-            className="px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
             style={{ minHeight: 44 }}
             aria-label="다음 문제"
           >
@@ -328,7 +328,7 @@ function TypedPanel({
         onSubmit={onSubmit}
       />
       {disabled && result === "wrong" && userAnswer !== null && (
-        <div className="flex flex-col gap-1 text-[13px] text-[color:var(--fg-faint)]">
+        <div className="flex flex-col gap-1 text-caption text-[color:var(--fg-faint)]">
           <div>
             입력:{" "}
             <span

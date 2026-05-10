@@ -130,7 +130,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
 
 function EmptyState() {
   return (
-    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-[13px] leading-relaxed">
+    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
       한자 카드가 아직 없어요.
       <br />
       <span className="text-[11px] tracking-wider">

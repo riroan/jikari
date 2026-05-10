@@ -209,7 +209,7 @@ function EmptyState() {
       >
         まだ
       </div>
-      <p className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+      <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
         문법 카드 준비 중. <br />
         <code className="text-label">scripts/generate-grammar.ts</code>로 시드 후 다시 열어주세요.
       </p>
@@ -267,7 +267,7 @@ function PatternStudyBody({ card }: { card: GrammarPatternCard }) {
             >
               <RubyText text={ex.jp} />
             </div>
-            <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+            <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
               {ex.ko}
             </div>
           </div>
@@ -367,7 +367,7 @@ function GrammarQuiz({
           >
             <RubyText text={sentenceSrc} />
           </div>
-          <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+          <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
             {quiz.translation}
           </div>
         </div>
@@ -391,16 +391,16 @@ function GrammarQuiz({
           >
             <RubyText text={filledBack} />
           </div>
-          <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+          <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
             {quiz.translation}
           </div>
           {card.type === "pattern" && (
-            <div className="mt-2 pt-3 border-t border-[color:var(--line)] text-[13px] text-[color:var(--accent-korean)]">
+            <div className="mt-2 pt-3 border-t border-[color:var(--line)] text-caption text-[color:var(--accent-korean)]">
               {card.koreanStructure}
             </div>
           )}
           {card.type === "particle_contrast" && (
-            <div className="mt-2 pt-3 border-t border-[color:var(--line)] text-[13px] text-[color:var(--accent-korean)]">
+            <div className="mt-2 pt-3 border-t border-[color:var(--line)] text-caption text-[color:var(--accent-korean)]">
               {card.rule}
             </div>
           )}

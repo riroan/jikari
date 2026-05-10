@@ -36,7 +36,7 @@ export default function Home() {
         <header className="flex justify-between items-baseline mb-6">
           <div className="flex items-baseline">
             <h1
-              className="text-[22px] leading-none font-semibold tracking-wide"
+              className="text-title leading-none font-semibold tracking-wide"
               style={{ fontFamily: "var(--font-jp-serif)" }}
             >
               jikari
@@ -46,7 +46,7 @@ export default function Home() {
             </span>
           </div>
           <div
-            className="text-[13px] text-[color:var(--fg-faint)] tracking-wider"
+            className="text-caption text-[color:var(--fg-faint)] tracking-wider"
             style={{ fontFamily: "var(--font-jp-sans)" }}
           >
             <span className="text-[color:var(--accent-korean)] font-medium mr-1 tabular-nums">
@@ -71,7 +71,7 @@ export default function Home() {
               単元
             </span>
           </span>
-          <span className="text-[13px] text-[color:var(--fg-soft)] tracking-wide">
+          <span className="text-caption text-[color:var(--fg-soft)] tracking-wide">
             →
           </span>
         </Link>
@@ -153,7 +153,7 @@ function ActionLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="text-[13px] text-[color:var(--fg-soft)] tracking-wide px-4 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] flex items-center"
+      className="text-caption text-[color:var(--fg-soft)] tracking-wide px-4 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] flex items-center"
     >
       {label}
     </Link>

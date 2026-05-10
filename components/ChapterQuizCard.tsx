@@ -207,7 +207,7 @@ function SentenceSlot({
               card.sentence
             )}
           </div>
-          <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+          <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
             {card.translation}
           </div>
         </div>
@@ -254,7 +254,7 @@ function GrammarSlot({
           >
             <RubyText text={sentenceSrc} />
           </div>
-          <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+          <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
             {quiz.translation}
           </div>
         </div>

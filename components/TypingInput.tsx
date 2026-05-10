@@ -156,7 +156,7 @@ export function TypingInput({
           type="button"
           onClick={submit}
           disabled={!canSubmit}
-          className="w-full md:w-auto px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full md:w-auto px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           style={{ minHeight: 44, minWidth: 60 }}
           aria-label="제출"
         >

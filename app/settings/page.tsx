@@ -59,7 +59,7 @@ export default function SettingsPage() {
         <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
           백업 / 복원
         </h2>
-        <p className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed mb-4">
+        <p className="text-caption text-[color:var(--fg-soft)] leading-relaxed mb-4">
           localStorage는 브라우저가 캐시를 정리하면 사라집니다. 정기적으로 JSON을 내보내 저장해두세요.
           iOS Safari는 7일 이상 앱 미사용 시 데이터를 삭제할 수 있습니다.
         </p>
@@ -148,7 +148,7 @@ export default function SettingsPage() {
 
       {message && (
         <div
-          className="p-3 text-[13px] rounded-sm"
+          className="p-3 text-caption rounded-sm"
           style={{
             background:
               message.kind === "ok"

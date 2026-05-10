@@ -111,7 +111,7 @@ export function TypedChallengeCard({
         >
           {hero}
         </div>
-        <div className="mt-3 text-[13px] text-[color:var(--fg-faint)]">
+        <div className="mt-3 text-caption text-[color:var(--fg-faint)]">
           <span style={{ fontFamily: "var(--font-kr-sans)" }}>
             {groupLabelKo}
           </span>
@@ -141,7 +141,7 @@ export function TypedChallengeCard({
           >
             {userAnswer !== null && (
               <div
-                className="text-[13px] text-[color:var(--fg-faint)]"
+                className="text-caption text-[color:var(--fg-faint)]"
                 style={{ fontFamily: "var(--font-jp-sans)" }}
               >
                 입력:{" "}
@@ -165,13 +165,13 @@ export function TypedChallengeCard({
             </div>
             {acceptableAnswers.length > 1 && (
               <div
-                className="text-[13px] text-[color:var(--fg-faint)]"
+                className="text-caption text-[color:var(--fg-faint)]"
                 style={{ fontFamily: "var(--font-jp-sans)" }}
               >
                 {acceptableAnswers.slice(1).join(" · ")}
               </div>
             )}
-            <div className="text-[13px] text-[color:var(--fg-soft)] tracking-wide">
+            <div className="text-caption text-[color:var(--fg-soft)] tracking-wide">
               <span style={{ fontFamily: "var(--font-jp-sans)" }}>─ </span>
               <span style={{ fontFamily: "var(--font-kr-sans)" }}>
                 {groupLabelKo}
@@ -183,7 +183,7 @@ export function TypedChallengeCard({
             </div>
             <button
               onClick={handleNext}
-              className="self-end mt-2 px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              className="self-end mt-2 px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}
             >
               次へ
@@ -219,7 +219,7 @@ export function TypedChallengeCard({
             </div>
             <button
               onClick={handleNext}
-              className="px-4 py-2 text-[13px] tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}
             >
               次へ

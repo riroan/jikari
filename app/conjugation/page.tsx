@@ -220,7 +220,7 @@ function ConjugationStudyBody({ verb }: { verb: ConjugatableVerb }) {
             {verb.reading}
           </div>
         )}
-        <div className="mt-2 text-[13px] text-[color:var(--fg-faint)]">
+        <div className="mt-2 text-caption text-[color:var(--fg-faint)]">
           <span style={{ fontFamily: "var(--font-kr-sans)" }}>
             {GROUP_LABELS_KO[verb.verbGroup]}
           </span>

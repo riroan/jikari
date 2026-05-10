@@ -152,12 +152,12 @@ function Shell({
         <header className="flex justify-between items-baseline mb-8">
           <Link
             href="/chapters"
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-[13px] text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
+            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
           >
             ← UNITS
           </Link>
           <h1
-            className="text-[22px] leading-none font-semibold tracking-tab text-[color:var(--fg)] truncate ml-3 min-w-0 text-right"
+            className="text-title leading-none font-semibold tracking-tab text-[color:var(--fg)] truncate ml-3 min-w-0 text-right"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             {title ?? chapterId}
@@ -217,7 +217,7 @@ function Overview({
               %
             </span>
           </div>
-          <div className="text-[13px] text-[color:var(--fg-faint)] tabular-nums">
+          <div className="text-caption text-[color:var(--fg-faint)] tabular-nums">
             {mastery.masteredCount} / {mastery.validMembers} 카드
           </div>
         </div>
@@ -292,7 +292,7 @@ function Overview({
       )}
 
       {members.length === 0 && (
-        <section className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+        <section className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
           이 챕터에 사용 가능한 카드가 아직 없습니다. 콘텐츠 시드를 더 추가하면
           자동으로 채워져요.
         </section>
@@ -339,7 +339,7 @@ function ChapterQuizDeck({
 
   if (members.length === 0 || !current) {
     return (
-      <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+      <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
         이 챕터에 카드가 없습니다.{" "}
         <Link
           href={`/chapters/${chapterId}`}
@@ -417,7 +417,7 @@ function NotFound({ id }: { id: string }) {
       </p>
       <Link
         href="/chapters"
-        className="text-[13px] text-[color:var(--fg-faint)] underline hover:text-[color:var(--fg)]"
+        className="text-caption text-[color:var(--fg-faint)] underline hover:text-[color:var(--fg)]"
       >
         ← 단원 목록으로
       </Link>

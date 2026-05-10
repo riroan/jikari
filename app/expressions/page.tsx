@@ -146,7 +146,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
 
 function EmptyState() {
   return (
-    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-[13px] leading-relaxed">
+    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
       아직 일상표현 카드가 없어요.
       <br />
       <span className="text-[11px] tracking-wider">
@@ -265,7 +265,7 @@ function ExpressionBack({ card }: { card: ExpressionCard }) {
         <span className="text-[11px] text-[color:var(--fg-faint)] tracking-[0.18em] uppercase font-medium">
           SITUATION
         </span>
-        <span className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed">
+        <span className="text-caption text-[color:var(--fg-soft)] leading-relaxed">
           {card.situation_ko}
         </span>
       </div>

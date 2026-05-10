@@ -128,7 +128,7 @@ function Shell({ children }: { children?: React.ReactNode }) {
 
 function EmptyState() {
   return (
-    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-[13px] leading-relaxed">
+    <div className="pt-16 text-center text-[color:var(--fg-faint)] text-caption leading-relaxed">
       조사 빈칸 카드가 아직 없어요.
       <br />
       <span className="text-[11px] tracking-wider">
@@ -166,7 +166,7 @@ function ParticleQuiz({
               card.sentence
             )}
           </div>
-          <div className="text-[13px] text-[color:var(--fg-faint)] leading-relaxed">
+          <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
             {card.translation}
           </div>
         </div>
@@ -236,7 +236,7 @@ function ParticleInfoBlock({
         </span>
         <span className="text-label text-[color:var(--fg-soft)]">{info.gloss}</span>
       </div>
-      <div className="text-[13px] text-[color:var(--fg-soft)] leading-relaxed">
+      <div className="text-caption text-[color:var(--fg-soft)] leading-relaxed">
         {info.note}
       </div>
     </div>

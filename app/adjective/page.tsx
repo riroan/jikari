@@ -201,7 +201,7 @@ function AdjectiveStudyBody({ adj }: { adj: ConjugatableAdj }) {
             {adj.reading}
           </div>
         )}
-        <div className="mt-2 text-[13px] text-[color:var(--fg-faint)]">
+        <div className="mt-2 text-caption text-[color:var(--fg-faint)]">
           <span style={{ fontFamily: "var(--font-kr-sans)" }}>
             {ADJ_GROUP_LABELS_KO[adj.adjGroup]}
           </span>
