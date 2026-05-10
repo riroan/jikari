@@ -1,24 +1,13 @@
 import "server-only";
 import type { RowDataPacket } from "mysql2";
 import { getPool } from "./client";
+import { parseJson } from "./util";
 import type {
   GrammarCard,
   GrammarPatternCard,
   JLPTLevel,
   ParticleContrastCard,
 } from "../types";
-
-function parseJson<T>(value: unknown, fallback: T): T {
-  if (value == null) return fallback;
-  if (typeof value === "string") {
-    try {
-      return JSON.parse(value) as T;
-    } catch {
-      return fallback;
-    }
-  }
-  return value as T;
-}
 
 type PatternPayload = Omit<GrammarPatternCard, "id" | "type" | "jlpt_level" | "jlptLevel">;
 type ParticlePayload = Omit<

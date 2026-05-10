@@ -1,6 +1,7 @@
 import "server-only";
 import type { RowDataPacket } from "mysql2";
 import { getPool } from "./client";
+import { parseJson } from "./util";
 import type {
   AdjGroup,
   JLPTLevel,
@@ -10,18 +11,6 @@ import type {
   VerbGroup,
   VocabCard,
 } from "../types";
-
-function parseJson<T>(value: unknown, fallback: T): T {
-  if (value == null) return fallback;
-  if (typeof value === "string") {
-    try {
-      return JSON.parse(value) as T;
-    } catch {
-      return fallback;
-    }
-  }
-  return value as T;
-}
 
 export async function getAllKanji(): Promise<KanjiCard[]> {
   const [rows] = await getPool().query<RowDataPacket[]>(
