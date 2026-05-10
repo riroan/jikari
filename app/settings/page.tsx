@@ -4,6 +4,33 @@ import { useEffect, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { parseBackup } from "@/lib/import";
+import { useClientNow } from "@/lib/use-is-client";
+
+const BACKUP_TIMESTAMP_KEY = "jikari-last-backup-ms";
+
+function readLastBackupMs(): number | null {
+  try {
+    const raw = localStorage.getItem(BACKUP_TIMESTAMP_KEY);
+    if (!raw) return null;
+    const n = Number(raw);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+}
+
+function formatRelative(diffMs: number): string {
+  if (diffMs < 0) return "방금 전";
+  const m = Math.floor(diffMs / 60_000);
+  if (m < 1) return "방금 전";
+  if (m < 60) return `${m}분 전`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}시간 전`;
+  const d = Math.floor(h / 24);
+  if (d < 30) return `${d}일 전`;
+  const months = Math.floor(d / 30);
+  return `${months}달 전`;
+}
 
 export default function SettingsPage() {
   const replaceAll = useStore((s) => s.replaceAll);
@@ -14,6 +41,12 @@ export default function SettingsPage() {
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const resetDialogRef = useRef<HTMLDialogElement>(null);
+  const now = useClientNow();
+  // Lazy init reads localStorage once on first client render. The value is
+  // refreshed only when the user clicks export (handleExport sets it directly).
+  const [lastBackupMs, setLastBackupMs] = useState<number | null>(() =>
+    typeof window === "undefined" ? null : readLastBackupMs(),
+  );
 
   function handleExport() {
     try {
@@ -24,13 +57,20 @@ export default function SettingsPage() {
       const blob = new Blob([json], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      const date = new Date().toISOString().slice(0, 10);
+      const exportedAt = Date.now();
+      const date = new Date(exportedAt).toISOString().slice(0, 10);
       // Filename embeds card count so a folder of weekly backups is
       // sortable by snapshot size at a glance.
       a.href = url;
       a.download = `jikari-backup-${date}-${cardCount}cards.json`;
       a.click();
       URL.revokeObjectURL(url);
+      try {
+        localStorage.setItem(BACKUP_TIMESTAMP_KEY, String(exportedAt));
+      } catch {
+        // Privacy mode / quota — non-fatal.
+      }
+      setLastBackupMs(exportedAt);
       setMessage({
         kind: "ok",
         text: `백업 다운로드 완료 — ${cardCount}장${
@@ -106,6 +146,28 @@ export default function SettingsPage() {
             JSON에서 불러오기
           </button>
         </div>
+        {lastBackupMs !== null && now !== null && (() => {
+          const diffMs = now - lastBackupMs;
+          const days = Math.floor(diffMs / (24 * 60 * 60 * 1000));
+          const stale = days >= 7;
+          return (
+            <p
+              className={`mt-3 text-caption tabular-nums leading-relaxed ${
+                stale
+                  ? "text-[color:var(--accent-korean)]"
+                  : "text-[color:var(--fg-faint)]"
+              }`}
+            >
+              마지막 백업: {formatRelative(diffMs)}
+              {stale && " — iOS 캐시 정리 위험. 새로 내보내세요."}
+            </p>
+          );
+        })()}
+        {lastBackupMs === null && (
+          <p className="mt-3 text-caption text-[color:var(--fg-faint)] leading-relaxed">
+            아직 이 브라우저에서 백업한 적이 없습니다.
+          </p>
+        )}
       </section>
 
       <section className="mb-10">
