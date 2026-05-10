@@ -256,7 +256,7 @@ function PatternStudyBody({ card }: { card: GrammarPatternCard }) {
         <div className="text-caption text-[color:var(--fg-faint)] tracking-tab">
           意味
         </div>
-        <div className="text-[15px] text-[color:var(--fg-soft)]">
+        <div className="text-meta text-[color:var(--fg-soft)]">
           {card.meaningKo}
         </div>
       </div>
@@ -301,7 +301,7 @@ function ParticleStudyBody({ card }: { card: ParticleContrastCard }) {
         <div className="text-caption text-[color:var(--fg-faint)] tracking-tab">
           規則
         </div>
-        <div className="text-[15px] text-[color:var(--accent-korean)] leading-relaxed">
+        <div className="text-meta text-[color:var(--accent-korean)] leading-relaxed">
           {card.rule}
         </div>
       </div>
@@ -330,7 +330,7 @@ function ParticleGroup({
       {items.map((ex, idx) => (
         <div key={idx} className="flex flex-col gap-0.5">
           <div
-            className="text-[15px] leading-[1.7] text-[color:var(--fg)]"
+            className="text-meta leading-[1.7] text-[color:var(--fg)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             <RubyText text={ex.jp} />

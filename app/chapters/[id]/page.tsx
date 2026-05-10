@@ -195,7 +195,7 @@ function Shell({
 function NotFound({ id }: { id: string }) {
   return (
     <div className="flex flex-col gap-3 pt-4">
-      <p className="text-[15px] text-[color:var(--fg)]">
+      <p className="text-meta text-[color:var(--fg)]">
         챕터를 찾을 수 없습니다: <code className="text-label">{id}</code>
       </p>
       <Link

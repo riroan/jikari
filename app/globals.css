@@ -53,6 +53,7 @@
   --type-h2:       20px;
   --type-body:     17px;
   --type-reading:  17px;
+  --type-meta:     15px;  /* button label / intro copy / subdued title */
   --type-small:    14px;
   --type-label:    13px;
   --type-caption:  13px;
@@ -138,6 +139,7 @@
   --text-h2:      var(--type-h2);
   --text-body:    var(--type-body);
   --text-reading: var(--type-reading);
+  --text-meta:    var(--type-meta);
   --text-small:   var(--type-small);
   --text-label:   var(--type-label);
   --text-caption: var(--type-caption);

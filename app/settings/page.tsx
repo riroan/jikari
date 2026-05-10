@@ -124,7 +124,7 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-2">
           <button
             onClick={handleExport}
-            className="px-4 py-3 text-[15px] text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            className="px-4 py-3 text-meta text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           >
             JSON으로 내보내기
           </button>
@@ -141,7 +141,7 @@ export default function SettingsPage() {
           />
           <button
             onClick={() => fileRef.current?.click()}
-            className="px-4 py-3 text-[15px] text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            className="px-4 py-3 text-meta text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           >
             JSON에서 불러오기
           </button>

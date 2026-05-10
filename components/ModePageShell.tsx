@@ -60,7 +60,7 @@ export function ModePageShell({
   const dueCount = dueKey ? dueByKey[dueKey] ?? 0 : 0;
   const titleClass =
     titleVariant === "subdued"
-      ? "text-[15px] tracking-tab text-[color:var(--fg-soft)]"
+      ? "text-meta tracking-tab text-[color:var(--fg-soft)]"
       : "text-title leading-none font-semibold tracking-tab text-[color:var(--fg)]";
 
   return (

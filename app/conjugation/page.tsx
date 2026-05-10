@@ -214,7 +214,7 @@ function ConjugationStudyBody({ verb }: { verb: ConjugatableVerb }) {
         </div>
         {!verb.ruby && (
           <div
-            className="mt-2 text-[15px] text-[color:var(--fg-faint)]"
+            className="mt-2 text-meta text-[color:var(--fg-faint)]"
             style={{ fontFamily: "var(--font-jp-sans)" }}
           >
             {verb.reading}

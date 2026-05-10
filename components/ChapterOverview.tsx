@@ -91,7 +91,7 @@ export function ChapterOverview({
           <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2 font-medium">
             ABOUT
           </div>
-          <p className="text-[15px] text-[color:var(--fg-soft)] leading-relaxed">
+          <p className="text-meta text-[color:var(--fg-soft)] leading-relaxed">
             {chapter.intro}
           </p>
         </section>
