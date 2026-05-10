@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ChapterOverview } from "@/components/ChapterOverview";
 import { ChapterQuizDeck } from "@/components/ChapterQuizDeck";
+import { ModePageShell } from "@/components/ModePageShell";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { aggregateChapterMastery } from "@/lib/chapter-mastery";
@@ -168,7 +169,9 @@ function lookupCard(m: ChapterMember): AnyCard | undefined {
   }
 }
 
-// ─── Shell ──────────────────────────────────────────────────────────────────
+// Chapter pages return to /chapters (units list) instead of home, so we
+// thread backHref/backLabel through the shared ModePageShell rather
+// than carrying a private Shell here.
 function Shell({
   chapterId,
   title,
@@ -179,25 +182,13 @@ function Shell({
   children?: React.ReactNode;
 }) {
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-full max-w-[390px] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-8 pb-10">
-        <header className="flex justify-between items-baseline mb-8">
-          <Link
-            href="/chapters"
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
-          >
-            ← UNITS
-          </Link>
-          <h1
-            className="text-title leading-none font-semibold tracking-tab text-[color:var(--fg)] truncate ml-3 min-w-0 text-right"
-            style={{ fontFamily: "var(--font-jp-serif)" }}
-          >
-            {title ?? chapterId}
-          </h1>
-        </header>
-        {children}
-      </div>
-    </main>
+    <ModePageShell
+      title={title ?? chapterId}
+      backHref="/chapters"
+      backLabel="← UNITS"
+    >
+      {children}
+    </ModePageShell>
   );
 }
 

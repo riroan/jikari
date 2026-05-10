@@ -31,6 +31,14 @@ export interface ModePageShellProps {
    * When provided + > 0, a small 復習 N chip appears next to QuizStats.
    */
   dueKey?: string;
+  /**
+   * Back-link target. Defaults to "/" with the "← HOME" affordance the
+   * mode pages all share. Override (with backLabel) for child routes
+   * that want to return somewhere other than home — e.g.
+   * /chapters/[id] returns to /chapters.
+   */
+  backHref?: string;
+  backLabel?: string;
   titleVariant?: "default" | "subdued";
   headerMarginPx?: number;
   afterHeader?: React.ReactNode;
@@ -41,6 +49,8 @@ export function ModePageShell({
   title,
   statKey,
   dueKey,
+  backHref = "/",
+  backLabel = "← HOME",
   titleVariant = "default",
   headerMarginPx = 32,
   afterHeader,
@@ -66,10 +76,10 @@ export function ModePageShell({
           }
         >
           <Link
-            href="/"
+            href={backHref}
             className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
           >
-            ← HOME
+            {backLabel}
           </Link>
           <div className="flex items-baseline gap-2">
             {statKey && <QuizStats statKey={statKey} />}
