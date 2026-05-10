@@ -4,6 +4,7 @@ import { useIsClient } from "@/lib/use-is-client";
 import { ChapterMastery, type ChapterSort } from "@/components/ChapterMastery";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useLocalPref } from "@/lib/use-local-pref";
+import { useCardsStore } from "@/lib/cards-store";
 
 const SORT_OPTIONS: { id: ChapterSort; label: string }[] = [
   { id: "default", label: "기본" },
@@ -16,6 +17,7 @@ const isValidSort = (raw: string): raw is ChapterSort =>
 
 export default function ChaptersPage() {
   const mounted = useIsClient();
+  const hasChapters = useCardsStore((s) => s.chapters.length > 0);
   // Lives in localStorage rather than the remote progress store: this is
   // a UI ergonomic, not learning data, and the DB schema doesn't carry it.
   const [sort, setSort] = useLocalPref<ChapterSort>(
@@ -26,7 +28,7 @@ export default function ChaptersPage() {
 
   return (
     <ModePageShell title="単元">
-      <SortChoice value={sort} onChange={setSort} />
+      {hasChapters && <SortChoice value={sort} onChange={setSort} />}
       <ChapterMastery mounted={mounted} sort={sort} />
     </ModePageShell>
   );
