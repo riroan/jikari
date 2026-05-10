@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { parseBackup } from "@/lib/import";
@@ -13,6 +13,7 @@ export default function SettingsPage() {
 
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const resetDialogRef = useRef<HTMLDialogElement>(null);
 
   function handleExport() {
     try {
@@ -46,11 +47,14 @@ export default function SettingsPage() {
     }
   }
 
-  function handleReset() {
-    if (confirm("모든 학습 기록을 삭제합니다. 계속할까요?")) {
-      reset();
-      setMessage({ kind: "ok", text: "학습 기록이 초기화되었습니다." });
-    }
+  function openResetDialog() {
+    resetDialogRef.current?.showModal();
+  }
+
+  function confirmReset() {
+    reset();
+    setMessage({ kind: "ok", text: "학습 기록이 초기화되었습니다." });
+    resetDialogRef.current?.close();
   }
 
   return (
@@ -148,12 +152,18 @@ export default function SettingsPage() {
           위험 영역
         </h2>
         <button
-          onClick={handleReset}
+          onClick={openResetDialog}
           className="w-full px-4 py-3 text-small text-left border border-[color:var(--line)] rounded-sm text-[color:var(--accent-korean)] hover:bg-[color:var(--accent-korean)]/5 transition-colors"
         >
           모든 학습 기록 초기화
         </button>
       </section>
+
+      <ResetDialog
+        ref={resetDialogRef}
+        onConfirm={confirmReset}
+        onCancel={() => resetDialogRef.current?.close()}
+      />
 
       {message && (
         <div
@@ -172,6 +182,93 @@ export default function SettingsPage() {
         </div>
       )}
     </ModePageShell>
+  );
+}
+
+/**
+ * Confirm-before-destroy modal for the reset action. Built on the
+ * native <dialog> element so we get focus trap, ESC-to-close and a
+ * backdrop overlay without an a11y library. Styled with the same
+ * paper/line/fg tokens the rest of the app uses, so the prompt feels
+ * like a continuation of the page rather than a browser-chrome popup.
+ */
+function ResetDialog({
+  ref,
+  onConfirm,
+  onCancel,
+}: {
+  ref: React.RefObject<HTMLDialogElement | null>;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  // Reset typed-confirmation state every time the dialog is closed so
+  // the next open requires a fresh decision.
+  const [phrase, setPhrase] = useState("");
+  useEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
+    const onClose = () => setPhrase("");
+    dialog.addEventListener("close", onClose);
+    return () => dialog.removeEventListener("close", onClose);
+  }, [ref]);
+
+  return (
+    <dialog
+      ref={ref}
+      aria-labelledby="reset-dialog-title"
+      aria-describedby="reset-dialog-body"
+      className="bg-[color:var(--bg)] text-[color:var(--fg)] border border-[color:var(--line)] rounded-sm p-6 max-w-[340px] w-[calc(100%-2rem)] backdrop:bg-black/40"
+      onCancel={onCancel}
+    >
+      <h2
+        id="reset-dialog-title"
+        className="text-h2 font-semibold mb-3 text-[color:var(--accent-korean)]"
+        style={{ fontFamily: "var(--font-jp-serif)" }}
+      >
+        학습 기록 초기화
+      </h2>
+      <p
+        id="reset-dialog-body"
+        className="text-caption text-[color:var(--fg-soft)] leading-relaxed mb-4"
+      >
+        Leitner 박스, 히트맵, 연속 일수, 통계가 모두 사라집니다.
+        되돌릴 수 없으니 먼저 JSON으로 내보내 두는 것을 권장합니다.
+      </p>
+      <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed mb-2">
+        계속하려면 <code className="text-[color:var(--fg)]">초기화</code>를 입력하세요.
+      </p>
+      <input
+        type="text"
+        value={phrase}
+        onChange={(e) => setPhrase(e.target.value)}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
+        aria-label="초기화 확인 문구"
+        className="w-full bg-transparent text-body text-[color:var(--fg)] px-1 py-2 mb-5 border-0 border-b border-[color:var(--line)] focus:border-[color:var(--fg)] focus:outline-none"
+        style={{ minHeight: 44 }}
+      />
+      <div className="flex justify-end gap-2">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+          style={{ minHeight: 44 }}
+        >
+          취소
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          disabled={phrase.trim() !== "초기화"}
+          className="px-4 py-2 text-caption tracking-tab text-[color:var(--bg)] bg-[color:var(--accent-korean)] rounded-sm transition-opacity disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
+          style={{ minHeight: 44 }}
+        >
+          삭제
+        </button>
+      </div>
+    </dialog>
   );
 }
 
