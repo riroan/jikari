@@ -15,8 +15,9 @@ import {
  * Common quiz card for all 3 modes.
  *
  * Flow (identical across input modes):
- *   t=0      user answers → selected/disabled set, feedback shown
- *   t=500    crossfade to back (200ms fade) if `back` provided
+ *   t=0      user answers → selected/disabled set, feedback shown, and the
+ *            back face swapped in at once if `back` provided (no fade — the
+ *            answer should be readable the instant the choice is made)
  *   wait     user clicks 다음 → / presses Space|Enter to advance
  *
  * Keyboard advance has a 250ms grace period so an Enter held from typed
@@ -60,9 +61,7 @@ export interface QuizCardProps {
   minQuestionHeight?: number;
 }
 
-const DISABLE_MS = 500;
 const KEYBOARD_GRACE_MS = 250;
-const FADE_MS = 200;
 
 export function QuizCard({
   question,
@@ -96,7 +95,7 @@ export function QuizCard({
       setDisabled(true);
       resolvedAtRef.current = Date.now();
       if (back) {
-        setTimeout(() => setShowingBack(true), DISABLE_MS);
+        setShowingBack(true);
       }
     },
     [back],
@@ -163,34 +162,18 @@ export function QuizCard({
           } as React.CSSProperties
         }
       >
-        <AnimatePresence mode="wait" initial={false}>
-          {showingBack && back ? (
-            <motion.div
-              key="back"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: FADE_MS / 1000, ease: "easeOut" }}
-            >
-              {back}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="front"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: FADE_MS / 1000, ease: "easeOut" }}
-            >
-              <div>{question}</div>
-              {subtitle && (
-                <div className="mt-3 text-xs text-[color:var(--fg-faint)] tracking-label font-medium">
-                  {subtitle}
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {showingBack && back ? (
+          back
+        ) : (
+          <div>
+            <div>{question}</div>
+            {subtitle && (
+              <div className="mt-3 text-xs text-[color:var(--fg-faint)] tracking-label font-medium">
+                {subtitle}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {input.mode === "choice" ? (
