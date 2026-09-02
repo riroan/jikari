@@ -68,6 +68,19 @@
 }
 
 /*
+ * Mobile hero — the quiz back face stacks 한자 + 읽기 + 선지 + 다음 버튼, and all
+ * four have to land on one screen without scrolling. At 148px the 한자 alone
+ * pushes the back face ~40px past a 664px viewport, so it shrinks below md.
+ * 320px-wide phones (iPhone SE 1st gen) still overflow — they would need a
+ * ~60px hero, which stops reading as a hero at all.
+ */
+@media (max-width: 767px) {
+  :root {
+    --type-hero: 104px;
+  }
+}
+
+/*
  * Dark — Dark Study
  * Two activation paths:
  *   (a) explicit  [data-theme="dark"]            — user-chosen dark

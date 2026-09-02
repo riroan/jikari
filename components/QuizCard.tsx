@@ -152,7 +152,7 @@ export function QuizCard({
   }, [disabled, result, advance]);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6 md:gap-8">
       <div
         className="relative min-h-[var(--qc-min-mobile)] md:min-h-[var(--qc-min)]"
         style={
