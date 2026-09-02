@@ -87,6 +87,78 @@ function wordToRuby(word: string): string {
   return word;
 }
 
+// ─────────────────────────────────────────────────────────────
+// Distractor scoring
+//
+// 균등 랜덤 풀은 길이나 품사만 보고 배제되는 선지를 뽑는다. 아래 점수로
+// 정답과 닮은 후보에 가중치를 주되 하드 필터는 쓰지 않는다 — 얇은 버킷
+// (1모라 음독, い형용사 훈독 39개)에서 풀이 말라 선지가 4개 미만이 된다.
+// ─────────────────────────────────────────────────────────────
+
+const SMALL_KANA = /[ぁぃぅぇぉゃゅょゎ]/g;
+
+/** 모라 수. 拗音은 앞 가나와 묶어 한 모라로 센다 — きょう=2, こう=2. */
+export function moraCount(kana: string): number {
+  return kana.length - (kana.match(SMALL_KANA)?.length ?? 0);
+}
+
+/**
+ * 가나 편집거리. 한국어 화자의 실제 오답축이 전부 거리 1로 잡힌다:
+ * 장음(こう/こく), 탁음(はい/ばい), 촉음(かく/がく), 요음(しょ/しょう).
+ */
+export function kanaDistance(a: string, b: string): number {
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const row = [i];
+    for (let j = 1; j <= b.length; j++) {
+      row[j] = Math.min(
+        prev[j] + 1,
+        row[j - 1] + 1,
+        prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+      );
+    }
+    prev = row;
+  }
+  return prev[b.length];
+}
+
+/**
+ * 훈독 어미 버킷 — 전체형(なく / はしる / わるい)으로 저장하기 때문에 가능하다.
+ *
+ * 언어학적으로 정확할 필요는 없다. 정답과 후보를 같은 규칙에 통과시키므로
+ * 일관되기만 하면 버킷으로 기능한다 (夜=よる가 "동사"로 분류돼도 무해 —
+ * 그 선지들도 같이 る로 끝난다).
+ */
+export function readingShape(reading: string): "v" | "i" | "n" {
+  if (/[うくぐすつぬぶむる]$/.test(reading)) return "v";
+  if (/い$/.test(reading)) return "i";
+  return "n";
+}
+
+function kanjiReadingScore(
+  correct: string,
+  questionType: "on" | "kun",
+): (candidate: string) => number {
+  const mora = moraCount(correct);
+  const shape = readingShape(correct);
+  return (candidate) => {
+    let score = 0;
+    if (moraCount(candidate) === mora) score += 3;
+    if (kanaDistance(candidate, correct) <= 1) score += 2;
+    if (candidate[0] === correct[0]) score += 1;
+    // 음독은 품사 개념이 없다 — 훈독에만 적용.
+    if (questionType === "kun" && readingShape(candidate) === shape) score += 3;
+    return score;
+  };
+}
+
+/** 単語 recall 방향의 품사 버킷. 추측이 아니라 백필된 컬럼을 쓴다. */
+function vocabPos(card: VocabCard): string {
+  if (card.verbGroup && card.verbGroup !== "not_verb") return card.verbGroup;
+  if (card.adjGroup && card.adjGroup !== "not_adj") return card.adjGroup;
+  return "other";
+}
+
 export function generateKanjiChoices(
   card: KanjiCard,
   questionType: "on" | "kun",
@@ -103,18 +175,26 @@ export function generateKanjiChoices(
   const correct = correctReadings[0];
 
   const all = cards().kanji;
+  // 이 한자의 판독은 음/훈 양쪽 다 배제한다. 음독 문제에 이 한자의 훈독이
+  // 오답으로 뜨면 "틀렸다"고 말하기 어렵다.
+  const ownReadings = new Set([...card.onReadings, ...card.kunReadings]);
   const pool: string[] = [];
   for (const other of all) {
     if (other.id === card.id) continue;
     const otherReadings = questionType === "on" ? other.onReadings : other.kunReadings;
     for (const r of otherReadings) {
-      if (r && r !== correct && !correctReadings.includes(r)) {
+      if (r && !ownReadings.has(r)) {
         pool.push(r);
       }
     }
   }
 
-  const distractors = sampleUnique(pool, 3, seed);
+  const distractors = sampleScored(
+    pool,
+    3,
+    seed,
+    kanjiReadingScore(correct, questionType),
+  );
   const choices = shuffle([correct, ...distractors], seed + 1);
   return { correct, choices };
 }
@@ -134,10 +214,16 @@ export function generateVocabChoices(
 
   if (direction === "recall") {
     const correct = card.ruby ?? card.word;
-    const pool = others
-      .map((v) => v.ruby ?? v.word)
-      .filter((w) => w !== correct);
-    const distractors = sampleUnique(pool, 3, seed);
+    // 표시 문자열 → 카드. 점수는 카드(품사)로 매기고 선지는 문자열로 낸다.
+    const byLabel = new Map<string, VocabCard>();
+    for (const v of others) {
+      const label = v.ruby ?? v.word;
+      if (label !== correct && !byLabel.has(label)) byLabel.set(label, v);
+    }
+    const pos = vocabPos(card);
+    const distractors = sampleScored([...byLabel.keys()], 3, seed, (label) =>
+      vocabPos(byLabel.get(label)!) === pos ? 3 : 0,
+    );
     return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
   }
 
@@ -255,6 +341,32 @@ function sampleUnique<T>(pool: T[], n: number, seed: number): T[] {
   const uniquePool = Array.from(new Set(pool));
   const shuffled = shuffle(uniquePool, seed);
   return shuffled.slice(0, n);
+}
+
+/**
+ * 점수 상위권에서 n개를 시드로 뽑는다. `sampleUnique`의 가중치 버전.
+ *
+ * 상위 n개를 그대로 쓰지 않고 4배 창(window)을 두는 이유: 에폭이 바뀌어도
+ * 같은 선지 3개만 반복되면 판독이 아니라 선지 배열을 외우게 된다.
+ * 풀이 n 이하로 얇으면 점수를 무시하고 있는 걸 다 준다 — 하드 필터와 달리
+ * 선지 개수가 모자랄 일이 없다.
+ */
+function sampleScored<T>(
+  pool: T[],
+  n: number,
+  seed: number,
+  score: (candidate: T) => number,
+): T[] {
+  const uniquePool = Array.from(new Set(pool));
+  if (uniquePool.length <= n) return uniquePool;
+  // 정렬 전에 섞어야 동점 후보가 매번 같은 순서로 뽑히지 않는다
+  // (Array#sort는 stable이라 동점이면 입력 순서가 그대로 남는다).
+  const ranked = shuffle(uniquePool, seed)
+    .map((value) => ({ value, weight: score(value) }))
+    .sort((a, b) => b.weight - a.weight)
+    .slice(0, n * 4)
+    .map((entry) => entry.value);
+  return shuffle(ranked, seed + 7).slice(0, n);
 }
 
 function shuffle<T>(arr: T[], seed: number): T[] {
