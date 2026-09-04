@@ -362,6 +362,11 @@ export interface PersistedState {
   currentStreak: number;
   /** Lifetime ◯/✕ tallies per page */
   quizStats: Record<string, QuizStat>;
+  /**
+   * Adaptive-difficulty rating per CardMode (Elo-style, see lib/rating.ts).
+   * Absent key = never answered in that mode; treat as INITIAL_RATING.
+   */
+  ratings: Record<string, number>;
   /** User settings */
   settings: {
     /** "system" follows OS prefers-color-scheme; "light"/"dark" override. */
@@ -377,7 +382,7 @@ export interface PersistedState {
   };
 }
 
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 
 export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   theme: "system",

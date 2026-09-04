@@ -15,6 +15,7 @@ import {
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import type {
   GrammarCard,
   GrammarPatternCard,
@@ -65,6 +66,9 @@ function GrammarPageInner() {
   }
 
   const boxPrefix = tab === "pattern" ? "pattern" : "particle";
+  const grammarById = useCardsStore((s) => s.grammarById);
+  const rating = useStore((s) => s.ratings.grammar ?? INITIAL_RATING);
+  const ratingTier = quantizeRating(rating);
   const deck = useMemo(
     () =>
       mode === "study"
@@ -73,8 +77,13 @@ function GrammarPageInner() {
             ids,
             (id) => getBox("grammar", `${boxPrefix}:${id}`),
             seed + epoch * 7919,
+            {
+              difficultyOf: (id) => jlptDifficulty(grammarById.get(id)),
+              rating: ratingTier,
+            },
           ),
-    [mode, seed, epoch, ids, getBox, boxPrefix],
+    // ratingTier, not rating: re-sample once the rating has actually moved.
+    [mode, seed, epoch, ids, getBox, boxPrefix, grammarById, ratingTier],
   );
 
   const advance = () => {
@@ -98,7 +107,9 @@ function GrammarPageInner() {
     });
   };
 
-  const cardId = deck[index];
+  // index % length: the deck is re-sampled when the rating tier moves, so it
+  // can shrink under a mid-deck index. Wrap instead of falling off the end.
+  const cardId = deck[index % deck.length];
   const card = cardId ? getGrammar(cardId) : undefined;
 
   if (!mounted) {
@@ -131,7 +142,13 @@ function GrammarPageInner() {
             // SRS key: grammar:pattern:{id} / grammar:particle:{id} per eng review
             const subtypedId =
               card.type === "pattern" ? `pattern:${card.id}` : `particle:${card.id}`;
-            review("grammar", subtypedId, wasCorrect);
+            review(
+              "grammar",
+              subtypedId,
+              wasCorrect,
+              "choice",
+              jlptDifficulty(card),
+            );
             recordQuizResult("grammar", wasCorrect);
             advance();
           }}

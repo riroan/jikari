@@ -38,6 +38,8 @@ const persistedStateSchema = z.object({
   currentStreak: z.number().int().nonnegative(),
   // Older (v<5) backups don't carry quizStats — pad with empty object so they still import.
   quizStats: z.record(z.string(), quizStatSchema).default({}),
+  // Older (v<6) backups don't carry ratings — pad so they still import.
+  ratings: z.record(z.string(), z.number().finite()).default({}),
   settings: z.object({
     theme: z.enum(["light", "dark", "system"]).default("system"),
     showFurigana: z.boolean().default(true),

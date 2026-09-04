@@ -17,6 +17,7 @@ import {
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import { INITIAL_RATING, quantizeRating, registerDifficulty } from "@/lib/rating";
 import type { ExpressionCard, Register } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -51,6 +52,9 @@ function ExpressionsPageInner() {
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   const getBox = useStore((s) => s.getBox);
   const expressionIds = useCardsStore((s) => s.expressionIds);
+  const expressionById = useCardsStore((s) => s.expressionById);
+  const rating = useStore((s) => s.ratings.expression ?? INITIAL_RATING);
+  const ratingTier = quantizeRating(rating);
 
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
@@ -64,8 +68,13 @@ function ExpressionsPageInner() {
             expressionIds,
             (id) => getBox("expression", id),
             seed + epoch * 7919,
+            {
+              difficultyOf: (id) => registerDifficulty(expressionById.get(id)),
+              rating: ratingTier,
+            },
           ),
-    [mode, seed, epoch, expressionIds, getBox],
+    // ratingTier, not rating: re-sample once the rating has actually moved.
+    [mode, seed, epoch, expressionIds, getBox, expressionById, ratingTier],
   );
 
   const advance = () => {
@@ -89,7 +98,9 @@ function ExpressionsPageInner() {
     });
   };
 
-  const cardId = deck[index] ?? expressionIds[0];
+  // index % length: the deck is re-sampled when the rating tier moves, so it
+  // can shrink under a mid-deck index. Wrap instead of falling off the end.
+  const cardId = deck[index % deck.length] ?? expressionIds[0];
   const card: ExpressionCard | undefined = getExpression(cardId);
 
   if (!mounted) {
@@ -128,7 +139,13 @@ function ExpressionsPageInner() {
         direction={direction}
         seed={seed + index + epoch * 977}
         onResolved={(wasCorrect) => {
-          review("expression", card.id, wasCorrect);
+          review(
+            "expression",
+            card.id,
+            wasCorrect,
+            "choice",
+            registerDifficulty(card),
+          );
           recordQuizResult("expression", wasCorrect);
           advance();
         }}

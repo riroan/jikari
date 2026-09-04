@@ -17,6 +17,7 @@ import {
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
 import type { VocabCard } from "@/lib/types";
 
@@ -41,6 +42,9 @@ function VocabPageInner() {
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const vocabIds = useCardsStore((s) => s.vocabIds);
+  const vocabById = useCardsStore((s) => s.vocabById);
+  const rating = useStore((s) => s.ratings.vocab ?? INITIAL_RATING);
+  const ratingTier = quantizeRating(rating);
 
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
@@ -54,8 +58,13 @@ function VocabPageInner() {
             vocabIds,
             (id) => getBox("vocab", id),
             seed + epoch * 7919,
+            {
+              difficultyOf: (id) => jlptDifficulty(vocabById.get(id)),
+              rating: ratingTier,
+            },
           ),
-    [mode, seed, epoch, vocabIds, getBox]
+    // ratingTier, not rating: re-sample once the rating has actually moved.
+    [mode, seed, epoch, vocabIds, getBox, vocabById, ratingTier]
   );
 
   const advance = () => {
@@ -91,7 +100,9 @@ function VocabPageInner() {
     );
   }
 
-  const cardId = deck[index] ?? vocabIds[0];
+  // index % length: the deck is re-sampled when the rating tier moves, so it
+  // can shrink under a mid-deck index. Wrap instead of falling off the end.
+  const cardId = deck[index % deck.length] ?? vocabIds[0];
   const card: VocabCard | undefined = getVocab(cardId);
   if (!card) {
     return <Shell />;
@@ -114,7 +125,13 @@ function VocabPageInner() {
           answerMode={pickMode(getBox("vocab", card.id), threshold)}
           direction={chooseDirection(getBox("vocab", card.id), card.id, epoch)}
           onResolved={(wasCorrect, answerMode) => {
-            review("vocab", card.id, wasCorrect, answerMode);
+            review(
+              "vocab",
+              card.id,
+              wasCorrect,
+              answerMode,
+              jlptDifficulty(card),
+            );
             recordQuizResult("vocab", wasCorrect);
             advance();
           }}

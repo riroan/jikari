@@ -75,6 +75,18 @@ export async function getProgress(): Promise<PersistedState> {
     };
   }
 
+  const [rtRows] = await pool.query<RowDataPacket[]>(
+    "SELECT mode, rating FROM ratings"
+  );
+  const ratings: Record<string, number> = {};
+  for (const r of rtRows) {
+    const mode = coerceMode(r.mode);
+    // Same reasoning as learning_states: drop drifted enums rather than
+    // type-launder them into PersistedState.
+    if (mode === null) continue;
+    ratings[mode] = Number(r.rating);
+  }
+
   const [stRows] = await pool.query<RowDataPacket[]>(
     "SELECT theme, show_furigana, typing_threshold_box, last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1"
   );
@@ -88,6 +100,7 @@ export async function getProgress(): Promise<PersistedState> {
       lastActiveAt: 0,
       currentStreak: 0,
       quizStats,
+      ratings,
       settings: { ...DEFAULT_SETTINGS },
     };
   }
@@ -114,6 +127,7 @@ export async function getProgress(): Promise<PersistedState> {
     lastActiveAt: Number(st.last_active_at),
     currentStreak: Number(st.current_streak),
     quizStats,
+    ratings,
     settings: {
       theme,
       showFurigana: Boolean(st.show_furigana),
@@ -164,6 +178,13 @@ export async function putProgress(state: PersistedState): Promise<void> {
         "INSERT INTO quiz_stats (stat_key, correct_count, wrong_count) VALUES ?",
         [rows]
       );
+    }
+
+    await conn.query("DELETE FROM ratings");
+    const ratingList = Object.entries(state.ratings);
+    if (ratingList.length > 0) {
+      const rows = ratingList.map(([mode, rating]) => [mode, rating]);
+      await conn.query("INSERT INTO ratings (mode, rating) VALUES ?", [rows]);
     }
 
     await conn.query(

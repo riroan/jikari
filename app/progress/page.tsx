@@ -7,6 +7,7 @@ import { Heatmap } from "@/components/Heatmap";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { masteryLevel } from "@/lib/srs";
+import { INITIAL_RATING, ratingBand } from "@/lib/rating";
 import type { KanjiCard } from "@/lib/types";
 
 /**
@@ -16,10 +17,25 @@ import type { KanjiCard } from "@/lib/types";
  * to source the ordered list). v1 shows current N5-N4 scope.
  */
 
+/**
+ * Subjects whose quiz actually feeds an adaptive rating (see lib/rating.ts).
+ * 조사 shares the "sentence" rating with 문장, so it is not a row of its own;
+ * 활용 / 형용사 are absent because their decks are not rating-driven yet —
+ * listing them would show a resting 1000 that never moves.
+ */
+const RATED_SUBJECTS: readonly { ko: string; jp: string; key: string }[] = [
+  { ko: "한자", jp: "漢字", key: "kanji" },
+  { ko: "단어", jp: "単語", key: "vocab" },
+  { ko: "문장", jp: "文章", key: "sentence" },
+  { ko: "문법", jp: "文法", key: "grammar" },
+  { ko: "일상표현", jp: "表現", key: "expression" },
+];
+
 export default function ProgressPage() {
   const mounted = useIsClient();
 
   const states = useStore((s) => s.learningStates);
+  const ratings = useStore((s) => s.ratings);
   const heatmap = useStore((s) => s.heatmap);
   const kanjiCards = useCardsStore((s) => s.kanji);
 
@@ -105,6 +121,49 @@ export default function ProgressPage() {
         ) : (
           <div style={{ height: "14px" }} />
         )}
+      </section>
+
+      <section className="mb-8" aria-labelledby="progress-level-heading">
+        <div
+          id="progress-level-heading"
+          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium"
+        >
+          LEVEL
+        </div>
+        <ul role="list">
+          {RATED_SUBJECTS.map(({ ko, jp, key }) => {
+            // Pre-hydration the store still holds initialState, so every row
+            // would read N5 — show the resting value rather than a wrong one.
+            const rating = mounted ? ratings[key] ?? INITIAL_RATING : INITIAL_RATING;
+            return (
+              <li
+                key={`${key}:${ko}`}
+                className="flex items-baseline justify-between gap-4 py-2.5 border-t border-[color:var(--line)]"
+              >
+                <span className="flex items-baseline gap-2">
+                  <span className="text-body text-[color:var(--fg)]">{ko}</span>
+                  <span
+                    className="text-caption text-[color:var(--fg-faint)]"
+                    style={{ fontFamily: "var(--font-jp-serif)" }}
+                  >
+                    {jp}
+                  </span>
+                </span>
+                <span className="flex items-baseline gap-2.5">
+                  <span
+                    className="text-body tabular-nums text-[color:var(--fg-soft)]"
+                    style={{ fontFamily: "var(--font-jp-serif)" }}
+                  >
+                    {Math.round(rating)}
+                  </span>
+                  <span className="text-caption tracking-label text-[color:var(--fg-faint)] w-[18px] text-right">
+                    N{ratingBand(rating)}
+                  </span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
       <section aria-labelledby="progress-grid-heading">

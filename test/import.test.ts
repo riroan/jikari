@@ -20,6 +20,7 @@ const validState: PersistedState = {
   lastActiveAt: 1700000000000,
   currentStreak: 3,
   quizStats: { kanji: { correct: 7, wrong: 2 } },
+  ratings: { kanji: 1180 },
   settings: {
     theme: "light",
     showFurigana: true,
@@ -34,6 +35,13 @@ describe("parseBackup", () => {
     if (result.ok) {
       expect(result.state.schemaVersion).toBe(SCHEMA_VERSION);
     }
+  });
+
+  it("pads ratings on a pre-v6 backup that predates them", () => {
+    const { ratings: _ratings, ...v5Backup } = validState;
+    const result = parseBackup(JSON.stringify(v5Backup));
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.state.ratings).toEqual({});
   });
 
   it("rejects invalid JSON", () => {

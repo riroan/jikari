@@ -12,6 +12,7 @@ import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { PARTICLE_INFO } from "@/lib/particle-info";
 import type { SentenceCard } from "@/lib/types";
 
@@ -37,6 +38,10 @@ function ParticlePageInner() {
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   const getBox = useStore((s) => s.getBox);
   const particleIds = useCardsStore((s) => s.particleIds);
+  const sentenceById = useCardsStore((s) => s.sentenceById);
+  // Particle cards are sentence cards, so they share the "sentence" rating too.
+  const rating = useStore((s) => s.ratings.sentence ?? INITIAL_RATING);
+  const ratingTier = quantizeRating(rating);
 
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
@@ -51,8 +56,13 @@ function ParticlePageInner() {
             // Particle review() also writes under mode 'sentence' — see onResolved.
             (id) => getBox("sentence", id),
             seed + epoch * 7919,
+            {
+              difficultyOf: (id) => jlptDifficulty(sentenceById.get(id)),
+              rating: ratingTier,
+            },
           ),
-    [mode, seed, epoch, particleIds, getBox]
+    // ratingTier, not rating: re-sample once the rating has actually moved.
+    [mode, seed, epoch, particleIds, getBox, sentenceById, ratingTier]
   );
 
   const advance = () => {
@@ -88,7 +98,9 @@ function ParticlePageInner() {
     );
   }
 
-  const cardId = deck[index] ?? particleIds[0];
+  // index % length: the deck is re-sampled when the rating tier moves, so it
+  // can shrink under a mid-deck index. Wrap instead of falling off the end.
+  const cardId = deck[index % deck.length] ?? particleIds[0];
   const card: SentenceCard | undefined = getSentence(cardId);
   if (!card) {
     return <Shell />;
@@ -109,7 +121,13 @@ function ParticlePageInner() {
           card={card}
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
-            review("sentence", card.id, wasCorrect);
+            review(
+              "sentence",
+              card.id,
+              wasCorrect,
+              "choice",
+              jlptDifficulty(card),
+            );
             recordQuizResult("particle", wasCorrect);
             advance();
           }}

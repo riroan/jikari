@@ -19,6 +19,7 @@ import {
   type TodayQueue,
 } from "./srs";
 import { incrementToday, currentStreak } from "./heatmap";
+import { INITIAL_RATING, updateRating } from "./rating";
 import { remoteStorage } from "./remote-storage";
 
 interface StoreActions {
@@ -26,12 +27,17 @@ interface StoreActions {
    * Record a review result for a card. Creates state if new.
    * `answerMode` defaults to 'choice'. Pass 'typed' for active-recall attempts —
    * this softens the demotion on wrong answers (box-1 instead of box-1 reset).
+   *
+   * `difficulty` (see lib/rating.ts) additionally moves the mode's adaptive
+   * rating. Omit it and the rating is left untouched — pages wire it in as
+   * each one gets a difficulty source.
    */
   review: (
     mode: CardMode,
     cardId: string,
     correct: boolean,
     answerMode?: AnswerMode,
+    difficulty?: number,
   ) => void;
 
   /** Increment the lifetime ◯/✕ tally for a page. */
@@ -65,6 +71,7 @@ const initialState: PersistedState = {
   lastActiveAt: 0,
   currentStreak: 0,
   quizStats: {},
+  ratings: {},
   settings: { ...DEFAULT_SETTINGS },
 };
 
@@ -73,7 +80,7 @@ export const useStore = create<Store>()(
     (set, get) => ({
       ...initialState,
 
-      review: (mode, cardId, correct, answerMode = "choice") => {
+      review: (mode, cardId, correct, answerMode = "choice", difficulty) => {
         const now = Date.now();
         const key = cardKey(mode, cardId);
         const states = get().learningStates;
@@ -81,11 +88,23 @@ export const useStore = create<Store>()(
         const base = existing ?? newLearningState(mode, cardId, now);
         const next = srsAdvance(base, correct, now, answerMode);
         const heatmap = incrementToday(get().heatmap, now);
+        const ratings = get().ratings;
         set({
           learningStates: { ...states, [key]: next },
           heatmap,
           lastActiveAt: now,
           currentStreak: currentStreak(heatmap, now),
+          ratings:
+            difficulty === undefined
+              ? ratings
+              : {
+                  ...ratings,
+                  [mode]: updateRating(
+                    ratings[mode] ?? INITIAL_RATING,
+                    difficulty,
+                    correct,
+                  ),
+                },
         });
       },
 
@@ -137,6 +156,7 @@ export const useStore = create<Store>()(
        * v2 → v3: removed settings.dailyNewLimit / dailyReviewLimit
        * v3 → v4: added settings.typingThresholdBox (default 4)
        * v4 → v5: added quizStats (lifetime ◯/✕ per page)
+       * v5 → v6: added ratings (adaptive difficulty per CardMode)
        */
       migrate: (persisted: unknown, _version: number) => {
         if (!persisted || typeof persisted !== "object") return initialState;
@@ -147,6 +167,7 @@ export const useStore = create<Store>()(
           ...p,
           schemaVersion: SCHEMA_VERSION,
           quizStats: p.quizStats ?? {},
+          ratings: p.ratings ?? {},
           settings: {
             theme: prev.theme ?? DEFAULT_SETTINGS.theme,
             showFurigana: prev.showFurigana ?? DEFAULT_SETTINGS.showFurigana,
@@ -169,6 +190,7 @@ export function exportState(): string {
     lastActiveAt: state.lastActiveAt,
     currentStreak: state.currentStreak,
     quizStats: state.quizStats,
+    ratings: state.ratings,
     settings: state.settings,
   };
   return JSON.stringify(backup, null, 2);

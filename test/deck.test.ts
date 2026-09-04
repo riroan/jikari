@@ -78,3 +78,66 @@ describe("weightedShuffleIds", () => {
     expect(new Set(a)).not.toEqual(new Set(b));
   });
 });
+
+describe("weightedShuffleIds — difficulty weighting", () => {
+  // 500 cards spread evenly across the five JLPT bands, all at box 1 so the
+  // SRS factor is a constant 1 and only the difficulty weight varies.
+  const BANDS = [1000, 1250, 1500, 1750, 2000];
+  const ids = Array.from({ length: 500 }, (_, i) => `card_${i}`);
+  const difficultyOf = (id: string) => BANDS[Number(id.slice(5)) % BANDS.length];
+  const allBox1 = () => 1 as const;
+
+  const bandCounts = (rating: number, seed = 7) => {
+    const kept = weightedShuffleIds(ids, allBox1, seed, { difficultyOf, rating });
+    const counts = new Map<number, number>(BANDS.map((b) => [b, 0]));
+    for (const id of kept) {
+      const d = difficultyOf(id);
+      counts.set(d, (counts.get(d) ?? 0) + 1);
+    }
+    return counts;
+  };
+
+  it("serves mostly N5 to a beginner", () => {
+    const c = bandCounts(1000);
+    expect(c.get(1000)!).toBeGreaterThan(c.get(1250)!);
+    expect(c.get(1250)!).toBeGreaterThan(c.get(1500)!);
+    expect(c.get(1500)!).toBeGreaterThan(c.get(2000)!);
+  });
+
+  it("shifts the peak upward as the rating climbs", () => {
+    const beginner = bandCounts(1000);
+    const advanced = bandCounts(1750);
+    // The hard end grows and the easy end shrinks — that is the whole feature.
+    expect(advanced.get(1750)!).toBeGreaterThan(beginner.get(1750)!);
+    expect(advanced.get(1000)!).toBeLessThan(beginner.get(1000)!);
+    expect(advanced.get(1750)!).toBeGreaterThan(advanced.get(1000)!);
+  });
+
+  it("never locks a band out entirely — fat tails on purpose", () => {
+    // A beginner should still meet the occasional N1 item.
+    expect(bandCounts(1000).get(2000)!).toBeGreaterThan(0);
+  });
+
+  it("is deterministic given the same rating and seed", () => {
+    const a = weightedShuffleIds(ids, allBox1, 99, { difficultyOf, rating: 1400 });
+    const b = weightedShuffleIds(ids, allBox1, 99, { difficultyOf, rating: 1400 });
+    expect(a).toEqual(b);
+  });
+
+  it("leaves the box-only behaviour untouched when no weighting is passed", () => {
+    const withoutWeighting = weightedShuffleIds(ids, allBox1, 42);
+    expect(withoutWeighting.slice().sort()).toEqual(ids.slice().sort());
+  });
+
+  it("still falls back rather than serving an empty deck", () => {
+    // One wildly-out-of-band card: its weight is tiny, but a deck must exist.
+    const lonely = ["card_0"];
+    for (let seed = 0; seed < 20; seed++) {
+      const out = weightedShuffleIds(lonely, () => 5, seed, {
+        difficultyOf: () => 2000,
+        rating: 800,
+      });
+      expect(out).toEqual(["card_0"]);
+    }
+  });
+});

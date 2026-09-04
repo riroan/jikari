@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { useStore, exportState } from "@/lib/store";
 import { DEFAULT_SETTINGS, SCHEMA_VERSION } from "@/lib/types";
+import { INITIAL_RATING } from "@/lib/rating";
 import type { PersistedState } from "@/lib/types";
 
 const fresh = (): PersistedState => ({
@@ -10,6 +11,7 @@ const fresh = (): PersistedState => ({
   lastActiveAt: 0,
   currentStreak: 0,
   quizStats: {},
+  ratings: {},
   settings: { ...DEFAULT_SETTINGS },
 });
 
@@ -108,6 +110,31 @@ describe("store.replaceAll / store.reset", () => {
     expect(useStore.getState().learningStates).toEqual({});
     expect(useStore.getState().quizStats).toEqual({});
     expect(useStore.getState().currentStreak).toBe(0);
+  });
+});
+
+describe("store.review adaptive rating", () => {
+  it("leaves ratings untouched when no difficulty is supplied", () => {
+    useStore.getState().review("kanji", "k-1", true);
+    expect(useStore.getState().ratings).toEqual({});
+  });
+
+  it("raises the mode rating on a correct answer, lowers it on a wrong one", () => {
+    useStore.getState().review("kanji", "k-1", true, "choice", 1500);
+    const up = useStore.getState().ratings.kanji;
+    expect(up).toBeGreaterThan(INITIAL_RATING);
+
+    useStore.getState().review("kanji", "k-2", false, "choice", 1500);
+    expect(useStore.getState().ratings.kanji).toBeLessThan(up);
+  });
+
+  it("keeps a rating per mode rather than one global score", () => {
+    useStore.getState().review("kanji", "k-1", true, "choice", 1500);
+    useStore.getState().review("grammar", "g-1", false, "choice", 1500);
+
+    const { kanji, grammar } = useStore.getState().ratings;
+    expect(kanji).toBeGreaterThan(INITIAL_RATING);
+    expect(grammar).toBeLessThan(INITIAL_RATING);
   });
 });
 

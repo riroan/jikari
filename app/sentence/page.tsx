@@ -12,6 +12,7 @@ import { useStore } from "@/lib/store";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import type { SentenceCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -36,6 +37,9 @@ function SentencePageInner() {
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   const getBox = useStore((s) => s.getBox);
   const sentenceIds = useCardsStore((s) => s.sentenceIds);
+  const sentenceById = useCardsStore((s) => s.sentenceById);
+  const rating = useStore((s) => s.ratings.sentence ?? INITIAL_RATING);
+  const ratingTier = quantizeRating(rating);
 
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
@@ -49,8 +53,13 @@ function SentencePageInner() {
             sentenceIds,
             (id) => getBox("sentence", id),
             seed + epoch * 7919,
+            {
+              difficultyOf: (id) => jlptDifficulty(sentenceById.get(id)),
+              rating: ratingTier,
+            },
           ),
-    [mode, seed, epoch, sentenceIds, getBox]
+    // ratingTier, not rating: re-sample once the rating has actually moved.
+    [mode, seed, epoch, sentenceIds, getBox, sentenceById, ratingTier]
   );
 
   const advance = () => {
@@ -86,7 +95,9 @@ function SentencePageInner() {
     );
   }
 
-  const cardId = deck[index] ?? sentenceIds[0];
+  // index % length: the deck is re-sampled when the rating tier moves, so it
+  // can shrink under a mid-deck index. Wrap instead of falling off the end.
+  const cardId = deck[index % deck.length] ?? sentenceIds[0];
   const card: SentenceCard | undefined = getSentence(cardId);
   if (!card) {
     return <Shell />;
@@ -107,7 +118,13 @@ function SentencePageInner() {
           card={card}
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
-            review("sentence", card.id, wasCorrect);
+            review(
+              "sentence",
+              card.id,
+              wasCorrect,
+              "choice",
+              jlptDifficulty(card),
+            );
             recordQuizResult("sentence", wasCorrect);
             advance();
           }}

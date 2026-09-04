@@ -11,6 +11,7 @@ import { useStore } from "@/lib/store";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
 import { normalizeJapanese } from "@/lib/normalize";
 import type { KanjiCard } from "@/lib/types";
@@ -38,6 +39,9 @@ function KanjiPageInner() {
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const kanjiIds = useCardsStore((s) => s.kanjiIds);
+  const kanjiById = useCardsStore((s) => s.kanjiById);
+  const rating = useStore((s) => s.ratings.kanji ?? INITIAL_RATING);
+  const ratingTier = quantizeRating(rating);
 
   // Quiz: SRS-weighted shuffle. Study: plain random shuffle (stable per epoch).
   const [epoch, setEpoch] = useState(0);
@@ -52,8 +56,13 @@ function KanjiPageInner() {
             kanjiIds,
             (id) => getBox("kanji", id),
             seed + epoch * 7919,
+            {
+              difficultyOf: (id) => jlptDifficulty(kanjiById.get(id)),
+              rating: ratingTier,
+            },
           ),
-    [mode, seed, epoch, kanjiIds, getBox]
+    // ratingTier, not rating: re-sample once the rating has actually moved.
+    [mode, seed, epoch, kanjiIds, kanjiById, getBox, ratingTier]
   );
 
   const advance = () => {
@@ -89,7 +98,9 @@ function KanjiPageInner() {
     );
   }
 
-  const cardId = deck[index] ?? kanjiIds[0];
+  // index % length: the deck is re-sampled when the rating tier moves, so it
+  // can shrink under a mid-deck index. Wrap instead of falling off the end.
+  const cardId = deck[index % deck.length] ?? kanjiIds[0];
   const card: KanjiCard | undefined = getKanji(cardId);
   if (!card) {
     return <Shell />;
@@ -111,7 +122,13 @@ function KanjiPageInner() {
           seed={seed + index + epoch * 977}
           answerMode={pickMode(getBox("kanji", card.id), threshold)}
           onResolved={(wasCorrect, answerMode) => {
-            review("kanji", card.id, wasCorrect, answerMode);
+            review(
+              "kanji",
+              card.id,
+              wasCorrect,
+              answerMode,
+              jlptDifficulty(card),
+            );
             recordQuizResult("kanji", wasCorrect);
             advance();
           }}
