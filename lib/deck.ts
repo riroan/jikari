@@ -108,3 +108,27 @@ export function weightedShuffleIds(
   if (kept.length === 0) return shuffleIds(ids, seed);
   return shuffleIds(kept, seed);
 }
+
+/**
+ * 난이도가 카드가 아니라 카드 *밖*에 있는 축에서 하나를 고른다 — 활용형이
+ * 그렇다 (lib/rating.ts의 conjugationFormDifficulty 참조).
+ *
+ * 덱과 같은 Cauchy 가중치를 쓰므로 하드 게이트가 아니다: θ가 낮아도 使役이
+ * 가끔은 나오고, θ가 높아도 ます형이 사라지지는 않는다.
+ */
+export function pickByDifficulty<T>(
+  items: readonly T[],
+  difficultyOf: (item: T) => number,
+  rating: number,
+  seed: number,
+): T {
+  const weights = items.map((item) => difficultyWeight(difficultyOf(item), rating));
+  const total = weights.reduce((sum, w) => sum + w, 0);
+  // shuffleIds와 같은 LCG. 시드 하나에서 [0, 1) 하나를 뽑는다.
+  let draw = ((Math.abs(seed) * 9301 + 49297) % 233280) / 233280 * total;
+  for (let i = 0; i < items.length; i++) {
+    draw -= weights[i];
+    if (draw < 0) return items[i];
+  }
+  return items[items.length - 1];
+}

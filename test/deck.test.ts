@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import { pickByDifficulty, shuffleIds, weightedShuffleIds } from "@/lib/deck";
+import {
+  ALL_CONJUGATION_FORMS,
+} from "@/lib/types";
+import { conjugationFormDifficulty, INITIAL_RATING } from "@/lib/rating";
 
 describe("shuffleIds", () => {
   it("returns all original ids", () => {
@@ -139,5 +143,52 @@ describe("weightedShuffleIds — difficulty weighting", () => {
       });
       expect(out).toEqual(["card_0"]);
     }
+  });
+});
+
+describe("pickByDifficulty", () => {
+  const pickForms = (rating: number, n = 300) =>
+    Array.from({ length: n }, (_, seed) =>
+      pickByDifficulty(
+        ALL_CONJUGATION_FORMS,
+        conjugationFormDifficulty,
+        rating,
+        seed * 977,
+      ),
+    );
+
+  const share = (forms: string[], of: readonly string[]) =>
+    forms.filter((f) => of.includes(f)).length / forms.length;
+
+  const BASIC = ["masu", "te", "ta", "nai"];
+  const HARD = ["imperative", "passive", "causative"];
+
+  it("serves mostly basic forms at the beginner rating", () => {
+    const forms = pickForms(INITIAL_RATING);
+    // 10개 중 4개가 기본형 — 균등 추첨이면 0.4에 앉는다.
+    expect(share(forms, BASIC)).toBeGreaterThan(0.6);
+    expect(share(forms, HARD)).toBeLessThan(0.15);
+  });
+
+  it("shifts to advanced forms as the rating climbs", () => {
+    const beginner = share(pickForms(INITIAL_RATING), HARD);
+    const advanced = share(pickForms(1700), HARD);
+    expect(advanced).toBeGreaterThan(beginner * 2);
+  });
+
+  it("never locks a form out entirely (fat tails, not a gate)", () => {
+    const forms = pickForms(INITIAL_RATING, 600);
+    for (const hard of HARD) expect(forms).toContain(hard);
+    const top = pickForms(2000, 600);
+    for (const basic of BASIC) expect(top).toContain(basic);
+  });
+
+  it("is deterministic for the same seed", () => {
+    const args = [ALL_CONJUGATION_FORMS, conjugationFormDifficulty, 1200, 4242] as const;
+    expect(pickByDifficulty(...args)).toBe(pickByDifficulty(...args));
+  });
+
+  it("returns the only item when there is nothing to choose from", () => {
+    expect(pickByDifficulty(["masu"] as const, () => 1000, 2000, 5)).toBe("masu");
   });
 });

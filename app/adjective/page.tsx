@@ -10,7 +10,7 @@ import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
-import { shuffleIds } from "@/lib/deck";
+import { pickByDifficulty, shuffleIds } from "@/lib/deck";
 import {
   ADJ_FORM_LABELS_KO,
   ADJ_GROUP_LABELS_JP,
@@ -20,6 +20,11 @@ import {
 } from "@/lib/adjective";
 import type { AdjGroup, VocabCard } from "@/lib/types";
 import { ADJ_FORMS_FOR } from "@/lib/types";
+import {
+  adjectiveFormDifficulty,
+  INITIAL_RATING,
+  quantizeRating,
+} from "@/lib/rating";
 
 type StudyMode = "study" | "quiz";
 
@@ -29,11 +34,6 @@ type ConjugatableAdj = VocabCard & {
 
 function isConjugatable(v: VocabCard): v is ConjugatableAdj {
   return v.adjGroup === "i_adj" || v.adjGroup === "na_adj";
-}
-
-function pickFromSeed<T>(arr: readonly T[], seed: number): T {
-  const idx = Math.abs(seed) % arr.length;
-  return arr[idx];
 }
 
 export default function AdjectivePage() {
@@ -54,6 +54,9 @@ function AdjectivePageInner() {
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   const vocab = useCardsStore((s) => s.vocab);
+  const ratingTier = quantizeRating(
+    useStore((s) => s.ratings.adjective ?? INITIAL_RATING),
+  );
 
   const adjs = useMemo(() => vocab.filter(isConjugatable), [vocab]);
   const adjIds = useMemo(() => adjs.map((v) => v.id), [adjs]);
@@ -113,10 +116,15 @@ function AdjectivePageInner() {
     );
   }
 
-  // Pick a random form applicable to this adjective's group.
+  // 그룹에 맞는 형 중에서 θ 근처의 난이도를 뽑는다 (활용 퀴즈와 같은 축).
   const applicableForms = ADJ_FORMS_FOR[adj.adjGroup];
   const formSeed = seed + index + epoch * 977;
-  const form = pickFromSeed(applicableForms, formSeed);
+  const form = pickByDifficulty(
+    applicableForms,
+    adjectiveFormDifficulty,
+    ratingTier,
+    formSeed,
+  );
 
   return (
     <Shell>
@@ -125,7 +133,13 @@ function AdjectivePageInner() {
         adj={adj}
         form={form}
         onResolved={(wasCorrect) => {
-          review("adjective", `${adj.id}:${form}`, wasCorrect, "typed");
+          review(
+            "adjective",
+            `${adj.id}:${form}`,
+            wasCorrect,
+            "typed",
+            adjectiveFormDifficulty(form),
+          );
           recordQuizResult("adjective", wasCorrect);
           advance();
         }}

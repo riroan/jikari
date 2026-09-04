@@ -19,9 +19,9 @@ import type { KanjiCard } from "@/lib/types";
 
 /**
  * Subjects whose quiz actually feeds an adaptive rating (see lib/rating.ts).
- * 조사 shares the "sentence" rating with 문장, so it is not a row of its own;
- * 활용 / 형용사 are absent because their decks are not rating-driven yet —
- * listing them would show a resting 1000 that never moves.
+ * 조사 shares the "sentence" rating with 문장, so it is not a row of its own.
+ * 활용 / 형용사 rate the *form* rather than the card — see
+ * conjugationFormDifficulty in lib/rating.ts.
  */
 const RATED_SUBJECTS: readonly { ko: string; jp: string; key: string }[] = [
   { ko: "한자", jp: "漢字", key: "kanji" },
@@ -29,6 +29,8 @@ const RATED_SUBJECTS: readonly { ko: string; jp: string; key: string }[] = [
   { ko: "문장", jp: "文章", key: "sentence" },
   { ko: "문법", jp: "文法", key: "grammar" },
   { ko: "일상표현", jp: "表現", key: "expression" },
+  { ko: "활용", jp: "活用", key: "conjugation" },
+  { ko: "형용사", jp: "形容", key: "adjective" },
 ];
 
 export default function ProgressPage() {

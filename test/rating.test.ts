@@ -4,6 +4,8 @@ import {
   INITIAL_RATING,
   RATING_MAX,
   RATING_MIN,
+  adjectiveFormDifficulty,
+  conjugationFormDifficulty,
   difficultyOfJlpt,
   expectedScore,
   quantizeRating,
@@ -121,5 +123,28 @@ describe("quantizeRating", () => {
     for (const r of [1013, 1247, 1499, 1751, 1999]) {
       expect(Math.abs(quantizeRating(r) - r)).toBeLessThanOrEqual(25);
     }
+  });
+});
+
+describe("form difficulty", () => {
+  it("orders conjugation forms 기본 < 중급 < 고급", () => {
+    expect(conjugationFormDifficulty("masu")).toBeLessThan(
+      conjugationFormDifficulty("potential"),
+    );
+    expect(conjugationFormDifficulty("potential")).toBeLessThan(
+      conjugationFormDifficulty("causative"),
+    );
+  });
+
+  it("rates a form, not the word — 使役 outranks every JLPT band below N2", () => {
+    expect(conjugationFormDifficulty("causative")).toBeGreaterThan(
+      difficultyOfJlpt(3),
+    );
+  });
+
+  it("orders adjective forms the same way", () => {
+    expect(adjectiveFormDifficulty("negative")).toBeLessThan(
+      adjectiveFormDifficulty("conditional"),
+    );
   });
 });

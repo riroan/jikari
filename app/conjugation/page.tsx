@@ -10,7 +10,12 @@ import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
-import { shuffleIds } from "@/lib/deck";
+import { pickByDifficulty, shuffleIds } from "@/lib/deck";
+import {
+  conjugationFormDifficulty,
+  INITIAL_RATING,
+  quantizeRating,
+} from "@/lib/rating";
 import {
   conjugate,
   ConjugationError,
@@ -50,11 +55,6 @@ function srsCardId(verbId: string, form: ConjugationForm): string {
     : `${verbId}:${form}`;
 }
 
-function pickFromSeed<T>(arr: readonly T[], seed: number): T {
-  const idx = Math.abs(seed) % arr.length;
-  return arr[idx];
-}
-
 export default function ConjugationPage() {
   return (
     <Suspense fallback={<Shell />}>
@@ -73,6 +73,9 @@ function ConjugationPageInner() {
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   const vocab = useCardsStore((s) => s.vocab);
+  const ratingTier = quantizeRating(
+    useStore((s) => s.ratings.conjugation ?? INITIAL_RATING),
+  );
 
   const verbs = useMemo(() => vocab.filter(isConjugatable), [vocab]);
   const verbIds = useMemo(() => verbs.map((v) => v.id), [verbs]);
@@ -132,8 +135,15 @@ function ConjugationPageInner() {
     );
   }
 
+  // 난이도는 동사가 아니라 활용형에 있다 — 초심자에게 使役이 균등 확률로
+  // 나오지 않도록 θ 근처의 형을 뽑는다.
   const formSeed = seed + index + epoch * 977;
-  const form = pickFromSeed(ALL_CONJUGATION_FORMS, formSeed);
+  const form = pickByDifficulty(
+    ALL_CONJUGATION_FORMS,
+    conjugationFormDifficulty,
+    ratingTier,
+    formSeed,
+  );
 
   return (
     <Shell>
@@ -142,7 +152,13 @@ function ConjugationPageInner() {
         verb={verb}
         form={form}
         onResolved={(wasCorrect) => {
-          review("conjugation", srsCardId(verb.id, form), wasCorrect, "typed");
+          review(
+            "conjugation",
+            srsCardId(verb.id, form),
+            wasCorrect,
+            "typed",
+            conjugationFormDifficulty(form),
+          );
           recordQuizResult("conjugation", wasCorrect);
           advance();
         }}

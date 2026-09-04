@@ -104,16 +104,10 @@
 
 ## 적응형 난이도 (2026-09-04, 커밋 0a51449 후속)
 
-### 활용·형용사 퀴즈에 적응형 난이도 적용
-- **What:** `/conjugation`과 `/adjective`는 아직 `shuffleIds`만 쓴다 — SRS 박스 가중치조차 없이 완전 무작위. 나머지 6개 모드처럼 `weightedShuffleIds` + `DifficultyWeighting`으로 옮기고, `/progress` LEVEL 섹션에 두 행 추가.
-- **Why:** 이 둘이 오히려 적응형의 최대 수혜자다. 지금은 10개 활용형이 균등 추첨이라 **초심자 첫 문제로 使役受身가 나올 수 있다.** 정작 6개 모드는 이미 적응형인데 제일 필요한 곳이 빠져 있는 상태.
-- **핵심:** 난이도 축이 다르다. `difficultyOfJlpt`를 쓰면 안 된다 — `食べる`(N5 단어)의 使役受身가 `影響`(N2 단어)의 ます형보다 훨씬 어렵다. 단어의 JLPT 레벨이 아니라 **활용형**이 난이도다. `lib/rating.ts`에 `ConjugationForm → 난이도` 매핑을 새로 만들어야 함:
-  - 쉬움 `masu / te / ta / nai` · 중간 `potential / volitional / conditional` · 어려움 `imperative / causative / passive`
-  - 형용사도 같은 축 (い형 `ない·かった·くて` / な형 `じゃない·だった·で`)
-- **Pros:** `lib/rating.ts`·`lib/deck.ts`는 이미 다 있고 새 매핑 + 페이지 배선 2곳뿐. `review()`의 `difficulty` 인자도 이미 열려 있음.
-- **Cons:** `weightedShuffleIds`로 갈아타는 순간 **지금 없던 SRS 박스 가중치까지 같이 켜진다.** 두 변화가 한꺼번에 들어오니 체감이 달라져도 원인 분리가 안 됨 — 박스 가중치 먼저 켜고 한 번 써본 뒤 난이도를 얹는 게 안전.
-- **Trigger:** 활용 퀴즈에서 "아직 ます형도 헷갈리는데 使役이 나옴"이 한 번이라도 발생하면 바로. 안 그러면 튜닝 노브 조정 후에.
-- **Depends on:** 없음. 지금 바로 가능.
+### ~~활용·형용사 퀴즈에 적응형 난이도 적용~~ ✓ DONE (2026-09-04)
+- **상태:** `lib/rating.ts`에 `conjugationFormDifficulty` / `adjectiveFormDifficulty` 추가, `lib/deck.ts`에 `pickByDifficulty`(덱과 같은 Cauchy 가중치, 하드 게이트 아님). `/conjugation`·`/adjective`가 형을 θ 근처에서 뽑고 `review()`에 형 난이도를 넘긴다 — 이제 두 모드의 θ가 실제로 움직인다. `/progress` LEVEL에 두 행 추가.
+- **실측 분포:** θ=1000 → 기본형 73% / 使役·受身 4%. θ=1700 → 기본형 11% / 使役·受身 47%. 어느 쪽도 완전히 막히지 않는다.
+- **계획에서 바꾼 것:** `weightedShuffleIds`(SRS 박스 가중치)는 **일부러 안 켰다.** 두 모드의 SRS 키가 `동사:basic` / `동사:형`이라 덱(동사 id)에 `getBox`를 걸면 전부 미스가 나서 균등 추첨과 같아진다 — 기능처럼 보이는 no-op. 박스 가중치를 원하면 덱을 (동사, 형) 쌍으로 바꾸는 게 선행 조건. 난이도 축은 형이고 그건 이번에 들어갔으니, 실사용에서 "이미 외운 동사가 계속 나온다"가 느껴질 때 그때 하면 된다.
 
 ### 상용한자 N2/N1 시드 추가 (θ 천장 문제)
 - **What:** 현재 한자 풀 584자가 教育漢字(1~4학년) 범위라 **N5/N4/N3뿐이고 N2·N1이 0자다.**

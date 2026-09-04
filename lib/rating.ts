@@ -1,4 +1,4 @@
-import type { JLPTLevel, Register } from "./types";
+import type { AdjectiveForm, ConjugationForm, JLPTLevel, Register } from "./types";
 
 /**
  * Elo-style adaptive difficulty — the *user* is rated, items are not.
@@ -60,6 +60,48 @@ export function jlptDifficulty(
   card: { jlptLevel: JLPTLevel } | undefined,
 ): number {
   return card ? JLPT_DIFFICULTY[card.jlptLevel] : DEFAULT_DIFFICULTY;
+}
+
+/**
+ * 활용형 난이도. 単語의 JLPT 레벨과는 다른 축이다 — 食べる(N5)의 使役형이
+ * 影響(N2)의 ます형보다 훨씬 어렵다. 그러니 활용 퀴즈에서 난이도를 지는 것은
+ * 카드가 아니라 *형*이고, 여기 숫자는 JLPT 스케일에 얹은 근사치다.
+ *
+ * ponytail: 세 덩어리(기본 / 중급 / 고급)를 나눈 것뿐, 형끼리의 미세한 순서는
+ * 눈대중이다. 실제 정답률이 쌓이면 그때 흔들면 된다.
+ */
+const CONJUGATION_FORM_DIFFICULTY: Record<ConjugationForm, number> = {
+  masu: 1000,
+  ta: 1050,
+  te: 1100,
+  nai: 1100,
+  conditional: 1350,
+  potential: 1400,
+  volitional: 1450,
+  imperative: 1600,
+  passive: 1700,
+  causative: 1750,
+};
+
+export function conjugationFormDifficulty(form: ConjugationForm): number {
+  return CONJUGATION_FORM_DIFFICULTY[form];
+}
+
+/** 형용사도 같은 축 — 부정·과거가 쉽고 조건형·정중부정이 어렵다. */
+const ADJECTIVE_FORM_DIFFICULTY: Record<AdjectiveForm, number> = {
+  negative: 1000,
+  past: 1050,
+  na_prenominal: 1100,
+  past_negative: 1150,
+  i_adv: 1200,
+  ni_adv: 1200,
+  te: 1250,
+  polite_negative: 1300,
+  conditional: 1450,
+};
+
+export function adjectiveFormDifficulty(form: AdjectiveForm): number {
+  return ADJECTIVE_FORM_DIFFICULTY[form];
 }
 
 /**
