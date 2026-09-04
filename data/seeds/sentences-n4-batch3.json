@@ -55,7 +55,7 @@
     "sentenceRuby": "{大学|だいがく}で＿＿＿する。",
     "blank": "研究",
     "blankRuby": "{研究|けんきゅう}",
-    "distractors": ["売る", "飲む", "歩く"],
+    "distractors": ["勉強", "質問", "運動"],
     "translation": "대학에서 연구한다.",
     "jlptLevel": 4
   },

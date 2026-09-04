@@ -48,6 +48,40 @@ function validate(c: unknown, idx: number): SentenceCard {
   return r as unknown as SentenceCard;
 }
 
+type Pos = "v" | "adj" | "n";
+
+/**
+ * 선지 품사 버킷. 동사 사전형이 「〜です」 앞 형용사 자리에 섞이면 뜻을 몰라도
+ * 형태만 보고 지워진다 — 그런 선지는 3지선다가 아니라 1지선다다.
+ *
+ * 백필된 vocab_cards 컬럼을 먼저 쓴다. 어미 규칙만으로는 嫌い(な형용사)가
+ * い형용사로, 好き가 명사로 잡힌다.
+ */
+function posOf(word: string, known: Map<string, Pos>): Pos {
+  const fromDb = known.get(word);
+  if (fromDb) return fromDb;
+  if (/い$/.test(word)) return "adj";
+  if (/[うくぐすつぬぶむる]$/.test(word)) return "v";
+  return "n";
+}
+
+async function loadVocabPos(conn: mysql.Connection): Promise<Map<string, Pos>> {
+  const [rows] = await conn.query<mysql.RowDataPacket[]>(
+    "SELECT word, verb_group, adj_group FROM vocab_cards"
+  );
+  const m = new Map<string, Pos>();
+  for (const r of rows) {
+    const pos: Pos =
+      r.verb_group && r.verb_group !== "not_verb"
+        ? "v"
+        : r.adj_group && r.adj_group !== "not_adj"
+          ? "adj"
+          : "n";
+    m.set(r.word as string, pos);
+  }
+  return m;
+}
+
 async function main() {
   const raw = await readFile(path.resolve(inputPath), "utf-8");
   const parsed = JSON.parse(raw);
@@ -64,6 +98,20 @@ async function main() {
     database: DB_NAME,
     charset: "utf8mb4",
   });
+
+  const vocabPos = await loadVocabPos(conn);
+  for (const c of cards) {
+    const want = posOf(c.blank, vocabPos);
+    const off = c.distractors.filter((d) => posOf(d, vocabPos) !== want);
+    if (off.length) {
+      await conn.end();
+      throw new Error(
+        `${c.id}: 선지 품사 불일치 — 정답 '${c.blank}'(${want}) vs ${off
+          .map((d) => `'${d}'(${posOf(d, vocabPos)})`)
+          .join(", ")}`
+      );
+    }
+  }
 
   const ids = cards.map((c) => c.id);
   const [existingRows] = await conn.query<mysql.RowDataPacket[]>(

@@ -55,7 +55,7 @@
     "sentenceRuby": "{私|わたし}は{犬|いぬ}が＿＿＿です。",
     "blank": "好き",
     "blankRuby": "{好|す}き",
-    "distractors": ["寒い", "忙しい", "新しい"],
+    "distractors": ["嫌い", "上手", "大切"],
     "translation": "나는 개를 좋아한다.",
     "jlptLevel": 5
   },

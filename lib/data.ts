@@ -159,6 +159,17 @@ function vocabPos(card: VocabCard): string {
   return "other";
 }
 
+/** 같은 품사 버킷 후보에 가중치를 준 선지 3개. 양방향 単語 퀴즈 공용. */
+function samePosDistractors(
+  byLabel: Map<string, VocabCard>,
+  pos: string,
+  seed: number,
+): string[] {
+  return sampleScored([...byLabel.keys()], 3, seed, (label) =>
+    vocabPos(byLabel.get(label)!) === pos ? 3 : 0,
+  );
+}
+
 export function generateKanjiChoices(
   card: KanjiCard,
   questionType: "on" | "kun",
@@ -220,21 +231,20 @@ export function generateVocabChoices(
       const label = v.ruby ?? v.word;
       if (label !== correct && !byLabel.has(label)) byLabel.set(label, v);
     }
-    const pos = vocabPos(card);
-    const distractors = sampleScored([...byLabel.keys()], 3, seed, (label) =>
-      vocabPos(byLabel.get(label)!) === pos ? 3 : 0,
-    );
+    const distractors = samePosDistractors(byLabel, vocabPos(card), seed);
     return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
   }
 
+  // 뜻 선지도 같은 품사에서 뽑는다. 무작위로 뽑으면 "저것 / 닫다 / 끝나다 /
+  // 책"처럼 뜻을 몰라도 품사만 보고 3개가 지워진다.
   const correct = card.koreanMeanings[0];
-  const pool: string[] = [];
+  const byMeaning = new Map<string, VocabCard>();
   for (const other of others) {
     for (const m of other.koreanMeanings) {
-      if (!card.koreanMeanings.includes(m)) pool.push(m);
+      if (!card.koreanMeanings.includes(m) && !byMeaning.has(m)) byMeaning.set(m, other);
     }
   }
-  const distractors = sampleUnique(pool, 3, seed);
+  const distractors = samePosDistractors(byMeaning, vocabPos(card), seed);
   return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }
 

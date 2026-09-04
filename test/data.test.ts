@@ -4,6 +4,7 @@ import {
   generateChoices,
   generateGrammarQuizChoices,
   generateKanjiChoices,
+  generateVocabChoices,
   hashSeed,
   kanaDistance,
   moraCount,
@@ -13,6 +14,7 @@ import type {
   GrammarPatternQuiz,
   KanjiCard,
   ParticleContrastQuiz,
+  VocabCard,
 } from "@/lib/types";
 import { useCardsStore } from "@/lib/cards-store";
 
@@ -300,5 +302,74 @@ describe("generateKanjiChoices distractor quality", () => {
     expect(generateKanjiChoices(target, "on", 99).choices).toEqual(
       generateKanjiChoices(target, "on", 99).choices,
     );
+  });
+});
+
+describe("generateVocabChoices distractor quality", () => {
+  const v = (
+    word: string,
+    korean: string,
+    verbGroup: VocabCard["verbGroup"] = "not_verb",
+    adjGroup: VocabCard["adjGroup"] = "not_adj",
+  ): VocabCard => ({
+    id: word,
+    word,
+    reading: word,
+    meanings: [],
+    koreanMeanings: [korean],
+    jlptLevel: 5,
+    verbGroup,
+    adjGroup,
+  });
+
+  /** 명사·동사·형용사 각 12장. 선지 창(3 × 4 = 12)보다 버킷이 넉넉해야 한다. */
+  const NOUNS = ["집", "방", "차", "밥", "물", "책", "역", "산", "강", "밤", "빵", "꽃"];
+
+  function seedDeck() {
+    const verbs = ["먹다", "마시다", "가다", "오다", "보다", "듣다", "쓰다", "읽다", "자다", "사다", "팔다", "걷다"];
+    const adjs = ["춥다", "덥다", "크다", "작다", "높다", "싸다", "밝다", "어둡다", "새롭다", "낡다", "많다", "적다"];
+    useCardsStore.setState({
+      vocab: [
+        v("犬", "개"),
+        ...NOUNS.map((m, i) => v(`n${i}`, m)),
+        ...verbs.map((m, i) => v(`v${i}`, m, "godan")),
+        ...adjs.map((m, i) => v(`a${i}`, m, "not_verb", "i_adj")),
+      ],
+    });
+  }
+
+  test("recognition 뜻 선지도 같은 품사에서 나온다", () => {
+    seedDeck();
+    const target = v("犬", "개");
+    const nouns = new Set(NOUNS);
+    let samePos = 0;
+    let total = 0;
+    for (let seed = 0; seed < 50; seed++) {
+      const { correct, choices } = generateVocabChoices(target, "recognition", seed);
+      for (const c of choices) {
+        if (c === correct) continue;
+        total++;
+        if (nouns.has(c)) samePos++;
+      }
+    }
+    // 덱의 1/3만 명사 — 무작위면 0.33 언저리에 앉는다.
+    expect(samePos / total).toBeGreaterThan(0.8);
+  });
+
+  test("정답 카드의 다른 뜻은 선지로 나오지 않는다", () => {
+    seedDeck();
+    const target: VocabCard = { ...v("車", "자동차"), koreanMeanings: ["자동차", "차"] };
+    useCardsStore.setState({ vocab: [target, ...useCardsStore.getState().vocab] });
+    for (let seed = 0; seed < 30; seed++) {
+      expect(generateVocabChoices(target, "recognition", seed).choices).not.toContain("차");
+    }
+  });
+
+  test("얇은 덱에서도 선지가 굶지 않는다", () => {
+    useCardsStore.setState({ vocab: [v("犬", "개"), v("猫", "고양이"), v("鳥", "새")] });
+    const { correct, choices } = generateVocabChoices(v("犬", "개"), "recognition", 3);
+    expect(choices).toContain(correct);
+    expect(new Set(choices).size).toBe(choices.length);
+    expect(choices).toHaveLength(3);
   });
 });
