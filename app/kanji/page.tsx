@@ -224,6 +224,38 @@ function KanjiStudyBody({ card }: { card: KanjiCard }) {
   return <KanjiBack card={card} />;
 }
 
+/**
+ * 音/訓 한 줄. 첫 읽기가 대표 — 진하게 두고 나머지는 흐리게 깐다.
+ * 퀴즈가 정답으로 묻는 것도 항상 readings[0]이라 (lib/data.ts) 강조가 그것과
+ * 일치한다. 나머지를 지우지 않는 건 뒷면이 답을 확인하는 면이기 때문.
+ */
+function ReadingRow({
+  label,
+  readings,
+}: {
+  label: string;
+  readings: readonly string[];
+}) {
+  if (readings.length === 0) return null;
+  const [primary, ...rest] = readings;
+  return (
+    <div className="flex gap-3.5 items-baseline">
+      <span className="text-caption text-[color:var(--fg-faint)] tracking-label w-9 font-medium">
+        {label}
+      </span>
+      <span className="text-body">
+        <span className="text-[color:var(--fg)]">{primary}</span>
+        {rest.length > 0 && (
+          <span className="text-[color:var(--fg-faint)]">
+            {" ・ "}
+            {rest.join(" ・ ")}
+          </span>
+        )}
+      </span>
+    </div>
+  );
+}
+
 function KanjiBack({ card }: { card: KanjiCard }) {
   return (
     <div
@@ -241,26 +273,8 @@ function KanjiBack({ card }: { card: KanjiCard }) {
         {card.kanji}
       </div>
       <div className="flex flex-col gap-1.5 pl-1">
-        {card.onReadings.length > 0 && (
-          <div className="flex gap-3.5 items-baseline">
-            <span className="text-caption text-[color:var(--fg-faint)] tracking-label w-9 font-medium">
-              音
-            </span>
-            <span className="text-body text-[color:var(--fg-soft)]">
-              {card.onReadings.join(" ・ ")}
-            </span>
-          </div>
-        )}
-        {card.kunReadings.length > 0 && (
-          <div className="flex gap-3.5 items-baseline">
-            <span className="text-caption text-[color:var(--fg-faint)] tracking-label w-9 font-medium">
-              訓
-            </span>
-            <span className="text-body text-[color:var(--fg-soft)]">
-              {card.kunReadings.join(" ・ ")}
-            </span>
-          </div>
-        )}
+        <ReadingRow label="音" readings={card.onReadings} />
+        <ReadingRow label="訓" readings={card.kunReadings} />
         <div className="mt-2 pt-2 border-t border-dashed border-[color:var(--line)] flex gap-2.5 items-baseline">
           <span
             className="text-xs font-semibold tracking-[0.1em] text-[color:var(--accent-korean)]"
@@ -269,7 +283,12 @@ function KanjiBack({ card }: { card: KanjiCard }) {
             韓
           </span>
           <span className="text-small text-[color:var(--fg-soft)]">
-            {card.koreanMeaning} {card.koreanSound.join("·")}
+            {card.koreanMeaning} {card.koreanSound[0]}
+            {card.koreanSound.length > 1 && (
+              <span className="text-[color:var(--fg-faint)]">
+                ·{card.koreanSound.slice(1).join("·")}
+              </span>
+            )}
             {card.koreanHanja !== card.kanji && (
               <span className="ml-2 text-[color:var(--fg-faint)] text-xs">
                 ({card.koreanHanja})
