@@ -101,3 +101,29 @@
 - **Cons:** /design-review 돌리는 3~5분.
 - **Context:** 2026-04-19 plan-eng-review Architecture + plan-design-review Pass 7에서 deferred. Design doc Open Question #4와 동일 사안.
 - **Depends on:** /expressions 라우트 + 홈 SUBJECTS 배열 edit + 뒷면 register 뱃지 렌더 구현 완료.
+
+## 적응형 난이도 (2026-09-04, 커밋 0a51449 후속)
+
+### 활용·형용사 퀴즈에 적응형 난이도 적용
+- **What:** `/conjugation`과 `/adjective`는 아직 `shuffleIds`만 쓴다 — SRS 박스 가중치조차 없이 완전 무작위. 나머지 6개 모드처럼 `weightedShuffleIds` + `DifficultyWeighting`으로 옮기고, `/progress` LEVEL 섹션에 두 행 추가.
+- **Why:** 이 둘이 오히려 적응형의 최대 수혜자다. 지금은 10개 활용형이 균등 추첨이라 **초심자 첫 문제로 使役受身가 나올 수 있다.** 정작 6개 모드는 이미 적응형인데 제일 필요한 곳이 빠져 있는 상태.
+- **핵심:** 난이도 축이 다르다. `difficultyOfJlpt`를 쓰면 안 된다 — `食べる`(N5 단어)의 使役受身가 `影響`(N2 단어)의 ます형보다 훨씬 어렵다. 단어의 JLPT 레벨이 아니라 **활용형**이 난이도다. `lib/rating.ts`에 `ConjugationForm → 난이도` 매핑을 새로 만들어야 함:
+  - 쉬움 `masu / te / ta / nai` · 중간 `potential / volitional / conditional` · 어려움 `imperative / causative / passive`
+  - 형용사도 같은 축 (い형 `ない·かった·くて` / な형 `じゃない·だった·で`)
+- **Pros:** `lib/rating.ts`·`lib/deck.ts`는 이미 다 있고 새 매핑 + 페이지 배선 2곳뿐. `review()`의 `difficulty` 인자도 이미 열려 있음.
+- **Cons:** `weightedShuffleIds`로 갈아타는 순간 **지금 없던 SRS 박스 가중치까지 같이 켜진다.** 두 변화가 한꺼번에 들어오니 체감이 달라져도 원인 분리가 안 됨 — 박스 가중치 먼저 켜고 한 번 써본 뒤 난이도를 얹는 게 안전.
+- **Trigger:** 활용 퀴즈에서 "아직 ます형도 헷갈리는데 使役이 나옴"이 한 번이라도 발생하면 바로. 안 그러면 튜닝 노브 조정 후에.
+- **Depends on:** 없음. 지금 바로 가능.
+
+### 상용한자 N2/N1 시드 추가 (θ 천장 문제)
+- **What:** 현재 한자 풀 584자가 教育漢字(1~4학년) 범위라 **N5/N4/N3뿐이고 N2·N1이 0자다.**
+- **Why:** θ가 ~1500을 넘으면 내놓을 게 없어서 덱이 293 → 144 → 64장으로 쪼그라든다 (빈 덱 fallback이 있어 안 깨지지만 같은 카드만 돌게 됨). 로직 문제가 아니라 재고 문제.
+- **Pros:** 시드 추가만으로 해결. 적응형 코드는 손 안 댐.
+- **Cons:** 상용한자 2136자 범위 안에서 선별 필요 (CLAUDE.md 콘텐츠 규칙).
+- **Trigger:** `/progress` LEVEL에서 한자 θ가 1500을 넘으면.
+
+### 튜닝 노브 실데이터 조정
+- **What:** `lib/rating.ts`의 `K=24`·`SCALE=400`, `lib/deck.ts`의 `TARGET_OFFSET=50`·`BAND_WIDTH=250`. 전부 체스 기본값이거나 눈대중이고 실제 응답 데이터로 맞춘 적 없음 (`ponytail:` 주석으로 표시해둠).
+- **Why:** 정답률이 너무 높게 유지되면 지루하고, 낮으면 좌절. 목표는 대략 75~80% 정답률.
+- **Action:** 2주 실사용 후 `/progress` LEVEL의 θ 추이와 `quizStats` 정답률을 같이 본다. θ가 너무 느리게 오르면 `K`↑, 몇 문제로 난이도가 출렁이면 `K`↓, 너무 어려우면 `TARGET_OFFSET`↓.
+- **Trigger:** 2주 실사용 후.
