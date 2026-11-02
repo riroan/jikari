@@ -131,7 +131,10 @@ function ConjugationPageInner() {
         />
       </Shell>
     );
-  const cardId = run.retryId ?? deck[index] ?? verbIds[0];
+  // 재시도 id는 "카드id:형" — 틀린 그 활용형을 다시 낸다.
+  const retryAt = run.retryId?.lastIndexOf(":") ?? -1;
+  const retryForm = retryAt > 0 ? run.retryId!.slice(retryAt + 1) : null;
+  const cardId = retryAt > 0 ? run.retryId!.slice(0, retryAt) : (deck[index] ?? verbIds[0]);
   const verb = cardId ? verbById.get(cardId) : undefined;
   if (!verb) return <Shell />;
 
@@ -152,12 +155,13 @@ function ConjugationPageInner() {
   // 난이도는 동사가 아니라 활용형에 있다 — 초심자에게 使役이 균등 확률로
   // 나오지 않도록 θ 근처의 형을 뽑는다.
   const formSeed = seed + index + epoch * 977;
-  const form = pickByDifficulty(
+  const picked = pickByDifficulty(
     ALL_CONJUGATION_FORMS,
     conjugationFormDifficulty,
     ratingTier,
     formSeed,
   );
+  const form = ALL_CONJUGATION_FORMS.find((f) => f === retryForm) ?? picked;
 
   return (
     <Shell>
@@ -174,7 +178,7 @@ function ConjugationPageInner() {
             conjugationFormDifficulty(form),
           );
           recordQuizResult("conjugation", wasCorrect);
-          run.record(verb.id, wasCorrect, `${verb.word} ${FORM_LABELS_KO[form]}`, answerOf(() => conjugate(verb.reading, verb.verbGroup, form)));
+          run.record(`${verb.id}:${form}`, wasCorrect, `${verb.word} ${FORM_LABELS_KO[form]}`, answerOf(() => conjugate(verb.reading, verb.verbGroup, form)));
           if (!run.retrying) advance();
         }}
       />

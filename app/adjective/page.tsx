@@ -112,7 +112,10 @@ function AdjectivePageInner() {
         />
       </Shell>
     );
-  const cardId = run.retryId ?? deck[index] ?? adjIds[0];
+  // 재시도 id는 "카드id:형" — 틀린 그 활용형을 다시 낸다.
+  const retryAt = run.retryId?.lastIndexOf(":") ?? -1;
+  const retryForm = retryAt > 0 ? run.retryId!.slice(retryAt + 1) : null;
+  const cardId = retryAt > 0 ? run.retryId!.slice(0, retryAt) : (deck[index] ?? adjIds[0]);
   const adj = cardId ? adjById.get(cardId) : undefined;
   if (!adj) return <Shell />;
 
@@ -133,12 +136,13 @@ function AdjectivePageInner() {
   // 그룹에 맞는 형 중에서 θ 근처의 난이도를 뽑는다 (활용 퀴즈와 같은 축).
   const applicableForms = ADJ_FORMS_FOR[adj.adjGroup];
   const formSeed = seed + index + epoch * 977;
-  const form = pickByDifficulty(
+  const picked = pickByDifficulty(
     applicableForms,
     adjectiveFormDifficulty,
     ratingTier,
     formSeed,
   );
+  const form = applicableForms.find((f) => f === retryForm) ?? picked;
 
   return (
     <Shell>
@@ -155,7 +159,7 @@ function AdjectivePageInner() {
             adjectiveFormDifficulty(form),
           );
           recordQuizResult("adjective", wasCorrect);
-          run.record(adj.id, wasCorrect, `${adj.word} ${ADJ_FORM_LABELS_KO[form]}`, answerOf(() => conjugateAdj(adj.reading, adj.adjGroup, form)));
+          run.record(`${adj.id}:${form}`, wasCorrect, `${adj.word} ${ADJ_FORM_LABELS_KO[form]}`, answerOf(() => conjugateAdj(adj.reading, adj.adjGroup, form)));
           if (!run.retrying) advance();
         }}
       />
