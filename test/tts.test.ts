@@ -20,3 +20,22 @@ describe("speak rate", () => {
     vi.unstubAllGlobals();
   });
 });
+
+describe("speak while speaking", () => {
+  test("cancels, then defers speak so Safari does not drop it", () => {
+    vi.useFakeTimers();
+    const spoken: unknown[] = [];
+    const cancel = vi.fn();
+    vi.stubGlobal("window", {
+      speechSynthesis: { speaking: true, getVoices: () => [], cancel, speak: (u: unknown) => spoken.push(u) },
+    });
+    vi.stubGlobal("SpeechSynthesisUtterance", function (this: object) {});
+    speak("こんにちは");
+    expect(cancel).toHaveBeenCalled();
+    expect(spoken).toHaveLength(0);
+    vi.advanceTimersByTime(100);
+    expect(spoken).toHaveLength(1);
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+});

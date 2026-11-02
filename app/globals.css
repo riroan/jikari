@@ -312,3 +312,8 @@ ruby rt {
   letter-spacing: 0.04em;
   font-weight: 400;
 }
+
+/* iOS: a modal <dialog> doesn't stop the page behind it from scrolling. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}

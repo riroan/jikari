@@ -42,9 +42,11 @@ export function StudyCard({
       </div>
 
       <div
-        className="min-h-[360px] select-none touch-pan-y"
+        className="min-h-[360px] select-none touch-pan-y [-webkit-touch-callout:none]"
         onTouchStart={(e) => {
           const t = e.touches[0];
+          // Left-edge starts belong to iOS back-swipe.
+          if (t.clientX < 20) return;
           start.current = { x: t.clientX, y: t.clientY };
         }}
         onTouchEnd={(e) => {
