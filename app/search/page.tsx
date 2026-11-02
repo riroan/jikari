@@ -61,6 +61,25 @@ export default function SearchPage() {
         spellCheck={false}
         className="w-full min-h-[44px] bg-transparent border-0 border-b border-[color:var(--line)] focus:border-[color:var(--fg-soft)] outline-none text-[17px] text-[color:var(--fg)] placeholder:text-[color:var(--fg-faint)] py-2"
       />
+      {!trimmed && (
+        <div className="pt-3">
+          <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
+            일본어(가나·한자·로마자)나 한국어로 검색해요
+          </p>
+          <div className="flex flex-wrap gap-x-5">
+            {["たべる", "taberu", "먹다"].map((ex) => (
+              <button
+                key={ex}
+                type="button"
+                onClick={() => setInput(ex)}
+                className="min-h-[44px] min-w-[44px] text-meta text-[color:var(--fg-soft)] border-b border-[color:var(--line)] hover:text-[color:var(--fg)]"
+              >
+                {ex}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <div aria-live="polite" className="mt-3 text-caption text-[color:var(--fg-faint)] min-h-[1.25rem]">
         {trimmed && total > 0 && `${total}개`}
       </div>

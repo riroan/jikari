@@ -64,9 +64,9 @@ test("search returns results without horizontal overflow", async ({ page }) => {
   expect(await noOverflow(page)).toBe(true);
 });
 
-test("progress shows 복습 예보", async ({ page }) => {
+test("progress shows FORECAST", async ({ page }) => {
   await page.goto("/progress");
-  await expect(page.getByText("복습 예보")).toBeVisible();
+  await expect(page.getByText("FORECAST")).toBeVisible();
 });
 
 test("settings has 하루 목표 select", async ({ page }) => {

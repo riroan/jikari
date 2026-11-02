@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useIsClient, useClientNow } from "@/lib/use-is-client";
 import { ModePageShell } from "@/components/ModePageShell";
 import { Heatmap } from "@/components/Heatmap";
@@ -38,6 +38,7 @@ const RATED_SUBJECTS: readonly { ko: string; jp: string; key: string }[] = [
 ];
 
 const WEAK_LIMIT = 5;
+const WEAK_COLLAPSED = 3;
 
 interface WeakRow {
   id: string;
@@ -55,6 +56,7 @@ const WEAK_SUBJECTS = [
 
 export default function ProgressPage() {
   const mounted = useIsClient();
+  const [weakOpen, setWeakOpen] = useState<Record<string, boolean>>({});
 
   const states = useStore((s) => s.learningStates);
   const ratings = useStore((s) => s.ratings);
@@ -171,21 +173,31 @@ export default function ProgressPage() {
         </div>
       </section>
 
-      <section className="mb-8" aria-labelledby="progress-year-heading">
+      <section className="mb-8" aria-labelledby="progress-forecast-heading">
         <div
-          id="progress-year-heading"
-          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium"
+          id="progress-forecast-heading"
+          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium"
         >
-          26 WEEKS
+          FORECAST
         </div>
-        {/* 26 weeks (half year) keeps cells ≥ 10px on a 390px viewport so
-            individual days stay tappable / readable. Home keeps the
-            tighter 7-week view; progress is the zoom-out. */}
-        {mounted ? (
-          <Heatmap data={heatmap} weeks={26} />
-        ) : (
-          <div style={{ height: "14px" }} />
-        )}
+        <ul role="list">
+          {(
+            [
+              ["오늘", forecast.today],
+              ["내일", forecast.tomorrow],
+              ["7일 내", forecast.week],
+            ] as const
+          ).map(([label, n]) => (
+            <li
+              key={label}
+              className="flex items-baseline justify-between gap-4 py-2.5 border-t border-[color:var(--line)]"
+              style={{ minHeight: 44 }}
+            >
+              <span className="text-body text-[color:var(--fg)]">{label}</span>
+              <span className="text-body tabular-nums text-[color:var(--fg-soft)]">{n}장</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {weak.length > 0 && (
@@ -214,7 +226,7 @@ export default function ProgressPage() {
                 </Link>
               </div>
               <ul role="list">
-                {w.rows.map((r) => (
+                {(weakOpen[w.mode] ? w.rows : w.rows.slice(0, WEAK_COLLAPSED)).map((r) => (
                   <li
                     key={r.id}
                     className="flex items-baseline justify-between gap-4 min-h-[44px] py-2 border-t border-[color:var(--line)]"
@@ -232,37 +244,20 @@ export default function ProgressPage() {
                   </li>
                 ))}
               </ul>
+              {w.rows.length > WEAK_COLLAPSED && (
+                <button
+                  type="button"
+                  aria-expanded={!!weakOpen[w.mode]}
+                  onClick={() => setWeakOpen((o) => ({ ...o, [w.mode]: !o[w.mode] }))}
+                  className="w-full min-h-[44px] border-t border-[color:var(--line)] text-caption tracking-wider text-[color:var(--fg-soft)] hover:text-[color:var(--fg)]"
+                >
+                  {weakOpen[w.mode] ? "접기" : `더 보기 (${w.rows.length - WEAK_COLLAPSED})`}
+                </button>
+              )}
             </div>
           ))}
         </section>
       )}
-
-      <section className="mb-8" aria-labelledby="progress-forecast-heading">
-        <div
-          id="progress-forecast-heading"
-          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium"
-        >
-          복습 예보
-        </div>
-        <ul role="list">
-          {(
-            [
-              ["오늘", forecast.today],
-              ["내일", forecast.tomorrow],
-              ["7일 내", forecast.week],
-            ] as const
-          ).map(([label, n]) => (
-            <li
-              key={label}
-              className="flex items-baseline justify-between gap-4 py-2.5 border-t border-[color:var(--line)]"
-              style={{ minHeight: 44 }}
-            >
-              <span className="text-body text-[color:var(--fg)]">{label}</span>
-              <span className="text-body tabular-nums text-[color:var(--fg-soft)]">{n}장</span>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       <section className="mb-8" aria-labelledby="progress-level-heading">
         <div
@@ -305,6 +300,23 @@ export default function ProgressPage() {
             );
           })}
         </ul>
+      </section>
+
+      <section className="mb-8" aria-labelledby="progress-year-heading">
+        <div
+          id="progress-year-heading"
+          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium"
+        >
+          26 WEEKS
+        </div>
+        {/* 26 weeks (half year) keeps cells ≥ 10px on a 390px viewport so
+            individual days stay tappable / readable. Home keeps the
+            tighter 7-week view; progress is the zoom-out. */}
+        {mounted ? (
+          <Heatmap data={heatmap} weeks={26} />
+        ) : (
+          <div style={{ height: "14px" }} />
+        )}
       </section>
 
       <section aria-labelledby="progress-grid-heading">
