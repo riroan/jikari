@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TypingInput } from "./TypingInput";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
+import { closestAnswer, diffAgainst } from "@/lib/diff";
 
 const KEYBOARD_GRACE_MS = 250;
 
@@ -89,6 +90,30 @@ export function TypedChallengeCard({
   }, [disabled, result, handleNext]);
 
   const primaryAnswer = acceptableAnswers[0] ?? "";
+  // Diff only makes sense on kana forms (input is normalized to hiragana).
+  const kanaAnswers = acceptableAnswers.filter((x) => /^[ぁ-ゟ゠-ヿー]+$/.test(x));
+  const diffTarget =
+    userAnswer && kanaAnswers.length > 0
+      ? closestAnswer(userAnswer, kanaAnswers)
+      : null;
+  const renderDiff = (target: string) =>
+    diffAgainst(userAnswer ?? "", target).map((d, i) => (
+      <span
+        key={i}
+        style={
+          d.ok
+            ? undefined
+            : {
+                color: "var(--accent-korean)",
+                textDecoration: "underline",
+                textUnderlineOffset: 6,
+              }
+        }
+      >
+        {d.ch}
+      </span>
+    ));
+  const otherAnswers = acceptableAnswers.filter((x) => x !== primaryAnswer);
 
   return (
     <div className="flex flex-col gap-8">
@@ -161,14 +186,19 @@ export function TypedChallengeCard({
                 letterSpacing: "-0.01em",
               }}
             >
-              {primaryAnswer}
+              {diffTarget === primaryAnswer ? renderDiff(primaryAnswer) : primaryAnswer}
             </div>
-            {acceptableAnswers.length > 1 && (
+            {(otherAnswers.length > 0 || diffTarget) && (
               <div
                 className="text-caption text-[color:var(--fg-faint)]"
                 style={{ fontFamily: "var(--font-jp-sans)" }}
               >
-                {acceptableAnswers.slice(1).join(" · ")}
+                {diffTarget && diffTarget !== primaryAnswer
+                  ? renderDiff(diffTarget)
+                  : otherAnswers.join(" · ")}
+                {diffTarget && diffTarget !== primaryAnswer && otherAnswers.length > 1
+                  ? " · " + otherAnswers.filter((x) => x !== diffTarget).join(" · ")
+                  : ""}
               </div>
             )}
             <div className="text-caption text-[color:var(--fg-soft)] tracking-wide">

@@ -39,7 +39,7 @@ describe("TypingInput", () => {
     const input = screen.getByLabelText("읽기 입력");
     fireEvent.change(input, { target: { value: "nichi" } });
     fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
-    expect(onSubmit).toHaveBeenCalledWith("nichi");
+    expect(onSubmit).toHaveBeenCalledWith("にち");
   });
 
   it("Enter during composition does NOT submit (isComposing flag)", () => {

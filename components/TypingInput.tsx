@@ -1,5 +1,6 @@
 "use client";
 
+import { toKana } from "wanakana";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
@@ -95,8 +96,8 @@ export function TypingInput({
 
   const submit = useCallback(() => {
     if (!canSubmit) return;
-    onSubmit(value);
-  }, [canSubmit, onSubmit, value]);
+    onSubmit(lang === "ja" ? toKana(value) : value);
+  }, [canSubmit, onSubmit, value, lang]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -140,7 +141,21 @@ export function TypingInput({
           disabled={disabled}
           value={value}
           placeholder={placeholder}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            const el = e.target;
+            let v = el.value;
+            // Live romaji→kana only for ja, outside IME composition, caret at end
+            // (keeps native Japanese keyboard + mid-string edits untouched).
+            if (
+              lang === "ja" &&
+              !composingRef.current &&
+              !(e.nativeEvent as InputEvent).isComposing &&
+              el.selectionStart === v.length
+            ) {
+              v = toKana(v, { IMEMode: true });
+            }
+            setValue(v);
+          }}
           onCompositionStart={() => {
             composingRef.current = true;
           }}
