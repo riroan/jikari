@@ -18,10 +18,13 @@ export function SessionSummary({
   summary,
   onRetry,
   onNext,
+  breakdown,
 }: {
   summary: RunSummary;
   onRetry: () => void;
   onNext: () => void;
+  /** 과목별 정답 한 줄 (종합 퀴즈). */
+  breakdown?: string;
 }) {
   const { total, correct, accuracy, bestStreak, missed } = summary;
   const ref = useRef<HTMLElement>(null);
@@ -50,6 +53,11 @@ export function SessionSummary({
         <p className="mt-2 text-caption tracking-tab tabular-nums text-[color:var(--fg-faint)]">
           {total}문제 중 {correct}개 정답 · 최고 연속 {bestStreak}
         </p>
+        {breakdown && (
+          <p className="mt-1 text-caption tabular-nums text-[color:var(--fg-faint)]">
+            {breakdown}
+          </p>
+        )}
       </div>
 
       {missed.length > 0 ? (

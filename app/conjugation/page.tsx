@@ -26,9 +26,10 @@ import {
   FORM_LABELS_KO,
   GROUP_LABELS_JP,
   GROUP_LABELS_KO,
+  srsCardId,
 } from "@/lib/conjugation";
-import type { ConjugationForm, VerbGroup, VocabCard } from "@/lib/types";
-import { ALL_CONJUGATION_FORMS, BASIC_FORMS } from "@/lib/types";
+import type { VerbGroup, VocabCard } from "@/lib/types";
+import { ALL_CONJUGATION_FORMS } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
 
@@ -42,21 +43,6 @@ function isConjugatable(v: VocabCard): v is ConjugatableVerb {
     v.verbGroup === "ichidan" ||
     v.verbGroup === "irregular"
   );
-}
-
-/**
- * Hybrid SRS key:
- *   Basic 4 forms (ます/て/た/ない) share one bucket per verb ("basic").
- *   Advanced 6 forms each get their own bucket per verb.
- *
- * Rationale: per-form SRS for basic forms explodes the daily due queue; they're
- * closely related morphologically so holistic "basic conjugation 숙달" is the
- * right unit. Advanced forms stand apart cognitively so each tracks on its own.
- */
-function srsCardId(verbId: string, form: ConjugationForm): string {
-  return (BASIC_FORMS as readonly ConjugationForm[]).includes(form)
-    ? `${verbId}:basic`
-    : `${verbId}:${form}`;
 }
 
 export default function ConjugationPage() {

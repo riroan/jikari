@@ -140,7 +140,7 @@ export default function Home() {
         {/* Units entry — chapter mastery view (uses subject-row visual language) */}
         <Link
           href="/chapters"
-          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-8 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
+          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-2 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
         >
           <span className="flex items-baseline gap-3">
             <span className="text-body font-medium text-[color:var(--fg)]">
@@ -151,6 +151,26 @@ export default function Home() {
               style={{ fontFamily: "var(--font-jp-sans)" }}
             >
               単元
+            </span>
+          </span>
+          <span className="text-caption text-[color:var(--fg-soft)] tracking-wide">
+            →
+          </span>
+        </Link>
+
+        <Link
+          href="/mix"
+          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-8 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
+        >
+          <span className="flex items-baseline gap-3">
+            <span className="text-body font-medium text-[color:var(--fg)]">
+              종합 퀴즈
+            </span>
+            <span
+              className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
+              style={{ fontFamily: "var(--font-jp-sans)" }}
+            >
+              混合
             </span>
           </span>
           <span className="text-caption text-[color:var(--fg-soft)] tracking-wide">

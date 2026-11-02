@@ -15,7 +15,7 @@ test.describe("home — 단원 entry button", () => {
     // Regression: brand + 9 subject rows + heatmap + footer still visible.
     await expect(page.getByRole("heading", { name: "jikari", level: 1 })).toBeVisible();
     await expect(page.getByRole("link", { name: "공부" })).toHaveCount(8);
-    await expect(page.getByRole("link", { name: "퀴즈" })).toHaveCount(9);
+    await expect(page.getByRole("link", { name: /(?<!종합 )퀴즈/ })).toHaveCount(9);
     await expect(page.getByText("7 WEEKS")).toBeVisible();
 
     // 단원 entry — top of page, not in footer.

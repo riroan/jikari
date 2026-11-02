@@ -14,7 +14,7 @@ test.describe("home", () => {
 
     // Each study subject (8) should have a pair of 공부 / 퀴즈 links.
     const studyLinks = page.getByRole("link", { name: "공부" });
-    const quizLinks = page.getByRole("link", { name: "퀴즈" });
+    const quizLinks = page.getByRole("link", { name: /(?<!종합 )퀴즈/ });
     await expect(studyLinks).toHaveCount(8);
     await expect(quizLinks).toHaveCount(9); // 9 subjects: listening is quiz-only
 
@@ -23,7 +23,7 @@ test.describe("home", () => {
       "href",
       "/grammar?mode=study",
     );
-    await expect(page.getByRole("link", { name: "퀴즈" }).nth(6)).toHaveAttribute(
+    await expect(page.getByRole("link", { name: /(?<!종합 )퀴즈/ }).nth(6)).toHaveAttribute(
       "href",
       "/grammar",
     );
@@ -33,7 +33,7 @@ test.describe("home", () => {
       "href",
       "/expressions?mode=study",
     );
-    await expect(page.getByRole("link", { name: "퀴즈" }).nth(7)).toHaveAttribute(
+    await expect(page.getByRole("link", { name: /(?<!종합 )퀴즈/ }).nth(7)).toHaveAttribute(
       "href",
       "/expressions",
     );

@@ -1,4 +1,5 @@
 import type { ConjugationForm, VerbGroup } from "./types";
+import { BASIC_FORMS } from "./types";
 
 /**
  * Japanese verb conjugation rule engine.
@@ -331,3 +332,18 @@ export const FORM_LABELS_JP: Record<ConjugationForm, string> = {
   passive: "受身形",
   conditional: "仮定形",
 };
+
+/**
+ * Hybrid SRS key:
+ *   Basic 4 forms (ます/て/た/ない) share one bucket per verb ("basic").
+ *   Advanced 6 forms each get their own bucket per verb.
+ *
+ * Rationale: per-form SRS for basic forms explodes the daily due queue; they're
+ * closely related morphologically so holistic "basic conjugation 숙달" is the
+ * right unit. Advanced forms stand apart cognitively so each tracks on its own.
+ */
+export function srsCardId(verbId: string, form: ConjugationForm): string {
+  return (BASIC_FORMS as readonly ConjugationForm[]).includes(form)
+    ? `${verbId}:basic`
+    : `${verbId}:${form}`;
+}

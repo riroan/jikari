@@ -16,8 +16,8 @@ import {
  * 페이지에서: `run.record(id, correct, front, back)` 후 `if (!run.retrying) advance()`.
  * 덱이 RUN_LENGTH보다 짧으면 덱 길이만큼만 한 판. 카드 선택은 `run.retryId ?? deck[...]`, 요약은 `run.summary`가 있으면 렌더.
  */
-export function useQuizRun(deckLength = RUN_LENGTH) {
-  const length = Math.min(RUN_LENGTH, deckLength);
+export function useQuizRun(deckLength = RUN_LENGTH, maxLength = RUN_LENGTH) {
+  const length = Math.min(maxLength, deckLength);
   const [s, setS] = useState(initialRun);
   const summary: RunSummary | null = s.done ? summarize(s.answers) : null;
   return {
