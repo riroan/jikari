@@ -37,6 +37,7 @@ const SUBJECTS: ReadonlyArray<{
   { ko: "형용사", jp: "形容詞", base: "/adjective", dueKey: "adjective" },
   { ko: "문법", jp: "文法", base: "/grammar", dueKey: "grammar" },
   { ko: "일상표현", jp: "表現", base: "/expressions", dueKey: "expression" },
+  { ko: "듣기", jp: "聞き取り", base: "/listening", dueKey: "listening" },
 ];
 
 /** Reviews per day that fill the home progress line. */
@@ -232,7 +233,9 @@ function SubjectRow({
         )}
       </div>
       <div className="flex items-center gap-1 shrink-0">
-        <ActionLink href={`${base}?mode=study`} label="공부" />
+        {base !== "/listening" && (
+          <ActionLink href={`${base}?mode=study`} label="공부" />
+        )}
         <ActionLink href={base} label="퀴즈" />
       </div>
     </div>
