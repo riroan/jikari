@@ -3,18 +3,20 @@
 import { useMemo, useState } from "react";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
+import { ExpressionBack } from "@/components/ExpressionParts";
 import { SpeakButton } from "@/components/SpeakButton";
 import { useCardsStore } from "@/lib/cards-store";
 import { findExamples, getExampleIndex } from "@/lib/examples";
 import type {
   ChapterMember,
+  ExpressionCard,
   GrammarCard,
   KanjiCard,
   SentenceCard,
   VocabCard,
 } from "@/lib/types";
 
-type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard;
+type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard | ExpressionCard;
 const BLANK = "＿＿＿";
 
 /**
@@ -51,6 +53,10 @@ function speakText(mode: string, card: AnyCard): string | undefined {
   if (mode === "sentence") {
     const s = card as SentenceCard;
     return s.sentence.replace(BLANK, s.blank);
+  }
+  if (mode === "expression") {
+    const e = card as ExpressionCard;
+    return e.ruby ?? e.expression_jp;
   }
   return undefined;
 }
@@ -146,6 +152,8 @@ function Body({ mode, card }: { mode: string; card: AnyCard }) {
         </div>
       );
     }
+    case "expression":
+      return <ExpressionBack card={card as ExpressionCard} />;
     default:
       return null;
   }

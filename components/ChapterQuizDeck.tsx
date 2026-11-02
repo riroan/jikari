@@ -8,15 +8,17 @@ import { useQuizRun } from "@/lib/use-quiz-run";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { weightedShuffleIds } from "@/lib/deck";
+import { registerDifficulty } from "@/lib/rating";
 import type {
   ChapterMember,
+  ExpressionCard,
   GrammarCard,
   KanjiCard,
   SentenceCard,
   VocabCard,
 } from "@/lib/types";
 
-type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard;
+type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard | ExpressionCard;
 
 /**
  * /chapters/[id]?mode=quiz body — owns the per-session deck state
@@ -163,7 +165,15 @@ export function ChapterQuizDeck({
         typingThreshold={typingThreshold}
         onResolved={(srsMode, srsCardId, wasCorrect, answerMode) => {
           if (!run.retrying) {
-            review(srsMode, srsCardId, wasCorrect, answerMode);
+            review(
+              srsMode,
+              srsCardId,
+              wasCorrect,
+              answerMode,
+              srsMode === "expression"
+                ? registerDifficulty(current.card as ExpressionCard)
+                : undefined,
+            );
             recordQuizResult(srsMode === "grammar" ? "grammar" : srsMode, wasCorrect);
             setStats((s) =>
               wasCorrect
@@ -173,7 +183,9 @@ export function ChapterQuizDeck({
           }
           const c = current.card;
           const [front, back] =
-            "kanji" in c
+            "expression_jp" in c
+              ? [c.expression_jp, c.translation_ko]
+              : "kanji" in c
               ? [c.kanji, [...c.onReadings, ...c.kunReadings][0] ?? ""]
               : "word" in c
                 ? [c.word, c.koreanMeanings[0] ?? ""]

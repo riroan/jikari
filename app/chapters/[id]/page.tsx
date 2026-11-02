@@ -16,10 +16,12 @@ import {
   getVocab,
   getSentence,
   getGrammar,
+  getExpression,
 } from "@/lib/data";
 import type {
   CardMode,
   ChapterMember,
+  ExpressionCard,
   GrammarCard,
   KanjiCard,
   SentenceCard,
@@ -112,6 +114,8 @@ function ChapterDetailInner({ id }: { id: string }) {
           return useCardsStore.getState().sentenceById.has(cardId);
         case "grammar":
           return useCardsStore.getState().grammarById.has(cardId);
+        case "expression":
+          return useCardsStore.getState().expressionById.has(cardId);
         default:
           return false;
       }
@@ -166,7 +170,7 @@ function ChapterDetailInner({ id }: { id: string }) {
 }
 
 // ─── lookupCard ─────────────────────────────────────────────────────────────
-type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard;
+type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard | ExpressionCard;
 
 function lookupCard(m: ChapterMember): AnyCard | undefined {
   switch (m.mode) {
@@ -178,6 +182,8 @@ function lookupCard(m: ChapterMember): AnyCard | undefined {
       return getSentence(m.cardId);
     case "grammar":
       return getGrammar(m.cardId);
+    case "expression":
+      return getExpression(m.cardId);
     default:
       return undefined;
   }

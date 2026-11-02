@@ -5,13 +5,14 @@ import { intensityBg, ratioToIntensity } from "@/lib/intensity";
 import type {
   CardMode,
   ChapterMember,
+  ExpressionCard,
   GrammarCard,
   KanjiCard,
   SentenceCard,
   VocabCard,
 } from "@/lib/types";
 
-type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard;
+type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard | ExpressionCard;
 
 /**
  * /chapters/[id]?mode=overview body — mastery summary + intro + per-mode
@@ -114,6 +115,7 @@ export function ChapterOverview({
               ["kanji", "한자 / 漢字"],
               ["sentence", "문장·조사 / 文章·助詞"],
               ["grammar", "문법 / 文法"],
+              ["expression", "표현 / 表現"],
             ] as const
           )
             .filter(([m]) => counts[m] > 0)
@@ -218,6 +220,10 @@ function PreviewRows({ mode, cards }: { mode: CardMode; cards: AnyCard[] }) {
           ko = v.koreanMeanings.join(", ");
         } else if (mode === "sentence") {
           jp = (card as SentenceCard).sentence;
+        } else if (mode === "expression") {
+          const e = card as ExpressionCard;
+          jp = e.expression_jp;
+          ko = e.translation_ko;
         } else {
           const g = card as GrammarCard;
           jp = g.type === "pattern" ? g.pattern.replace(/\{([^|}]*)\|[^}]*\}/g, "$1") : `${g.particles[0]} vs ${g.particles[1]}`;

@@ -34,6 +34,7 @@ interface CardIndex {
   /** category="particle" sentences */
   particle: Array<{ id: string; blank: string; sentence: string }>;
   grammar: Set<string>;
+  expression: Set<string>;
 }
 
 async function loadCardIndex(conn: mysql.Connection): Promise<CardIndex> {
@@ -48,6 +49,10 @@ async function loadCardIndex(conn: mysql.Connection): Promise<CardIndex> {
   );
   const [grammarRows] = await conn.query<mysql.RowDataPacket[]>(
     "SELECT id FROM grammar_cards",
+  );
+
+  const [exprRows] = await conn.query<mysql.RowDataPacket[]>(
+    "SELECT id FROM expression_cards",
   );
 
   const vocab = new Map<string, { id: string; word: string; koreanMeanings: string[] }>();
@@ -96,11 +101,13 @@ async function loadCardIndex(conn: mysql.Connection): Promise<CardIndex> {
 
   const grammar = new Set<string>(grammarRows.map((r) => r.id as string));
 
+  const expression = new Set<string>(exprRows.map((r) => r.id as string));
+
   console.log(
-    `loaded: ${vocab.size} vocab, ${kanji.size} kanji, ${sentence.length} sentence(vocab), ${particle.length} sentence(particle), ${grammar.size} grammar`,
+    `loaded: ${vocab.size} vocab, ${kanji.size} kanji, ${sentence.length} sentence(vocab), ${particle.length} sentence(particle), ${grammar.size} grammar, ${expression.size} expression`,
   );
 
-  return { vocab, kanji, sentence, particle, grammar };
+  return { vocab, kanji, sentence, particle, grammar, expression };
 }
 
 interface MatchResult {
@@ -173,6 +180,11 @@ function matchChapter(def: ChapterDef, idx: CardIndex): MatchResult {
     } else {
       unmatchedGrammar.push(gid);
     }
+  }
+
+  for (const eid of m.expressionIds ?? []) {
+    if (idx.expression.has(eid)) add("expression", eid);
+    else unmatchedGrammar.push(`expression:${eid}`);
   }
 
   return {

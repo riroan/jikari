@@ -1,6 +1,7 @@
 "use client";
 
 import { QuizCard } from "@/components/QuizCard";
+import { ExpressionQuiz } from "@/components/ExpressionParts";
 import { RubyText } from "@/components/Furigana";
 import {
   generateGrammarQuizChoices,
@@ -8,10 +9,12 @@ import {
   generateSentenceChoices,
   generateVocabChoices,
 } from "@/lib/data";
+import { chooseDirection } from "@/lib/data";
 import { pickMode } from "@/lib/srs";
 import { normalizeJapanese } from "@/lib/normalize";
 import type {
   ChapterMember,
+  ExpressionCard,
   GrammarCard,
   KanjiCard,
   SentenceCard,
@@ -31,7 +34,7 @@ import type {
 
 export interface ChapterQuizContext {
   member: ChapterMember;
-  card: KanjiCard | VocabCard | SentenceCard | GrammarCard;
+  card: KanjiCard | VocabCard | SentenceCard | GrammarCard | ExpressionCard;
   /** Stable per-card seed so question form is consistent within a session. */
   seed: number;
   /** SRS box for this card under its native (subtyped) key. */
@@ -40,7 +43,7 @@ export interface ChapterQuizContext {
   typingThreshold: 0 | 2 | 3 | 4 | 5;
   /** Called after feedback. Args: (mode-string-for-srs, srsCardId, wasCorrect, answerMode). */
   onResolved: (
-    mode: "kanji" | "vocab" | "sentence" | "grammar",
+    mode: "kanji" | "vocab" | "sentence" | "grammar" | "expression",
     srsCardId: string,
     wasCorrect: boolean,
     answerMode: "choice" | "typed",
@@ -58,6 +61,17 @@ export function ChapterQuizCard(ctx: ChapterQuizContext) {
       return <SentenceSlot {...ctx} card={ctx.card as SentenceCard} />;
     case "grammar":
       return <GrammarSlot {...ctx} card={ctx.card as GrammarCard} />;
+    case "expression": {
+      const c = ctx.card as ExpressionCard;
+      return (
+        <ExpressionQuiz
+          card={c}
+          direction={chooseDirection(ctx.box, c.id, ctx.seed)}
+          seed={ctx.seed}
+          onResolved={(ok) => ctx.onResolved("expression", c.id, ok, "choice")}
+        />
+      );
+    }
     default:
       // conjugation/adjective shouldn't appear in chapter_members.
       return null;

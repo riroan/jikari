@@ -36,6 +36,7 @@ export function ChapterMastery({
   const vocabById = useCardsStore((s) => s.vocabById);
   const sentenceById = useCardsStore((s) => s.sentenceById);
   const grammarById = useCardsStore((s) => s.grammarById);
+  const expressionById = useCardsStore((s) => s.expressionById);
   const learningStates = useStore((s) => s.learningStates);
   const now = useClientNow();
 
@@ -59,9 +60,7 @@ export function ChapterMastery({
           // chapter_members shouldn't reference these directly.
           return false;
         case "expression":
-          // expression cards are not yet in chapter_members (v1 scope). When
-          // chapter integration lands, add expressionById lookup here.
-          return false;
+          return expressionById.has(cardId);
       }
     };
 
@@ -108,6 +107,7 @@ export function ChapterMastery({
     vocabById,
     sentenceById,
     grammarById,
+    expressionById,
     learningStates,
     now,
   ]);
