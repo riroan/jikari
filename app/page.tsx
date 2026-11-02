@@ -11,6 +11,7 @@ import { currentStreak as computeStreak, toLocalDateKey } from "@/lib/heatmap";
 import { topDueKey, totalDue } from "@/lib/due";
 import { useDueByKey } from "@/lib/use-due-by-key";
 import { SUBJECTS } from "@/lib/subjects";
+import { DailyPhrase } from "@/components/DailyPhrase";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -133,6 +134,8 @@ export default function Home() {
             />
           ))}
         </section>
+
+        {hydrated && <DailyPhrase dateKey={toLocalDateKey(now)} />}
 
         {/* Heatmap */}
         <section className="mb-8">
