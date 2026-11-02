@@ -212,6 +212,9 @@ export function QuizCard({
           <button
             type="button"
             onClick={advance}
+            // 가로 모드(높이 ~400px)에선 정답 면이 길어 이 버튼이 화면 밖으로
+            // 밀린다. 보이는 상태면 "nearest"는 아무것도 하지 않는다.
+            ref={(el) => el?.scrollIntoView?.({ block: "nearest" })}
             className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
             style={{ minHeight: 44 }}
             aria-label="다음 문제"
