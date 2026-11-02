@@ -115,7 +115,8 @@ export default function Home() {
           </Link>
         )}
 
-        {hydrated && !nextReview && todayCount === 0 && (
+        {hydrated && !nextReview && todayCount === 0 &&
+          Object.keys(learningStates).length === 0 && (
           <Link
             href="/vocab?mode=study"
             className="flex items-center justify-between gap-3 bg-[color:var(--accent-progress)] text-[color:var(--on-progress)] rounded-sm px-4 py-4 mb-3 min-h-[56px] active:opacity-80 transition-opacity"
