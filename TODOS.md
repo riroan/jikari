@@ -1,5 +1,42 @@
 # TODOS
 
+## 2026-11-02 작업 후 follow-ups
+
+### 카드별 오답 횟수 (틀린 카드 반복 파악)
+- **What:** 세션 요약은 run 단위 틀린 목록만 보여준다. 카드별 누적 오답 수는 `quiz_stats`에 컬럼이 없어 저장되지 않는다.
+- **Trigger:** "같은 카드를 계속 틀린다"를 `/progress`에서 보고 싶을 때. 그때 `quiz_stats` 컬럼 + 마이그레이션 추가.
+
+### 한자 TTS 독음 규칙
+- **What:** 한자 카드 발음 시 어떤 독음을 읽을지 규칙이 없다 (음독/훈독 중 무엇을 기본으로 할지, 단어 맥락 우선 여부).
+- **Trigger:** 한자 발음이 어색하게 들리는 카드가 2개 이상 나올 때.
+
+### /review에 활용·형용사·조사·일상표현 미포함
+- **What:** `/review`는 kanji/vocab/sentence/grammar만 섞는다. conjugation·adjective·particle·expressions 카드는 각 과목 페이지에서만 복습된다.
+- **Trigger:** 복습 한 번에 전 과목을 보고 싶다고 느낄 때.
+
+### 서비스 워커 / 오프라인
+- **What:** PWA 설치는 되지만 서비스 워커가 없어 오프라인에서 앱이 열리지 않는다.
+- **Trigger:** 지하철 등 오프라인 사용이 필요해질 때.
+
+### Pretendard 로드 방식
+- **What:** 현재 jsDelivr CDN의 dynamic subset을 쓴다 (`globals.css` 첫 줄 import 제거됨, 768af93). DESIGN.md § 2의 "full weight set 로드" 문구와 다르다. self-host 여부 미정.
+- **Trigger:** 한글 글리프가 빠져 보이거나 CDN 장애가 생길 때.
+
+### DESIGN.md `--accent-clay` 값 불일치
+- **What:** DESIGN.md는 `#B85840`, 코드(`globals.css`)는 `#A8503A` (대비 개선, 85c47e5). 문서 쪽을 코드 값에 맞출지 결정 필요.
+- **Trigger:** 다음 디자인 문서 정리 때.
+
+### 검색 인덱스 메모리
+- **What:** `lib/search.ts`가 모듈 레벨에서 인덱스를 캐시한다 (raw + 히라가나 키). 카드 수가 늘면 메모리·첫 검색 지연을 확인해야 한다.
+- **Trigger:** 카드 1500장 돌파 (`level filter` 항목과 같은 기준) 또는 검색이 체감상 느릴 때.
+
+### 실기기 점검 목록 (iPhone Safari / 홈 화면 PWA)
+- [ ] PWA 설치: 홈 화면 추가 후 standalone으로 열리는지, 아이콘·이름 정상인지
+- [ ] 키보드 vs 確認: 타이핑 입력 시 iOS 키보드에 가려지지 않고 제출 버튼이 보이는지
+- [ ] ja-JP 음성: 기기에 일본어 음성이 있는지 (없으면 발음 버튼이 무음)
+- [ ] 스와이프: 학습 카드 좌우 스와이프 넘김이 스크롤과 충돌하지 않는지
+- [ ] 공유 시트 내보내기: standalone PWA에서 설정의 백업 내보내기가 공유 시트로 열리는지
+
 ## 챕터 v1.1 (chapters 2주 검증 후 재평가, 2026-04-19)
 
 ### ~~공부 모드 버튼 + 동작~~ ✓ DONE (2026-11-02)

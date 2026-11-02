@@ -53,7 +53,6 @@
 - ❌ Inter, Roboto 금지 (AI 슬롭의 시작)
 - ✅ Google Fonts 무료 (`Noto Serif JP`, `Noto Sans JP`), Pretendard는 jsDelivr CDN
 - ✅ 서브셋팅은 v1.1로 미룸. v1은 full weight set 로드.
-
 ### 타입 스케일
 
 ```
@@ -71,6 +70,7 @@ caption       13px    Pretendard 500      letter-spacing: 0.25em (네비 힌트�
 - **Body 최소 16px** (접근성, 모바일 가독성)
 - **Line-height 생성 여유롭게** — 1.5-1.7 기본
 - **올캡 라벨에는 letter-spacing 0.15em+** — 밀도 낮추기
+- **섹션 라벨은 전부 올캡** — `text-caption tracking-label uppercase` + `--fg-faint`. 페이지마다 따로 스타일을 만들지 않는다.
 - **숫자는 tabular-nums** — 줄 맞춤
 - **`font-feature-settings: 'ss01'`** Pretendard에 사용 — 대체 글리프
 
@@ -92,6 +92,7 @@ caption       13px    Pretendard 500      letter-spacing: 0.25em (네비 힌트�
   --accent-clay: #B85840;  /* 한국어 악센트 */
   --accent-sage: #7A8F6E;  /* heatmap 활성 */
   --accent-progress-text: #586C4F;  /* 작은 텍스트용 sage (paper 대비 5.0:1, AA). 채움/테두리는 sage, 글자는 이 토큰. 다크는 gold */
+  --on-progress: var(--ink);  /* sage 채움 위 글자 (AA). 다크는 --bg */
   --line:        rgba(26, 25, 21, 0.08);  /* 구분선 */
 }
 ```
@@ -213,6 +214,16 @@ xxl  56-80px  메이저 구분
 - 좌측: 한국어 (`17px 500`) + 일본어 서브 (`13px 400 faint`)
 - 우측: 오늘 큐 카운트 (tabular nums)
 - 호버 배경: `--paper-deep` 또는 `--bg-soft`
+
+### Hairline 블록 (정보 블록·행)
+
+- 컬러 좌측 보더 대신 상단 `border-t` + `--line` 헤어라인으로 구분한다 (`DailyPhrase`, particle 설명, 챕터 CARDS 미리보기 행).
+- 글자는 본문 토큰 그대로. 박스·배경을 더하지 않는다.
+
+### SessionSummary (퀴즈 한 판 끝)
+
+- 점수는 `--font-jp-serif`. 정답률·최장 연속·`틀린 것 N` 목록과 틀린 것만 재시도 버튼.
+- `tabIndex=-1` 프로그램 포커스 컨테이너라 포커스 링 없음 (`globals.css`의 `[tabindex="-1"]:focus-visible`).
 
 ### 금지 컴포넌트
 
