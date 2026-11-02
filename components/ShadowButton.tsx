@@ -18,6 +18,8 @@ export function ShadowButton() {
   const stream = useRef<MediaStream | null>(null);
   const url = useRef<string | null>(null);
   const audio = useRef<HTMLAudioElement | null>(null);
+  const alive = useRef(true);
+  const busy = useRef(false);
 
   const releaseStream = () => {
     stream.current?.getTracks().forEach((t) => t.stop());
@@ -30,40 +32,52 @@ export function ShadowButton() {
     url.current = null;
   }, []);
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    alive.current = true; // StrictMode re-runs effects
+    return () => {
+      alive.current = false;
       if (rec.current && rec.current.state !== "inactive") {
         rec.current.onstop = null;
         rec.current.stop();
       }
       stream.current?.getTracks().forEach((t) => t.stop());
       releaseAudio();
-    },
-    [releaseAudio],
-  );
+    };
+  }, [releaseAudio]);
 
   async function start() {
+    if (busy.current) return;
+    busy.current = true;
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+      busy.current = false;
       dispatch({ type: "error", reason: "unsupported" });
       return;
     }
     window.speechSynthesis?.cancel();
     releaseAudio();
+    let s: MediaStream;
     try {
       // Must run inside the tap handler (iOS).
-      stream.current = await navigator.mediaDevices.getUserMedia({ audio: true });
+      s = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (e) {
+      busy.current = false;
       const name = (e as DOMException).name;
       dispatch({ type: "error", reason: name === "NotAllowedError" || name === "SecurityError" ? "denied" : "failed" });
       return;
     }
+    if (!alive.current) {
+      s.getTracks().forEach((t) => t.stop());
+      return;
+    }
+    stream.current = s;
     try {
       const mimeType = pickMimeType((t) => MediaRecorder.isTypeSupported(t));
-      const r = new MediaRecorder(stream.current, mimeType ? { mimeType } : undefined);
+      const r = new MediaRecorder(s, mimeType ? { mimeType } : undefined);
       const chunks: Blob[] = [];
       r.ondataavailable = (ev) => ev.data.size && chunks.push(ev.data);
       r.onstop = () => {
         releaseStream();
+        busy.current = false;
         if (!chunks.length) return dispatch({ type: "error", reason: "failed" });
         url.current = URL.createObjectURL(new Blob(chunks, { type: r.mimeType }));
         dispatch({ type: "stop" });
@@ -72,6 +86,7 @@ export function ShadowButton() {
       r.start();
       dispatch({ type: "start" });
     } catch {
+      busy.current = false;
       releaseStream();
       dispatch({ type: "error", reason: "failed" });
     }
@@ -98,8 +113,8 @@ export function ShadowButton() {
       <div className="inline-flex items-center">
         <button
           type="button"
-          onClick={() => (recording ? rec.current?.stop() : start())}
-          aria-label={recording ? "녹음 멈추기" : "따라 말하기"}
+          onClick={() => (recording ? rec.current?.state === "recording" && rec.current.stop() : start())}
+          aria-label="따라 말하기"
           aria-pressed={recording}
           className={box + icon}
         >

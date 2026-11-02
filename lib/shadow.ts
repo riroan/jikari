@@ -47,7 +47,7 @@ export function shadowMessage(s: ShadowState): string {
     case "recording":
       return "녹음 중…";
     case "recorded":
-      return "다시 들어보기";
+      return "녹음됨";
     case "playing":
       return "재생 중…";
     case "error":
