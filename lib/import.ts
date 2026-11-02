@@ -56,7 +56,7 @@ export { persistedStateSchema };
 
 export type ImportResult =
   | { ok: true; state: PersistedState }
-  | { ok: false; error: string; details?: unknown };
+  | { ok: false; error: string; message: string; details?: unknown };
 
 /**
  * Parse + validate a JSON string into a PersistedState.
@@ -67,7 +67,12 @@ export function parseBackup(json: string): ImportResult {
   try {
     parsed = JSON.parse(json);
   } catch (e) {
-    return { ok: false, error: "JSON parse failed", details: String(e) };
+    return {
+      ok: false,
+      error: "JSON parse failed",
+      message: "JSON 형식이 아닙니다. jikari에서 내보낸 백업 파일인지 확인하세요.",
+      details: String(e),
+    };
   }
 
   const result = persistedStateSchema.safeParse(parsed);
@@ -75,6 +80,7 @@ export function parseBackup(json: string): ImportResult {
     return {
       ok: false,
       error: "Schema validation failed",
+      message: "백업 파일의 형식이 올바르지 않습니다. 파일이 손상되었거나 jikari 백업이 아닙니다.",
       details: result.error.issues,
     };
   }
@@ -84,8 +90,20 @@ export function parseBackup(json: string): ImportResult {
     return {
       ok: false,
       error: `Backup schema v${result.data.schemaVersion} is newer than app v${SCHEMA_VERSION}`,
+      message: "이 백업은 더 새로운 버전의 jikari에서 만들어졌습니다. 앱을 업데이트한 뒤 다시 시도하세요.",
     };
   }
 
   return { ok: true, state: result.data };
+}
+
+/** Counts shown in the restore preview so the user sees what will be overwritten. */
+export function summarizeBackup(s: PersistedState) {
+  return {
+    cards: Object.keys(s.learningStates).length,
+    streak: s.currentStreak,
+    studyDays: Object.keys(s.heatmap).length,
+    lastActiveAt: s.lastActiveAt,
+    dailyGoal: s.settings.dailyGoal,
+  };
 }

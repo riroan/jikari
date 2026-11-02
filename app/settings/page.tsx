@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
-import { parseBackup } from "@/lib/import";
+import { parseBackup, summarizeBackup } from "@/lib/import";
+import type { PersistedState } from "@/lib/types";
 import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
 import { useClientNow } from "@/lib/use-is-client";
 
@@ -40,6 +41,7 @@ export default function SettingsPage() {
   const updateSettings = useStore((s) => s.updateSettings);
 
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [pending, setPending] = useState<PersistedState | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const resetDialogRef = useRef<HTMLDialogElement>(null);
   const now = useClientNow();
@@ -49,23 +51,38 @@ export default function SettingsPage() {
     typeof window === "undefined" ? null : readLastBackupMs(),
   );
 
-  function handleExport() {
+  async function handleExport() {
     try {
       const json = exportState();
       const state = useStore.getState();
       const cardCount = Object.keys(state.learningStates).length;
       const streak = state.currentStreak;
-      const blob = new Blob([json], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
       const exportedAt = Date.now();
       const date = new Date(exportedAt).toISOString().slice(0, 10);
       // Filename embeds card count so a folder of weekly backups is
       // sortable by snapshot size at a glance.
-      a.href = url;
-      a.download = `jikari-backup-${date}-${cardCount}cards.json`;
-      a.click();
-      URL.revokeObjectURL(url);
+      const name = `jikari-backup-${date}-${cardCount}cards.json`;
+      const file = new File([json], name, { type: "application/json" });
+      // Standalone iOS PWA: blob downloads are flaky, so use the share sheet
+      // ("파일에 저장") when it can carry a File; otherwise fall back to <a download>.
+      const standalone =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        (navigator as Navigator & { standalone?: boolean }).standalone === true;
+      if (standalone && navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: name });
+        } catch (e) {
+          if (e instanceof DOMException && e.name === "AbortError") return; // user closed the sheet
+          throw e;
+        }
+      } else {
+        const url = URL.createObjectURL(file);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = name;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      }
       try {
         localStorage.setItem(BACKUP_TIMESTAMP_KEY, String(exportedAt));
       } catch {
@@ -74,9 +91,7 @@ export default function SettingsPage() {
       setLastBackupMs(exportedAt);
       setMessage({
         kind: "ok",
-        text: `백업 다운로드 완료 — ${cardCount}장${
-          streak > 0 ? `, 연속 ${streak}일` : ""
-        }.`,
+        text: `백업 완료 — ${cardCount}장${streak > 0 ? `, 연속 ${streak}일` : ""}.`,
       });
     } catch (e) {
       setMessage({ kind: "err", text: `내보내기 실패: ${String(e)}` });
@@ -85,21 +100,26 @@ export default function SettingsPage() {
 
   async function handleImport(file: File) {
     try {
-      const text = await file.text();
-      const result = parseBackup(text);
+      const result = parseBackup(await file.text());
       if (!result.ok) {
-        setMessage({ kind: "err", text: `가져오기 실패: ${result.error}` });
+        setMessage({ kind: "err", text: `가져오기 실패: ${result.message}` });
         return;
       }
-      replaceAll(result.state);
-      const cardCount = Object.keys(result.state.learningStates).length;
-      setMessage({
-        kind: "ok",
-        text: `복원 완료 — ${cardCount}장.`,
-      });
-    } catch (e) {
-      setMessage({ kind: "err", text: `가져오기 실패: ${String(e)}` });
+      setMessage(null);
+      setPending(result.state);
+    } catch {
+      setMessage({ kind: "err", text: "가져오기 실패: 파일을 읽을 수 없습니다." });
     }
+  }
+
+  function confirmRestore() {
+    if (!pending) return;
+    replaceAll(pending);
+    setMessage({
+      kind: "ok",
+      text: `복원 완료 — ${Object.keys(pending.learningStates).length}장.`,
+    });
+    setPending(null);
   }
 
   function openResetDialog() {
@@ -124,8 +144,9 @@ export default function SettingsPage() {
         </p>
         <div className="flex flex-col gap-2">
           <button
-            onClick={handleExport}
-            className="px-4 py-3 text-meta text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            onClick={() => void handleExport()}
+            style={{ minHeight: 44 }}
+            className="px-4 py-3 text-body text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           >
             JSON으로 내보내기
           </button>
@@ -142,7 +163,8 @@ export default function SettingsPage() {
           />
           <button
             onClick={() => fileRef.current?.click()}
-            className="px-4 py-3 text-meta text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            style={{ minHeight: 44 }}
+            className="px-4 py-3 text-body text-left border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           >
             JSON에서 불러오기
           </button>
@@ -260,6 +282,15 @@ export default function SettingsPage() {
         </button>
       </section>
 
+      {pending && (
+        <RestoreDialog
+          incoming={pending}
+          current={useStore.getState()}
+          onConfirm={confirmRestore}
+          onCancel={() => setPending(null)}
+        />
+      )}
+
       <ResetDialog
         ref={resetDialogRef}
         onConfirm={confirmReset}
@@ -283,6 +314,93 @@ export default function SettingsPage() {
         </div>
       )}
     </ModePageShell>
+  );
+}
+
+function fmtDate(ms: number) {
+  return ms > 0 ? new Date(ms).toLocaleDateString("ko-KR", { year: "2-digit", month: "numeric", day: "numeric" }) : "기록 없음";
+}
+
+/** Preview + explicit confirm before a backup overwrites current progress. */
+function RestoreDialog({
+  incoming,
+  current,
+  onConfirm,
+  onCancel,
+}: {
+  incoming: PersistedState;
+  current: PersistedState;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const d = ref.current;
+    if (d && !d.open) d.showModal();
+  }, []);
+  const a = summarizeBackup(current);
+  const b = summarizeBackup(incoming);
+  const rows: [string, string, string][] = [
+    ["카드", `${a.cards}장`, `${b.cards}장`],
+    ["연속 일수", `${a.streak}일`, `${b.streak}일`],
+    ["학습한 날", `${a.studyDays}일`, `${b.studyDays}일`],
+    ["마지막 학습", fmtDate(a.lastActiveAt), fmtDate(b.lastActiveAt)],
+    ["하루 목표", `${a.dailyGoal}`, `${b.dailyGoal}`],
+  ];
+  return (
+    <dialog
+      ref={ref}
+      aria-labelledby="restore-dialog-title"
+      className="bg-[color:var(--bg)] text-[color:var(--fg)] border border-[color:var(--line)] rounded-sm p-6 m-auto max-w-[340px] w-[calc(100%-2rem)] backdrop:bg-black/40"
+      onCancel={onCancel}
+    >
+      <h2
+        id="restore-dialog-title"
+        className="text-h2 font-semibold mb-3"
+        style={{ fontFamily: "var(--font-jp-serif)" }}
+      >
+        백업 복원
+      </h2>
+      <p className="text-body text-[color:var(--fg-soft)] leading-relaxed mb-4">
+        현재 학습 기록이 이 백업으로 덮어써집니다.
+      </p>
+      <table className="w-full text-body tabular-nums mb-5">
+        <thead>
+          <tr className="text-[color:var(--fg-faint)]">
+            <th className="text-left font-normal py-1" />
+            <th className="text-right font-normal py-1">현재</th>
+            <th className="text-right font-normal py-1">백업</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([k, x, y]) => (
+            <tr key={k}>
+              <td className="py-1 text-[color:var(--fg-soft)]">{k}</td>
+              <td className="py-1 text-right">{x}</td>
+              <td className="py-1 text-right">{y}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="flex justify-end gap-2">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 text-body text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+          style={{ minHeight: 44 }}
+        >
+          취소
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          className="px-4 py-2 text-body text-[color:var(--bg)] bg-[color:var(--accent-korean)] rounded-sm hover:opacity-90"
+          style={{ minHeight: 44 }}
+        >
+          덮어쓰기
+        </button>
+      </div>
+    </dialog>
   );
 }
 

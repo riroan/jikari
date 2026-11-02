@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseBackup } from "@/lib/import";
+import { parseBackup, summarizeBackup } from "@/lib/import";
 import type { PersistedState } from "@/lib/types";
 import { SCHEMA_VERSION } from "@/lib/types";
 
@@ -159,4 +159,28 @@ describe("parseBackup", () => {
     expect(result.ok).toBe(true);
   });
 
+  it("defaults dailyGoal to 20 on a backup that predates it", () => {
+    const { dailyGoal: _g, ...oldSettings } = validState.settings;
+    const result = parseBackup(JSON.stringify({ ...validState, settings: oldSettings }));
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.state.settings.dailyGoal).toBe(20);
+  });
+
+  it("round-trips export -> import including dailyGoal", () => {
+    const state = { ...validState, settings: { ...validState.settings, dailyGoal: 50 as const } };
+    const result = parseBackup(JSON.stringify(state, null, 2));
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.state).toEqual(state);
+  });
+
+  it("returns Korean messages on failure", () => {
+    const r = parseBackup("{nope");
+    expect(!r.ok && /[가-힣]/.test(r.message)).toBe(true);
+  });
+
+  it("summarizes counts for the restore preview", () => {
+    expect(summarizeBackup(validState)).toEqual({
+      cards: 1, streak: 3, studyDays: 1, lastActiveAt: 1700000000000, dailyGoal: 20,
+    });
+  });
 });
