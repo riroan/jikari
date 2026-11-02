@@ -94,4 +94,39 @@ describe("remoteStorage", () => {
     await remoteStorage.getItem("jikari");
     expect(getProgressLoadFailed()).toBe(true);
   });
+
+  async function loaded() {
+    fetchMock.mockResolvedValueOnce(Response.json({ schemaVersion: 1 }));
+    await remoteStorage.getItem("jikari");
+  }
+
+  test("영구 4xx는 재시도하지 않고 버린다 (status: failed)", async () => {
+    await loaded();
+    fetchMock.mockResolvedValue(new Response("bad", { status: 400 }));
+    remoteStorage.setItem("jikari", STATE);
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(putCalls(fetchMock)).toHaveLength(1);
+    expect(getSyncStatus()).toBe("failed");
+  });
+
+  test("429는 재시도 가능하다", async () => {
+    await loaded();
+    fetchMock.mockResolvedValue(new Response("slow", { status: 429 }));
+    remoteStorage.setItem("jikari", STATE);
+    await vi.advanceTimersByTimeAsync(6000);
+    expect(putCalls(fetchMock).length).toBeGreaterThan(1);
+  });
+
+  test("장애 중 setItem이 backoff를 500ms로 되돌리지 않는다", async () => {
+    await loaded();
+    fetchMock.mockRejectedValue(new Error("down"));
+    remoteStorage.setItem("jikari", STATE);
+    await vi.advanceTimersByTimeAsync(600); // first PUT fails -> 2s backoff
+    expect(putCalls(fetchMock)).toHaveLength(1);
+    remoteStorage.setItem("jikari", STATE);
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(putCalls(fetchMock)).toHaveLength(1);
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(putCalls(fetchMock)).toHaveLength(2);
+  });
 });

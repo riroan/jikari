@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { getSyncStatus, subscribeSync } from "@/lib/remote-storage";
 
-const TEXT = { pending: "저장 대기 중…", offline: "오프라인" } as const;
+const TEXT = { pending: "저장 대기 중…", offline: "오프라인", failed: "저장 실패" } as const;
 
 /** Quiet one-line save status, pinned to the bottom edge. Renders nothing when everything is saved. */
 export function SyncStatus() {

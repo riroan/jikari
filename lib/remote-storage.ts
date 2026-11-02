@@ -8,6 +8,8 @@ let pending: string | null = null;
 let inFlight = false;
 let failures = 0;
 let loadFailed = false;
+/** Last PUT was rejected permanently (4xx); cleared by the next write. */
+let saveFailed = false;
 /**
  * PUT replaces the whole server state (DELETE + INSERT). If the initial GET
  * failed, the store is running on its empty defaults, and saving that would
@@ -23,10 +25,11 @@ export function subscribeSync(cb: () => void) {
   listeners.add(cb);
   return () => void listeners.delete(cb);
 }
-export type SyncStatus = "idle" | "pending" | "offline";
+export type SyncStatus = "idle" | "pending" | "offline" | "failed";
 export function getSyncStatus(): SyncStatus {
   if (typeof navigator !== "undefined" && navigator.onLine === false) return "offline";
-  return pending != null || inFlight ? "pending" : "idle";
+  if (pending != null || inFlight) return "pending";
+  return saveFailed ? "failed" : "idle";
 }
 /** True when the initial progress GET failed (store is on empty defaults, saving is blocked). */
 export function getProgressLoadFailed() {
@@ -41,6 +44,7 @@ export function __resetRemoteStorageForTests() {
   inFlight = false;
   failures = 0;
   loadFailed = false;
+  saveFailed = false;
   loaded = false;
 }
 
@@ -63,8 +67,18 @@ async function flush() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(parsed.state),
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      const retryable = res.status < 400 || res.status >= 500 || [401, 403, 408, 429].includes(res.status);
+      if (retryable) throw new Error(`HTTP ${res.status}`);
+      // Permanent rejection: retrying the same payload can never succeed. Drop it.
+      console.error(`[remote-storage] PUT rejected (HTTP ${res.status}), dropping payload`);
+      saveFailed = true;
+      failures = 0;
+      if (pending != null) schedule(0);
+      return;
+    }
     failures = 0;
+    saveFailed = false;
     if (pending != null) schedule(0); // newer state arrived mid-flight
   } catch (err) {
     console.error("[remote-storage] PUT failed, will retry:", err);
@@ -111,7 +125,8 @@ export const remoteStorage: StateStorage = {
       return;
     }
     pending = value;
-    schedule(500);
+    saveFailed = false;
+    if (failures === 0) schedule(500); // during an outage keep the backoff timer
     emit();
   },
   removeItem: async (_name) => {
