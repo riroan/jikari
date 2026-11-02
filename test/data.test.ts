@@ -3,6 +3,9 @@ import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { validate as validateExpression } from "../scripts/add-expression";
 import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
+import { conjugate } from "@/lib/conjugation";
+import { conjugateAdj } from "@/lib/adjective";
+import { ALL_CONJUGATION_FORMS } from "@/lib/types";
 import {
   centerTell,
   chooseDirection,
@@ -528,6 +531,81 @@ describe("expression seeds", () => {
         if (seg.kind === "ruby") {
           expect(seg.furigana, `${c.id} ${seg.base}`).toMatch(/^[\u3041-\u309f\u30fc]+$/);
         }
+      }
+    }
+  });
+});
+
+describe("vocab seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const cards = readdirSync(dir)
+    .filter((f) => f.startsWith("vocab-") && f.endsWith(".json"))
+    .flatMap((f) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as VocabCard[]);
+
+  const KANA = /^[\u3041-\u309f\u30a0-\u30ff]+$/;
+
+  // ruby의 후리가나로 base를 치환하면 reading과 같아야 한다 — 오타(예: たべる→たへる)를
+  // 막는다. 카드 앞면의 후리가나와 정답 reading이 따로 놀면 안 된다.
+  test("ruby가 word·reading과 일치하고 reading은 가나뿐이다", () => {
+    for (const c of cards) {
+      expect(c.reading, `${c.id} reading`).toMatch(KANA);
+      if (!c.ruby) continue;
+      const segs = parseMarkup(c.ruby);
+      expect(stripMarkup(segs), `${c.id} ruby→word`).toBe(c.word);
+      const read = segs
+        .map((g) => (g.kind === "ruby" ? g.furigana : g.kind === "text" ? g.text : ""))
+        .join("");
+      expect(read, `${c.id} ruby→reading`).toBe(c.reading);
+    }
+  });
+
+  // verbGroup/adjGroup이 틀리면 활용 퀴즈가 틀린 정답을 낸다. 엔진이 던지지 않고,
+  // 기본형·마스형이 말이 되는지 본다.
+  test("verbGroup은 활용 엔진을 통과한다", () => {
+    for (const c of cards) {
+      if (!c.verbGroup || c.verbGroup === "not_verb") continue;
+      for (const form of ALL_CONJUGATION_FORMS) {
+        expect(() => conjugate(c.word, c.verbGroup!, form), `${c.id} ${form}`).not.toThrow();
+      }
+    }
+  });
+
+  // る로 끝나는 五段(帰る・入る・走る・切る)은 一段처럼 보여 그룹을 잘못 넣기 쉽다.
+  // 시드의 verbGroup으로 활용한 결과가 실제 일본어와 같은지 직접 대조한다.
+  test.each([
+    ["帰る", "te", "帰って"],
+    ["入る", "ta", "入った"],
+    ["走る", "nai", "走らない"],
+    ["切る", "masu", "切ります"],
+    ["起きる", "te", "起きて"],
+    ["見る", "nai", "見ない"],
+    ["借りる", "ta", "借りた"],
+    ["書く", "te", "書いて"],
+    ["飲む", "te", "飲んで"],
+    ["買う", "nai", "買わない"],
+    ["話す", "ta", "話した"],
+    ["来る", "te", "来て"],
+    ["する", "nai", "しない"],
+    ["散歩する", "masu", "散歩します"],
+  ] as const)("%s의 %s형은 %s", (word, form, expected) => {
+    const card = cards.find((c) => c.word === word);
+    expect(card, `${word} 시드 없음`).toBeDefined();
+    expect(conjugate(word, card!.verbGroup!, form)).toBe(expected);
+  });
+
+  test("그룹이 정해진 카드는 한쪽 품사뿐이다", () => {
+    for (const c of cards) {
+      const isVerb = !!c.verbGroup && c.verbGroup !== "not_verb";
+      const isAdj = !!c.adjGroup && c.adjGroup !== "not_adj";
+      expect(isVerb && isAdj, `${c.id}: 동사이면서 형용사`).toBe(false);
+    }
+  });
+
+  test("い형용사는 い로 끝나고 활용 엔진을 통과한다", () => {
+    for (const c of cards) {
+      if (c.adjGroup === "i_adj") expect(c.reading, c.id).toMatch(/い$/);
+      if (c.adjGroup && c.adjGroup !== "not_adj") {
+        expect(() => conjugateAdj(c.word, c.adjGroup!, "negative"), c.id).not.toThrow();
       }
     }
   });
