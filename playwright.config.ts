@@ -24,7 +24,7 @@ export default defineConfig({
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
   ],
   webServer: {
-    command: "bun dev",
+    command: "bun dev -p 3333",
     url: "http://localhost:3333",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
