@@ -179,7 +179,7 @@ export default function Home() {
         </section>
 
         {/* Footer nav */}
-        <nav className="flex justify-center items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-tab font-medium">
+        <nav className="-mx-5 flex justify-between items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-[0.06em] font-medium">
           <Link
             href="/"
             aria-current="page"
@@ -225,26 +225,24 @@ function SubjectRow({
 }) {
   return (
     <div className="relative bg-[color:var(--bg)] flex items-center px-4 py-4 active:bg-[color:var(--bg-deep)] transition-colors">
-      {/*
-        폭이 좁을 때(Safari 페이지 확대 125% ≈ 322px, 디스플레이 확대) 일본어 표기와
-        개수 칩이 한 글자씩 줄바꿈되고 이름이 잘렸다. 표기·칩은 줄바꿈 없이
-        고정하고, 이름만 마지막 수단으로 줄어든다.
-      */}
-      <div className="flex-1 flex items-baseline gap-2 min-w-0">
-        <span className="text-body font-medium text-[color:var(--fg)] truncate">
-          {ko}
-        </span>
-        <span
-          lang="ja"
-          className="text-label text-[color:var(--fg-faint)] tracking-[0.08em] whitespace-nowrap shrink-0"
-          style={{ fontFamily: "var(--font-jp-sans)" }}
-        >
-          {jp}
-        </span>
-        {dueCount > 0 && (
-          <span className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress-text)] font-medium whitespace-nowrap shrink-0">
-            {dueCount}장 대기
+      {/* 칩은 이름 아래 둘째 줄에 쌓는다: iOS 실기기 폰트가 넓어도 이름이 잘리지 않는다. */}
+      <div className="flex-1 min-w-0">
+        <div className="flex flex-wrap items-baseline gap-x-2">
+          <span className="text-body font-medium text-[color:var(--fg)]">
+            {ko}
           </span>
+          <span
+            lang="ja"
+            className="text-label text-[color:var(--fg-faint)] tracking-[0.08em] whitespace-nowrap"
+            style={{ fontFamily: "var(--font-jp-sans)" }}
+          >
+            {jp}
+          </span>
+        </div>
+        {dueCount > 0 && (
+          <div className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress-text)] font-medium whitespace-nowrap">
+            {dueCount}장 대기
+          </div>
         )}
       </div>
       <div className="flex items-center gap-1 shrink-0">
