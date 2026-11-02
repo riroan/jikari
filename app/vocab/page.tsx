@@ -113,6 +113,7 @@ function VocabPageInner() {
       {mode === "study" ? (
         <StudyCard
           body={<VocabStudyBody card={card} />}
+          speak={card.reading}
           position={index + 1}
           total={deck.length}
           onPrev={retreat}
@@ -200,6 +201,7 @@ function VocabQuiz({
 
   return (
     <QuizCard
+      speak={card.reading}
       question={
         direction === "recall" ? (
           <VocabRecallQuestion card={card} />

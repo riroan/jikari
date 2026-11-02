@@ -108,6 +108,7 @@ function SentencePageInner() {
       {mode === "study" ? (
         <StudyCard
           body={<SentenceStudyBody card={card} />}
+          speak={card.sentence.replace("＿＿＿", card.blank)}
           position={index + 1}
           total={deck.length}
           onPrev={retreat}
@@ -163,6 +164,7 @@ function SentenceQuiz({
   const choices = generateSentenceChoices(card, seed);
   return (
     <QuizCard
+      speak={card.sentence.replace("＿＿＿", card.blank)}
       question={
         <div>
           <div

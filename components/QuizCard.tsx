@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
 import { RubyText } from "./Furigana";
+import { SpeakButton } from "./SpeakButton";
 import { TypingInput } from "./TypingInput";
 import {
   matchesAnyAnswer,
@@ -52,6 +53,8 @@ export interface QuizCardProps {
   input: QuizCardInput;
   /** Optional back-face content shown after answering */
   back?: React.ReactNode;
+  /** Japanese text to pronounce; the speaker button shows only after answering. */
+  speak?: string;
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean) => void;
   /**
@@ -68,6 +71,7 @@ export function QuizCard({
   subtitle,
   input,
   back,
+  speak,
   onResolved,
   minQuestionHeight = 260,
 }: QuizCardProps) {
@@ -209,6 +213,8 @@ export function QuizCard({
           </AnimatePresence>
         </div>
         {disabled && result !== null && (
+          <div className="flex items-center gap-1">
+            {speak && <SpeakButton text={speak} />}
           <button
             type="button"
             onClick={advance}
@@ -222,6 +228,7 @@ export function QuizCard({
           >
             다음 →
           </button>
+          </div>
         )}
       </div>
     </div>

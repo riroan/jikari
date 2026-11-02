@@ -111,6 +111,7 @@ function ParticlePageInner() {
       {mode === "study" ? (
         <StudyCard
           body={<ParticleStudyBody card={card} />}
+          speak={card.sentence.replace("＿＿＿", card.blank)}
           position={index + 1}
           total={deck.length}
           onPrev={retreat}
@@ -166,6 +167,7 @@ function ParticleQuiz({
   const choices = generateSentenceChoices(card, seed);
   return (
     <QuizCard
+      speak={card.sentence.replace("＿＿＿", card.blank)}
       question={
         <div>
           <div

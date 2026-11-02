@@ -120,6 +120,7 @@ function ExpressionsPageInner() {
       <Shell>
         <StudyCard
           body={<ExpressionBack card={card} />}
+          speak={card.ruby ?? card.expression_jp}
           position={index + 1}
           total={deck.length}
           onPrev={retreat}
@@ -190,6 +191,7 @@ function ExpressionQuiz({
 
   return (
     <QuizCard
+      speak={card.ruby ?? card.expression_jp}
       question={
         direction === "recall" ? (
           <RecallQuestion card={card} />

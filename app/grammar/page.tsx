@@ -129,6 +129,7 @@ function GrammarPageInner() {
       {mode === "study" ? (
         <StudyCard
           body={<GrammarStudyBody card={card} />}
+          speak={card.examples[0]?.jp}
           position={index + 1}
           total={deck.length}
           onPrev={retreat}
@@ -378,6 +379,7 @@ function GrammarQuiz({
 
   return (
     <QuizCard
+      speak={filledBack}
       question={
         <div>
           <div

@@ -6,14 +6,19 @@
  * Navigation: prev / next with position counter.
  */
 
+import { SpeakButton } from "./SpeakButton";
+
 export function StudyCard({
   body,
+  speak,
   position,
   total,
   onPrev,
   onNext,
 }: {
   body: React.ReactNode;
+  /** Japanese text to pronounce (study shows both sides, so no answer leak). */
+  speak?: string;
   position: number;
   total: number;
   onPrev: () => void;
@@ -47,6 +52,11 @@ export function StudyCard({
       </div>
 
       <div className="min-h-[360px]">{body}</div>
+      {speak && (
+        <div className="flex justify-center">
+          <SpeakButton text={speak} />
+        </div>
+      )}
     </div>
   );
 }
