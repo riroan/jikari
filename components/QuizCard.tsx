@@ -147,6 +147,7 @@ export function QuizCard({
     if (!disabled || result === null) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key !== " " && e.key !== "Enter") return;
+      if ((e.target as HTMLElement).closest?.("button,a")) return;
       if (Date.now() - resolvedAtRef.current < KEYBOARD_GRACE_MS) return;
       e.preventDefault();
       advance();

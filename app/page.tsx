@@ -108,7 +108,7 @@ export default function Home() {
         {nextReview && (
           <Link
             href={nextReview.subject.base}
-            className="flex items-center justify-between gap-3 bg-[color:var(--accent-progress)] text-[color:var(--bg)] rounded-sm px-4 py-4 mb-3 min-h-[56px] active:opacity-80 transition-opacity"
+            className="flex items-center justify-between gap-3 bg-[color:var(--accent-progress)] text-[color:var(--on-progress)] rounded-sm px-4 py-4 mb-3 min-h-[56px] active:opacity-80 transition-opacity"
           >
             <span className="flex items-baseline gap-3">
               <span className="text-body font-semibold">

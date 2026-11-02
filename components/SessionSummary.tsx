@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { RunSummary } from "@/lib/quiz-run";
 
@@ -19,9 +20,16 @@ export function SessionSummary({
   onNext: () => void;
 }) {
   const { total, correct, accuracy, bestStreak, missed } = summary;
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => ref.current?.focus({ preventScroll: true }), []);
   return (
-    <section className="flex flex-col gap-6" aria-label="세션 요약">
-      <div>
+    <section
+      ref={ref}
+      tabIndex={-1}
+      className="flex flex-col gap-6 outline-none"
+      aria-label="세션 요약"
+    >
+      <div role="status">
         <div className="text-[44px] leading-none font-semibold tabular-nums text-[color:var(--fg)]">
           {accuracy}
           <span className="text-body text-[color:var(--fg-faint)]">%</span>
