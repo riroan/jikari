@@ -8,6 +8,7 @@ import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { useStore } from "@/lib/store";
+import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
@@ -26,7 +27,9 @@ type QType = "on" | "kun";
 export default function KanjiPage() {
   return (
     <Suspense fallback={<Shell />}>
-      <KanjiPageInner />
+      <WeakKey>
+        <KanjiPageInner />
+      </WeakKey>
     </Suspense>
   );
 }
@@ -39,7 +42,6 @@ function KanjiPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const kanjiIds = useCardsStore((s) => s.kanjiIds);
@@ -52,7 +54,7 @@ function KanjiPageInner() {
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
-  const weakIds = useWeakIds("kanji", kanjiIds);
+  const [weakIds, emptyWeak] = useWeakIds("kanji", kanjiIds);
   const deck = useMemo(
     () =>
       weakIds
@@ -71,6 +73,8 @@ function KanjiPageInner() {
     // ratingTier, not rating: re-sample once the rating has actually moved.
     [weakIds, mode, seed, epoch, kanjiIds, kanjiById, getBox, ratingTier]
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -125,6 +129,7 @@ function KanjiPageInner() {
 
   return (
     <Shell>
+      {emptyWeak && <WeakEmptyNotice />}
       {mode === "study" ? (
         <StudyCard
           body={<KanjiStudyBody card={card} />}
@@ -139,14 +144,16 @@ function KanjiPageInner() {
           seed={seed + index + epoch * 977}
           answerMode={pickMode(getBox("kanji", card.id), threshold)}
           onResolved={(wasCorrect, answerMode) => {
-            review(
-              "kanji",
-              card.id,
-              wasCorrect,
-              answerMode,
-              jlptDifficulty(card),
-            );
-            recordQuizResult("kanji", wasCorrect);
+            if (!run.retrying) {
+              review(
+                "kanji",
+                card.id,
+                wasCorrect,
+                answerMode,
+                jlptDifficulty(card),
+              );
+              recordQuizResult("kanji", wasCorrect);
+            }
             run.record(card.id, wasCorrect, card.kanji, `${card.koreanMeaning} · ${card.onReadings[0] ?? card.kunReadings[0] ?? ""}`);
             if (!run.retrying) advance();
           }}

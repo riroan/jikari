@@ -9,6 +9,7 @@ import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
@@ -40,7 +41,9 @@ const REGISTER_COLOR: Record<Register, string> = {
 export default function ExpressionsPage() {
   return (
     <Suspense fallback={<Shell />}>
-      <ExpressionsPageInner />
+      <WeakKey>
+        <ExpressionsPageInner />
+      </WeakKey>
     </Suspense>
   );
 }
@@ -53,7 +56,6 @@ function ExpressionsPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const expressionIds = useCardsStore((s) => s.expressionIds);
   const expressionById = useCardsStore((s) => s.expressionById);
@@ -64,7 +66,7 @@ function ExpressionsPageInner() {
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
-  const weakIds = useWeakIds("expression", expressionIds);
+  const [weakIds, emptyWeak] = useWeakIds("expression", expressionIds);
   const deck = useMemo(
     () =>
       weakIds
@@ -83,6 +85,8 @@ function ExpressionsPageInner() {
     // ratingTier, not rating: re-sample once the rating has actually moved.
     [weakIds, mode, seed, epoch, expressionIds, getBox, expressionById, ratingTier],
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -152,19 +156,22 @@ function ExpressionsPageInner() {
 
   return (
     <Shell>
+      {emptyWeak && <WeakEmptyNotice />}
       <ExpressionQuiz
         card={card}
         direction={direction}
         seed={seed + index + epoch * 977}
         onResolved={(wasCorrect) => {
-          review(
-            "expression",
-            card.id,
-            wasCorrect,
-            "choice",
-            registerDifficulty(card),
-          );
-          recordQuizResult("expression", wasCorrect);
+          if (!run.retrying) {
+            review(
+              "expression",
+              card.id,
+              wasCorrect,
+              "choice",
+              registerDifficulty(card),
+            );
+            recordQuizResult("expression", wasCorrect);
+          }
           run.record(card.id, wasCorrect, card.expression_jp, card.translation_ko);
           if (!run.retrying) advance();
         }}

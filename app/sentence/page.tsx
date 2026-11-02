@@ -9,6 +9,7 @@ import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
@@ -25,7 +26,9 @@ const BLANK = "＿＿＿";
 export default function SentencePage() {
   return (
     <Suspense fallback={<Shell />}>
-      <SentencePageInner />
+      <WeakKey>
+        <SentencePageInner />
+      </WeakKey>
     </Suspense>
   );
 }
@@ -38,7 +41,6 @@ function SentencePageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const sentenceIds = useCardsStore((s) => s.sentenceIds);
   const sentenceById = useCardsStore((s) => s.sentenceById);
@@ -49,7 +51,7 @@ function SentencePageInner() {
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
-  const weakIds = useWeakIds("sentence", sentenceIds);
+  const [weakIds, emptyWeak] = useWeakIds("sentence", sentenceIds);
   const deck = useMemo(
     () =>
       weakIds
@@ -68,6 +70,8 @@ function SentencePageInner() {
     // ratingTier, not rating: re-sample once the rating has actually moved.
     [weakIds, mode, seed, epoch, sentenceIds, getBox, sentenceById, ratingTier]
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -122,6 +126,7 @@ function SentencePageInner() {
 
   return (
     <Shell>
+      {emptyWeak && <WeakEmptyNotice />}
       {mode === "study" ? (
         <StudyCard
           body={<SentenceStudyBody card={card} />}
@@ -136,14 +141,16 @@ function SentencePageInner() {
           card={card}
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
-            review(
-              "sentence",
-              card.id,
-              wasCorrect,
-              "choice",
-              jlptDifficulty(card),
-            );
-            recordQuizResult("sentence", wasCorrect);
+            if (!run.retrying) {
+              review(
+                "sentence",
+                card.id,
+                wasCorrect,
+                "choice",
+                jlptDifficulty(card),
+              );
+              recordQuizResult("sentence", wasCorrect);
+            }
             run.record(card.id, wasCorrect, card.sentence, card.blank);
             if (!run.retrying) advance();
           }}

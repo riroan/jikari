@@ -9,6 +9,7 @@ import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
@@ -29,7 +30,9 @@ type StudyMode = "study" | "quiz";
 export default function VocabPage() {
   return (
     <Suspense fallback={<Shell />}>
-      <VocabPageInner />
+      <WeakKey>
+        <VocabPageInner />
+      </WeakKey>
     </Suspense>
   );
 }
@@ -42,7 +45,6 @@ function VocabPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const vocabIds = useCardsStore((s) => s.vocabIds);
@@ -54,7 +56,7 @@ function VocabPageInner() {
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
-  const weakIds = useWeakIds("vocab", vocabIds);
+  const [weakIds, emptyWeak] = useWeakIds("vocab", vocabIds);
   const deck = useMemo(
     () =>
       weakIds
@@ -73,6 +75,8 @@ function VocabPageInner() {
     // ratingTier, not rating: re-sample once the rating has actually moved.
     [weakIds, mode, seed, epoch, vocabIds, getBox, vocabById, ratingTier]
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -127,6 +131,7 @@ function VocabPageInner() {
 
   return (
     <Shell>
+      {emptyWeak && <WeakEmptyNotice />}
       {mode === "study" ? (
         <StudyCard
           body={<VocabStudyBody card={card} />}
@@ -143,14 +148,16 @@ function VocabPageInner() {
           answerMode={pickMode(getBox("vocab", card.id), threshold)}
           direction={chooseDirection(getBox("vocab", card.id), card.id, epoch)}
           onResolved={(wasCorrect, answerMode) => {
-            review(
-              "vocab",
-              card.id,
-              wasCorrect,
-              answerMode,
-              jlptDifficulty(card),
-            );
-            recordQuizResult("vocab", wasCorrect);
+            if (!run.retrying) {
+              review(
+                "vocab",
+                card.id,
+                wasCorrect,
+                answerMode,
+                jlptDifficulty(card),
+              );
+              recordQuizResult("vocab", wasCorrect);
+            }
             run.record(card.id, wasCorrect, card.word, card.koreanMeanings[0] ?? "");
             if (!run.retrying) advance();
           }}
