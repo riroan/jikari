@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ChapterQuizCard } from "@/components/ChapterQuizCard";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
 import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { weightedShuffleIds } from "@/lib/deck";
@@ -40,6 +42,7 @@ export function ChapterQuizDeck({
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
+  const run = useQuizRun();
   const [stats, setStats] = useState<{ correct: number; wrong: number }>({
     correct: 0,
     wrong: 0,
@@ -74,10 +77,19 @@ export function ChapterQuizDeck({
     [ids, seed, epoch, grammarById],
   );
 
-  const currentKey = deck[index];
+  const currentKey = run.retryId ?? deck[index];
   const current = members.find(
     ({ member }) => `${member.mode}:${member.cardId}` === currentKey,
   );
+
+  if (run.summary)
+    return (
+      <SessionSummary
+        summary={run.summary}
+        onRetry={run.retryMissed}
+        onNext={run.next}
+      />
+    );
 
   if (members.length === 0 || !current) {
     return (
@@ -145,7 +157,19 @@ export function ChapterQuizDeck({
               ? { ...s, correct: s.correct + 1 }
               : { ...s, wrong: s.wrong + 1 },
           );
-          advance();
+          const c = current.card;
+          const [front, back] =
+            "kanji" in c
+              ? [c.kanji, [...c.onReadings, ...c.kunReadings][0] ?? ""]
+              : "word" in c
+                ? [c.word, c.koreanMeanings[0] ?? ""]
+                : "blank" in c
+                  ? [c.sentence, c.blank]
+                  : c.type === "pattern"
+                    ? [c.pattern, c.meaningKo]
+                    : [c.particles.join(" / "), c.rule];
+          run.record(currentKey, wasCorrect, front, back);
+          if (!run.retrying) advance();
         }}
       />
     </div>

@@ -150,6 +150,7 @@ function VocabSlot({
 
   return (
     <QuizCard
+      speak={card.reading}
       question={
         <div>
           <div
@@ -190,6 +191,7 @@ function SentenceSlot({
   const isParticle = card.category === "particle";
   return (
     <QuizCard
+      speak={card.sentence.replace("＿＿＿", card.blank)}
       question={
         <div>
           <div
@@ -241,6 +243,7 @@ function GrammarSlot({
 
   return (
     <QuizCard
+      speak={sentenceSrc.replace("＿＿＿", `[[${correct}]]`)}
       question={
         <div>
           <div
