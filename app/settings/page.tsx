@@ -118,8 +118,8 @@ export default function SettingsPage() {
           백업 / 복원
         </h2>
         <p className="text-caption text-[color:var(--fg-soft)] leading-relaxed mb-4">
-          localStorage는 브라우저가 캐시를 정리하면 사라집니다. 정기적으로 JSON을 내보내 저장해두세요.
-          iOS Safari는 7일 이상 앱 미사용 시 데이터를 삭제할 수 있습니다.
+          학습 기록은 서버 DB에 저장됩니다. DB를 옮기거나 초기화하기 전에는
+          JSON으로 내보내 두세요.
         </p>
         <div className="flex flex-col gap-2">
           <button
