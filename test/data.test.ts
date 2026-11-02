@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { validate as validateExpression } from "../scripts/add-expression";
 import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
+import { parseGrammarCardArray } from "@/lib/grammar-schema";
 import { conjugate } from "@/lib/conjugation";
 import { conjugateAdj } from "@/lib/adjective";
 import { ALL_CONJUGATION_FORMS } from "@/lib/types";
@@ -651,4 +652,43 @@ describe("sentence seeds", () => {
       expect(n / cards.length, `${word}가 ${n}/${cards.length}장`).toBeLessThanOrEqual(0.15);
     },
   );
+});
+
+describe("grammar seeds", () => {
+  const dir = path.join(process.cwd(), "data");
+  const files = readdirSync(dir).filter((f) => /^grammar-(n5|daily)/.test(f) && f.endsWith(".json"));
+  const load = (f: string) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as unknown;
+
+  test.each(files)("%s는 스키마를 통과한다", (f) => {
+    // 스키마 위반이면 던진다 (zod 이슈가 메시지에 담긴다).
+    const cards = parseGrammarCardArray(load(f));
+    expect(cards.length).toBeGreaterThan(0);
+  });
+
+  test("파일 사이에서 id가 겹치지 않는다", () => {
+    const ids = files.flatMap((f) => (load(f) as { id: string }[]).map((c) => c.id));
+    expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
+  });
+
+  type Pattern = {
+    id: string;
+    type: string;
+    pattern: string;
+    examples: { jp: string }[];
+    quizzes: { sentence: string; correct: string; distractors: string[] }[];
+  };
+
+  test("문형 카드: 예문에 하이라이트가 있고 정답은 오답과 다르다", () => {
+    for (const f of files) {
+      for (const c of (load(f) as Pattern[]).filter((x) => x.type === "pattern")) {
+        for (const ex of c.examples) {
+          expect(ex.jp, `${c.id}: 예문에 [[하이라이트]]가 없다`).toMatch(/\[\[.+\]\]/);
+        }
+        for (const q of c.quizzes) {
+          expect(q.distractors, `${c.id}: 정답이 오답에 섞임`).not.toContain(q.correct);
+          expect(new Set(q.distractors).size, `${c.id}: 오답 중복`).toBe(3);
+        }
+      }
+    }
+  });
 });
