@@ -43,9 +43,9 @@
     "id": "s145",
     "sentence": "今日は傘を家に＿＿＿。",
     "sentenceRuby": "{今日|きょう}は{傘|かさ}を{家|いえ}に＿＿＿。",
-    "blank": "忘れる",
-    "blankRuby": "{忘|わす}れる",
-    "distractors": ["売る", "泳ぐ", "歩く"],
+    "blank": "忘れた",
+    "blankRuby": "{忘|わす}れた",
+    "distractors": ["売った", "泳いだ", "歩いた"],
     "translation": "오늘은 우산을 집에 두고 왔다.",
     "jlptLevel": 3
   },
@@ -81,12 +81,12 @@
   },
   {
     "id": "s149",
-    "sentence": "美しい音楽を＿＿＿。",
-    "sentenceRuby": "{美|うつく}しい{音楽|おんがく}を＿＿＿。",
+    "sentence": "春の風を＿＿＿。",
+    "sentenceRuby": "{春|はる}の{風|かぜ}を＿＿＿。",
     "blank": "感じる",
     "blankRuby": "{感|かん}じる",
     "distractors": ["売る", "歩く", "閉める"],
-    "translation": "아름다운 음악을 느낀다.",
+    "translation": "봄바람을 느낀다.",
     "jlptLevel": 3
   },
   {

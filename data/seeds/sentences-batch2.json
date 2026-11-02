@@ -55,7 +55,7 @@
     "sentenceRuby": "この{部屋|へや}は＿＿＿です。",
     "blank": "暑い",
     "blankRuby": "{暑|あつ}い",
-    "distractors": ["忙しい", "楽しい", "古い"],
+    "distractors": ["忙しい", "眠い", "うれしい"],
     "translation": "이 방은 덥다.",
     "jlptLevel": 5
   },
@@ -161,12 +161,12 @@
   },
   {
     "id": "s72",
-    "sentence": "彼の名前を＿＿＿。",
-    "sentenceRuby": "{彼|かれ}の{名前|なまえ}を＿＿＿。",
-    "blank": "知る",
-    "blankRuby": "{知|し}る",
-    "distractors": ["書く", "飲む", "閉める"],
-    "translation": "그의 이름을 안다.",
+    "sentence": "彼の名前を＿＿＿います。",
+    "sentenceRuby": "{彼|かれ}の{名前|なまえ}を＿＿＿います。",
+    "blank": "知って",
+    "blankRuby": "{知|し}って",
+    "distractors": ["飲んで", "閉めて", "走って"],
+    "translation": "그의 이름을 알고 있다.",
     "jlptLevel": 5
   },
   {
