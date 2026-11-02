@@ -9,6 +9,7 @@ import { HomeHeader } from "@/components/HomeHeader";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 import { currentStreak as computeStreak, toLocalDateKey } from "@/lib/heatmap";
 import { topDueKey, totalDue } from "@/lib/due";
+import { REVIEW_DUE_KEYS } from "@/lib/review-deck";
 import { useDueByKey } from "@/lib/use-due-by-key";
 import { SUBJECTS } from "@/lib/subjects";
 import { DailyPhrase } from "@/components/DailyPhrase";
@@ -49,7 +50,10 @@ export default function Home() {
       SUBJECTS.map((s) => s.dueKey),
     );
     const subject = top && SUBJECTS.find((s) => s.dueKey === top.key);
-    return top && subject ? { subject, count: top.count } : null;
+    if (!top || !subject) return null;
+    // 한자·단어·문장·문법 중 due가 있으면 섞어서 한 번에 (/review).
+    const mixed = REVIEW_DUE_KEYS.some((k) => (dueByKey[k] ?? 0) > 0);
+    return { subject, count: top.count, mixed };
   }, [dueByKey]);
 
   return (
@@ -86,7 +90,7 @@ export default function Home() {
 
         {nextReview && (
           <Link
-            href={nextReview.subject.base}
+            href={nextReview.mixed ? "/review" : nextReview.subject.base}
             className="flex items-center justify-between gap-3 bg-[color:var(--accent-progress)] text-[color:var(--on-progress)] rounded-sm px-4 py-4 mb-3 min-h-[56px] active:opacity-80 transition-opacity"
           >
             <span className="flex items-baseline gap-3">
@@ -98,7 +102,7 @@ export default function Home() {
               </span>
             </span>
             <span className="text-caption tracking-wide whitespace-nowrap">
-              {nextReview.subject.ko}부터 →
+              {nextReview.mixed ? "섞어서 →" : `${nextReview.subject.ko}부터 →`}
             </span>
           </Link>
         )}

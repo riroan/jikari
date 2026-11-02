@@ -30,9 +30,12 @@ type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard;
 export function ChapterQuizDeck({
   chapterId,
   members,
+  fixedOrder = false,
 }: {
   chapterId: string;
   members: Array<{ member: ChapterMember; card: AnyCard }>;
+  /** /review: 주어진 순서 그대로, 한 장도 빠지지 않게 (박스 가중 샘플링 생략). */
+  fixedOrder?: boolean;
 }) {
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
@@ -54,7 +57,9 @@ export function ChapterQuizDeck({
 
   const deck = useMemo(
     () =>
-      weightedShuffleIds(
+      fixedOrder
+        ? ids
+        : weightedShuffleIds(
         ids,
         (id) => {
           // Map "{mode}:{cardId}" back to the SRS state key (grammar uses
@@ -73,7 +78,7 @@ export function ChapterQuizDeck({
         },
         seed + epoch * 7919,
       ),
-    [ids, seed, epoch, grammarById],
+    [ids, seed, epoch, grammarById, fixedOrder],
   );
 
   const run = useQuizRun(deck.length);
