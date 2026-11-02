@@ -27,8 +27,8 @@
   --paper-light: #F9F4E8;
   --ink:         #1A1915;
   --ink-soft:    #3A3631;
-  --ink-faint:   #8A8275;
-  --accent-clay: #B85840;
+  --ink-faint:   #6F675B;
+  --accent-clay: #A8503A;
   --accent-sage: #7A8F6E;
   --line:        rgba(26, 25, 21, 0.08);
 
@@ -111,7 +111,7 @@
   --_dark-bg-soft:  #1A2332;
   --_dark-bone:     #E8E2D2;
   --_dark-bone-soft:#B8B0A0;
-  --_dark-bone-faint:#6A6358;
+  --_dark-bone-faint:#928B7C;
   --_dark-gold:     #D4B76A;
   --_dark-gold-deep:#B89550;
   --_dark-crimson:  #C47A6E;
@@ -253,6 +253,11 @@ body::before {
   outline: 2px solid var(--fg);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
+}
+
+/* Programmatic-focus containers (tabIndex=-1, e.g. SessionSummary) are not tab stops; no ring. */
+[tabindex="-1"]:focus-visible {
+  outline: none;
 }
 
 /* DESIGN.md § 7 — respect reduced motion */

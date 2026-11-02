@@ -88,7 +88,7 @@ caption       13px    Pretendard 500      letter-spacing: 0.25em (네비 힌트�
   --paper-deep:  #EDE5D4;  /* hover/active */
   --ink:         #1A1915;  /* 본문 먹색 */
   --ink-soft:    #3A3631;  /* 이차 텍스트 */
-  --ink-faint:   #8A8275;  /* 라벨/힌트 */
+  --ink-faint:   #6F675B;  /* 라벨/힌트 */
   --accent-clay: #B85840;  /* 한국어 악센트 */
   --accent-sage: #7A8F6E;  /* heatmap 활성 */
   --line:        rgba(26, 25, 21, 0.08);  /* 구분선 */
@@ -106,7 +106,7 @@ caption       13px    Pretendard 500      letter-spacing: 0.25em (네비 힌트�
   --bg-soft:  #1A2332;  /* hover */
   --bone:     #E8E2D2;  /* 본문 (순백 아님 — 눈 편함) */
   --bone-soft:#B8B0A0;  /* 이차 */
-  --bone-faint:#6A6358; /* 라벨 */
+  --bone-faint:#928B7C; /* 라벨 */
   --gold:     #D4B76A;  /* 한자 메인 — 일본 전통 금색 */
   --gold-deep:#B89550;
   --crimson:  #C47A6E;  /* 한국어 악센트 */
