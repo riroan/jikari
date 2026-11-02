@@ -68,7 +68,7 @@ export function ModePageShell({
     // 390px 박스 안쪽에 두면 박스가 이미 가장자리에서 먼 가로 모드에서 내용 폭만
     // 줄어(342→266px) 제목과 버튼이 줄바꿈된다.
     <main className="flex-1 flex justify-center pl-[var(--safe-left)] pr-[var(--safe-right)]">
-      <div className="w-full max-w-[390px] px-6 pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[max(1.5rem,var(--safe-bottom))] md:pb-[max(2.5rem,var(--safe-bottom))]">
+      <div className="w-full max-w-[390px] px-6 flex flex-col pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[max(1.5rem,var(--safe-bottom))] md:pb-[max(2.5rem,var(--safe-bottom))]">
         <header
           className="flex justify-between items-baseline mb-[var(--header-mb-mobile)] md:mb-[var(--header-mb)]"
           style={
@@ -104,6 +104,15 @@ export function ModePageShell({
         </header>
         {afterHeader}
         {children}
+        {/* 엄지 닿는 하단 홈 — 상단 ← HOME까지 손을 뻗지 않아도 된다. */}
+        {backHref === "/" && (
+          <Link
+            href="/"
+            className="mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
+          >
+            홈으로
+          </Link>
+        )}
       </div>
     </main>
   );
