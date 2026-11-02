@@ -47,3 +47,20 @@ export function totalDue(counts: DueByKey): number {
   for (const v of Object.values(counts)) total += v;
   return total;
 }
+
+/**
+ * The subject with the most due cards — where "오늘의 복습" should send the
+ * user. `order` is the home page's row order; a tie goes to the earlier row so
+ * the target is stable between renders. Null when nothing is due.
+ */
+export function topDueKey(
+  counts: DueByKey,
+  order: readonly string[],
+): { key: string; count: number } | null {
+  let best: { key: string; count: number } | null = null;
+  for (const key of order) {
+    const count = counts[key] ?? 0;
+    if (count > 0 && (best === null || count > best.count)) best = { key, count };
+  }
+  return best;
+}
