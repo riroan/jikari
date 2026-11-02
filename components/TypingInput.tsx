@@ -44,6 +44,7 @@ export function TypingInput({
   const [value, setValue] = useState("");
   const composingRef = useRef(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const groupRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (autoFocus && inputRef.current && !disabled) {
@@ -63,7 +64,8 @@ export function TypingInput({
 
     const scrollToInput = () => {
       if (document.activeElement === input) {
-        input.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Center the input + submit button together so 確認 stays above the keyboard.
+        (groupRef.current ?? input).scrollIntoView({ behavior: "smooth", block: "center" });
       }
     };
     const handleFocus = () => {
@@ -114,7 +116,10 @@ export function TypingInput({
     lang === "ja" ? "var(--font-jp-sans)" : "var(--font-kr-sans)";
 
   return (
-    <div>
+    <div
+      ref={groupRef}
+      style={{ scrollMarginBottom: "calc(var(--safe-bottom) + 16px)" }}
+    >
       <div
         className="mb-2 text-tiny tracking-label text-[color:var(--fg-faint)]"
         aria-hidden="true"
