@@ -5,6 +5,7 @@ import { useIsClient, useClientNow } from "@/lib/use-is-client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ChapterOverview } from "@/components/ChapterOverview";
+import { ChapterStudyDeck } from "@/components/ChapterStudyDeck";
 import { ChapterQuizDeck } from "@/components/ChapterQuizDeck";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore } from "@/lib/store";
@@ -25,7 +26,7 @@ import type {
   VocabCard,
 } from "@/lib/types";
 
-type Mode = "overview" | "quiz";
+type Mode = "overview" | "quiz" | "study";
 
 export default function ChapterDetailPage({
   params,
@@ -45,7 +46,8 @@ function ChapterDetailInner({ id }: { id: string }) {
   const now = useClientNow();
 
   const searchParams = useSearchParams();
-  const mode: Mode = searchParams.get("mode") === "quiz" ? "quiz" : "overview";
+  const m = searchParams.get("mode");
+  const mode: Mode = m === "quiz" || m === "study" ? m : "overview";
 
   const chapters = useCardsStore((s) => s.chapters);
   const membersByChapter = useCardsStore((s) => s.membersByChapter);
@@ -138,6 +140,14 @@ function ChapterDetailInner({ id }: { id: string }) {
     return (
       <Shell chapterId={id} title={chapter.name}>
         <ChapterQuizDeck chapterId={id} members={validMembers} />
+      </Shell>
+    );
+  }
+
+  if (mode === "study") {
+    return (
+      <Shell chapterId={id} title={chapter.name}>
+        <ChapterStudyDeck members={validMembers} />
       </Shell>
     );
   }
