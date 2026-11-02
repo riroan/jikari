@@ -183,7 +183,7 @@ export default function SettingsPage() {
           />
         </label>
 
-        <label className="flex justify-between items-center text-small py-1">
+        <label className="flex justify-between items-center text-small min-h-[44px]">
           <span className="text-[color:var(--fg-soft)]">후리가나 (한자 위 읽기)</span>
           <Toggle
             checked={settings.showFurigana}
