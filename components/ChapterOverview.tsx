@@ -43,7 +43,12 @@ export function ChapterOverview({
     adjective: 0,
     expression: 0,
   };
-  for (const { member } of members) counts[member.mode]++;
+  const previews: Partial<Record<CardMode, AnyCard[]>> = {};
+  for (const { member, card } of members) {
+    counts[member.mode]++;
+    const list = (previews[member.mode] ??= []);
+    if (list.length < 4) list.push(card);
+  }
 
   return (
     <div className="flex flex-col gap-8">
@@ -120,19 +125,22 @@ export function ChapterOverview({
               return (
                 <li
                   key={m}
-                  className="bg-[color:var(--bg)] flex items-baseline justify-between px-4 py-2.5"
+                  className="bg-[color:var(--bg)]"
                 >
-                  <span className="text-small text-[color:var(--fg)]">
-                    {label}
-                  </span>
-                  <span className="text-caption text-[color:var(--fg-faint)] tabular-nums">
-                    {counts[m]}장
-                    {due > 0 && (
-                      <span className="ml-2 text-[color:var(--accent-progress-text)] font-medium">
-                        ・{due} 복습
-                      </span>
-                    )}
-                  </span>
+                  <div className="flex items-baseline justify-between px-4 py-2.5">
+                    <span className="text-small text-[color:var(--fg)]">
+                      {label}
+                    </span>
+                    <span className="text-caption text-[color:var(--fg-faint)] tabular-nums">
+                      {counts[m]}장
+                      {due > 0 && (
+                        <span className="ml-2 text-[color:var(--accent-progress-text)] font-medium">
+                          ・{due} 복습
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <PreviewRows mode={m} cards={previews[m] ?? []} />
                 </li>
               );
             })}
@@ -151,10 +159,16 @@ export function ChapterOverview({
           // muted bg-deep keeps the page calm.
           const live = totalDue > 0;
           return (
-            <section>
+            <section className="flex gap-2">
+              <Link
+                href={`/chapters/${chapter.id}?mode=study`}
+                className="flex items-center justify-center text-body font-medium px-5 py-3 rounded-sm min-h-[44px] border border-[color:var(--line)] text-[color:var(--fg-soft)] hover:text-[color:var(--fg)] transition-colors"
+              >
+                공부
+              </Link>
               <Link
                 href={`/chapters/${chapter.id}?mode=quiz`}
-                className={`flex items-center justify-center text-body font-medium px-4 py-3 rounded-sm transition-colors min-h-[44px] ${
+                className={`flex-1 flex items-center justify-center text-body font-medium px-4 py-3 rounded-sm transition-colors min-h-[44px] ${
                   live
                     ? "bg-[color:var(--accent-progress)] text-[color:var(--on-progress)] hover:opacity-90"
                     : "bg-[color:var(--bg-deep)] text-[color:var(--fg)] hover:bg-[color:var(--accent-korean)] hover:text-[color:var(--bg)]"
@@ -175,5 +189,60 @@ export function ChapterOverview({
         </section>
       )}
     </div>
+  );
+}
+
+/** First 4 cards of a mode as hairline rows. Kanji shows the glyph only (no Korean hint on the front). */
+function PreviewRows({ mode, cards }: { mode: CardMode; cards: AnyCard[] }) {
+  if (mode === "kanji") {
+    return (
+      <div
+        lang="ja"
+        className="border-t border-[color:var(--line)] px-4 py-2 flex gap-5 text-[28px] leading-tight text-[color:var(--fg)]"
+        style={{ fontFamily: "var(--font-jp-serif)" }}
+      >
+        {(cards as KanjiCard[]).map((c) => (
+          <span key={c.id}>{c.kanji}</span>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <ul>
+      {cards.map((card) => {
+        let jp = "";
+        let ko = "";
+        if (mode === "vocab") {
+          const v = card as VocabCard;
+          jp = v.word;
+          ko = v.koreanMeanings.join(", ");
+        } else if (mode === "sentence") {
+          jp = (card as SentenceCard).sentence;
+        } else {
+          const g = card as GrammarCard;
+          jp = g.type === "pattern" ? g.pattern.replace(/\{([^|}]*)\|[^}]*\}/g, "$1") : `${g.particles[0]} vs ${g.particles[1]}`;
+          ko = g.type === "pattern" ? g.koreanStructure : g.rule;
+        }
+        return (
+          <li
+            key={card.id}
+            className="border-t border-[color:var(--line)] px-4 py-2 flex items-baseline justify-between gap-3"
+          >
+            <span
+              lang="ja"
+              className="text-small text-[color:var(--fg)] truncate"
+              style={{ fontFamily: "var(--font-jp-serif)" }}
+            >
+              {jp}
+            </span>
+            {ko && (
+              <span className="text-caption text-[color:var(--fg-faint)] truncate shrink-0 max-w-[50%]">
+                {ko}
+              </span>
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
