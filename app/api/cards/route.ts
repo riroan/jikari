@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { getAllKanji, getAllSentences, getAllVocab } from "@/lib/db/cards";
 import { getAllGrammar } from "@/lib/db/grammar";
 import { getAllChapters, getAllChapterMembers } from "@/lib/db/chapters";
@@ -5,7 +6,7 @@ import { getAllExpressions } from "@/lib/db/expressions";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: Request) {
   const [
     kanji,
     vocab,
@@ -40,7 +41,7 @@ export async function GET() {
       return [];
     }),
   ]);
-  return Response.json({
+  const body = JSON.stringify({
     kanji,
     vocab,
     sentences,
@@ -48,5 +49,15 @@ export async function GET() {
     chapters,
     chapterMembers,
     expressions,
+  });
+  // ETag lets the browser revalidate with a tiny 304 instead of re-downloading
+  // the whole deck on every load.
+  const etag = `"${createHash("sha1").update(body).digest("base64url")}"`;
+  const headers = { ETag: etag, "Cache-Control": "private, no-cache" };
+  if (req.headers.get("if-none-match") === etag) {
+    return new Response(null, { status: 304, headers });
+  }
+  return new Response(body, {
+    headers: { ...headers, "Content-Type": "application/json" },
   });
 }

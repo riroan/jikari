@@ -99,7 +99,7 @@ export const useCardsStore = create<CardsState>((set, get) => ({
     let lastErr: unknown;
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
       try {
-        const res = await fetch("/api/cards", { cache: "no-store" });
+        const res = await fetch("/api/cards");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const {
           kanji,
