@@ -245,6 +245,11 @@ function ListenPrompt({ text, label = "들리는 말의 뜻은?" }: { text: stri
           </button>
         )}
       </div>
+      {!played && (
+        <p className="text-tiny text-[color:var(--fg-faint)]">
+          듣기 버튼을 누르면 소리가 나와요
+        </p>
+      )}
     </div>
   );
 }

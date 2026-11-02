@@ -12,6 +12,7 @@ import { topDueKey, totalDue } from "@/lib/due";
 import { REVIEW_DUE_KEYS } from "@/lib/review-deck";
 import { useDueByKey } from "@/lib/use-due-by-key";
 import { SUBJECTS } from "@/lib/subjects";
+import { forecastDue } from "@/lib/forecast";
 import { DailyPhrase } from "@/components/DailyPhrase";
 
 /**
@@ -40,6 +41,11 @@ export default function Home() {
     [hydrated, heatmap, now],
   );
 
+  const learningStates = useStore((s) => s.learningStates);
+  const tomorrow = useMemo(
+    () => (hydrated ? forecastDue(learningStates, now).tomorrow : 0),
+    [hydrated, learningStates, now],
+  );
   const dueByKey = useDueByKey();
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
   // 한 번에 시작할 곳 — 복습이 제일 많이 쌓인 과목. 모드 8개를 하나씩 열어
@@ -83,7 +89,9 @@ export default function Home() {
           </div>
           <div className="mt-1 text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
             {todayCount >= DAILY_GOAL
-              ? "오늘 목표 달성"
+              ? !nextReview && tomorrow > 0
+                ? `오늘 목표 달성 · 오늘은 여기까지 — 내일 복습 ${tomorrow}장`
+                : "오늘 목표 달성"
               : `오늘 ${todayCount} / ${DAILY_GOAL}`}
           </div>
         </div>
@@ -139,6 +147,9 @@ export default function Home() {
         </Link>
 
         {/* Subject rows — one per subject with 공부 / 퀴즈 actions */}
+        <p className="mb-2 text-tiny tracking-wide text-[color:var(--fg-faint)]">
+          공부 = 카드 훑어보기 · 퀴즈 = 문제 풀기
+        </p>
         <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-12">
           {SUBJECTS.map((s) => (
             <SubjectRow
