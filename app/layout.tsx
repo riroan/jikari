@@ -29,6 +29,7 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: "jikari · 일본어 공부",
   description: "한국어 화자를 위한 조용한 일본어 학습 도구",
+  appleWebApp: { capable: true, title: "jikari", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
