@@ -32,6 +32,24 @@ test.describe("listening", () => {
   }
 });
 
+test("listening dictation: type kana, see feedback with meaning", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "speechSynthesis", {
+      configurable: true,
+      value: { speak() {}, cancel() {}, getVoices: () => [], addEventListener() {}, removeEventListener() {} },
+    });
+    (window as unknown as { SpeechSynthesisUtterance: unknown }).SpeechSynthesisUtterance = function () {};
+  });
+  await page.goto("/listening?kind=dictation");
+  await expect(page.getByRole("tab", { name: "받아쓰기", selected: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "듣기", exact: true })).toBeVisible();
+  await page.getByRole("textbox").fill("x");
+  await page.getByRole("textbox").press("Enter");
+  await expect(page.getByRole("button", { name: "다음 문제" })).toBeVisible();
+  await expect(page.locator("main ruby, main [lang=ja]").first()).toBeVisible();
+  expect(await noOverflow(page)).toBe(true);
+});
+
 test("vocab quiz shows SessionSummary after 10 answers", async ({ page }) => {
   await page.goto("/vocab");
   const next = page.getByRole("button", { name: "다음 문제" });

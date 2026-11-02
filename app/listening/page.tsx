@@ -7,10 +7,12 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
+import { DictationCard } from "@/components/DictationCard";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useCardsStore } from "@/lib/cards-store";
 import { generateChoices, generateVocabChoices, getSentence, getVocab } from "@/lib/data";
 import { shuffleIds } from "@/lib/deck";
+import { dictationReading } from "@/lib/dictation";
 import { speak } from "@/lib/tts";
 import { useIsClient } from "@/lib/use-is-client";
 import { useQuizRun } from "@/lib/use-quiz-run";
@@ -28,9 +30,12 @@ export default function ListeningPage() {
   );
 }
 
+type Kind = "word" | "sentence" | "dictation";
+
 function KindSwitch() {
-  const kind = useSearchParams().get("kind") === "sentence" ? "sentence" : "word";
-  return <Listening key={kind} kind={kind} />;
+  const k = useSearchParams().get("kind");
+  const kind = k === "sentence" || k === "dictation" ? k : "word";
+  return kind === "dictation" ? <Dictation /> : <Listening key={kind} kind={kind} />;
 }
 
 function Listening({ kind }: { kind: "word" | "sentence" }) {
@@ -153,14 +158,69 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
   );
 }
 
-function ListenPrompt({ text }: { text: string }) {
+// 받아쓰기: 짧은 표현 카드 중 읽기를 후리가나에서 뽑을 수 있는 것만 (SRS 무관, 표현 덱은 읽기만 빌린다).
+const MAX_DICTATION_LEN = 24;
+
+function Dictation() {
+  const mounted = useIsClient();
+  const expressionIds = useCardsStore((s) => s.expressionIds);
+  const expressionById = useCardsStore((s) => s.expressionById);
+  const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
+  const [index, setIndex] = useState(0);
+  const deck = useMemo(() => {
+    const ok = expressionIds.filter((id) => {
+      const c = expressionById.get(id);
+      const r = c && dictationReading(c.ruby ?? c.expression_jp);
+      return !!r && r.length <= MAX_DICTATION_LEN;
+    });
+    return shuffleIds(ok, seed);
+  }, [expressionIds, expressionById, seed]);
+  const run = useQuizRun(deck.length);
+
+  const shell = (children?: React.ReactNode) => (
+    <ModePageShell title="聞き取り" afterHeader={<KindTabs active="dictation" />}>
+      {children}
+    </ModePageShell>
+  );
+
+  if (!mounted) return shell();
+  if (!("speechSynthesis" in window))
+    return shell(
+      <p className="text-body text-[color:var(--fg-faint)]">
+        이 브라우저는 음성 재생을 지원하지 않아 받아쓰기를 쓸 수 없어요.
+      </p>,
+    );
+  if (deck.length === 0)
+    return shell(<EmptyCardsState label="받아쓰기할 표현이 아직 없어요." hint="표현 카드 시드 필요" />);
+  if (run.summary)
+    return shell(<SessionSummary summary={run.summary} onRetry={run.retryMissed} onNext={run.next} />);
+
+  const card = expressionById.get(run.retryId ?? deck[index % deck.length]);
+  const markup = card && (card.ruby ?? card.expression_jp);
+  const reading = markup ? dictationReading(markup) : null;
+  if (!card || !markup || !reading) return shell();
+  return shell(
+    <DictationCard
+      key={card.id}
+      card={card}
+      reading={reading}
+      prompt={<ListenPrompt text={markup} label="들리는 대로 가나로 써 보세요" />}
+      onResolved={(ok) => {
+        run.record(card.id, ok, card.expression_jp, card.translation_ko);
+        if (!run.retrying) setIndex((i) => i + 1);
+      }}
+    />,
+  );
+}
+
+function ListenPrompt({ text, label = "들리는 말의 뜻은?" }: { text: string; label?: string }) {
   const [played, setPlayed] = useState(false);
   const btn =
     "inline-flex items-center justify-center rounded-sm border border-[color:var(--fg)] px-6 text-body font-medium text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)] transition-colors";
   return (
     <div className="flex flex-col gap-3">
       <p className="text-caption tracking-label text-[color:var(--fg-faint)]">
-        들리는 말의 뜻은?
+        {label}
       </p>
       <div className="flex gap-3">
         <button
@@ -189,7 +249,7 @@ function ListenPrompt({ text }: { text: string }) {
   );
 }
 
-function KindTabs({ active }: { active: "word" | "sentence" }) {
+function KindTabs({ active }: { active: Kind }) {
   const tab = (href: string, label: string, on: boolean) => (
     <Link
       role="tab"
@@ -208,6 +268,7 @@ function KindTabs({ active }: { active: "word" | "sentence" }) {
     <div role="tablist" aria-label="듣기 종류" className="flex gap-5 mb-8 border-b border-[color:var(--line)]">
       {tab("/listening", "단어", active === "word")}
       {tab("/listening?kind=sentence", "문장", active === "sentence")}
+      {tab("/listening?kind=dictation", "받아쓰기", active === "dictation")}
     </div>
   );
 }
