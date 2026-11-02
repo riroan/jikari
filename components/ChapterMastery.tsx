@@ -162,7 +162,7 @@ export function ChapterMastery({
                 }`}
               >
                 <span className="flex-1 flex items-baseline gap-2 min-w-0">
-                  <span className="text-small text-[color:var(--fg)] truncate min-w-0">
+                  <span className="text-small text-[color:var(--fg)] min-w-0 break-keep">
                     {chapter.name}
                   </span>
                   {mastered && !showDue && (
