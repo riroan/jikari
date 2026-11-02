@@ -8,6 +8,8 @@ import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
+import { SpeakButton } from "@/components/SpeakButton";
+import { findExamples, getExampleIndex } from "@/lib/examples";
 import { useStore } from "@/lib/store";
 import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
@@ -279,7 +281,39 @@ function VocabRecallQuestion({ card }: { card: VocabCard }) {
 }
 
 function VocabStudyBody({ card }: { card: VocabCard }) {
-  return <VocabBack card={card} />;
+  const sentences = useCardsStore((s) => s.sentences);
+  const expressions = useCardsStore((s) => s.expressions);
+  const examples = useMemo(
+    () => findExamples(card, getExampleIndex(sentences, expressions)),
+    [card, sentences, expressions],
+  );
+  return (
+    <div className="flex flex-col gap-6">
+      <VocabBack card={card} />
+      {examples.length > 0 && (
+        <ul className="border-t border-[color:var(--line)]">
+          {examples.map((ex) => (
+            <li
+              key={ex.plain}
+              className="flex items-center gap-2 py-3 border-b border-[color:var(--line)]"
+            >
+              <div className="flex-1 min-w-0 flex flex-col gap-1">
+                <span
+                  lang="ja"
+                  className="text-[18px] leading-loose"
+                  style={{ fontFamily: "var(--font-jp-sans)", color: "var(--fg)" }}
+                >
+                  <RubyText text={ex.ruby} />
+                </span>
+                <span className="text-small text-[color:var(--fg-soft)]">{ex.ko}</span>
+              </div>
+              <SpeakButton text={ex.plain} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 function VocabBack({ card }: { card: VocabCard }) {
