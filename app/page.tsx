@@ -108,17 +108,17 @@ export default function Home() {
         {nextReview && (
           <Link
             href={nextReview.subject.base}
-            className="flex items-center justify-between gap-3 border border-[color:var(--accent-progress)] rounded-sm px-4 py-3 mb-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
+            className="flex items-center justify-between gap-3 bg-[color:var(--accent-progress)] text-[color:var(--bg)] rounded-sm px-4 py-4 mb-3 min-h-[56px] active:opacity-80 transition-opacity"
           >
             <span className="flex items-baseline gap-3">
-              <span className="text-body font-medium text-[color:var(--fg)]">
+              <span className="text-body font-semibold">
                 오늘의 복습
               </span>
-              <span className="text-caption text-[color:var(--accent-progress)] tracking-tab tabular-nums">
-                復習 {dueCount}
+              <span className="text-caption tracking-tab tabular-nums">
+                {dueCount}장 대기
               </span>
             </span>
-            <span className="text-caption text-[color:var(--fg-soft)] tracking-wide whitespace-nowrap">
+            <span className="text-caption tracking-wide whitespace-nowrap">
               {nextReview.subject.ko}부터 →
             </span>
           </Link>
@@ -127,7 +127,7 @@ export default function Home() {
         {/* Units entry — chapter mastery view (uses subject-row visual language) */}
         <Link
           href="/chapters"
-          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-8 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
+          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-8 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
         >
           <span className="flex items-baseline gap-3">
             <span className="text-body font-medium text-[color:var(--fg)]">
@@ -157,11 +157,18 @@ export default function Home() {
         </section>
 
         {/* Heatmap */}
-        <section className="mb-10">
+        <section className="mb-8">
           <div className="text-xs text-[color:var(--fg-faint)] tracking-label mb-2.5 font-medium">
             7 WEEKS
+            <span className="ml-2 font-normal tracking-wide">
+              칸 하나 = 하루 · 테두리 = 오늘
+            </span>
           </div>
-          {hydrated ? <Heatmap data={heatmap} /> : <div style={{ height: "14px" }} />}
+          {hydrated ? (
+            <div className="max-w-[210px]">
+              <Heatmap data={heatmap} />
+            </div>
+          ) : <div style={{ height: "14px" }} />}
         </section>
 
         {/* Footer nav */}
@@ -173,21 +180,18 @@ export default function Home() {
           >
             HOME
           </Link>
-          <span aria-hidden="true">・</span>
           <Link
             href="/progress"
             className="inline-flex items-center justify-center min-h-[44px] px-2 hover:text-[color:var(--fg-soft)]"
           >
             PROGRESS
           </Link>
-          <span aria-hidden="true">・</span>
           <Link
             href="/settings"
             className="inline-flex items-center justify-center min-h-[44px] px-2 hover:text-[color:var(--fg-soft)]"
           >
             SETTINGS
           </Link>
-          <span aria-hidden="true">・</span>
           <ThemeCycleButton />
         </nav>
       </div>
@@ -207,7 +211,7 @@ function SubjectRow({
   dueCount: number;
 }) {
   return (
-    <div className="bg-[color:var(--bg)] flex items-center px-4 py-4">
+    <div className="relative bg-[color:var(--bg)] flex items-center px-4 py-4 active:bg-[color:var(--bg-deep)] transition-colors">
       {/*
         폭이 좁을 때(Safari 페이지 확대 125% ≈ 322px, 디스플레이 확대) 일본어 표기와
         개수 칩이 한 글자씩 줄바꿈되고 이름이 잘렸다. 표기·칩은 줄바꿈 없이
@@ -228,7 +232,7 @@ function SubjectRow({
             className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium whitespace-nowrap shrink-0"
             aria-label={`복습 ${dueCount}장 대기`}
           >
-            ・{dueCount}
+            {dueCount}장 대기
           </span>
         )}
       </div>
@@ -236,17 +240,29 @@ function SubjectRow({
         {base !== "/listening" && (
           <ActionLink href={`${base}?mode=study`} label="공부" />
         )}
-        <ActionLink href={base} label="퀴즈" />
+        <ActionLink href={base} label="퀴즈" stretch />
       </div>
     </div>
   );
 }
 
-function ActionLink({ href, label }: { href: string; label: string }) {
+function ActionLink({
+  href,
+  label,
+  stretch,
+}: {
+  href: string;
+  label: string;
+  stretch?: boolean;
+}) {
   return (
     <Link
       href={href}
-      className="text-caption text-[color:var(--fg-soft)] tracking-wide px-3 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] min-w-[44px] justify-center flex items-center"
+      className={`text-caption tracking-wide px-3 py-3 rounded-sm active:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] min-w-[44px] justify-center flex items-center ${
+        stretch
+          ? "text-[color:var(--fg)] after:absolute after:inset-0 after:content-['']"
+          : "relative z-10 text-[color:var(--fg-faint)]"
+      }`}
     >
       {label}
     </Link>
