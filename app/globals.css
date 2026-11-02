@@ -209,8 +209,22 @@ html, body {
 
 body {
   font-feature-settings: 'ss01';
+  /* 배경색은 html이 칠한다 — 아래 ::before가 body 배경에 가려지지 않게. */
+  background: transparent;
+}
+
+/*
+ * 그라디언트는 화면에 고정. `background-attachment: fixed`는 iOS Safari가
+ * 지원하지 않아 (무시하거나 문서 전체 높이에 맞춰 늘어난다) 기기에서만
+ * 데스크톱과 다르게 보였다. fixed 의사 요소는 어디서나 같다.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image: var(--bg-gradient);
-  background-attachment: fixed;
 }
 
 /*
