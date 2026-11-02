@@ -18,6 +18,8 @@ import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
 import { normalizeJapanese } from "@/lib/normalize";
+import { wordsWithKanji } from "@/lib/kanji-words";
+import { SpeakButton } from "@/components/SpeakButton";
 import type { KanjiCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -245,8 +247,45 @@ function KanjiQuiz({
 }
 
 function KanjiStudyBody({ card }: { card: KanjiCard }) {
-  // Identical to quiz back — in study mode, everything is visible from the start.
-  return <KanjiBack card={card} />;
+  // Quiz back + example words — in study mode, everything is visible from the start.
+  const vocab = useCardsStore((s) => s.vocab);
+  const words = wordsWithKanji(card.kanji, vocab);
+  return (
+    <div className="flex flex-col gap-4">
+      <KanjiBack card={card} />
+      {words.length > 0 && (
+        <ul className="border-t border-[color:var(--line)] pt-1 m-0 p-0 list-none">
+          {words.map((w) => (
+            <li
+              key={w.id}
+              className="flex items-center justify-between gap-2 border-b border-[color:var(--line)]"
+            >
+              <div className="flex flex-col py-2 min-w-0">
+                <span className="text-body" lang="ja">
+                  <span
+                    className="text-[color:var(--fg)]"
+                    style={{ fontFamily: "var(--font-jp-serif)" }}
+                  >
+                    {w.word}
+                  </span>
+                  <span
+                    className="ml-2 text-small text-[color:var(--fg-faint)]"
+                    style={{ fontFamily: "var(--font-jp-sans)" }}
+                  >
+                    {w.reading}
+                  </span>
+                </span>
+                <span className="text-small text-[color:var(--fg-soft)]">
+                  {w.koreanMeanings[0]}
+                </span>
+              </div>
+              <SpeakButton text={w.reading} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 /**
