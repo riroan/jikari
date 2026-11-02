@@ -202,9 +202,21 @@ html, body {
   color: var(--fg);
   min-height: 100%;
   overflow-x: hidden;
+  /* iOS: no gray tap flash, no double-tap zoom delay, no rubber-band
+     bounce showing past the page, no auto text inflation in landscape. */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  overscroll-behavior-y: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   /* Block Tailwind preflight system-ui fallback from leaking into the cascade.
      DESIGN.md § 2 bans system-ui — Pretendard is the only Korean/UI font. */
   font-family: "Pretendard Variable", Pretendard, sans-serif;
+}
+
+/* iOS Safari zooms the page on focus when an input is under 16px. */
+input, textarea, select {
+  font-size: max(16px, 1em);
 }
 
 body {
