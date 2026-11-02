@@ -347,30 +347,29 @@ export function chooseDirection(
  * 4-choice builder for 일상표현.
  *   recall      → question = situation_ko, choices = expression_jp (ruby 포함)
  *   recognition → question = expression_jp, choices = translation_ko (한국어)
- * Distractor pool is the entire deck minus the correct card (v1 simplification
- * per /plan-eng-review — same-register 규칙은 seed 50+에서 재도입).
+ *
+ * 선지는 같은 register(말투) 카드에 가중치를 준다. 무작위로 뽑으면 존댓말
+ * 정답에 반말 선지만 섞여 뜻을 몰라도 말투로 답이 갈린다. 하드 필터가 아니라
+ * 점수라서 한 register가 얇아도 선지가 굶지 않는다 (sampleScored 참고).
  */
 export function generateExpressionChoices(
   card: ExpressionCard,
   direction: QuizDirection,
   seed: number = Math.random(),
 ): { correct: string; choices: string[] } {
-  const all = cards().expressions;
-  const others = all.filter((e) => e.id !== card.id);
+  const others = cards().expressions.filter((e) => e.id !== card.id);
+  const recall = direction === "recall";
+  const correct = recall ? (card.ruby ?? card.expression_jp) : card.translation_ko;
 
-  if (direction === "recall") {
-    const correct = card.ruby ?? card.expression_jp;
-    const pool = others.map((e) => e.ruby ?? e.expression_jp);
-    const distractors = sampleUnique(pool, 3, seed);
-    return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
+  // 표시 문자열 → 카드. 점수는 카드(register)로 매기고 선지는 문자열로 낸다.
+  const byLabel = new Map<string, ExpressionCard>();
+  for (const e of others) {
+    const label = recall ? (e.ruby ?? e.expression_jp) : e.translation_ko;
+    if (label !== correct && !byLabel.has(label)) byLabel.set(label, e);
   }
-
-  // recognition
-  const correct = card.translation_ko;
-  const pool = others
-    .map((e) => e.translation_ko)
-    .filter((t) => t !== correct);
-  const distractors = sampleUnique(pool, 3, seed);
+  const distractors = sampleScored([...byLabel.keys()], 3, seed, (label) =>
+    byLabel.get(label)!.register === card.register ? 3 : 0,
+  );
   return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }
 

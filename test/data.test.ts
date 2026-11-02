@@ -7,6 +7,7 @@ import {
   centerTell,
   chooseDirection,
   generateChoices,
+  generateExpressionChoices,
   generateGrammarQuizChoices,
   generateKanjiChoices,
   generateVocabChoices,
@@ -16,6 +17,7 @@ import {
   readingShape,
 } from "@/lib/data";
 import type {
+  ExpressionCard,
   GrammarPatternQuiz,
   KanjiCard,
   ParticleContrastQuiz,
@@ -182,6 +184,54 @@ describe("kanaDistance", () => {
   test("identical is 0, symmetric", () => {
     expect(kanaDistance("がく", "がく")).toBe(0);
     expect(kanaDistance("あめ", "あまい")).toBe(kanaDistance("あまい", "あめ"));
+  });
+});
+
+describe("generateExpressionChoices distractor quality", () => {
+  const e = (id: string, register: ExpressionCard["register"]): ExpressionCard => ({
+    id,
+    situation_ko: `상황 ${id}`,
+    expression_jp: `表現${id}`,
+    register,
+    translation_ko: `뜻 ${id}`,
+  });
+
+  function seedDeck() {
+    // 반말 20장, 존댓말 20장 — 선지 창(3 × 4 = 12)보다 각 버킷이 넉넉해야 한다.
+    useCardsStore.setState({
+      expressions: [
+        ...Array.from({ length: 20 }, (_, i) => e(`c${i}`, "casual")),
+        ...Array.from({ length: 20 }, (_, i) => e(`p${i}`, "polite")),
+      ],
+    });
+  }
+
+  test.each(["recall", "recognition"] as const)(
+    "%s 선지는 같은 register에서 나온다",
+    (direction) => {
+      seedDeck();
+      const target = e("p0", "polite");
+      let same = 0;
+      let total = 0;
+      for (let seed = 0; seed < 50; seed++) {
+        const { correct, choices } = generateExpressionChoices(target, direction, seed);
+        for (const c of choices) {
+          if (c === correct) continue;
+          total++;
+          if (/p\d+/.test(c)) same++;
+        }
+      }
+      // 덱의 절반만 같은 register — 무작위면 0.5 언저리.
+      expect(same / total).toBeGreaterThan(0.8);
+    },
+  );
+
+  test("카드가 적은 덱에서도 선지가 굶지 않는다", () => {
+    useCardsStore.setState({ expressions: [e("a", "polite"), e("b", "casual"), e("c", "casual")] });
+    const { correct, choices } = generateExpressionChoices(e("a", "polite"), "recall", 3);
+    expect(choices).toContain(correct);
+    expect(new Set(choices).size).toBe(choices.length);
+    expect(choices).toHaveLength(3);
   });
 });
 
