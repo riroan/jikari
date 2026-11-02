@@ -9,6 +9,8 @@ import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
 import {
   generateGrammarQuizChoices,
   getGrammar,
@@ -45,6 +47,7 @@ function GrammarPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const patternIds = useCardsStore((s) => s.grammarPatternIds);
   const particleIds = useCardsStore((s) => s.grammarParticleContrastIds);
@@ -109,7 +112,17 @@ function GrammarPageInner() {
 
   // index % length: the deck is re-sampled when the rating tier moves, so it
   // can shrink under a mid-deck index. Wrap instead of falling off the end.
-  const cardId = deck[index % deck.length];
+  if (run.summary)
+    return (
+      <Shell tab={tab}>
+        <SessionSummary
+          summary={run.summary}
+          onRetry={run.retryMissed}
+          onNext={run.next}
+        />
+      </Shell>
+    );
+  const cardId = run.retryId ?? deck[index % deck.length];
   const card = cardId ? getGrammar(cardId) : undefined;
 
   if (!mounted) {
@@ -151,7 +164,8 @@ function GrammarPageInner() {
               jlptDifficulty(card),
             );
             recordQuizResult("grammar", wasCorrect);
-            advance();
+            run.record(card.id, wasCorrect, card.type === "pattern" ? card.pattern : card.particles.join("・"), card.type === "pattern" ? card.meaningKo : card.rule);
+            if (!run.retrying) advance();
           }}
         />
       )}

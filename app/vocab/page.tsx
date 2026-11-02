@@ -9,6 +9,8 @@ import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
 import {
   chooseDirection,
   generateVocabChoices,
@@ -39,6 +41,7 @@ function VocabPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const vocabIds = useCardsStore((s) => s.vocabIds);
@@ -102,7 +105,17 @@ function VocabPageInner() {
 
   // index % length: the deck is re-sampled when the rating tier moves, so it
   // can shrink under a mid-deck index. Wrap instead of falling off the end.
-  const cardId = deck[index % deck.length] ?? vocabIds[0];
+  if (run.summary)
+    return (
+      <Shell>
+        <SessionSummary
+          summary={run.summary}
+          onRetry={run.retryMissed}
+          onNext={run.next}
+        />
+      </Shell>
+    );
+  const cardId = run.retryId ?? deck[index % deck.length] ?? vocabIds[0];
   const card: VocabCard | undefined = getVocab(cardId);
   if (!card) {
     return <Shell />;
@@ -134,7 +147,8 @@ function VocabPageInner() {
               jlptDifficulty(card),
             );
             recordQuizResult("vocab", wasCorrect);
-            advance();
+            run.record(card.id, wasCorrect, card.word, card.koreanMeanings[0] ?? "");
+            if (!run.retrying) advance();
           }}
         />
       )}

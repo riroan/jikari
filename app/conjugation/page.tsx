@@ -9,6 +9,9 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
+import { answerOf } from "@/lib/quiz-run";
 import { useCardsStore } from "@/lib/cards-store";
 import { pickByDifficulty, shuffleIds } from "@/lib/deck";
 import {
@@ -72,6 +75,7 @@ function ConjugationPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const run = useQuizRun();
   const vocab = useCardsStore((s) => s.vocab);
   const ratingTier = quantizeRating(
     useStore((s) => s.ratings.conjugation ?? INITIAL_RATING),
@@ -117,7 +121,17 @@ function ConjugationPageInner() {
   if (!mounted) return <Shell />;
   if (verbs.length === 0) return <Shell><EmptyState /></Shell>;
 
-  const cardId = deck[index] ?? verbIds[0];
+  if (run.summary)
+    return (
+      <Shell>
+        <SessionSummary
+          summary={run.summary}
+          onRetry={run.retryMissed}
+          onNext={run.next}
+        />
+      </Shell>
+    );
+  const cardId = run.retryId ?? deck[index] ?? verbIds[0];
   const verb = cardId ? verbById.get(cardId) : undefined;
   if (!verb) return <Shell />;
 
@@ -160,7 +174,8 @@ function ConjugationPageInner() {
             conjugationFormDifficulty(form),
           );
           recordQuizResult("conjugation", wasCorrect);
-          advance();
+          run.record(verb.id, wasCorrect, `${verb.word} ${FORM_LABELS_KO[form]}`, answerOf(() => conjugate(verb.reading, verb.verbGroup, form)));
+          if (!run.retrying) advance();
         }}
       />
     </Shell>

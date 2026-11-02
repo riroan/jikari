@@ -9,6 +9,8 @@ import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
 import {
   chooseDirection,
   generateExpressionChoices,
@@ -50,6 +52,7 @@ function ExpressionsPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const expressionIds = useCardsStore((s) => s.expressionIds);
   const expressionById = useCardsStore((s) => s.expressionById);
@@ -100,7 +103,17 @@ function ExpressionsPageInner() {
 
   // index % length: the deck is re-sampled when the rating tier moves, so it
   // can shrink under a mid-deck index. Wrap instead of falling off the end.
-  const cardId = deck[index % deck.length] ?? expressionIds[0];
+  if (run.summary)
+    return (
+      <Shell>
+        <SessionSummary
+          summary={run.summary}
+          onRetry={run.retryMissed}
+          onNext={run.next}
+        />
+      </Shell>
+    );
+  const cardId = run.retryId ?? deck[index % deck.length] ?? expressionIds[0];
   const card: ExpressionCard | undefined = getExpression(cardId);
 
   if (!mounted) {
@@ -148,7 +161,8 @@ function ExpressionsPageInner() {
             registerDifficulty(card),
           );
           recordQuizResult("expression", wasCorrect);
-          advance();
+          run.record(card.id, wasCorrect, card.expression_jp, card.translation_ko);
+          if (!run.retrying) advance();
         }}
       />
     </Shell>

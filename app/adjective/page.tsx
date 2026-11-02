@@ -9,6 +9,9 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { StudyCard } from "@/components/StudyCard";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
+import { answerOf } from "@/lib/quiz-run";
 import { useCardsStore } from "@/lib/cards-store";
 import { pickByDifficulty, shuffleIds } from "@/lib/deck";
 import {
@@ -53,6 +56,7 @@ function AdjectivePageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const run = useQuizRun();
   const vocab = useCardsStore((s) => s.vocab);
   const ratingTier = quantizeRating(
     useStore((s) => s.ratings.adjective ?? INITIAL_RATING),
@@ -98,7 +102,17 @@ function AdjectivePageInner() {
   if (!mounted) return <Shell />;
   if (adjs.length === 0) return <Shell><EmptyState /></Shell>;
 
-  const cardId = deck[index] ?? adjIds[0];
+  if (run.summary)
+    return (
+      <Shell>
+        <SessionSummary
+          summary={run.summary}
+          onRetry={run.retryMissed}
+          onNext={run.next}
+        />
+      </Shell>
+    );
+  const cardId = run.retryId ?? deck[index] ?? adjIds[0];
   const adj = cardId ? adjById.get(cardId) : undefined;
   if (!adj) return <Shell />;
 
@@ -141,7 +155,8 @@ function AdjectivePageInner() {
             adjectiveFormDifficulty(form),
           );
           recordQuizResult("adjective", wasCorrect);
-          advance();
+          run.record(adj.id, wasCorrect, `${adj.word} ${ADJ_FORM_LABELS_KO[form]}`, answerOf(() => conjugateAdj(adj.reading, adj.adjGroup, form)));
+          if (!run.retrying) advance();
         }}
       />
     </Shell>

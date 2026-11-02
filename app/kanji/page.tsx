@@ -8,6 +8,8 @@ import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { useStore } from "@/lib/store";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
@@ -36,6 +38,7 @@ function KanjiPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const threshold = useStore((s) => s.settings.typingThresholdBox);
   const kanjiIds = useCardsStore((s) => s.kanjiIds);
@@ -100,7 +103,17 @@ function KanjiPageInner() {
 
   // index % length: the deck is re-sampled when the rating tier moves, so it
   // can shrink under a mid-deck index. Wrap instead of falling off the end.
-  const cardId = deck[index % deck.length] ?? kanjiIds[0];
+  if (run.summary)
+    return (
+      <Shell>
+        <SessionSummary
+          summary={run.summary}
+          onRetry={run.retryMissed}
+          onNext={run.next}
+        />
+      </Shell>
+    );
+  const cardId = run.retryId ?? deck[index % deck.length] ?? kanjiIds[0];
   const card: KanjiCard | undefined = getKanji(cardId);
   if (!card) {
     return <Shell />;
@@ -130,7 +143,8 @@ function KanjiPageInner() {
               jlptDifficulty(card),
             );
             recordQuizResult("kanji", wasCorrect);
-            advance();
+            run.record(card.id, wasCorrect, card.kanji, `${card.koreanMeaning} · ${card.onReadings[0] ?? card.kunReadings[0] ?? ""}`);
+            if (!run.retrying) advance();
           }}
         />
       )}

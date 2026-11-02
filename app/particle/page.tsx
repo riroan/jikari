@@ -9,6 +9,8 @@ import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { SessionSummary } from "@/components/SessionSummary";
+import { useQuizRun } from "@/lib/use-quiz-run";
 import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
@@ -36,6 +38,7 @@ function ParticlePageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
+  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const particleIds = useCardsStore((s) => s.particleIds);
   const sentenceById = useCardsStore((s) => s.sentenceById);
@@ -100,7 +103,17 @@ function ParticlePageInner() {
 
   // index % length: the deck is re-sampled when the rating tier moves, so it
   // can shrink under a mid-deck index. Wrap instead of falling off the end.
-  const cardId = deck[index % deck.length] ?? particleIds[0];
+  if (run.summary)
+    return (
+      <Shell>
+        <SessionSummary
+          summary={run.summary}
+          onRetry={run.retryMissed}
+          onNext={run.next}
+        />
+      </Shell>
+    );
+  const cardId = run.retryId ?? deck[index % deck.length] ?? particleIds[0];
   const card: SentenceCard | undefined = getSentence(cardId);
   if (!card) {
     return <Shell />;
@@ -130,7 +143,8 @@ function ParticlePageInner() {
               jlptDifficulty(card),
             );
             recordQuizResult("particle", wasCorrect);
-            advance();
+            run.record(card.id, wasCorrect, card.sentence, card.blank);
+            if (!run.retrying) advance();
           }}
         />
       )}
