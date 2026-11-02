@@ -610,3 +610,45 @@ describe("vocab seeds", () => {
     }
   });
 });
+
+describe("sentence seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const files = readdirSync(dir).filter(
+    (f) => (f.startsWith("sentences-") || f.startsWith("particles-")) && f.endsWith(".json"),
+  );
+  type S = { id: string; sentence: string; sentenceRuby?: string; blank: string; blankRuby?: string; distractors: string[] };
+  const load = (f: string) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as S[];
+
+  test("빈칸은 하나, 오답은 서로 다른 3개이고 정답과 다르다", () => {
+    for (const f of files) {
+      for (const c of load(f)) {
+        expect(c.sentence.split("＿＿＿").length - 1, `${f} ${c.id}: 빈칸 개수`).toBe(1);
+        expect(c.distractors, `${f} ${c.id}`).toHaveLength(3);
+        expect(new Set(c.distractors).size, `${c.id}: 오답 중복`).toBe(3);
+        expect(c.distractors, `${c.id}: 정답이 오답에 섞임`).not.toContain(c.blank);
+      }
+    }
+  });
+
+  test("ruby를 벗기면 원문과 같다", () => {
+    for (const f of files) {
+      for (const c of load(f)) {
+        if (c.sentenceRuby) expect(stripMarkup(parseMarkup(c.sentenceRuby)), `${c.id} sentence`).toBe(c.sentence);
+        if (c.blankRuby) expect(stripMarkup(parseMarkup(c.blankRuby)), `${c.id} blank`).toBe(c.blank);
+      }
+    }
+  });
+
+  // 오래된 배치는 傘·時計·花가 오답을 독점했다 (전 시드의 25%). 새 배치는 오답이
+  // 몇 단어로 쏠리면 "저건 정답이 아니다"를 외우게 되므로 한 단어의 몫을 제한한다.
+  test.each(files.filter((f) => f.startsWith("sentences-daily-")))(
+    "%s: 한 단어가 오답의 15% 넘는 카드에 쓰이지 않는다",
+    (f) => {
+      const cards = load(f);
+      const use = new Map<string, number>();
+      for (const c of cards) for (const d of c.distractors) use.set(d, (use.get(d) ?? 0) + 1);
+      const [word, n] = [...use].sort((a, b) => b[1] - a[1])[0];
+      expect(n / cards.length, `${word}가 ${n}/${cards.length}장`).toBeLessThanOrEqual(0.15);
+    },
+  );
+});
