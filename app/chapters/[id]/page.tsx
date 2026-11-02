@@ -220,7 +220,7 @@ function NotFound({ id }: { id: string }) {
       </p>
       <Link
         href="/chapters"
-        className="text-caption text-[color:var(--fg-faint)] underline hover:text-[color:var(--fg)]"
+        className="inline-flex items-center min-h-[44px] text-caption text-[color:var(--fg-faint)] underline hover:text-[color:var(--fg)]"
       >
         ← 단원 목록으로
       </Link>

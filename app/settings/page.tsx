@@ -236,7 +236,7 @@ export default function SettingsPage() {
               })
             }
             aria-label="타이핑 시작 박스"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
             style={{ minHeight: 44, minWidth: 64 }}
           >
             <option value={0}>사용 안 함 (4지선다만)</option>
@@ -259,7 +259,7 @@ export default function SettingsPage() {
               updateSettings({ dailyGoal: normalizeDailyGoal(Number(e.target.value)) })
             }
             aria-label="하루 목표"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
             style={{ minHeight: 44, minWidth: 64 }}
           >
             {DAILY_GOALS.map((n) => (

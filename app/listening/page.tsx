@@ -260,7 +260,7 @@ function KindTabs({ active }: { active: Kind }) {
       role="tab"
       aria-selected={on}
       href={href}
-      className={`inline-flex items-center min-h-[44px] py-2 -mb-px border-b-2 text-small tracking-wide transition-colors ${
+      className={`inline-flex items-center justify-center min-h-[44px] min-w-[44px] py-2 -mb-px border-b-2 text-small tracking-wide transition-colors ${
         on
           ? "text-[color:var(--fg)] border-[color:var(--accent-korean)]"
           : "text-[color:var(--fg-faint)] border-transparent hover:text-[color:var(--fg-soft)]"
