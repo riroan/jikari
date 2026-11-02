@@ -28,7 +28,7 @@ export function StudyCard({
   // Horizontal swipe: left = next, right = prev. Vertical scroll stays native (touch-action: pan-y).
   const start = useRef<{ x: number; y: number } | null>(null);
   const btn =
-    "flex-1 text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors min-h-[52px] inline-flex items-center justify-center";
+    "flex-1 text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors min-h-[44px] py-4 inline-flex items-center justify-center";
 
   return (
     <div className="flex flex-col gap-6 min-h-[520px]">
