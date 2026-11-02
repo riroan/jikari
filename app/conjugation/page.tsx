@@ -75,7 +75,6 @@ function ConjugationPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const vocab = useCardsStore((s) => s.vocab);
   const ratingTier = quantizeRating(
     useStore((s) => s.ratings.conjugation ?? INITIAL_RATING),
@@ -96,6 +95,8 @@ function ConjugationPageInner() {
     () => shuffleIds(verbIds, seed + epoch * 7919),
     [seed, epoch, verbIds],
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -170,14 +171,16 @@ function ConjugationPageInner() {
         verb={verb}
         form={form}
         onResolved={(wasCorrect) => {
-          review(
-            "conjugation",
-            srsCardId(verb.id, form),
-            wasCorrect,
-            "typed",
-            conjugationFormDifficulty(form),
-          );
-          recordQuizResult("conjugation", wasCorrect);
+          if (!run.retrying) {
+            review(
+              "conjugation",
+              srsCardId(verb.id, form),
+              wasCorrect,
+              "typed",
+              conjugationFormDifficulty(form),
+            );
+            recordQuizResult("conjugation", wasCorrect);
+          }
           run.record(`${verb.id}:${form}`, wasCorrect, `${verb.word} ${FORM_LABELS_KO[form]}`, answerOf(() => conjugate(verb.reading, verb.verbGroup, form)));
           if (!run.retrying) advance();
         }}

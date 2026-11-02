@@ -47,7 +47,6 @@ function GrammarPageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const patternIds = useCardsStore((s) => s.grammarPatternIds);
   const particleIds = useCardsStore((s) => s.grammarParticleContrastIds);
@@ -88,6 +87,8 @@ function GrammarPageInner() {
     // ratingTier, not rating: re-sample once the rating has actually moved.
     [mode, seed, epoch, ids, getBox, boxPrefix, grammarById, ratingTier],
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -156,14 +157,16 @@ function GrammarPageInner() {
             // SRS key: grammar:pattern:{id} / grammar:particle:{id} per eng review
             const subtypedId =
               card.type === "pattern" ? `pattern:${card.id}` : `particle:${card.id}`;
-            review(
-              "grammar",
-              subtypedId,
-              wasCorrect,
-              "choice",
-              jlptDifficulty(card),
-            );
-            recordQuizResult("grammar", wasCorrect);
+            if (!run.retrying) {
+              review(
+                "grammar",
+                subtypedId,
+                wasCorrect,
+                "choice",
+                jlptDifficulty(card),
+              );
+              recordQuizResult("grammar", wasCorrect);
+            }
             run.record(card.id, wasCorrect, card.type === "pattern" ? card.pattern : card.particles.join("・"), card.type === "pattern" ? card.meaningKo : card.rule);
             if (!run.retrying) advance();
           }}

@@ -42,7 +42,6 @@ export function ChapterQuizDeck({
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
-  const run = useQuizRun();
   const [stats, setStats] = useState<{ correct: number; wrong: number }>({
     correct: 0,
     wrong: 0,
@@ -76,6 +75,8 @@ export function ChapterQuizDeck({
       ),
     [ids, seed, epoch, grammarById],
   );
+
+  const run = useQuizRun(deck.length);
 
   const currentKey = run.retryId ?? deck[index];
   const current = members.find(
@@ -134,12 +135,18 @@ export function ChapterQuizDeck({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between text-caption text-[color:var(--fg-faint)] tracking-label font-medium">
-        <span>
-          {index + 1} / {deck.length}
-        </span>
-        <span className="tabular-nums">
-          ◯ {stats.correct} ・ ✕ {stats.wrong}
-        </span>
+        {run.retrying ? (
+          <span>틀린 것 다시</span>
+        ) : (
+          <>
+            <span>
+              {index + 1} / {deck.length}
+            </span>
+            <span className="tabular-nums">
+              ◯ {stats.correct} ・ ✕ {stats.wrong}
+            </span>
+          </>
+        )}
       </div>
 
       <ChapterQuizCard
@@ -150,13 +157,15 @@ export function ChapterQuizDeck({
         box={box}
         typingThreshold={typingThreshold}
         onResolved={(srsMode, srsCardId, wasCorrect, answerMode) => {
-          review(srsMode, srsCardId, wasCorrect, answerMode);
-          recordQuizResult(srsMode === "grammar" ? "grammar" : srsMode, wasCorrect);
-          setStats((s) =>
-            wasCorrect
-              ? { ...s, correct: s.correct + 1 }
-              : { ...s, wrong: s.wrong + 1 },
-          );
+          if (!run.retrying) {
+            review(srsMode, srsCardId, wasCorrect, answerMode);
+            recordQuizResult(srsMode === "grammar" ? "grammar" : srsMode, wasCorrect);
+            setStats((s) =>
+              wasCorrect
+                ? { ...s, correct: s.correct + 1 }
+                : { ...s, wrong: s.wrong + 1 },
+            );
+          }
           const c = current.card;
           const [front, back] =
             "kanji" in c

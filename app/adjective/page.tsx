@@ -56,7 +56,6 @@ function AdjectivePageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const vocab = useCardsStore((s) => s.vocab);
   const ratingTier = quantizeRating(
     useStore((s) => s.ratings.adjective ?? INITIAL_RATING),
@@ -77,6 +76,8 @@ function AdjectivePageInner() {
     () => shuffleIds(adjIds, seed + epoch * 7919),
     [seed, epoch, adjIds],
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -151,14 +152,16 @@ function AdjectivePageInner() {
         adj={adj}
         form={form}
         onResolved={(wasCorrect) => {
-          review(
-            "adjective",
-            `${adj.id}:${form}`,
-            wasCorrect,
-            "typed",
-            adjectiveFormDifficulty(form),
-          );
-          recordQuizResult("adjective", wasCorrect);
+          if (!run.retrying) {
+            review(
+              "adjective",
+              `${adj.id}:${form}`,
+              wasCorrect,
+              "typed",
+              adjectiveFormDifficulty(form),
+            );
+            recordQuizResult("adjective", wasCorrect);
+          }
           run.record(`${adj.id}:${form}`, wasCorrect, `${adj.word} ${ADJ_FORM_LABELS_KO[form]}`, answerOf(() => conjugateAdj(adj.reading, adj.adjGroup, form)));
           if (!run.retrying) advance();
         }}

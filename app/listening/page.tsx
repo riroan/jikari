@@ -20,11 +20,11 @@ import { useQuizRun } from "@/lib/use-quiz-run";
  */
 export default function ListeningPage() {
   const mounted = useIsClient();
-  const run = useQuizRun();
   const vocabIds = useCardsStore((s) => s.vocabIds);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
   const [index, setIndex] = useState(0);
   const deck = useMemo(() => shuffleIds(vocabIds, seed), [vocabIds, seed]);
+  const run = useQuizRun(deck.length);
 
   const shell = (children?: React.ReactNode) => (
     <ModePageShell title="聞き取り">{children}</ModePageShell>

@@ -38,7 +38,6 @@ function ParticlePageInner() {
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
-  const run = useQuizRun();
   const getBox = useStore((s) => s.getBox);
   const particleIds = useCardsStore((s) => s.particleIds);
   const sentenceById = useCardsStore((s) => s.sentenceById);
@@ -67,6 +66,8 @@ function ParticlePageInner() {
     // ratingTier, not rating: re-sample once the rating has actually moved.
     [mode, seed, epoch, particleIds, getBox, sentenceById, ratingTier]
   );
+
+  const run = useQuizRun(deck.length);
 
   const advance = () => {
     setIndex((i) => {
@@ -135,14 +136,16 @@ function ParticlePageInner() {
           card={card}
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
-            review(
-              "sentence",
-              card.id,
-              wasCorrect,
-              "choice",
-              jlptDifficulty(card),
-            );
-            recordQuizResult("particle", wasCorrect);
+            if (!run.retrying) {
+              review(
+                "sentence",
+                card.id,
+                wasCorrect,
+                "choice",
+                jlptDifficulty(card),
+              );
+              recordQuizResult("particle", wasCorrect);
+            }
             run.record(card.id, wasCorrect, card.sentence, card.blank);
             if (!run.retrying) advance();
           }}

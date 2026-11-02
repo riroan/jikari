@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   initialRun,
+  RUN_LENGTH,
   recordAnswer,
   retryId,
   retryMissed,
@@ -55,5 +56,15 @@ describe("quiz-run", () => {
   test("retryMissed is a no-op when nothing was missed", () => {
     const done = run(initialRun, ["a", true], ["b", true], ["c", true], ["d", true]);
     expect(retryMissed(done)).toBe(done);
+  });
+});
+
+describe("quiz-run short deck", () => {
+  test("run ends at the deck length when shorter than RUN_LENGTH", () => {
+    const s = [["a", true], ["b", true], ["c", true]].reduce(
+      (acc, [id, ok]) => recordAnswer(acc, a(id as string, ok as boolean), Math.min(RUN_LENGTH, 3)),
+      initialRun,
+    );
+    expect(s.done).toBe(true);
   });
 });
