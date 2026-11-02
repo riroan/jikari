@@ -11,7 +11,9 @@
       "하나"
     ],
     "ruby": "{一|いち}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "二",
@@ -24,7 +26,9 @@
       "이"
     ],
     "ruby": "{二|に}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三",
@@ -37,7 +41,9 @@
       "삼"
     ],
     "ruby": "{三|さん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "四",
@@ -51,7 +57,9 @@
       "넷"
     ],
     "ruby": "{四|よん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "五",
@@ -64,7 +72,9 @@
       "오"
     ],
     "ruby": "{五|ご}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "六",
@@ -77,7 +87,9 @@
       "육"
     ],
     "ruby": "{六|ろく}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "七",
@@ -90,7 +102,9 @@
       "칠"
     ],
     "ruby": "{七|なな}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八",
@@ -103,7 +117,9 @@
       "팔"
     ],
     "ruby": "{八|はち}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "九",
@@ -116,7 +132,9 @@
       "구"
     ],
     "ruby": "{九|きゅう}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "百",
@@ -129,7 +147,9 @@
       "백"
     ],
     "ruby": "{百|ひゃく}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三百",
@@ -142,7 +162,9 @@
       "삼백"
     ],
     "ruby": "{三百|さんびゃく}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "六百",
@@ -155,7 +177,9 @@
       "육백"
     ],
     "ruby": "{六百|ろっぴゃく}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八百",
@@ -168,7 +192,9 @@
       "팔백"
     ],
     "ruby": "{八百|はっぴゃく}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "千",
@@ -181,7 +207,9 @@
       "천"
     ],
     "ruby": "{千|せん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三千",
@@ -194,7 +222,9 @@
       "삼천"
     ],
     "ruby": "{三千|さんぜん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八千",
@@ -207,7 +237,9 @@
       "팔천"
     ],
     "ruby": "{八千|はっせん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一万",
@@ -221,7 +253,9 @@
       "일만"
     ],
     "ruby": "{一万|いちまん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "百円",
@@ -234,7 +268,9 @@
       "백 엔"
     ],
     "ruby": "{百円|ひゃくえん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "千円",
@@ -247,7 +283,9 @@
       "천 엔"
     ],
     "ruby": "{千円|せんえん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一万円",
@@ -260,7 +298,9 @@
       "만 엔"
     ],
     "ruby": "{一万円|いちまんえん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何円",
@@ -273,7 +313,9 @@
       "몇 엔"
     ],
     "ruby": "{何円|なんえん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何時",
@@ -286,7 +328,9 @@
       "몇 시"
     ],
     "ruby": "{何時|なんじ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "四時",
@@ -299,7 +343,9 @@
       "4시"
     ],
     "ruby": "{四時|よじ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "七時",
@@ -312,7 +358,9 @@
       "7시"
     ],
     "ruby": "{七時|しちじ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "九時",
@@ -325,7 +373,9 @@
       "9시"
     ],
     "ruby": "{九時|くじ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何分",
@@ -338,7 +388,9 @@
       "몇 분"
     ],
     "ruby": "{何分|なんぷん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一分",
@@ -351,7 +403,9 @@
       "1분"
     ],
     "ruby": "{一分|いっぷん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三分",
@@ -364,7 +418,9 @@
       "3분"
     ],
     "ruby": "{三分|さんぷん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "四分",
@@ -377,7 +433,9 @@
       "4분"
     ],
     "ruby": "{四分|よんぷん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "六分",
@@ -390,7 +448,9 @@
       "6분"
     ],
     "ruby": "{六分|ろっぷん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八分",
@@ -403,7 +463,9 @@
       "8분"
     ],
     "ruby": "{八分|はっぷん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "半",
@@ -417,7 +479,9 @@
       "30분"
     ],
     "ruby": "{半|はん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "月曜日",
@@ -430,7 +494,9 @@
       "월요일"
     ],
     "ruby": "{月曜日|げつようび}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何曜日",
@@ -443,7 +509,9 @@
       "무슨 요일"
     ],
     "ruby": "{何曜日|なんようび}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "四月",
@@ -456,7 +524,9 @@
       "4월"
     ],
     "ruby": "{四月|しがつ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "七月",
@@ -469,7 +539,9 @@
       "7월"
     ],
     "ruby": "{七月|しちがつ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "九月",
@@ -482,7 +554,9 @@
       "9월"
     ],
     "ruby": "{九月|くがつ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一日",
@@ -496,7 +570,9 @@
       "초하루"
     ],
     "ruby": "{一日|ついたち}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "二日",
@@ -510,7 +586,9 @@
       "이틀"
     ],
     "ruby": "{二日|ふつか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三日",
@@ -524,7 +602,9 @@
       "사흘"
     ],
     "ruby": "{三日|みっか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "四日",
@@ -538,7 +618,9 @@
       "나흘"
     ],
     "ruby": "{四日|よっか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "五日",
@@ -552,7 +634,9 @@
       "닷새"
     ],
     "ruby": "{五日|いつか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "六日",
@@ -566,7 +650,9 @@
       "엿새"
     ],
     "ruby": "{六日|むいか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "七日",
@@ -580,7 +666,9 @@
       "이레"
     ],
     "ruby": "{七日|なのか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八日",
@@ -594,7 +682,9 @@
       "여드레"
     ],
     "ruby": "{八日|ようか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "九日",
@@ -608,7 +698,9 @@
       "아흐레"
     ],
     "ruby": "{九日|ここのか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "十日",
@@ -622,7 +714,9 @@
       "열흘"
     ],
     "ruby": "{十日|とおか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "二十日",
@@ -635,7 +729,9 @@
       "20일"
     ],
     "ruby": "{二十日|はつか}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何日",
@@ -648,7 +744,9 @@
       "며칠"
     ],
     "ruby": "{何日|なんにち}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一つ",
@@ -662,7 +760,9 @@
       "하나"
     ],
     "ruby": "{一|ひと}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "二つ",
@@ -676,7 +776,9 @@
       "둘"
     ],
     "ruby": "{二|ふた}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三つ",
@@ -690,7 +792,9 @@
       "셋"
     ],
     "ruby": "{三|みっ}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "四つ",
@@ -704,7 +808,9 @@
       "넷"
     ],
     "ruby": "{四|よっ}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "五つ",
@@ -717,7 +823,9 @@
       "다섯 개"
     ],
     "ruby": "{五|いつ}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "六つ",
@@ -730,7 +838,9 @@
       "여섯 개"
     ],
     "ruby": "{六|むっ}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "七つ",
@@ -743,7 +853,9 @@
       "일곱 개"
     ],
     "ruby": "{七|なな}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八つ",
@@ -756,7 +868,9 @@
       "여덟 개"
     ],
     "ruby": "{八|やっ}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "九つ",
@@ -769,7 +883,9 @@
       "아홉 개"
     ],
     "ruby": "{九|ここの}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一個",
@@ -782,7 +898,9 @@
       "1개"
     ],
     "ruby": "{一個|いっこ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三個",
@@ -795,7 +913,9 @@
       "3개"
     ],
     "ruby": "{三個|さんこ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一枚",
@@ -808,7 +928,9 @@
       "한 장"
     ],
     "ruby": "{一枚|いちまい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一本",
@@ -822,7 +944,9 @@
       "한 병"
     ],
     "ruby": "{一本|いっぽん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "二本",
@@ -836,7 +960,9 @@
       "두 병"
     ],
     "ruby": "{二本|にほん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三本",
@@ -850,7 +976,9 @@
       "세 병"
     ],
     "ruby": "{三本|さんぼん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "六本",
@@ -864,7 +992,9 @@
       "여섯 병"
     ],
     "ruby": "{六本|ろっぽん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八本",
@@ -878,7 +1008,9 @@
       "여덟 병"
     ],
     "ruby": "{八本|はっぽん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何本",
@@ -892,7 +1024,9 @@
       "몇 병"
     ],
     "ruby": "{何本|なんぼん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一冊",
@@ -905,7 +1039,9 @@
       "한 권"
     ],
     "ruby": "{一冊|いっさつ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八冊",
@@ -918,7 +1054,9 @@
       "여덟 권"
     ],
     "ruby": "{八冊|はっさつ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三人",
@@ -931,7 +1069,9 @@
       "세 명"
     ],
     "ruby": "{三人|さんにん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "四人",
@@ -944,7 +1084,9 @@
       "네 명"
     ],
     "ruby": "{四人|よにん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何人",
@@ -957,7 +1099,9 @@
       "몇 명"
     ],
     "ruby": "{何人|なんにん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一台",
@@ -970,7 +1114,9 @@
       "한 대"
     ],
     "ruby": "{一台|いちだい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一匹",
@@ -983,7 +1129,9 @@
       "한 마리"
     ],
     "ruby": "{一匹|いっぴき}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三匹",
@@ -996,7 +1144,9 @@
       "세 마리"
     ],
     "ruby": "{三匹|さんびき}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "六匹",
@@ -1009,7 +1159,9 @@
       "여섯 마리"
     ],
     "ruby": "{六匹|ろっぴき}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一杯",
@@ -1022,7 +1174,9 @@
       "한 잔"
     ],
     "ruby": "{一杯|いっぱい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三杯",
@@ -1035,7 +1189,9 @@
       "세 잔"
     ],
     "ruby": "{三杯|さんばい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一回",
@@ -1048,7 +1204,9 @@
       "한 번"
     ],
     "ruby": "{一回|いっかい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三回",
@@ -1061,7 +1219,9 @@
       "세 번"
     ],
     "ruby": "{三回|さんかい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一歳",
@@ -1074,7 +1234,9 @@
       "한 살"
     ],
     "ruby": "{一歳|いっさい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "八歳",
@@ -1087,7 +1249,9 @@
       "여덟 살"
     ],
     "ruby": "{八歳|はっさい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "二十歳",
@@ -1100,7 +1264,9 @@
       "스무 살"
     ],
     "ruby": "{二十歳|はたち}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何歳",
@@ -1113,7 +1279,9 @@
       "몇 살"
     ],
     "ruby": "{何歳|なんさい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一階",
@@ -1126,7 +1294,9 @@
       "1층"
     ],
     "ruby": "{一階|いっかい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "三階",
@@ -1139,7 +1309,9 @@
       "3층"
     ],
     "ruby": "{三階|さんがい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "何階",
@@ -1152,6 +1324,8 @@
       "몇 층"
     ],
     "ruby": "{何階|なんがい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   }
 ]
