@@ -213,9 +213,38 @@ function ParticleQuiz({
         correct: choices.correct,
         choiceFontFamily: "var(--font-jp-sans)",
       }}
+      back={<ParticleQuizBack card={card} />}
       onResolved={onResolved}
       minQuestionHeight={0}
     />
+  );
+}
+
+/** After answering: filled sentence + 왜 이 조사인지 (PARTICLE_INFO). */
+function ParticleQuizBack({ card }: { card: SentenceCard }) {
+  const hasRuby = Boolean(card.sentenceRuby);
+  const src = (card.sentenceRuby ?? card.sentence).replace(
+    BLANK,
+    `[[${card.blankRuby ?? card.blank}]]`,
+  );
+  const info = PARTICLE_INFO[card.blank];
+  return (
+    <div className="flex flex-col gap-4">
+      <div
+        className="text-h2 leading-[1.8] font-medium"
+        style={{
+          fontFamily: "var(--font-jp-serif)",
+          color: "var(--fg)",
+          letterSpacing: "-0.01em",
+        }}
+      >
+        {hasRuby || src.includes("[[") ? <RubyText text={src} /> : src}
+      </div>
+      <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
+        {card.translation}
+      </div>
+      {info && <ParticleInfoBlock particle={card.blank} info={info} />}
+    </div>
   );
 }
 

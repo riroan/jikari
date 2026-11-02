@@ -15,6 +15,7 @@ import {
   generateGrammarQuizChoices,
   getGrammar,
 } from "@/lib/data";
+import { PARTICLE_INFO } from "@/lib/particle-info";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
@@ -268,7 +269,7 @@ function PatternStudyBody({ card }: { card: GrammarPatternCard }) {
     <div className="flex flex-col gap-6">
       <div>
         <div
-          className="text-[34px] font-semibold leading-[1.3] text-[color:var(--fg)]"
+          className={`${card.pattern.length > 10 ? "text-[26px]" : "text-[34px]"} font-semibold leading-[1.3] text-[color:var(--fg)] [overflow-wrap:anywhere]`}
           style={{
             fontFamily: "var(--font-jp-serif)",
             letterSpacing: "-0.01em",
@@ -442,7 +443,12 @@ function GrammarQuiz({
             </div>
           )}
           {card.type === "particle_contrast" && (
-            <div className="mt-2 pt-3 border-t border-[color:var(--line)] text-caption text-[color:var(--accent-korean)]">
+            <div className="mt-2 pt-3 border-t border-[color:var(--line)] flex flex-col gap-1.5 text-caption text-[color:var(--accent-korean)]">
+              <div className="text-[color:var(--fg-soft)]" style={{ fontFamily: "var(--font-jp-sans)" }}>
+                {card.particles
+                  .map((p) => `${p} ${PARTICLE_INFO[p]?.gloss ?? ""}`.trim())
+                  .join("  ·  ")}
+              </div>
               {card.rule}
             </div>
           )}
