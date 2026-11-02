@@ -9,14 +9,14 @@ export function toSpeakable(text: string): string {
  * Speak Japanese via Web Speech API. Must be called from a user tap handler
  * (iOS Safari). Cancels any utterance in flight. No-op if unsupported.
  */
-export function speak(text: string): void {
+export function speak(text: string, rate = 0.9): void {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   const plain = toSpeakable(text);
   if (!plain) return;
   const synth = window.speechSynthesis;
   const u = new SpeechSynthesisUtterance(plain);
   u.lang = "ja-JP";
-  u.rate = 0.9;
+  u.rate = rate;
   const voice = synth.getVoices().find((v) => v.lang.replace("_", "-") === "ja-JP");
   if (voice) u.voice = voice;
   synth.cancel();
