@@ -1,3 +1,5 @@
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, test } from "vitest";
 import {
   centerTell,
@@ -416,4 +418,28 @@ describe("generateVocabChoices distractor quality", () => {
     expect(new Set(choices).size).toBe(choices.length);
     expect(choices).toHaveLength(3);
   });
+});
+
+describe("seed files", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const ids = (prefix: string) =>
+    readdirSync(dir)
+      .filter((f) => f.startsWith(prefix) && f.endsWith(".json"))
+      .flatMap((f) =>
+        (JSON.parse(readFileSync(path.join(dir, f), "utf8")) as { id: string }[]).map(
+          (c) => `${c.id}  (${f})`,
+        ),
+      );
+
+  // add-*.ts는 이미 있는 id를 건너뛴다. 같은 id가 두 파일에 있으면 먼저
+  // import한 쪽만 남고 나머지(급수·읽기 정정 포함)는 조용히 버려진다.
+  test.each(["kanji-", "vocab-", "sentences-", "particles-", "expressions-"])(
+    "%s 시드는 파일 사이에서 id가 겹치지 않는다",
+    (prefix) => {
+      const all = ids(prefix);
+      const bare = all.map((x) => x.split("  ")[0]);
+      const dup = bare.filter((id, i) => bare.indexOf(id) !== i);
+      expect(dup, `중복 id: ${dup.join(", ")}`).toEqual([]);
+    },
+  );
 });

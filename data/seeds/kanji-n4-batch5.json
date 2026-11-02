@@ -33,37 +33,15 @@
     "koreanMeaning": "인원"
   },
   {
-    "id": "飲",
-    "kanji": "飲",
-    "onReadings": ["いん"],
-    "kunReadings": ["の"],
-    "meanings": ["drink"],
-    "jlptLevel": 4,
-    "koreanHanja": "飮",
-    "koreanSound": ["음"],
-    "koreanMeaning": "마실"
-  },
-  {
     "id": "英",
     "kanji": "英",
     "onReadings": ["えい"],
     "kunReadings": [],
-    "meanings": ["English", "brilliant"],
+    "meanings": ["English", "brilliant", "hero"],
     "jlptLevel": 4,
     "koreanHanja": "英",
     "koreanSound": ["영"],
     "koreanMeaning": "꽃부리"
-  },
-  {
-    "id": "駅",
-    "kanji": "駅",
-    "onReadings": ["えき"],
-    "kunReadings": [],
-    "meanings": ["station"],
-    "jlptLevel": 4,
-    "koreanHanja": "驛",
-    "koreanSound": ["역"],
-    "koreanMeaning": "역참"
   },
   {
     "id": "屋",
@@ -198,17 +176,6 @@
     "koreanMeaning": "셀"
   },
   {
-    "id": "兄",
-    "kanji": "兄",
-    "onReadings": ["けい", "きょう"],
-    "kunReadings": ["あに"],
-    "meanings": ["older brother"],
-    "jlptLevel": 4,
-    "koreanHanja": "兄",
-    "koreanSound": ["형"],
-    "koreanMeaning": "맏"
-  },
-  {
     "id": "元",
     "kanji": "元",
     "onReadings": ["げん", "がん"],
@@ -218,28 +185,6 @@
     "koreanHanja": "元",
     "koreanSound": ["원"],
     "koreanMeaning": "으뜸"
-  },
-  {
-    "id": "言",
-    "kanji": "言",
-    "onReadings": ["げん", "ごん"],
-    "kunReadings": ["い", "こと"],
-    "meanings": ["say", "word"],
-    "jlptLevel": 4,
-    "koreanHanja": "言",
-    "koreanSound": ["언"],
-    "koreanMeaning": "말씀"
-  },
-  {
-    "id": "古",
-    "kanji": "古",
-    "onReadings": ["こ"],
-    "kunReadings": ["ふる"],
-    "meanings": ["old"],
-    "jlptLevel": 4,
-    "koreanHanja": "古",
-    "koreanSound": ["고"],
-    "koreanMeaning": "옛"
   },
   {
     "id": "戸",

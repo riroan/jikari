@@ -1,16 +1,5 @@
 [
   {
-    "id": "声",
-    "kanji": "声",
-    "onReadings": ["せい", "しょう"],
-    "kunReadings": ["こえ", "こわ"],
-    "meanings": ["voice"],
-    "jlptLevel": 3,
-    "koreanHanja": "聲",
-    "koreanSound": ["성"],
-    "koreanMeaning": "소리"
-  },
-  {
     "id": "鼻",
     "kanji": "鼻",
     "onReadings": ["び"],
@@ -88,17 +77,6 @@
     "koreanMeaning": "그림"
   },
   {
-    "id": "写",
-    "kanji": "写",
-    "onReadings": ["しゃ"],
-    "kunReadings": ["うつ"],
-    "meanings": ["copy", "photograph"],
-    "jlptLevel": 3,
-    "koreanHanja": "寫",
-    "koreanSound": ["사"],
-    "koreanMeaning": "베낄"
-  },
-  {
     "id": "真",
     "kanji": "真",
     "onReadings": ["しん"],
@@ -141,28 +119,6 @@
     "koreanHanja": "信",
     "koreanSound": ["신"],
     "koreanMeaning": "믿을"
-  },
-  {
-    "id": "英",
-    "kanji": "英",
-    "onReadings": ["えい"],
-    "kunReadings": [],
-    "meanings": ["English", "hero"],
-    "jlptLevel": 3,
-    "koreanHanja": "英",
-    "koreanSound": ["영"],
-    "koreanMeaning": "꽃부리"
-  },
-  {
-    "id": "教",
-    "kanji": "教",
-    "onReadings": ["きょう"],
-    "kunReadings": ["おし", "おそ"],
-    "meanings": ["teach"],
-    "jlptLevel": 3,
-    "koreanHanja": "敎",
-    "koreanSound": ["교"],
-    "koreanMeaning": "가르칠"
   },
   {
     "id": "習",
@@ -229,39 +185,6 @@
     "koreanHanja": "變",
     "koreanSound": ["변"],
     "koreanMeaning": "변할"
-  },
-  {
-    "id": "通",
-    "kanji": "通",
-    "onReadings": ["つう"],
-    "kunReadings": ["とお", "かよ"],
-    "meanings": ["pass through", "commute"],
-    "jlptLevel": 3,
-    "koreanHanja": "通",
-    "koreanSound": ["통"],
-    "koreanMeaning": "통할"
-  },
-  {
-    "id": "動",
-    "kanji": "動",
-    "onReadings": ["どう"],
-    "kunReadings": ["うご"],
-    "meanings": ["move"],
-    "jlptLevel": 3,
-    "koreanHanja": "動",
-    "koreanSound": ["동"],
-    "koreanMeaning": "움직일"
-  },
-  {
-    "id": "止",
-    "kanji": "止",
-    "onReadings": ["し"],
-    "kunReadings": ["と", "や"],
-    "meanings": ["stop"],
-    "jlptLevel": 3,
-    "koreanHanja": "止",
-    "koreanSound": ["지"],
-    "koreanMeaning": "그칠"
   },
   {
     "id": "引",

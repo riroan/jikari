@@ -1,16 +1,5 @@
 [
   {
-    "id": "黒",
-    "kanji": "黒",
-    "onReadings": ["こく"],
-    "kunReadings": ["くろ"],
-    "meanings": ["black"],
-    "jlptLevel": 4,
-    "koreanHanja": "黑",
-    "koreanSound": ["흑"],
-    "koreanMeaning": "검을"
-  },
-  {
     "id": "作",
     "kanji": "作",
     "onReadings": ["さく", "さ"],
@@ -262,16 +251,5 @@
     "koreanHanja": "通",
     "koreanSound": ["통"],
     "koreanMeaning": "통할"
-  },
-  {
-    "id": "弟",
-    "kanji": "弟",
-    "onReadings": ["だい", "てい"],
-    "kunReadings": ["おとうと"],
-    "meanings": ["younger brother"],
-    "jlptLevel": 4,
-    "koreanHanja": "弟",
-    "koreanSound": ["제"],
-    "koreanMeaning": "아우"
   }
 ]
