@@ -39,6 +39,9 @@ const SUBJECTS: ReadonlyArray<{
   { ko: "일상표현", jp: "表現", base: "/expressions", dueKey: "expression" },
 ];
 
+/** Reviews per day that fill the home progress line. */
+const DAILY_GOAL = 20;
+
 export default function Home() {
   // useClientNow() returns null on the server / before hydration, so it
   // doubles as the "have we hydrated" gate — no separate useIsClient
@@ -81,6 +84,25 @@ export default function Home() {
           todayCount={todayCount}
           dueCount={dueCount}
         />
+
+        <div
+          role="progressbar"
+          aria-label="오늘 학습 목표"
+          aria-valuemin={0}
+          aria-valuemax={DAILY_GOAL}
+          aria-valuenow={Math.min(todayCount, DAILY_GOAL)}
+          className="mb-4"
+        >
+          <div className="h-px bg-[color:var(--line)]">
+            <div
+              className="h-px bg-[color:var(--accent-progress)] transition-[width]"
+              style={{ width: `${Math.min(todayCount / DAILY_GOAL, 1) * 100}%` }}
+            />
+          </div>
+          <div className="mt-1 text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
+            오늘 {Math.min(todayCount, DAILY_GOAL)} / {DAILY_GOAL}
+          </div>
+        </div>
 
         {nextReview && (
           <Link
