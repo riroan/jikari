@@ -17,6 +17,7 @@ const notoSerifJP = Noto_Serif_JP({
   subsets: ["latin"],
   weight: ["400", "600"],
   display: "swap",
+  preload: false, // CJK-only; not needed for first paint (Korean UI is Pretendard)
 });
 
 const notoSansJP = Noto_Sans_JP({
@@ -24,6 +25,7 @@ const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -55,6 +57,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        {/* Dynamic-subset variable build: only the glyph slices actually used are fetched. */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body className="min-h-full flex flex-col">

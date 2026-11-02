@@ -52,11 +52,13 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
 
   if (!ready || !progressHydrated) {
     return (
-      <div
-        className="min-h-full flex items-center justify-center text-caption text-[color:var(--fg-faint)]"
-        style={{ letterSpacing: "0.25em" }}
-      >
-        ・・・
+      <div className="min-h-full w-full max-w-[390px] mx-auto px-6 pt-[calc(var(--safe-top)+2rem)]">
+        <h1
+          className="text-title leading-none font-semibold tracking-wide"
+          style={{ fontFamily: "var(--font-jp-serif)" }}
+        >
+          jikari
+        </h1>
       </div>
     );
   }
