@@ -63,7 +63,7 @@ export default function Home() {
 
   return (
     <main className="flex-1 flex justify-center">
-      <div className="w-full max-w-[390px] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+      <div className="w-full max-w-[390px] pl-[max(1.5rem,var(--safe-left))] pr-[max(1.5rem,var(--safe-right))] pt-[calc(var(--safe-top)+2rem)] pb-[max(2.5rem,var(--safe-bottom))]">
         <HomeHeader
           hydrated={hydrated}
           studiedToday={studiedToday}

@@ -11,6 +11,16 @@
 :root {
   color-scheme: light dark;
 
+  /*
+   * 기기 안전 영역 (노치·Dynamic Island·홈 인디케이터). viewport-fit=cover라
+   * 콘텐츠가 이 영역까지 그려지므로 레이아웃이 직접 비켜야 한다. 한 곳에서
+   * 토큰으로 받아 두면 셸이 같은 값을 쓰고, 검증 때 값을 덮어쓸 수도 있다.
+   */
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+
   /* Light — Quiet Paper */
   --paper:       #F5EFE4;
   --paper-deep:  #EDE5D4;
