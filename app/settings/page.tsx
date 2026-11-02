@@ -212,7 +212,7 @@ export default function SettingsPage() {
               })
             }
             aria-label="타이핑 시작 박스"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 py-1.5 text-small text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
             style={{ minHeight: 36, minWidth: 64 }}
           >
             <option value={2}>2 (공격적)</option>
