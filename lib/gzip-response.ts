@@ -1,7 +1,8 @@
 import { gzipSync } from "node:zlib";
 
 // Next's standalone server doesn't compress route handlers, so do it here.
-// ponytail: single-entry memo (same body -> same buffer); only /api/cards is large enough to matter.
+// ponytail: single-entry memo (same body -> same buffer); only /api/cards (the call with an etag) is large enough to matter;
+// body-less-etag callers (progress) must not evict it.
 let memo: { body: string; gz: Buffer } | null = null;
 
 function gzipCached(body: string): Buffer {
@@ -29,5 +30,5 @@ export function jsonResponse(req: Request, body: string, etag?: string): Respons
   }
   if (!gzip) return new Response(body, { headers });
   headers["Content-Encoding"] = "gzip";
-  return new Response(new Uint8Array(gzipCached(body)), { headers });
+  return new Response(new Uint8Array(etag ? gzipCached(body) : gzipSync(body)), { headers });
 }

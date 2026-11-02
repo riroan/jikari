@@ -28,4 +28,12 @@ describe("jsonResponse", () => {
     // identity validator must not match the gzip representation
     expect(jsonResponse(req({ "accept-encoding": "gzip", "if-none-match": e }), body, e).status).toBe(200);
   });
+  it("uncached (no etag) responses do not evict the memoised one", async () => {
+    const gz = { "accept-encoding": "gzip" };
+    const a = Buffer.from(await jsonResponse(req(gz), body, '"a"').arrayBuffer());
+    await jsonResponse(req(gz), body + " ").arrayBuffer();
+    const b = Buffer.from(await jsonResponse(req(gz), body, '"a"').arrayBuffer());
+    expect(b.equals(a)).toBe(true);
+    expect(gunzipSync(b).toString()).toBe(body);
+  });
 });
