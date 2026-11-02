@@ -34,6 +34,7 @@ function Session() {
       useStore.getState().learningStates,
       Date.now(),
       (m, id) => (m !== "sentence" || sentences.has(id)) && !!lookup(m, id),
+      useStore.getState().settings.dailyGoal,
     ).flatMap(({ mode, cardId }) => {
       const card = lookup(mode, cardId);
       return card

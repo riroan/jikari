@@ -114,3 +114,11 @@ describe("topDueKey", () => {
     expect(topDueKey({ unknown: 7 }, ORDER)).toBeNull();
   });
 });
+
+describe("splitDue", () => {
+  it("caps today at goal and keeps the rest as backlog", async () => {
+    const { splitDue } = await import("@/lib/due");
+    expect(splitDue(794, 20)).toEqual({ today: 20, backlog: 774 });
+    expect(splitDue(5, 20)).toEqual({ today: 5, backlog: 0 });
+  });
+});

@@ -8,7 +8,7 @@ import { Heatmap } from "@/components/Heatmap";
 import { HomeHeader } from "@/components/HomeHeader";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 import { currentStreak as computeStreak, toLocalDateKey } from "@/lib/heatmap";
-import { topDueKey, totalDue } from "@/lib/due";
+import { splitDue, topDueKey, totalDue } from "@/lib/due";
 import { REVIEW_DUE_KEYS } from "@/lib/review-deck";
 import { useDueByKey } from "@/lib/use-due-by-key";
 import { SUBJECTS } from "@/lib/subjects";
@@ -48,6 +48,7 @@ export default function Home() {
   );
   const dueByKey = useDueByKey();
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
+  const { today: dueToday, backlog } = splitDue(dueCount, DAILY_GOAL);
   // 한 번에 시작할 곳 — 복습이 제일 많이 쌓인 과목. 모드 8개를 하나씩 열어
   // 보지 않아도 오늘 할 일이 바로 시작된다.
   const nextReview = useMemo(() => {
@@ -106,13 +107,18 @@ export default function Home() {
                 오늘의 복습
               </span>
               <span className="text-caption tracking-tab tabular-nums">
-                {dueCount}장 대기
+                {dueToday}장
               </span>
             </span>
             <span className="text-caption tracking-wide whitespace-nowrap">
               {nextReview.mixed ? "섞어서 →" : `${nextReview.subject.ko}부터 →`}
             </span>
           </Link>
+        )}
+        {nextReview && backlog > 0 && (
+          <p className="-mt-1 mb-3 text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
+            밀린 복습 {backlog}장 · 오래된 것부터 하루 {DAILY_GOAL}장씩
+          </p>
         )}
 
         {hydrated && !nextReview && todayCount === 0 &&

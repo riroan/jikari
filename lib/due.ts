@@ -64,3 +64,12 @@ export function topDueKey(
   }
   return best;
 }
+
+/**
+ * 홈 표시용: 오늘 할 분량(목표까지)과 그 너머 밀린 분량을 나눈다.
+ * 합계는 그대로 — 숨기지 않고 비중만 낮춘다.
+ */
+export function splitDue(total: number, goal: number): { today: number; backlog: number } {
+  const today = Math.min(total, Math.max(goal, 0));
+  return { today, backlog: total - today };
+}
