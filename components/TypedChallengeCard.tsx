@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { TypingInput } from "./TypingInput";
+import { SpeakButton } from "./SpeakButton";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
 import { closestAnswer, diffAgainst } from "@/lib/diff";
 
@@ -113,6 +114,8 @@ export function TypedChallengeCard({
         {d.ch}
       </span>
     ));
+  // Kana form first: one definite reading for TTS (never rendered before answering).
+  const speakText = kanaAnswers[0] ?? primaryAnswer;
   const otherAnswers = acceptableAnswers.filter((x) => x !== primaryAnswer);
 
   return (
@@ -212,13 +215,16 @@ export function TypedChallengeCard({
                 {groupLabelJp} · {formLabelJp} ─
               </span>
             </div>
+            <div className="self-end mt-2 flex items-center gap-1">
+            {speakText && <SpeakButton text={speakText} />}
             <button
               onClick={handleNext}
-              className="self-end mt-2 px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+              className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}
             >
               次へ
             </button>
+            </div>
           </m.div>
         )}
       </AnimatePresence>
@@ -254,13 +260,16 @@ export function TypedChallengeCard({
                 {primaryAnswer}
               </span>
             </div>
-            <button
-              onClick={handleNext}
-              className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
-              style={{ minHeight: 44 }}
-            >
-              次へ
-            </button>
+            <div className="flex items-center gap-1">
+              {speakText && <SpeakButton text={speakText} />}
+              <button
+                onClick={handleNext}
+                className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+                style={{ minHeight: 44 }}
+              >
+                次へ
+              </button>
+            </div>
           </m.div>
         )}
       </AnimatePresence>

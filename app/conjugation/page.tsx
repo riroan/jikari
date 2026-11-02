@@ -11,6 +11,7 @@ import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
+import { SpeakButton } from "@/components/SpeakButton";
 import { answerOf } from "@/lib/quiz-run";
 import { useCardsStore } from "@/lib/cards-store";
 import { pickByDifficulty, shuffleIds } from "@/lib/deck";
@@ -297,6 +298,11 @@ function ConjugationStudyBody({ verb }: { verb: ConjugatableVerb }) {
               style={{ fontFamily: "var(--font-jp-sans)" }}
             >
               {answer}
+              {answer !== "—" && (
+                <span className="inline-block align-middle -my-3 -mr-3 ml-1">
+                  <SpeakButton text={answer} />
+                </span>
+              )}
             </span>
           </div>
         ))}
