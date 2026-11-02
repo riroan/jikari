@@ -594,6 +594,14 @@ describe("vocab seeds", () => {
     expect(conjugate(word, card!.verbGroup!, form)).toBe(expected);
   });
 
+  // 타이핑 모드는 한국어 뜻을 완전 일치로 비교한다 (lib/normalize.ts). 뜻에 "(글을) 쓰다"
+  // 같은 괄호가 있으면 "쓰다"라고 쳐도 오답이 된다. 보조 설명은 meanings(영어)에 둔다.
+  test("한국어 뜻에는 괄호가 없다", () => {
+    for (const c of cards) {
+      for (const m of c.koreanMeanings) expect(m, `${c.id}: ${m}`).not.toMatch(/[()（）]/);
+    }
+  });
+
   test("그룹이 정해진 카드는 한쪽 품사뿐이다", () => {
     for (const c of cards) {
       const isVerb = !!c.verbGroup && c.verbGroup !== "not_verb";
