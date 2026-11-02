@@ -107,6 +107,16 @@ export default function Home() {
           </Link>
         )}
 
+        {hydrated && !nextReview && todayCount === 0 && (
+          <Link
+            href="/vocab?mode=study"
+            className="flex items-center justify-between gap-3 bg-[color:var(--accent-progress)] text-[color:var(--on-progress)] rounded-sm px-4 py-4 mb-3 min-h-[56px] active:opacity-80 transition-opacity"
+          >
+            <span className="text-body font-semibold">처음이라면 단어 공부부터</span>
+            <span className="text-caption tracking-wide">→</span>
+          </Link>
+        )}
+
         {/* Units entry — chapter mastery view (uses subject-row visual language) */}
         <Link
           href="/chapters"

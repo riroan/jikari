@@ -46,7 +46,7 @@ function Session() {
   if (members.length === 0) {
     return (
       <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
-        오늘 복습할 카드가 없어요.{" "}
+        오늘 복습할 카드가 없어요. 공부나 퀴즈를 풀면 여기에 쌓여요.{" "}
         <Link
           href="/"
           className="inline-block py-3 -my-3 underline hover:text-[color:var(--fg)]"
