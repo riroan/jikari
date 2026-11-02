@@ -287,7 +287,7 @@ function ParticleInfoBlock({
   info: { label: string; gloss: string; note: string };
 }) {
   return (
-    <div className="pl-3 border-l-2 border-[color:var(--accent-progress)] flex flex-col gap-1.5">
+    <div className="pt-3 border-t border-[color:var(--line)] flex flex-col gap-1.5">
       <div className="flex items-baseline gap-2">
         <span
           className="text-title font-semibold text-[color:var(--accent-progress-text)]"

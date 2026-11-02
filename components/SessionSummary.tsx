@@ -40,7 +40,10 @@ export function SessionSummary({
       aria-label="세션 요약"
     >
       <div role="status">
-        <div className="text-[44px] leading-none font-semibold tabular-nums text-[color:var(--fg)]">
+        <div
+          className="text-[44px] leading-none font-semibold tabular-nums text-[color:var(--fg)]"
+          style={{ fontFamily: "var(--font-jp-serif)", letterSpacing: "-0.03em" }}
+        >
           {accuracy}
           <span className="text-body text-[color:var(--fg-faint)]">%</span>
         </div>
@@ -51,7 +54,7 @@ export function SessionSummary({
 
       {missed.length > 0 ? (
         <div>
-          <h2 className="text-caption tracking-label text-[color:var(--fg-faint)] mb-2">
+          <h2 className="text-xs tracking-label font-medium text-[color:var(--fg-faint)] mb-2">
             틀린 것 {missed.length}
           </h2>
           <ul className="border-t border-[color:var(--line)]">
