@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { LazyMotion, domAnimation, m, AnimatePresence, MotionConfig } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
 import { RubyText } from "./Furigana";
 import { SpeakButton } from "./SpeakButton";
@@ -157,6 +157,7 @@ export function QuizCard({
   }, [disabled, result, advance]);
 
   return (
+    <LazyMotion features={domAnimation}>
     <MotionConfig reducedMotion="user">
     <div className="flex flex-col gap-6 md:gap-8">
       <div
@@ -203,14 +204,14 @@ export function QuizCard({
         <div role="status">
           <AnimatePresence>
             {disabled && result !== null && (
-              <motion.div
+              <m.div
                 key={result}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
                 <AnswerFeedback correct={result === "correct"} />
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>
@@ -235,6 +236,7 @@ export function QuizCard({
       </div>
     </div>
     </MotionConfig>
+    </LazyMotion>
   );
 }
 

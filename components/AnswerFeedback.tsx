@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 
 /**
  * Correct: Framer Motion scale pulse + green check.
@@ -11,7 +11,8 @@ import { motion } from "framer-motion";
 export function AnswerFeedback({ correct }: { correct: boolean }) {
   if (correct) {
     return (
-      <motion.div
+      <LazyMotion features={domAnimation}>
+      <m.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -33,7 +34,8 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
           />
         </svg>
         <span lang="ja">正解</span>
-      </motion.div>
+      </m.div>
+      </LazyMotion>
     );
   }
   return (

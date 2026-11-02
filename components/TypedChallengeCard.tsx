@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { TypingInput } from "./TypingInput";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
 import { closestAnswer, diffAgainst } from "@/lib/diff";
@@ -116,6 +116,7 @@ export function TypedChallengeCard({
   const otherAnswers = acceptableAnswers.filter((x) => x !== primaryAnswer);
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="flex flex-col gap-8">
       <div
         className="text-label text-[color:var(--fg-faint)] tracking-caption font-medium"
@@ -156,7 +157,7 @@ export function TypedChallengeCard({
 
       <AnimatePresence>
         {result === "wrong" && (
-          <motion.div
+          <m.div
             key="feedback"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -218,13 +219,13 @@ export function TypedChallengeCard({
             >
               次へ
             </button>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {result === "correct" && (
-          <motion.div
+          <m.div
             key="correct"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -260,9 +261,10 @@ export function TypedChallengeCard({
             >
               次へ
             </button>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
+    </LazyMotion>
   );
 }
