@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useCardsStore } from "@/lib/cards-store";
 import { getProgressLoadFailed, subscribeSync } from "@/lib/remote-storage";
 import { useStore } from "@/lib/store";
@@ -12,6 +12,7 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
 
   const progressFailed = useSyncExternalStore(subscribeSync, getProgressLoadFailed, () => false);
 
+  const retrying = useRef(false);
   const [progressHydrated, setProgressHydrated] = useState(() =>
     typeof window !== "undefined" && useStore.persist.hasHydrated()
   );
@@ -47,7 +48,13 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
           type="button"
           onClick={() => {
             void hydrate();
-            if (progressFailed) void useStore.persist.rehydrate();
+            // Always rehydrate (error may come from either load); one at a time so
+            // overlapping retries can't interleave their GET/merge.
+            if (retrying.current) return;
+            retrying.current = true;
+            void Promise.resolve(useStore.persist.rehydrate()).finally(() => {
+              retrying.current = false;
+            });
           }}
           className="inline-flex items-center min-h-[44px] px-4 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           style={{ fontFamily: "var(--font-kr-sans)" }}

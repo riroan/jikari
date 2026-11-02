@@ -183,9 +183,9 @@ function VocabBody({ card }: { card: VocabCard }) {
       </div>
       {examples.length > 0 && (
         <ul className="border-t border-[color:var(--line)]">
-          {examples.map((ex) => (
+          {examples.map((ex, i) => (
             <li
-              key={ex.plain}
+              key={`${ex.plain}:${i}`}
               className="flex items-center gap-2 py-3 border-b border-[color:var(--line)]"
             >
               <div className="flex-1 min-w-0 flex flex-col gap-1">
