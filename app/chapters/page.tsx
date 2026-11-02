@@ -56,7 +56,7 @@ function SortChoice({
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.id)}
-            className={`px-3 py-1.5 text-caption tracking-wide min-h-[36px] transition-colors ${
+            className={`px-3 py-1.5 text-caption tracking-wide min-h-11 transition-colors ${
               i > 0 ? "border-l border-[color:var(--line)]" : ""
             } ${
               active

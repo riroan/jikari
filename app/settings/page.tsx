@@ -389,7 +389,7 @@ function ThemeChoice({
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.id)}
-            className={`px-3 py-1.5 text-caption tracking-wide min-h-[36px] transition-colors ${
+            className={`px-3 py-1.5 text-caption tracking-wide min-h-11 transition-colors ${
               i > 0 ? "border-l border-[color:var(--line)]" : ""
             } ${
               active
@@ -421,7 +421,8 @@ function Toggle({
       aria-checked={checked}
       aria-label={ariaLabel}
       onClick={() => onChange(!checked)}
-      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors border border-[color:var(--line)]"
+      // 스위치는 24px 높이 그대로 두고 터치 영역만 위아래로 44px까지 넓힌다.
+      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors border border-[color:var(--line)] before:absolute before:inset-x-0 before:-inset-y-2.5 before:content-['']"
       style={{
         background: checked
           ? "color-mix(in oklab, var(--accent-progress) 85%, transparent)"

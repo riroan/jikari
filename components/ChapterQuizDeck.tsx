@@ -85,7 +85,8 @@ export function ChapterQuizDeck({
         이 챕터에 카드가 없습니다.{" "}
         <Link
           href={`/chapters/${chapterId}`}
-          className="underline hover:text-[color:var(--fg)]"
+          // py/-my는 줄 높이는 그대로 두고 터치 영역만 44px 가까이 넓힌다.
+          className="inline-block py-3 -my-3 underline hover:text-[color:var(--fg)]"
         >
           ← 돌아가기
         </Link>
