@@ -379,6 +379,8 @@ export interface PersistedState {
      * Default 4 — box 4 is active recall territory.
      */
     typingThresholdBox: 2 | 3 | 4 | 5;
+    /** Reviews per day that fill the home progress line (10/20/30/50/100). */
+    dailyGoal: 10 | 20 | 30 | 50 | 100;
   };
 }
 
@@ -388,4 +390,5 @@ export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   theme: "system",
   showFurigana: true,
   typingThresholdBox: 4,
+  dailyGoal: 20,
 };

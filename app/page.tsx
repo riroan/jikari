@@ -40,9 +40,6 @@ const SUBJECTS: ReadonlyArray<{
   { ko: "듣기", jp: "聞き取り", base: "/listening", dueKey: "listening" },
 ];
 
-/** Reviews per day that fill the home progress line. */
-const DAILY_GOAL = 20;
-
 export default function Home() {
   // useClientNow() returns null on the server / before hydration, so it
   // doubles as the "have we hydrated" gate — no separate useIsClient
@@ -51,6 +48,7 @@ export default function Home() {
   const hydrated = now !== null;
 
   const heatmap = useStore((s) => s.heatmap);
+  const DAILY_GOAL = useStore((s) => s.settings.dailyGoal);
 
   const todayCount = hydrated ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
   const studiedToday = todayCount > 0;
@@ -101,7 +99,9 @@ export default function Home() {
             />
           </div>
           <div className="mt-1 text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
-            오늘 {Math.min(todayCount, DAILY_GOAL)} / {DAILY_GOAL}
+            {todayCount >= DAILY_GOAL
+              ? "오늘 목표 달성"
+              : `오늘 ${todayCount} / ${DAILY_GOAL}`}
           </div>
         </div>
 

@@ -24,7 +24,7 @@ const validState: PersistedState = {
   settings: {
     theme: "light",
     showFurigana: true,
-    typingThresholdBox: 4,
+    typingThresholdBox: 4, dailyGoal: 20,
   },
 };
 

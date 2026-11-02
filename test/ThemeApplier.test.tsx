@@ -35,7 +35,7 @@ beforeEach(() => {
     settings: {
       theme: "system",
       showFurigana: true,
-      typingThresholdBox: 4,
+      typingThresholdBox: 4, dailyGoal: 20,
     },
   });
 });
@@ -51,7 +51,7 @@ describe("ThemeApplier", () => {
       settings: {
         theme: "light",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     render(<ThemeApplier />);
@@ -64,7 +64,7 @@ describe("ThemeApplier", () => {
       settings: {
         theme: "dark",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     render(<ThemeApplier />);
@@ -79,7 +79,7 @@ describe("ThemeApplier", () => {
       settings: {
         theme: "system",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     render(<ThemeApplier />);
@@ -96,7 +96,7 @@ describe("ThemeApplier", () => {
       settings: {
         theme: "dark",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     expect(() => render(<ThemeApplier />)).not.toThrow();
@@ -116,7 +116,7 @@ describe("ThemeApplier", () => {
       settings: {
         theme: "light",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     render(<ThemeApplier />);

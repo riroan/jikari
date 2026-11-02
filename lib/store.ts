@@ -10,6 +10,7 @@ import type {
   QuizStatKey,
 } from "./types";
 import { DEFAULT_SETTINGS, SCHEMA_VERSION } from "./types";
+import { normalizeDailyGoal } from "./daily-goal";
 import {
   advance as srsAdvance,
   cardKey,
@@ -173,6 +174,7 @@ export const useStore = create<Store>()(
             showFurigana: prev.showFurigana ?? DEFAULT_SETTINGS.showFurigana,
             typingThresholdBox:
               prev.typingThresholdBox ?? DEFAULT_SETTINGS.typingThresholdBox,
+            dailyGoal: normalizeDailyGoal(prev.dailyGoal),
           },
         } as PersistedState;
       },

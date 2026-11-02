@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { parseBackup } from "@/lib/import";
+import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
 import { useClientNow } from "@/lib/use-is-client";
 
 const BACKUP_TIMESTAMP_KEY = "jikari-last-backup-ms";
@@ -219,6 +220,29 @@ export default function SettingsPage() {
             <option value={3}>3</option>
             <option value={4}>4 (기본)</option>
             <option value={5}>5 (보수적)</option>
+          </select>
+        </label>
+        <label className="flex justify-between items-center text-small py-2">
+          <span className="text-[color:var(--fg-soft)]">
+            하루 목표
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
+              홈의 진행선이 채워지는 복습 수
+            </span>
+          </span>
+          <select
+            value={settings.dailyGoal}
+            onChange={(e) =>
+              updateSettings({ dailyGoal: normalizeDailyGoal(Number(e.target.value)) })
+            }
+            aria-label="하루 목표"
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
+            style={{ minHeight: 44, minWidth: 64 }}
+          >
+            {DAILY_GOALS.map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
           </select>
         </label>
       </section>

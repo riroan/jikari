@@ -1,0 +1,2 @@
+ALTER TABLE app_settings
+  ADD COLUMN daily_goal SMALLINT NOT NULL DEFAULT 20;

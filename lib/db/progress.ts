@@ -1,6 +1,7 @@
 import "server-only";
 import type { RowDataPacket } from "mysql2";
 import { getPool } from "./client";
+import { normalizeDailyGoal } from "../daily-goal";
 import type {
   CardMode,
   HeatmapData,
@@ -132,6 +133,7 @@ export async function getProgress(): Promise<PersistedState> {
       theme,
       showFurigana: Boolean(st.show_furigana),
       typingThresholdBox,
+      dailyGoal: normalizeDailyGoal(st.daily_goal),
     },
   };
 }
@@ -188,12 +190,13 @@ export async function putProgress(state: PersistedState): Promise<void> {
     }
 
     await conn.query(
-      `INSERT INTO app_settings (id, theme, show_furigana, typing_threshold_box, last_active_at, current_streak, schema_version)
-       VALUES (1, ?, ?, ?, ?, ?, ?)
+      `INSERT INTO app_settings (id, theme, show_furigana, typing_threshold_box, daily_goal, last_active_at, current_streak, schema_version)
+       VALUES (1, ?, ?, ?, ?, ?, ?, ?)
        ON DUPLICATE KEY UPDATE
          theme = VALUES(theme),
          show_furigana = VALUES(show_furigana),
          typing_threshold_box = VALUES(typing_threshold_box),
+         daily_goal = VALUES(daily_goal),
          last_active_at = VALUES(last_active_at),
          current_streak = VALUES(current_streak),
          schema_version = VALUES(schema_version)`,
@@ -201,6 +204,7 @@ export async function putProgress(state: PersistedState): Promise<void> {
         state.settings.theme,
         state.settings.showFurigana,
         state.settings.typingThresholdBox,
+        state.settings.dailyGoal,
         state.lastActiveAt,
         state.currentStreak,
         state.schemaVersion,

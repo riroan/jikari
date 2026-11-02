@@ -12,7 +12,7 @@ beforeEach(() => {
     settings: {
       theme: "system",
       showFurigana: true,
-      typingThresholdBox: 4,
+      typingThresholdBox: 4, dailyGoal: 20,
     },
   });
 });
@@ -23,7 +23,7 @@ describe("ThemeCycleButton", () => {
       settings: {
         theme: "light",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     render(<ThemeCycleButton />);
@@ -35,7 +35,7 @@ describe("ThemeCycleButton", () => {
       settings: {
         theme: "light",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     render(<ThemeCycleButton />);
@@ -59,7 +59,7 @@ describe("ThemeCycleButton", () => {
       settings: {
         theme: "dark",
         showFurigana: true,
-        typingThresholdBox: 4,
+        typingThresholdBox: 4, dailyGoal: 20,
       },
     });
     render(<ThemeCycleButton />);
