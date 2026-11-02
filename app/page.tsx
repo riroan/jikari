@@ -150,23 +150,29 @@ export default function Home() {
         </section>
 
         {/* Footer nav */}
-        <nav className="flex flex-wrap justify-center items-center gap-1 text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
+        <nav className="flex justify-center items-center text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
           <Link
             href="/"
             aria-current="page"
-            className="inline-flex items-center justify-center min-h-[44px] px-2 text-[color:var(--fg-soft)] cursor-default"
+            className="inline-flex items-center justify-center min-h-[44px] px-1 text-[color:var(--fg-soft)] cursor-default"
           >
             HOME
           </Link>
           <Link
             href="/progress"
-            className="inline-flex items-center justify-center min-h-[44px] px-2 hover:text-[color:var(--fg-soft)]"
+            className="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
           >
             PROGRESS
           </Link>
           <Link
+            href="/search"
+            className="min-w-[44px] inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
+          >
+            検索
+          </Link>
+          <Link
             href="/settings"
-            className="inline-flex items-center justify-center min-h-[44px] px-2 hover:text-[color:var(--fg-soft)]"
+            className="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
           >
             SETTINGS
           </Link>
