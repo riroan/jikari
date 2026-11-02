@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useCardsStore } from "@/lib/cards-store";
+import { getProgressLoadFailed, subscribeSync } from "@/lib/remote-storage";
 import { useStore } from "@/lib/store";
 
 export function HydrationBoundary({ children }: { children: React.ReactNode }) {
   const ready = useCardsStore((s) => s.ready);
   const error = useCardsStore((s) => s.error);
   const hydrate = useCardsStore((s) => s.hydrate);
+
+  const progressFailed = useSyncExternalStore(subscribeSync, getProgressLoadFailed, () => false);
 
   const [progressHydrated, setProgressHydrated] = useState(() =>
     typeof window !== "undefined" && useStore.persist.hasHydrated()
@@ -27,7 +30,7 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
     return unsub;
   }, [hydrate]);
 
-  if (error) {
+  if (error || (progressFailed && progressHydrated)) {
     return (
       <div className="min-h-full flex flex-col items-center justify-center gap-5 p-8 text-center">
         <p
@@ -36,11 +39,16 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
         >
           데이터를 불러올 수 없습니다.
           <br />
-          <span className="text-[color:var(--fg-faint)]">{error}</span>
+          <span className="text-[color:var(--fg-faint)]">
+            {error ?? "학습 기록을 가져오지 못했어요. 연결을 확인해 주세요."}
+          </span>
         </p>
         <button
           type="button"
-          onClick={() => void hydrate()}
+          onClick={() => {
+            void hydrate();
+            if (progressFailed) void useStore.persist.rehydrate();
+          }}
           className="inline-flex items-center min-h-[44px] px-4 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
           style={{ fontFamily: "var(--font-kr-sans)" }}
         >

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { __resetRemoteStorageForTests, remoteStorage } from "@/lib/remote-storage";
+import { __resetRemoteStorageForTests, getProgressLoadFailed, getSyncStatus, remoteStorage } from "@/lib/remote-storage";
 
 const STATE = JSON.stringify({ state: { schemaVersion: 1, learningStates: {} }, version: 1 });
 
@@ -55,5 +55,43 @@ describe("remoteStorage", () => {
     await vi.advanceTimersByTimeAsync(1000);
 
     expect(putCalls(fetchMock)).toHaveLength(1);
+  });
+
+  test("PUT 실패(500/네트워크)는 backoff로 재시도하고 데이터를 유지한다", async () => {
+    fetchMock.mockResolvedValueOnce(Response.json({ schemaVersion: 1 }));
+    await remoteStorage.getItem("jikari");
+    fetchMock
+      .mockResolvedValueOnce(new Response("x", { status: 500 }))
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValue(Response.json({ ok: true }));
+
+    remoteStorage.setItem("jikari", STATE);
+    await vi.advanceTimersByTimeAsync(500);
+    expect(putCalls(fetchMock)).toHaveLength(1);
+    expect(getSyncStatus()).toBe("pending");
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(putCalls(fetchMock)).toHaveLength(2);
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(putCalls(fetchMock)).toHaveLength(3);
+    expect(getSyncStatus()).toBe("idle");
+  });
+
+  test("online 이벤트가 오면 대기 중인 저장을 즉시 재시도한다", async () => {
+    fetchMock.mockResolvedValueOnce(Response.json({ schemaVersion: 1 }));
+    await remoteStorage.getItem("jikari");
+    fetchMock.mockRejectedValueOnce(new Error("offline")).mockResolvedValue(Response.json({ ok: true }));
+
+    remoteStorage.setItem("jikari", STATE);
+    await vi.advanceTimersByTimeAsync(500);
+    expect(putCalls(fetchMock)).toHaveLength(1);
+    window.dispatchEvent(new Event("online"));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(putCalls(fetchMock)).toHaveLength(2);
+  });
+
+  test("GET 실패는 loadFailed로 노출된다", async () => {
+    fetchMock.mockRejectedValueOnce(new Error("down"));
+    await remoteStorage.getItem("jikari");
+    expect(getProgressLoadFailed()).toBe(true);
   });
 });

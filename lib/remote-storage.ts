@@ -1,10 +1,13 @@
 "use client";
 
 import type { StateStorage } from "zustand/middleware";
+import { backoffMs } from "./retry";
 
-let saveTimer: ReturnType<typeof setTimeout> | null = null;
+let timer: ReturnType<typeof setTimeout> | null = null;
 let pending: string | null = null;
-let inFlight: Promise<void> | null = null;
+let inFlight = false;
+let failures = 0;
+let loadFailed = false;
 /**
  * PUT replaces the whole server state (DELETE + INSERT). If the initial GET
  * failed, the store is running on its empty defaults, and saving that would
@@ -12,31 +15,77 @@ let inFlight: Promise<void> | null = null;
  */
 let loaded = false;
 
+const listeners = new Set<() => void>();
+const emit = () => listeners.forEach((l) => l());
+
+/** useSyncExternalStore pair: what the save status line shows. */
+export function subscribeSync(cb: () => void) {
+  listeners.add(cb);
+  return () => void listeners.delete(cb);
+}
+export type SyncStatus = "idle" | "pending" | "offline";
+export function getSyncStatus(): SyncStatus {
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return "offline";
+  return pending != null || inFlight ? "pending" : "idle";
+}
+/** True when the initial progress GET failed (store is on empty defaults, saving is blocked). */
+export function getProgressLoadFailed() {
+  return loadFailed;
+}
+
 /** Test-only: reset module state between cases. */
 export function __resetRemoteStorageForTests() {
-  if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = null;
+  if (timer) clearTimeout(timer);
+  timer = null;
   pending = null;
-  inFlight = null;
+  inFlight = false;
+  failures = 0;
+  loadFailed = false;
   loaded = false;
 }
 
-async function flushPut() {
-  if (pending == null) return;
+function schedule(ms: number) {
+  if (timer) clearTimeout(timer);
+  timer = setTimeout(() => void flush(), ms);
+}
+
+async function flush() {
+  timer = null;
+  if (inFlight || pending == null) return;
   const value = pending;
   pending = null;
+  inFlight = true;
+  emit();
   try {
-    const parsed = JSON.parse(value) as { state: unknown; version?: number };
-    await fetch("/api/progress", {
+    const parsed = JSON.parse(value) as { state: unknown };
+    const res = await fetch("/api/progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(parsed.state),
     });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    failures = 0;
+    if (pending != null) schedule(0); // newer state arrived mid-flight
   } catch (err) {
-    console.error("[remote-storage] PUT failed:", err);
+    console.error("[remote-storage] PUT failed, will retry:", err);
+    if (pending == null) pending = value; // keep the data; a newer value wins
+    schedule(backoffMs(++failures));
   } finally {
-    inFlight = null;
+    inFlight = false;
+    emit();
   }
+}
+
+/** Retry now (network came back / app foregrounded). */
+function kick() {
+  if (pending != null && !inFlight) schedule(0);
+  emit();
+}
+
+if (typeof window !== "undefined") {
+  window.addEventListener("online", kick);
+  window.addEventListener("offline", emit);
+  document.addEventListener("visibilitychange", kick);
 }
 
 export const remoteStorage: StateStorage = {
@@ -46,9 +95,13 @@ export const remoteStorage: StateStorage = {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const state = (await res.json()) as { schemaVersion?: number };
       loaded = true;
+      loadFailed = false;
+      emit();
       return JSON.stringify({ state, version: state.schemaVersion ?? 0 });
     } catch (err) {
       console.error("[remote-storage] GET failed:", err);
+      loadFailed = true;
+      emit();
       return null;
     }
   },
@@ -58,17 +111,8 @@ export const remoteStorage: StateStorage = {
       return;
     }
     pending = value;
-    if (saveTimer) clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => {
-      if (inFlight) {
-        // queue another tick after current PUT finishes
-        inFlight.finally(() => {
-          if (pending) flushPut();
-        });
-      } else {
-        inFlight = flushPut();
-      }
-    }, 500);
+    schedule(500);
+    emit();
   },
   removeItem: async (_name) => {
     // No-op: server-side reset is handled by PUT of initial empty state via the store's reset action.
