@@ -144,6 +144,9 @@ describe("advance — wrong answer (typed mode)", () => {
 });
 
 describe("pickMode", () => {
+  it("threshold 0 (typing off) is always choice", () => {
+    for (const b of [1, 2, 3, 4, 5] as const) expect(pickMode(b, 0)).toBe("choice");
+  });
   it("returns 'choice' when box < threshold", () => {
     expect(pickMode(1, 4)).toBe("choice");
     expect(pickMode(3, 4)).toBe("choice");

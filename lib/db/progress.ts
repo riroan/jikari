@@ -107,8 +107,8 @@ export async function getProgress(): Promise<PersistedState> {
   }
 
   const rawThreshold = Number(st.typing_threshold_box);
-  const typingThresholdBox: 2 | 3 | 4 | 5 =
-    rawThreshold === 2 || rawThreshold === 3 || rawThreshold === 5
+  const typingThresholdBox: 0 | 2 | 3 | 4 | 5 =
+    rawThreshold === 0 || rawThreshold === 2 || rawThreshold === 3 || rawThreshold === 5
       ? rawThreshold
       : 4;
 

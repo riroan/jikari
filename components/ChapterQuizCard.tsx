@@ -37,7 +37,7 @@ export interface ChapterQuizContext {
   /** SRS box for this card under its native (subtyped) key. */
   box: 1 | 2 | 3 | 4 | 5;
   /** When ≥ this box, vocab/kanji switch to typed mode. */
-  typingThreshold: 2 | 3 | 4 | 5;
+  typingThreshold: 0 | 2 | 3 | 4 | 5;
   /** Called after feedback. Args: (mode-string-for-srs, srsCardId, wasCorrect, answerMode). */
   onResolved: (
     mode: "kanji" | "vocab" | "sentence" | "grammar",

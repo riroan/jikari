@@ -28,7 +28,8 @@ const INTERVAL_DAYS: Record<1 | 2 | 3 | 4 | 5, number> = {
 
 export type AnswerMode = "choice" | "typed";
 
-export type ThresholdBox = 2 | 3 | 4 | 5;
+/** 0 = typing off (always 4-choice). */
+export type ThresholdBox = 0 | 2 | 3 | 4 | 5;
 
 /**
  * Pick quiz input mode based on Leitner box.
@@ -42,7 +43,7 @@ export function pickMode(
   box: LearningState["box"],
   threshold: ThresholdBox,
 ): AnswerMode {
-  return box >= threshold ? "typed" : "choice";
+  return threshold !== 0 && box >= threshold ? "typed" : "choice";
 }
 
 export function cardKey(mode: CardMode, cardId: string): string {

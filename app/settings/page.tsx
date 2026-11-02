@@ -232,13 +232,14 @@ export default function SettingsPage() {
             value={settings.typingThresholdBox}
             onChange={(e) =>
               updateSettings({
-                typingThresholdBox: Number(e.target.value) as 2 | 3 | 4 | 5,
+                typingThresholdBox: Number(e.target.value) as 0 | 2 | 3 | 4 | 5,
               })
             }
             aria-label="타이핑 시작 박스"
             className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
             style={{ minHeight: 44, minWidth: 64 }}
           >
+            <option value={0}>사용 안 함 (4지선다만)</option>
             <option value={2}>2 (공격적)</option>
             <option value={3}>3</option>
             <option value={4}>4 (기본)</option>

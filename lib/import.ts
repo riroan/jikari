@@ -44,7 +44,7 @@ const persistedStateSchema = z.object({
     theme: z.enum(["light", "dark", "system"]).default("system"),
     showFurigana: z.boolean().default(true),
     typingThresholdBox: z
-      .union([z.literal(2), z.literal(3), z.literal(4), z.literal(5)])
+      .union([z.literal(0), z.literal(2), z.literal(3), z.literal(4), z.literal(5)])
       .default(4),
     dailyGoal: z
       .union([z.literal(10), z.literal(20), z.literal(30), z.literal(50), z.literal(100)])

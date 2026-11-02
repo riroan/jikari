@@ -375,10 +375,10 @@ export interface PersistedState {
     showFurigana: boolean;
     /**
      * Leitner box at which the quiz switches from 4-choice to typing.
-     * 2 = aggressive (starts typing early), 5 = conservative.
+     * 2 = aggressive (starts typing early), 5 = conservative, 0 = off (always 4-choice).
      * Default 4 — box 4 is active recall territory.
      */
-    typingThresholdBox: 2 | 3 | 4 | 5;
+    typingThresholdBox: 0 | 2 | 3 | 4 | 5;
     /** Reviews per day that fill the home progress line (10/20/30/50/100). */
     dailyGoal: 10 | 20 | 30 | 50 | 100;
   };
