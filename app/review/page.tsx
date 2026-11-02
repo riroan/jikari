@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ChapterQuizDeck } from "@/components/ChapterQuizDeck";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore } from "@/lib/store";
@@ -46,13 +45,7 @@ function Session() {
   if (members.length === 0) {
     return (
       <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
-        오늘 복습할 카드가 없어요. 공부나 퀴즈를 풀면 여기에 쌓여요.{" "}
-        <Link
-          href="/"
-          className="inline-block py-3 -my-3 underline hover:text-[color:var(--fg)]"
-        >
-          ← 홈으로
-        </Link>
+        오늘 복습할 카드가 없어요. 공부나 퀴즈를 풀면 여기에 쌓여요.
       </div>
     );
   }
