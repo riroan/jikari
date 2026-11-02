@@ -131,6 +131,7 @@ function SentencePageInner() {
         <StudyCard
           body={<SentenceStudyBody card={card} />}
           speak={card.sentence.replace("＿＿＿", card.blank)}
+          shadow
           position={index + 1}
           total={deck.length}
           onPrev={retreat}

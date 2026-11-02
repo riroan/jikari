@@ -142,6 +142,7 @@ function ExpressionsPageInner() {
         <StudyCard
           body={<ExpressionBack card={card} />}
           speak={card.ruby ?? card.expression_jp}
+          shadow
           position={index + 1}
           total={deck.length}
           onPrev={retreat}

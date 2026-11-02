@@ -8,10 +8,12 @@
 
 import { useRef } from "react";
 import { SpeakButton } from "./SpeakButton";
+import { ShadowButton } from "./ShadowButton";
 
 export function StudyCard({
   body,
   speak,
+  shadow,
   position,
   total,
   onPrev,
@@ -20,6 +22,8 @@ export function StudyCard({
   body: React.ReactNode;
   /** Japanese text to pronounce (study shows both sides, so no answer leak). */
   speak?: string;
+  /** Show the 따라 말하기 record/playback button next to the speaker. */
+  shadow?: boolean;
   position: number;
   total: number;
   onPrev: () => void;
@@ -63,8 +67,9 @@ export function StudyCard({
         {body}
       </div>
       {speak && (
-        <div className="flex justify-center">
+        <div className="flex justify-center items-start gap-2">
           <SpeakButton text={speak} />
+          {shadow && <ShadowButton key={speak} />}
         </div>
       )}
 
