@@ -8,6 +8,9 @@ import { useStore } from "@/lib/store";
 import { useCardsStore } from "@/lib/cards-store";
 import { masteryLevel } from "@/lib/srs";
 import { INITIAL_RATING, ratingBand } from "@/lib/rating";
+import { weakCardIds } from "@/lib/weak";
+import { RubyText } from "@/components/Furigana";
+import Link from "next/link";
 import type { KanjiCard } from "@/lib/types";
 
 /**
@@ -33,6 +36,22 @@ const RATED_SUBJECTS: readonly { ko: string; jp: string; key: string }[] = [
   { ko: "형용사", jp: "形容", key: "adjective" },
 ];
 
+const WEAK_LIMIT = 5;
+
+interface WeakRow {
+  id: string;
+  front: string;
+  ruby?: string;
+  answer: string;
+}
+
+const WEAK_SUBJECTS = [
+  { ko: "한자", href: "/kanji", mode: "kanji" },
+  { ko: "단어", href: "/vocab", mode: "vocab" },
+  { ko: "문장", href: "/sentence", mode: "sentence" },
+  { ko: "일상표현", href: "/expressions", mode: "expression" },
+] as const;
+
 export default function ProgressPage() {
   const mounted = useIsClient();
 
@@ -40,6 +59,43 @@ export default function ProgressPage() {
   const ratings = useStore((s) => s.ratings);
   const heatmap = useStore((s) => s.heatmap);
   const kanjiCards = useCardsStore((s) => s.kanji);
+  const cards = useCardsStore();
+
+  const weak = useMemo(() => {
+    if (!mounted) return [];
+    const rowOf: Record<string, (id: string) => WeakRow | undefined> = {
+      kanji: (id) => {
+        const c = cards.kanjiById.get(id);
+        return c && { id, front: c.kanji, answer: c.koreanMeaning || c.meanings[0] || "" };
+      },
+      vocab: (id) => {
+        const c = cards.vocabById.get(id);
+        return c && { id, front: c.word, ruby: c.ruby, answer: c.koreanMeanings.join(", ") };
+      },
+      sentence: (id) => {
+        const c = cards.sentenceById.get(id);
+        return c && { id, front: c.blank, ruby: c.blankRuby, answer: c.translation };
+      },
+      expression: (id) => {
+        const c = cards.expressionById.get(id);
+        return c && { id, front: c.expression_jp, ruby: c.ruby, answer: c.translation_ko };
+      },
+    };
+    const pools: Record<string, string[]> = {
+      kanji: cards.kanjiIds,
+      vocab: cards.vocabIds,
+      sentence: cards.sentenceIds,
+      expression: cards.expressionIds,
+    };
+    return WEAK_SUBJECTS.map((subj) => {
+      const ids = weakCardIds(states, subj.mode, new Set(pools[subj.mode]));
+      const rows = ids
+        .slice(0, WEAK_LIMIT)
+        .map(rowOf[subj.mode])
+        .filter((r): r is WeakRow => r !== undefined);
+      return { ...subj, total: ids.length, rows };
+    }).filter((w) => w.total > 0);
+  }, [mounted, states, cards]);
 
   // Single pass — earlier two filters scanned the deck twice.
   // Pre-hydration we return 0/0/0 instead of "all fresh" so the NEW chip
@@ -124,6 +180,53 @@ export default function ProgressPage() {
           <div style={{ height: "14px" }} />
         )}
       </section>
+
+      {weak.length > 0 && (
+        <section className="mb-8" aria-labelledby="progress-weak-heading">
+          <div
+            id="progress-weak-heading"
+            className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium"
+          >
+            WEAK
+          </div>
+          {weak.map((w) => (
+            <div key={w.mode} className="border-t border-[color:var(--line)]">
+              <div className="flex items-center justify-between min-h-[44px]">
+                <span className="text-body text-[color:var(--fg)]">
+                  {w.ko}{" "}
+                  <span className="text-caption text-[color:var(--fg-faint)] tabular-nums">
+                    {w.total}
+                  </span>
+                </span>
+                <Link
+                  href={`${w.href}?weak=1`}
+                  className="inline-flex items-center min-h-[44px] pl-3 text-caption tracking-wider text-[color:var(--accent-progress)] font-medium"
+                >
+                  약점 복습 →
+                </Link>
+              </div>
+              <ul role="list">
+                {w.rows.map((r) => (
+                  <li
+                    key={r.id}
+                    className="flex items-baseline justify-between gap-4 min-h-[44px] py-2 border-t border-[color:var(--line)]"
+                  >
+                    <span
+                      className="text-em font-semibold shrink-0 max-w-[55%]"
+                      style={{ fontFamily: "var(--font-jp-serif)", color: "var(--fg)" }}
+                    >
+                      {r.ruby ? <RubyText text={r.ruby} /> : r.front}
+                    </span>
+                    <span className="text-caption text-[color:var(--fg-soft)] text-right leading-snug">
+                      {r.answer}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      )}
 
       <section className="mb-8" aria-labelledby="progress-level-heading">
         <div

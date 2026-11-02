@@ -9,6 +9,7 @@ import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { useStore } from "@/lib/store";
+import { useWeakIds } from "@/lib/use-weak-ids";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
 import {
@@ -53,9 +54,12 @@ function VocabPageInner() {
   const [index, setIndex] = useState(0);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
+  const weakIds = useWeakIds("vocab", vocabIds);
   const deck = useMemo(
     () =>
-      mode === "study"
+      weakIds
+        ? shuffleIds(weakIds, seed + epoch * 7919)
+        : mode === "study"
         ? shuffleIds(vocabIds, seed + epoch * 7919)
         : weightedShuffleIds(
             vocabIds,
@@ -67,7 +71,7 @@ function VocabPageInner() {
             },
           ),
     // ratingTier, not rating: re-sample once the rating has actually moved.
-    [mode, seed, epoch, vocabIds, getBox, vocabById, ratingTier]
+    [weakIds, mode, seed, epoch, vocabIds, getBox, vocabById, ratingTier]
   );
 
   const advance = () => {
