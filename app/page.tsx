@@ -185,19 +185,24 @@ function SubjectRow({
 }) {
   return (
     <div className="bg-[color:var(--bg)] flex items-center px-4 py-4">
-      <div className="flex-1 flex items-baseline gap-3 min-w-0">
+      {/*
+        폭이 좁을 때(Safari 페이지 확대 125% ≈ 322px, 디스플레이 확대) 일본어 표기와
+        개수 칩이 한 글자씩 줄바꿈되고 이름이 잘렸다. 표기·칩은 줄바꿈 없이
+        고정하고, 이름만 마지막 수단으로 줄어든다.
+      */}
+      <div className="flex-1 flex items-baseline gap-2 min-w-0">
         <span className="text-body font-medium text-[color:var(--fg)] truncate">
           {ko}
         </span>
         <span
-          className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
+          className="text-label text-[color:var(--fg-faint)] tracking-[0.08em] whitespace-nowrap shrink-0"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {jp}
         </span>
         {dueCount > 0 && (
           <span
-            className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium"
+            className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium whitespace-nowrap shrink-0"
             aria-label={`복습 ${dueCount}장 대기`}
           >
             ・{dueCount}
@@ -216,7 +221,7 @@ function ActionLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="text-caption text-[color:var(--fg-soft)] tracking-wide px-4 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] flex items-center"
+      className="text-caption text-[color:var(--fg-soft)] tracking-wide px-3 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] min-w-[44px] justify-center flex items-center"
     >
       {label}
     </Link>
