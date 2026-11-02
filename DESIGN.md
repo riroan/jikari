@@ -89,7 +89,7 @@ caption       13px    Pretendard 500      letter-spacing: 0.25em (네비 힌트�
   --ink:         #1A1915;  /* 본문 먹색 */
   --ink-soft:    #3A3631;  /* 이차 텍스트 */
   --ink-faint:   #6F675B;  /* 라벨/힌트 */
-  --accent-clay: #B85840;  /* 한국어 악센트 */
+  --accent-clay: #A8503A;  /* 한국어 악센트 (AA 대비 확보를 위해 #B85840에서 조정) */
   --accent-sage: #7A8F6E;  /* heatmap 활성 */
   --accent-progress-text: #586C4F;  /* 작은 텍스트용 sage (paper 대비 5.0:1, AA). 채움/테두리는 sage, 글자는 이 토큰. 다크는 gold */
   --on-progress: var(--ink);  /* sage 채움 위 글자 (AA). 다크는 --bg */
