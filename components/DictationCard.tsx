@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnswerFeedback } from "./AnswerFeedback";
 import { RubyText } from "./Furigana";
 import { SpeakButton } from "./SpeakButton";
@@ -22,6 +22,11 @@ export function DictationCard({
 }) {
   const [answer, setAnswer] = useState<{ input: string; res: DictationResult } | null>(null);
   const res = answer?.res;
+  const nextRef = useRef<HTMLButtonElement>(null);
+  // 제출 후 입력창이 disabled 되며 포커스가 body로 빠지므로 다음 버튼으로 옮긴다 (Enter로 진행).
+  useEffect(() => {
+    if (answer) nextRef.current?.focus();
+  }, [answer]);
   return (
     <div className="flex flex-col gap-6">
       {prompt}
@@ -31,11 +36,9 @@ export function DictationCard({
         disabled={!!answer}
         onSubmit={(input) => setAnswer({ input, res: checkDictation(input, reading) })}
       />
+      <div role="status">{res && <AnswerFeedback correct={res.correct} />}</div>
       {answer && res && (
         <div className="flex flex-col gap-4 pt-4 border-t border-[color:var(--line)]">
-          <div role="status">
-            <AnswerFeedback correct={res.correct} />
-          </div>
           {!res.correct && (
             <div className="flex flex-col gap-1 text-caption text-[color:var(--fg-faint)]">
               <div>
@@ -48,18 +51,21 @@ export function DictationCard({
                 className="text-h2 leading-tight"
                 lang="ja"
                 style={{ fontFamily: "var(--font-jp-sans)", color: "var(--fg)" }}
-                aria-label={`정답 ${reading}, 틀린 글자 밑줄`}
               >
-                {res.diff.map((d, i) => (
+                <span className="sr-only">
+                  정답 {reading}, 틀린 글자: {[...reading].filter((_, i) => !res.diff[i]?.ok).join(" ") || "없음"}
+                </span>
+                {[...reading].map((ch, i) => (
                   <span
                     key={i}
+                    aria-hidden="true"
                     style={
-                      d.ok
+                      res.diff[i]?.ok
                         ? undefined
                         : { color: "var(--accent-korean)", textDecoration: "underline", textUnderlineOffset: 6 }
                     }
                   >
-                    {d.ch}
+                    {ch}
                   </span>
                 ))}
               </div>
@@ -80,6 +86,7 @@ export function DictationCard({
           <div className="flex items-center justify-end gap-1">
             <SpeakButton text={card.ruby ?? card.expression_jp} />
             <button
+              ref={nextRef}
               type="button"
               onClick={() => onResolved(res.correct)}
               aria-label="다음 문제"

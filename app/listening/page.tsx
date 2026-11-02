@@ -204,7 +204,7 @@ function Dictation() {
       key={card.id}
       card={card}
       reading={reading}
-      prompt={<ListenPrompt text={markup} label="들리는 대로 가나로 써 보세요" />}
+      prompt={<ListenPrompt text={reading} label="들리는 대로 가나로 써 보세요" />}
       onResolved={(ok) => {
         run.record(card.id, ok, card.expression_jp, card.translation_ko);
         if (!run.retrying) setIndex((i) => i + 1);

@@ -1,6 +1,6 @@
 import { parseMarkup, type Segment } from "./jp-markup";
 import { diffAgainst, type DiffChar } from "./diff";
-import { toKatakana } from "wanakana";
+import { toHiragana, toKatakana } from "wanakana";
 import { normalizeJapanese } from "./normalize";
 
 // 받아쓰기는 소리만 비교한다: 공백·구두점·기호는 무시.
@@ -29,7 +29,8 @@ function readingOfSegments(segs: Segment[]): string {
 /** 후리가나 마크업에서 히라가나 읽기를 뽑는다. 한자가 남아 읽기를 알 수 없으면 null. */
 export function dictationReading(markup: string): string | null {
   const r = readingOfSegments(parseMarkup(markup)).replace(IGNORED, "");
-  return KANA_ONLY.test(r) ? normalizeJapanese(r) : null;
+  // ー는 풀지 않는다(표시용 원형 읽기). 비교는 clean()이 정규화.
+  return KANA_ONLY.test(r) ? toHiragana(r, { convertLongVowelMark: false }) : null;
 }
 
 export interface DictationResult {
