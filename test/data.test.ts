@@ -1,6 +1,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
+import { validate as validateExpression } from "../scripts/add-expression";
+import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
 import {
   centerTell,
   chooseDirection,
@@ -442,4 +444,41 @@ describe("seed files", () => {
       expect(dup, `중복 id: ${dup.join(", ")}`).toEqual([]);
     },
   );
+});
+
+describe("expression seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const cards = readdirSync(dir)
+    .filter((f) => f.startsWith("expressions-") && f.endsWith(".json"))
+    .flatMap((f) =>
+      (JSON.parse(readFileSync(path.join(dir, f), "utf8")) as Record<string, unknown>[]).map(
+        (c, i) => ({ file: f, i, c }),
+      ),
+    );
+
+  test("모든 카드가 add-expression 검증을 통과한다", () => {
+    for (const { file, i, c } of cards) {
+      expect(() => validateExpression(c, i), file).not.toThrow();
+    }
+  });
+
+  // 한자가 들어 있는데 ruby가 없거나, ruby가 표현과 어긋나면 카드 앞면이 틀어진다.
+  test("ruby를 벗기면 expression_jp와 같고, 후리가나는 가나뿐이다", () => {
+    const KANJI = /[\u4e00-\u9fff]/;
+    for (const { file, c } of cards) {
+      const jp = c.expression_jp as string;
+      const ruby = c.ruby as string | undefined;
+      if (!ruby) {
+        expect(KANJI.test(jp), `${file} ${c.id}: 한자가 있는데 ruby가 없다`).toBe(false);
+        continue;
+      }
+      const segs = parseMarkup(ruby);
+      expect(stripMarkup(segs), `${file} ${c.id}`).toBe(jp);
+      for (const seg of segs) {
+        if (seg.kind === "ruby") {
+          expect(seg.furigana, `${c.id} ${seg.base}`).toMatch(/^[\u3041-\u309f\u30fc]+$/);
+        }
+      }
+    }
+  });
 });
