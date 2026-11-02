@@ -203,7 +203,7 @@ export function TypedChallengeCard({
             className="flex items-center justify-between gap-3"
             aria-live="polite"
           >
-            <div className="inline-flex items-center gap-2 text-[color:var(--accent-progress)] font-medium">
+            <div className="inline-flex items-center gap-2 text-[color:var(--accent-progress-text)] font-medium">
               <svg
                 width="18"
                 height="18"

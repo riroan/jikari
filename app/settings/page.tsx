@@ -273,7 +273,7 @@ export default function SettingsPage() {
               message.kind === "ok"
                 ? "color-mix(in oklab, var(--accent-progress) 15%, transparent)"
                 : "color-mix(in oklab, var(--accent-korean) 15%, transparent)",
-            color: message.kind === "ok" ? "var(--accent-progress)" : "var(--accent-korean)",
+            color: message.kind === "ok" ? "var(--accent-progress-text)" : "var(--accent-korean)",
           }}
           role="status"
           aria-live="polite"

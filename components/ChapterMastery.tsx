@@ -167,7 +167,7 @@ export function ChapterMastery({
                   </span>
                   {mastered && !showDue && (
                     <span
-                      className="shrink-0 text-tiny tracking-wide text-[color:var(--accent-progress)]"
+                      className="shrink-0 text-tiny tracking-wide text-[color:var(--accent-progress-text)]"
                       aria-hidden="true"
                       style={{ fontFamily: "var(--font-jp-serif)" }}
                     >
@@ -176,7 +176,7 @@ export function ChapterMastery({
                   )}
                   {showDue && (
                     <span
-                      className="shrink-0 text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium"
+                      className="shrink-0 text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress-text)] font-medium"
                       aria-hidden="true"
                     >
                       ・{dueCount}

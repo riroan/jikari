@@ -14,7 +14,7 @@ export function QuizStats({ statKey }: { statKey: QuizStatKey }) {
   if (correct === 0 && wrong === 0) return null;
   return (
     <div className="text-[12px] tracking-tab tabular-nums text-[color:var(--fg-faint)]">
-      <span className="text-[color:var(--accent-progress)]">◯ {correct}</span>
+      <span className="text-[color:var(--accent-progress-text)]">◯ {correct}</span>
       <span className="mx-1.5">·</span>
       <span className="text-[color:var(--accent-korean)]">✕ {wrong}</span>
     </div>

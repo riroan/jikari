@@ -48,7 +48,7 @@ export function SessionSummary({
             {missed.map((m) => (
               <li
                 key={m.id}
-                className="flex items-baseline justify-between gap-4 py-3 border-b border-[color:var(--line)]"
+                className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-3 border-b border-[color:var(--line)]"
               >
                 <span
                   className="text-body text-[color:var(--fg)]"
@@ -57,7 +57,7 @@ export function SessionSummary({
                   {m.front}
                 </span>
                 <span
-                  className="text-body text-right text-[color:var(--accent-progress)]"
+                  className="text-body text-right ml-auto text-[color:var(--accent-progress-text)]"
                   style={{ fontFamily: font(m.back) }}
                 >
                   {m.back}

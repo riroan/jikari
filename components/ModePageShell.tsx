@@ -88,7 +88,7 @@ export function ModePageShell({
             {statKey && <QuizStats statKey={statKey} />}
             {dueCount > 0 && (
               <span
-                className="text-[12px] tracking-tab tabular-nums text-[color:var(--accent-progress)] font-medium"
+                className="text-[12px] tracking-tab tabular-nums text-[color:var(--accent-progress-text)] font-medium"
                 aria-label={`복습 ${dueCount}장 대기`}
               >
                 復習 {dueCount}

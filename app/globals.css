@@ -40,6 +40,7 @@
   --fg-faint:    var(--ink-faint);
   --accent-korean:   var(--accent-clay);
   --accent-progress: var(--accent-sage);
+  --accent-progress-text: #586C4F; /* small text on paper, AA 5.0:1 */
   --on-progress:     var(--ink); /* text on accent-progress fills (AA) */
 
   /* Bg gradient — DESIGN.md § 3 */
@@ -135,6 +136,7 @@
   --fg-faint:    var(--bone-faint);
   --accent-korean:   var(--crimson);
   --accent-progress: var(--gold);
+  --accent-progress-text: var(--gold);
   --on-progress:     var(--bg);
 
   --bg-gradient: radial-gradient(ellipse at top, var(--bg-soft) 0%, var(--bg-deep) 55%);
@@ -158,6 +160,7 @@
     --fg-faint:    var(--bone-faint);
     --accent-korean:   var(--crimson);
     --accent-progress: var(--gold);
+    --accent-progress-text: var(--gold);
     --on-progress:     var(--bg);
 
     --bg-gradient: radial-gradient(ellipse at top, var(--bg-soft) 0%, var(--bg-deep) 55%);
@@ -173,6 +176,7 @@
   --color-fg-faint:          var(--fg-faint);
   --color-accent-korean:     var(--accent-korean);
   --color-accent-progress:   var(--accent-progress);
+  --color-accent-progress-text: var(--accent-progress-text);
   --color-line:              var(--line);
 
   --font-jp-serif: var(--font-jp-serif);

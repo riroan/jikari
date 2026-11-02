@@ -35,7 +35,7 @@ const REGISTER_MEANING: Record<Register, string> = {
 const REGISTER_COLOR: Record<Register, string> = {
   casual: "var(--fg-soft)",
   polite: "var(--accent-korean)",
-  humble: "var(--accent-progress)",
+  humble: "var(--accent-progress-text)",
 };
 
 export default function ExpressionsPage() {

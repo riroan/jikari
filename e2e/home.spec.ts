@@ -12,11 +12,11 @@ test.describe("home", () => {
     await expect(page.getByRole("link", { name: /HOME/ })).toBeVisible();
     await expect(page.getByRole("link", { name: /PROGRESS/ })).toBeVisible();
 
-    // Each of the 8 subjects should have a pair of 공부 / 퀴즈 links.
+    // Each study subject (8) should have a pair of 공부 / 퀴즈 links.
     const studyLinks = page.getByRole("link", { name: "공부" });
     const quizLinks = page.getByRole("link", { name: "퀴즈" });
     await expect(studyLinks).toHaveCount(8);
-    await expect(quizLinks).toHaveCount(8);
+    await expect(quizLinks).toHaveCount(9); // 9 subjects: listening is quiz-only
 
     // Confirm grammar row links are present (7th row).
     await expect(page.getByRole("link", { name: "공부" }).nth(6)).toHaveAttribute(

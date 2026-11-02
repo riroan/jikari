@@ -12,10 +12,10 @@ test.describe("home — 단원 entry button", () => {
 
     await page.goto("/");
 
-    // Regression: brand + 7 subject rows + heatmap + footer still visible.
+    // Regression: brand + 9 subject rows + heatmap + footer still visible.
     await expect(page.getByRole("heading", { name: "jikari", level: 1 })).toBeVisible();
-    await expect(page.getByRole("link", { name: "공부" })).toHaveCount(7);
-    await expect(page.getByRole("link", { name: "퀴즈" })).toHaveCount(7);
+    await expect(page.getByRole("link", { name: "공부" })).toHaveCount(8);
+    await expect(page.getByRole("link", { name: "퀴즈" })).toHaveCount(9);
     await expect(page.getByText("7 WEEKS")).toBeVisible();
 
     // 단원 entry — top of page, not in footer.
@@ -92,7 +92,7 @@ test.describe("/chapters/[id] detail page", () => {
     await expect(page.getByText("CARDS")).toBeVisible();
 
     // Quiz CTA
-    const quizButton = page.getByRole("link", { name: /이 챕터 퀴즈 시작/ });
+    const quizButton = page.getByRole("link", { name: /이 챕터 퀴즈 시작|복습 \d+장 시작/ });
     await expect(quizButton).toBeVisible();
     await expect(quizButton).toHaveAttribute("href", "/chapters/a2-food?mode=quiz");
 
@@ -106,7 +106,7 @@ test.describe("/chapters/[id] detail page", () => {
     page.on("pageerror", (err) => errors.push(err.message));
 
     await page.goto("/chapters/a2-food");
-    await page.getByRole("link", { name: /이 챕터 퀴즈 시작/ }).click();
+    await page.getByRole("link", { name: /이 챕터 퀴즈 시작|복습 \d+장 시작/ }).click();
 
     await expect(page).toHaveURL(/\/chapters\/a2-food\?mode=quiz/);
     // Progress counter "1 / N" + tally "◯ 0 ・ ✕ 0" present at top.

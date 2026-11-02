@@ -200,7 +200,7 @@ export default function ProgressPage() {
                 </span>
                 <Link
                   href={`${w.href}?weak=1`}
-                  className="inline-flex items-center min-h-[44px] pl-3 text-caption tracking-wider text-[color:var(--accent-progress)] font-medium"
+                  className="inline-flex items-center min-h-[44px] pl-3 text-caption tracking-wider text-[color:var(--accent-progress-text)] font-medium"
                 >
                   약점 복습 →
                 </Link>

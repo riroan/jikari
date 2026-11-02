@@ -242,7 +242,7 @@ function SentenceStudyBody({ card }: { card: SentenceCard }) {
         }}
       >
         {hasRuby ? <RubyText text={before ?? ""} /> : before}
-        <span className="text-[color:var(--accent-progress)] font-semibold">
+        <span className="text-[color:var(--accent-progress-text)] font-semibold">
           {hasRuby ? <RubyText text={answerSrc} /> : answerSrc}
         </span>
         {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}

@@ -337,7 +337,7 @@ function TypedPanel({
             <div>
               정답:{" "}
               <span
-                className="text-[color:var(--accent-progress)]"
+                className="text-[color:var(--accent-progress-text)]"
                 style={{ fontFamily: answerFontFamily }}
               >
                 {canonicalAnswer}

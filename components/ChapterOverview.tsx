@@ -128,7 +128,7 @@ export function ChapterOverview({
                   <span className="text-caption text-[color:var(--fg-faint)] tabular-nums">
                     {counts[m]}장
                     {due > 0 && (
-                      <span className="ml-2 text-[color:var(--accent-progress)] font-medium">
+                      <span className="ml-2 text-[color:var(--accent-progress-text)] font-medium">
                         ・{due} 복습
                       </span>
                     )}
@@ -156,7 +156,7 @@ export function ChapterOverview({
                 href={`/chapters/${chapter.id}?mode=quiz`}
                 className={`flex items-center justify-center text-body font-medium px-4 py-3 rounded-sm transition-colors min-h-[44px] ${
                   live
-                    ? "bg-[color:var(--accent-progress)] text-[color:var(--bg)] hover:opacity-90"
+                    ? "bg-[color:var(--accent-progress)] text-[color:var(--on-progress)] hover:opacity-90"
                     : "bg-[color:var(--bg-deep)] text-[color:var(--fg)] hover:bg-[color:var(--accent-korean)] hover:text-[color:var(--bg)]"
                 }`}
               >

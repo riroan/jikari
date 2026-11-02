@@ -15,7 +15,7 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 15 }}
-        className="inline-flex items-center gap-2 text-[color:var(--accent-progress)] font-medium"
+        className="inline-flex items-center gap-2 text-[color:var(--accent-progress-text)] font-medium"
         aria-live="polite"
       >
         <svg

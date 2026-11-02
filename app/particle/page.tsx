@@ -238,7 +238,7 @@ function ParticleStudyBody({ card }: { card: SentenceCard }) {
         }}
       >
         {hasRuby ? <RubyText text={before ?? ""} /> : before}
-        <span className="text-[color:var(--accent-progress)] font-semibold">
+        <span className="text-[color:var(--accent-progress-text)] font-semibold">
           {hasRuby ? <RubyText text={answerSrc} /> : answerSrc}
         </span>
         {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
@@ -261,7 +261,7 @@ function ParticleInfoBlock({
     <div className="pl-3 border-l-2 border-[color:var(--accent-progress)] flex flex-col gap-1.5">
       <div className="flex items-baseline gap-2">
         <span
-          className="text-title font-semibold text-[color:var(--accent-progress)]"
+          className="text-title font-semibold text-[color:var(--accent-progress-text)]"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {particle}
