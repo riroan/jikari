@@ -118,6 +118,11 @@ export default function Home() {
         {nextReview && backlog > 0 && (
           <p className="-mt-1 mb-3 text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
             밀린 복습 {backlog}장 · 오래된 것부터 하루 {DAILY_GOAL}장씩
+            {dueCount > DAILY_GOAL * 8 && (
+              <Link href="/settings#backlog" className="inline-flex items-center min-h-11 px-2 underline underline-offset-2">
+                정리하기 →
+              </Link>
+            )}
           </p>
         )}
 

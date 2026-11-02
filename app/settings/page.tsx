@@ -1,12 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { parseBackup, summarizeBackup } from "@/lib/import";
 import type { PersistedState } from "@/lib/types";
 import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
 import { useClientNow } from "@/lib/use-is-client";
+import {
+  RESPACE_DAYS,
+  buildUndo,
+  clearUndo,
+  loadUndo,
+  planRespace,
+  planUndo,
+  saveUndo,
+  type UndoSnapshot,
+} from "@/lib/respace";
 
 const BACKUP_TIMESTAMP_KEY = "jikari-last-backup-ms";
 
@@ -44,6 +54,13 @@ export default function SettingsPage() {
   const [pending, setPending] = useState<PersistedState | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const resetDialogRef = useRef<HTMLDialogElement>(null);
+  const respaceDialogRef = useRef<HTMLDialogElement>(null);
+  const [respaceDays, setRespaceDays] = useState<number>(14);
+  const [undo, setUndo] = useState<UndoSnapshot | null>(() =>
+    typeof window === "undefined" ? null : loadUndo(),
+  );
+  const setNextDues = useStore((s) => s.setNextDues);
+  const learningStates = useStore((s) => s.learningStates);
   const now = useClientNow();
   // Lazy init reads localStorage once on first client render. The value is
   // refreshed only when the user clicks export (handleExport sets it directly).
@@ -120,6 +137,34 @@ export default function SettingsPage() {
       text: `복원 완료 — ${Object.keys(pending.learningStates).length}장.`,
     });
     setPending(null);
+  }
+
+  function confirmRespace() {
+    const t = Date.now();
+    const { changes } = planRespace(learningStates, t, respaceDays, settings.dailyGoal);
+    const n = Object.keys(changes).length;
+    if (n === 0) {
+      respaceDialogRef.current?.close();
+      return;
+    }
+    const snap = buildUndo(learningStates, changes, t);
+    const saved = saveUndo(snap);
+    setNextDues(changes);
+    setUndo(saved ? snap : null);
+    setMessage({
+      kind: "ok",
+      text: `${n}장을 ${respaceDays}일에 나눠 정리했습니다.${saved ? "" : " (되돌리기 저장 실패)"}`,
+    });
+    respaceDialogRef.current?.close();
+  }
+
+  function undoRespace() {
+    if (!undo) return;
+    const changes = planUndo(useStore.getState().learningStates, undo);
+    setNextDues(changes);
+    clearUndo();
+    setUndo(null);
+    setMessage({ kind: "ok", text: `${Object.keys(changes).length}장의 복습일을 되돌렸습니다.` });
   }
 
   function openResetDialog() {
@@ -269,6 +314,35 @@ export default function SettingsPage() {
             ))}
           </select>
         </label>
+        <div id="backlog" className="flex justify-between items-center text-small py-2 gap-4 scroll-mt-4">
+          <span className="text-[color:var(--fg-soft)]">
+            밀린 복습 정리
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
+              밀린 카드를 며칠에 나눠 배치 (단계·기록은 그대로)
+            </span>
+          </span>
+          <button
+            onClick={() => respaceDialogRef.current?.showModal()}
+            className="px-3 text-small border border-[color:var(--line)] rounded-sm text-[color:var(--fg)] shrink-0"
+            style={{ minHeight: 44 }}
+          >
+            정리
+          </button>
+        </div>
+        {undo && (
+          <div className="flex justify-between items-center text-caption text-[color:var(--fg-faint)] gap-4">
+            <span>
+              {new Date(undo.appliedAt).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })}에 {undo.entries.length}장 정리함
+            </span>
+            <button
+              onClick={undoRespace}
+              className="px-3 text-small border border-[color:var(--line)] rounded-sm text-[color:var(--fg)] shrink-0"
+              style={{ minHeight: 44 }}
+            >
+              되돌리기
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="mb-10">
@@ -291,6 +365,18 @@ export default function SettingsPage() {
           onCancel={() => setPending(null)}
         />
       )}
+
+      <RespaceDialog
+        ref={respaceDialogRef}
+        states={learningStates}
+        goal={settings.dailyGoal}
+        days={respaceDays}
+        onDays={setRespaceDays}
+        lastBackupMs={lastBackupMs}
+        onExport={handleExport}
+        onConfirm={confirmRespace}
+        onCancel={() => respaceDialogRef.current?.close()}
+      />
 
       <ResetDialog
         ref={resetDialogRef}
@@ -317,6 +403,83 @@ export default function SettingsPage() {
     </ModePageShell>
   );
 }
+
+const RespaceDialog = forwardRef<
+  HTMLDialogElement,
+  {
+    states: PersistedState["learningStates"];
+    goal: number;
+    days: number;
+    onDays: (n: number) => void;
+    lastBackupMs: number | null;
+    onExport: () => void;
+    onConfirm: () => void;
+    onCancel: () => void;
+  }
+>(function RespaceDialog({ states, goal, days, onDays, lastBackupMs, onExport, onConfirm, onCancel }, ref) {
+  const t = useClientNow() ?? 0;
+  const plan = planRespace(states, t, days, goal);
+  const moved = Object.keys(plan.changes).length;
+  const end = new Date(t);
+  end.setDate(end.getDate() + days - 1);
+  const fmt = (d: Date) => d.toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" });
+  const btn = "px-4 text-small border border-[color:var(--line)] rounded-sm";
+  return (
+    <dialog
+      ref={ref}
+      aria-labelledby="respace-dialog-title"
+      className="m-auto w-[min(92vw,420px)] p-5 rounded-sm bg-[color:var(--bg)] text-[color:var(--fg)] border border-[color:var(--line)] backdrop:bg-black/40"
+    >
+      <h2 id="respace-dialog-title" className="text-body font-semibold mb-2">
+        밀린 복습 정리
+      </h2>
+      <p className="text-small text-[color:var(--fg-soft)] mb-3">
+        밀린 카드 {plan.overdue}장 중 오래된 {plan.overdue - moved}장은 오늘 그대로 두고,
+        나머지 {moved}장의 복습일만 {days > 1 ? `내일부터 ${fmt(end)}까지` : "오늘"} 고르게 나눕니다.
+        단계·기록·연속일은 바뀌지 않습니다.
+      </p>
+      <div className="flex gap-2 mb-3" role="radiogroup" aria-label="기간">
+        {RESPACE_DAYS.map((n) => (
+          <button
+            key={n}
+            role="radio"
+            aria-checked={days === n}
+            onClick={() => onDays(n)}
+            className={`${btn} flex-1 ${days === n ? "bg-[color:var(--fg)] text-[color:var(--bg)]" : ""}`}
+            style={{ minHeight: 44 }}
+          >
+            {n}일
+          </button>
+        ))}
+      </div>
+      <p className="text-caption text-[color:var(--fg-faint)] tabular-nums mb-3">
+        하루 약 {Math.max(...plan.perDay.slice(1), 0)}장 · 오늘 {plan.perDay[0]}장
+      </p>
+      <div className="flex items-center justify-between gap-3 text-caption text-[color:var(--fg-faint)] mb-4">
+        <span>
+          {lastBackupMs ? `마지막 백업 ${formatRelative(t - lastBackupMs)}` : "먼저 백업을 권장합니다."}
+        </span>
+        <button type="button" onClick={onExport} className={`${btn} shrink-0`} style={{ minHeight: 44 }}>
+          먼저 백업 내보내기
+        </button>
+      </div>
+      <div className="flex justify-end gap-2">
+        <button type="button" onClick={onCancel} className={btn} style={{ minHeight: 44 }}>
+          취소
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          disabled={moved === 0}
+          className={`${btn} bg-[color:var(--fg)] text-[color:var(--bg)] disabled:opacity-40`}
+          style={{ minHeight: 44 }}
+        >
+          정리하기
+        </button>
+      </div>
+    </dialog>
+  );
+});
 
 function fmtDate(ms: number) {
   return ms > 0 ? new Date(ms).toLocaleDateString("ko-KR", { year: "2-digit", month: "numeric", day: "numeric" }) : "기록 없음";

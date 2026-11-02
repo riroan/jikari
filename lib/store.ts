@@ -56,6 +56,9 @@ interface StoreActions {
   /** Update settings. */
   updateSettings: (partial: Partial<PersistedState["settings"]>) => void;
 
+  /** Set nextDue for many cards in ONE update (respace / undo). Nothing else changes. */
+  setNextDues: (changes: Record<string, number>) => void;
+
   /** Replace entire state (used by import). */
   replaceAll: (next: PersistedState) => void;
 
@@ -136,6 +139,14 @@ export const useStore = create<Store>()(
 
       updateSettings: (partial) =>
         set({ settings: { ...get().settings, ...partial } }),
+
+      setNextDues: (changes) => {
+        const states = { ...get().learningStates };
+        for (const [k, nextDue] of Object.entries(changes)) {
+          if (states[k]) states[k] = { ...states[k], nextDue };
+        }
+        set({ learningStates: states });
+      },
 
       replaceAll: (next) => set({ ...next }),
 
