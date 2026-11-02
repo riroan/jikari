@@ -1,11 +1,12 @@
 import { getProgress, putProgress } from "@/lib/db/progress";
+import { jsonResponse } from "@/lib/gzip-response";
 import { persistedStateSchema } from "@/lib/import";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: Request) {
   const state = await getProgress();
-  return Response.json(state);
+  return jsonResponse(req, JSON.stringify(state));
 }
 
 export async function PUT(request: Request) {
