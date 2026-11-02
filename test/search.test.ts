@@ -61,3 +61,13 @@ describe("search", () => {
     expect(r.total).toBeGreaterThan(2);
   });
 });
+
+describe("English prefix", () => {
+  const i2 = buildIndex({
+    ...src,
+    vocab: [{ id: "v9", word: "水", reading: "みず", meanings: ["water"], koreanMeanings: ["물"], jlptLevel: 5 }],
+  });
+  it.each(["wat", "water"])("%s matches mid-word", (q) => {
+    expect(search(i2, q).hits.map((h) => h.key)).toContain("vocab:v9");
+  });
+});

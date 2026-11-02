@@ -5,9 +5,18 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { RubyText } from "@/components/Furigana";
 import { SpeakButton } from "@/components/SpeakButton";
 import { useCardsStore } from "@/lib/cards-store";
-import { SUBJECT_LABEL, buildIndex, search, type SearchEntry } from "@/lib/search";
+import { SUBJECT_LABEL, buildIndex, search, type SearchEntry, type SearchSource } from "@/lib/search";
 
 const PAGE = 30;
+
+let cache: { src: SearchSource; idx: SearchEntry[] } | null = null;
+function cachedIndex(src: SearchSource) {
+  const c = cache;
+  if (!c || (Object.keys(src) as (keyof SearchSource)[]).some((k) => c.src[k] !== src[k])) {
+    cache = { src, idx: buildIndex(src) };
+  }
+  return cache!.idx;
+}
 
 export default function SearchPage() {
   const kanji = useCardsStore((s) => s.kanji);
@@ -16,7 +25,7 @@ export default function SearchPage() {
   const expressions = useCardsStore((s) => s.expressions);
   const grammar = useCardsStore((s) => s.grammar);
   const index = useMemo(
-    () => buildIndex({ kanji, vocab, sentences, expressions, grammar }),
+    () => cachedIndex({ kanji, vocab, sentences, expressions, grammar }),
     [kanji, vocab, sentences, expressions, grammar],
   );
 

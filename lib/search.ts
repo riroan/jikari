@@ -40,7 +40,8 @@ export const SUBJECT_LABEL: Record<SearchSubject, string> = {
   grammar: "文法",
 };
 
-const norm = (s: string) => toHiragana(s.normalize("NFC").toLowerCase().replace(/\s+/g, ""));
+const raw = (s: string) => s.normalize("NFC").toLowerCase().replace(/\s+/g, "");
+const norm = (s: string) => toHiragana(raw(s));
 
 function reading(segs: Segment[]): string {
   return segs
@@ -61,7 +62,7 @@ function entry(
   return {
     ...e,
     speak: e.speak ?? plain(e.ruby),
-    keys: keys.filter(Boolean).map(norm),
+    keys: [...new Set(keys.filter(Boolean).flatMap((k) => [norm(k), raw(k)]))],
   };
 }
 
@@ -184,7 +185,7 @@ export function search(
   const q = norm(query);
   if (!q) return { hits: [], total: 0 };
   // Romaji input also matches as-is against English meanings.
-  const qs = [...new Set([q, query.normalize("NFC").toLowerCase().replace(/\s+/g, "")])];
+  const qs = [...new Set([q, raw(query)])];
   const scored: { e: SearchEntry; s: number; i: number }[] = [];
   index.forEach((e, i) => {
     const s = score(e.keys, qs);
