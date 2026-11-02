@@ -10,7 +10,9 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN bun run build
+# The repo has no public/ yet, but the runner stage copies it — create it so
+# that COPY doesn't fail with "/app/public: not found".
+RUN mkdir -p public && bun run build
 
 FROM oven/bun:1.2-alpine AS runner
 WORKDIR /app
