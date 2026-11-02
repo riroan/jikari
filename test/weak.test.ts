@@ -23,4 +23,8 @@ describe("weakCardIds", () => {
     const states = Object.fromEntries([s("a"), s("b")]);
     expect(weakCardIds(states, "vocab", new Set(["b"]))).toEqual(["b"]);
   });
+  it("returns [] for empty states or an empty pool", () => {
+    expect(weakCardIds({}, "vocab")).toEqual([]);
+    expect(weakCardIds(Object.fromEntries([s("a")]), "vocab", new Set())).toEqual([]);
+  });
 });
