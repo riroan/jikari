@@ -200,14 +200,53 @@ export function generateKanjiChoices(
     }
   }
 
-  const distractors = sampleScored(
-    pool,
-    3,
-    seed,
-    kanjiReadingScore(correct, questionType),
+  const distractors = pickOffCenter(
+    correct,
+    (attempt) =>
+      sampleScored(pool, 3, seed + attempt * 101, kanjiReadingScore(correct, questionType)),
   );
   const choices = shuffle([correct, ...distractors], seed + 1);
   return { correct, choices };
+}
+
+/**
+ * 선지가 전부 정답의 이웃(편집거리 1)이면 정답이 별 모양의 한가운데에 놓인다:
+ * がく [かく, がい, はく] — "나머지와 가장 닮은 것"만 골라도 판독 없이 맞힌다
+ * (시드 기준 기대 정답률 57%, 우연 25%). 몇 번 다시 뽑아서 정답이 유일한
+ * 중심이 아닌 조합을 쓴다. 끝내 못 찾으면 그중 가장 덜 드러나는 조합.
+ */
+const OFF_CENTER_ATTEMPTS = 8;
+
+function pickOffCenter(
+  correct: string,
+  draw: (attempt: number) => string[],
+): string[] {
+  let best: string[] = [];
+  let bestTell = Infinity;
+  for (let attempt = 0; attempt < OFF_CENTER_ATTEMPTS; attempt++) {
+    const distractors = draw(attempt);
+    const tell = centerTell(correct, distractors);
+    if (tell < bestTell) {
+      best = distractors;
+      bestTell = tell;
+    }
+    if (tell === 0) break;
+  }
+  return best;
+}
+
+/**
+ * "거리 합이 가장 작은 선지를 고른다" 전략이 정답을 맞힐 확률.
+ * 정답이 유일한 중심이면 1, 다른 선지와 공동 중심이면 1/공동 수, 아니면 0.
+ */
+export function centerTell(correct: string, distractors: string[]): number {
+  const choices = [correct, ...distractors];
+  const sums = choices.map((c) =>
+    choices.reduce((acc, other) => acc + kanaDistance(c, other), 0),
+  );
+  const min = Math.min(...sums);
+  if (sums[0] !== min) return 0;
+  return 1 / sums.filter((s) => s === min).length;
 }
 
 /**
@@ -221,7 +260,12 @@ export function generateVocabChoices(
   seed: number = Math.random()
 ): { correct: string; choices: string[] } {
   const all = cards().vocab;
-  const others = all.filter((v) => v.id !== card.id);
+  // 뜻을 하나라도 공유하는 카드는 후보에서 뺀다. "알다"를 묻는데 分かる와
+  // 知る가 함께 뜨면 정답이 둘이 된다.
+  const meanings = new Set(card.koreanMeanings);
+  const others = all.filter(
+    (v) => v.id !== card.id && !v.koreanMeanings.some((m) => meanings.has(m)),
+  );
 
   if (direction === "recall") {
     const correct = card.ruby ?? card.word;

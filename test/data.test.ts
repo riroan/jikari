@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import {
+  centerTell,
   chooseDirection,
   generateChoices,
   generateGrammarQuizChoices,
@@ -180,6 +181,19 @@ describe("kanaDistance", () => {
   });
 });
 
+describe("centerTell", () => {
+  test("정답이 유일한 중심이면 1", () => {
+    expect(centerTell("がく", ["かく", "がい", "はく"])).toBe(1);
+  });
+  test("중심이 아니면 0", () => {
+    expect(centerTell("がく", ["かく", "かい", "かん"])).toBe(0);
+  });
+  test("공동 중심이면 1/공동 수", () => {
+    // ab/ac/bb/bc 넷 다 거리 합 4 — 네 선지가 공동 중심.
+    expect(centerTell("ab", ["ac", "bb", "bc"])).toBeCloseTo(0.25);
+  });
+});
+
 describe("readingShape", () => {
   test("buckets 전체형 훈독 by ending", () => {
     expect(readingShape("なく")).toBe("v");
@@ -296,6 +310,24 @@ describe("generateKanjiChoices distractor quality", () => {
     expect(choices).toHaveLength(3);
   });
 
+  test("정답이 선지 무리의 한가운데에 놓이지 않는다", () => {
+    // 정답의 이웃(편집거리 1)이 넉넉한 덱 — 예전에는 이웃 3개가 그대로 뽑혀
+    // "나머지와 가장 닮은 선지"를 고르면 판독 없이 맞힐 수 있었다.
+    const neighbors = ["かく", "がい", "はく", "がん", "とく", "ろく", "がつ", "まく", "かい", "さく", "がき", "ばく"];
+    useCardsStore.setState({
+      kanji: [k("学", ["がく"], []), ...neighbors.map((r, i) => k(`n${i}`, [r], []))],
+    });
+    const target = k("学", ["がく"], []);
+    let tell = 0;
+    const N = 60;
+    for (let seed = 0; seed < N; seed++) {
+      const { correct, choices } = generateKanjiChoices(target, "on", seed);
+      tell += centerTell(correct, choices.filter((c) => c !== correct));
+    }
+    // 우연히 고르면 0.25. 중심 고르기가 그보다 확연히 유리하면 안 된다.
+    expect(tell / N).toBeLessThan(0.35);
+  });
+
   test("same seed is stable (SRS replay)", () => {
     seedDeck();
     const target = k("的", ["てき"], ["まと"]);
@@ -362,6 +394,18 @@ describe("generateVocabChoices distractor quality", () => {
     useCardsStore.setState({ vocab: [target, ...useCardsStore.getState().vocab] });
     for (let seed = 0; seed < 30; seed++) {
       expect(generateVocabChoices(target, "recognition", seed).choices).not.toContain("차");
+    }
+  });
+
+  test("뜻을 공유하는 다른 단어는 선지로 나오지 않는다 (정답이 둘이 되는 것 방지)", () => {
+    seedDeck();
+    const wakaru: VocabCard = { ...v("分かる", "알다", "godan"), koreanMeanings: ["알다", "이해하다"] };
+    const shiru = v("知る", "알다", "godan");
+    useCardsStore.setState({ vocab: [wakaru, shiru, ...useCardsStore.getState().vocab] });
+    for (let seed = 0; seed < 40; seed++) {
+      expect(generateVocabChoices(shiru, "recall", seed).choices).not.toContain("分かる");
+      expect(generateVocabChoices(wakaru, "recall", seed).choices).not.toContain("知る");
+      expect(generateVocabChoices(shiru, "recognition", seed).choices).not.toContain("이해하다");
     }
   });
 
