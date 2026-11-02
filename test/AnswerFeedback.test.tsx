@@ -20,10 +20,10 @@ describe("AnswerFeedback — correct branch", () => {
     expect(root.className).toContain("accent-progress");
   });
 
-  it("announces with aria-live=polite", () => {
+  it("leaves announcing to QuizCard's persistent role=status wrapper", () => {
     const { container } = render(<AnswerFeedback correct={true} />);
     const root = container.firstChild as HTMLElement;
-    expect(root.getAttribute("aria-live")).toBe("polite");
+    expect(root.getAttribute("aria-live")).toBeNull();
   });
 
   it("hides the decorative SVG from screen readers", () => {
@@ -52,10 +52,10 @@ describe("AnswerFeedback — wrong branch", () => {
     expect(root.style.animation).toContain("shake");
   });
 
-  it("announces with aria-live=polite", () => {
+  it("leaves announcing to QuizCard's persistent role=status wrapper", () => {
     const { container } = render(<AnswerFeedback correct={false} />);
     const root = container.firstChild as HTMLElement;
-    expect(root.getAttribute("aria-live")).toBe("polite");
+    expect(root.getAttribute("aria-live")).toBeNull();
   });
 
   it("hides the decorative SVG from screen readers", () => {

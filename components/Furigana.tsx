@@ -19,6 +19,9 @@ import { parseMarkup, stripMarkup, type Segment } from "@/lib/jp-markup";
 
 const FuriganaContext = createContext<boolean>(true);
 
+// Only tag as Japanese when kana/kanji present (RubyText also renders Korean choices).
+const JA_RE = /[぀-ヿ一-鿿]/;
+
 export function FuriganaProvider({
   show,
   children,
@@ -56,7 +59,7 @@ export function RubyText({
   const segments = useMemo(() => parseMarkup(text), [text]);
 
   return (
-    <span className={className}>
+    <span className={className} lang={JA_RE.test(text) ? "ja" : undefined}>
       {renderSegments(segments, show, rtClassName)}
     </span>
   );
@@ -117,7 +120,7 @@ export function Furigana({
     return <span className={className}>{kanji}</span>;
   }
   return (
-    <ruby className={className} style={{ rubyPosition: "over" }}>
+    <ruby lang="ja" className={className} style={{ rubyPosition: "over" }}>
       {kanji}
       <rt style={{ fontSize: "0.4em", letterSpacing: "0.04em" }}>{reading}</rt>
     </ruby>

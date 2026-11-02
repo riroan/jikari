@@ -16,7 +16,6 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 15 }}
         className="inline-flex items-center gap-2 text-[color:var(--accent-progress-text)] font-medium"
-        aria-live="polite"
       >
         <svg
           width="18"
@@ -44,7 +43,6 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
         animation: "shake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97)",
         color: "var(--accent-korean)",
       }}
-      aria-live="polite"
     >
       <svg
         width="18"

@@ -200,6 +200,7 @@ export default function ProgressPage() {
                 </span>
                 <Link
                   href={`${w.href}?weak=1`}
+                  aria-label={`${w.ko} 약점 복습`}
                   className="inline-flex items-center min-h-[44px] pl-3 text-caption tracking-wider text-[color:var(--accent-progress-text)] font-medium"
                 >
                   약점 복습 →
@@ -212,6 +213,7 @@ export default function ProgressPage() {
                     className="flex items-baseline justify-between gap-4 min-h-[44px] py-2 border-t border-[color:var(--line)]"
                   >
                     <span
+                      lang="ja"
                       className="text-em font-semibold shrink-0 max-w-[55%]"
                       style={{ fontFamily: "var(--font-jp-serif)", color: "var(--fg)" }}
                     >

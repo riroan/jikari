@@ -205,7 +205,7 @@ function KindTabs({ active }: { active: "word" | "sentence" }) {
     </Link>
   );
   return (
-    <div role="tablist" className="flex gap-5 mb-8 border-b border-[color:var(--line)]">
+    <div role="tablist" aria-label="듣기 종류" className="flex gap-5 mb-8 border-b border-[color:var(--line)]">
       {tab("/listening", "단어", active === "word")}
       {tab("/listening?kind=sentence", "문장", active === "sentence")}
     </div>

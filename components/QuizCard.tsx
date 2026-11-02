@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
 import { RubyText } from "./Furigana";
 import { SpeakButton } from "./SpeakButton";
@@ -157,6 +157,7 @@ export function QuizCard({
   }, [disabled, result, advance]);
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="flex flex-col gap-6 md:gap-8">
       <div
         className="relative min-h-[var(--qc-min-mobile)] md:min-h-[var(--qc-min)]"
@@ -199,7 +200,7 @@ export function QuizCard({
       )}
 
       <div className="flex items-center justify-between gap-3 min-h-[44px]">
-        <div>
+        <div role="status">
           <AnimatePresence>
             {disabled && result !== null && (
               <motion.div
@@ -233,6 +234,7 @@ export function QuizCard({
         )}
       </div>
     </div>
+    </MotionConfig>
   );
 }
 

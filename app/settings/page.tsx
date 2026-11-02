@@ -176,13 +176,14 @@ export default function SettingsPage() {
           표시
         </h2>
 
-        <label className="flex justify-between items-center text-small py-2 gap-4">
+        {/* div, not label: a label would forward clicks on "테마" to the first radio */}
+        <div className="flex justify-between items-center text-small py-2 gap-4">
           <span className="text-[color:var(--fg-soft)]">테마</span>
           <ThemeChoice
             value={settings.theme}
             onChange={(theme) => updateSettings({ theme })}
           />
-        </label>
+        </div>
 
         <label className="flex justify-between items-center text-small min-h-[44px]">
           <span className="text-[color:var(--fg-soft)]">후리가나 (한자 위 읽기)</span>
@@ -213,8 +214,8 @@ export default function SettingsPage() {
               })
             }
             aria-label="타이핑 시작 박스"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
-            style={{ minHeight: 36, minWidth: 64 }}
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            style={{ minHeight: 44, minWidth: 64 }}
           >
             <option value={2}>2 (공격적)</option>
             <option value={3}>3</option>
@@ -235,7 +236,7 @@ export default function SettingsPage() {
               updateSettings({ dailyGoal: normalizeDailyGoal(Number(e.target.value)) })
             }
             aria-label="하루 목표"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
             style={{ minHeight: 44, minWidth: 64 }}
           >
             {DAILY_GOALS.map((n) => (

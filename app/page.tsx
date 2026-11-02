@@ -222,25 +222,23 @@ function SubjectRow({
           {ko}
         </span>
         <span
+          lang="ja"
           className="text-label text-[color:var(--fg-faint)] tracking-[0.08em] whitespace-nowrap shrink-0"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {jp}
         </span>
         {dueCount > 0 && (
-          <span
-            className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress-text)] font-medium whitespace-nowrap shrink-0"
-            aria-label={`복습 ${dueCount}장 대기`}
-          >
+          <span className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress-text)] font-medium whitespace-nowrap shrink-0">
             {dueCount}장 대기
           </span>
         )}
       </div>
       <div className="flex items-center gap-1 shrink-0">
         {base !== "/listening" && (
-          <ActionLink href={`${base}?mode=study`} label="공부" />
+          <ActionLink href={`${base}?mode=study`} label="공부" subject={ko} />
         )}
-        <ActionLink href={base} label="퀴즈" stretch />
+        <ActionLink href={base} label="퀴즈" subject={ko} stretch />
       </div>
     </div>
   );
@@ -249,15 +247,18 @@ function SubjectRow({
 function ActionLink({
   href,
   label,
+  subject,
   stretch,
 }: {
   href: string;
   label: string;
+  subject: string;
   stretch?: boolean;
 }) {
   return (
     <Link
       href={href}
+      aria-label={`${subject} ${label}`}
       className={`text-caption tracking-wide px-3 py-3 rounded-sm active:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] min-w-[44px] justify-center flex items-center ${
         stretch
           ? "text-[color:var(--fg)] after:absolute after:inset-0 after:content-['']"
