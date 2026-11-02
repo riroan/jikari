@@ -1,0 +1,145 @@
+[
+  {
+    "id": "en01",
+    "situation_ko": "식당이나 가게에서 총액을 물을 때",
+    "expression_jp": "全部でいくらですか。",
+    "ruby": "{全部|ぜんぶ}でいくらですか。",
+    "register": "polite",
+    "translation_ko": "전부 해서 얼마예요?",
+    "note_ko": "「いくら」는 값을 묻는 말. 「全部で」를 붙이면 여러 개를 합친 값을 물어요"
+  },
+  {
+    "id": "en02",
+    "situation_ko": "지금 몇 시인지 물을 때",
+    "expression_jp": "今、何時ですか。",
+    "ruby": "{今|いま}、{何時|なんじ}ですか。",
+    "register": "polite",
+    "translation_ko": "지금 몇 시예요?",
+    "note_ko": "「何」는 뒤에 시간 단위가 오면 なん으로 읽습니다. 何時はなんじ"
+  },
+  {
+    "id": "en03",
+    "situation_ko": "약속 시간을 정할 때",
+    "expression_jp": "三時に会いましょう。",
+    "ruby": "{三時|さんじ}に{会|あ}いましょう。",
+    "register": "polite",
+    "translation_ko": "3시에 만나요",
+    "note_ko": "시각에는 조사 「に」를 붙입니다. 가볍게는 「三時に会おう」"
+  },
+  {
+    "id": "en04",
+    "situation_ko": "가게에서 하나만 달라고 할 때",
+    "expression_jp": "これを一つください。",
+    "ruby": "これを{一|ひと}つください。",
+    "register": "polite",
+    "translation_ko": "이거 하나 주세요",
+    "note_ko": "「一つ」는 ひとつ. 개수를 나타내는 「つ」는 九つ까지만 쓰고 열 개부터는 十個처럼 말해요"
+  },
+  {
+    "id": "en05",
+    "situation_ko": "일행이 세 명일 때",
+    "expression_jp": "三人です。",
+    "ruby": "{三人|さんにん}です。",
+    "register": "polite",
+    "translation_ko": "세 명이에요",
+    "note_ko": "一人(ひとり)·二人(ふたり)만 특수하고 三人(さんにん)부터는 규칙대로 읽습니다. 4명은 よにん"
+  },
+  {
+    "id": "en06",
+    "situation_ko": "오늘 요일을 확인할 때",
+    "expression_jp": "今日は何曜日ですか。",
+    "ruby": "{今日|きょう}は{何曜日|なんようび}ですか。",
+    "register": "polite",
+    "translation_ko": "오늘 무슨 요일이에요?",
+    "note_ko": "「何曜日」는 なんようび. 날짜를 물을 때는 「何日(なんにち)」"
+  },
+  {
+    "id": "en07",
+    "situation_ko": "오늘이 며칠인지 물을 때",
+    "expression_jp": "今日は何日ですか。",
+    "ruby": "{今日|きょう}は{何日|なんにち}ですか。",
+    "register": "polite",
+    "translation_ko": "오늘 며칠이에요?",
+    "note_ko": "「何日」는 なんにち로 읽어요. 1~10일, 14일, 20일, 24일은 날짜 전용 읽기라서 따로 외워야 합니다"
+  },
+  {
+    "id": "en08",
+    "situation_ko": "상대의 생일을 물을 때",
+    "expression_jp": "誕生日はいつですか。",
+    "ruby": "{誕生日|たんじょうび}はいつですか。",
+    "register": "polite",
+    "translation_ko": "생일이 언제예요?",
+    "note_ko": "대답은 「三月二十日です」처럼. 二十日는 はつか"
+  },
+  {
+    "id": "en09",
+    "situation_ko": "가게의 영업시간을 물을 때",
+    "expression_jp": "何時から何時までですか。",
+    "ruby": "{何時|なんじ}から{何時|なんじ}までですか。",
+    "register": "polite",
+    "translation_ko": "몇 시부터 몇 시까지예요?",
+    "note_ko": "「〜から〜まで」는 시작과 끝을 말하는 기본 틀입니다"
+  },
+  {
+    "id": "en10",
+    "situation_ko": "걸리는 시간을 말할 때",
+    "expression_jp": "五分ぐらいかかります。",
+    "ruby": "{五分|ごふん}ぐらいかかります。",
+    "register": "polite",
+    "translation_ko": "5분 정도 걸려요",
+    "note_ko": "「ぐらい」는 대략적인 양을 나타냅니다. 分은 숫자에 따라 ふん·ぷん으로 바뀌어요(一分 いっぷん, 三分 さんぷん)"
+  },
+  {
+    "id": "en11",
+    "situation_ko": "나이를 물어봐도 괜찮은 상황에서",
+    "expression_jp": "おいくつですか。",
+    "register": "polite",
+    "translation_ko": "몇 살이세요?",
+    "note_ko": "「何歳(なんさい)ですか」보다 정중한 표현. 윗사람에게는 나이를 직접 묻지 않는 편이 무난해요"
+  },
+  {
+    "id": "en12",
+    "situation_ko": "내 나이를 말할 때",
+    "expression_jp": "二十歳です。",
+    "ruby": "{二十歳|はたち}です。",
+    "register": "polite",
+    "translation_ko": "스무 살이에요",
+    "note_ko": "二十歳는 はたち로 읽는 특수한 말입니다. 二十一歳부터는 にじゅういっさい"
+  },
+  {
+    "id": "en13",
+    "situation_ko": "다음 날 또 만날 친구에게",
+    "expression_jp": "また明日ね。",
+    "ruby": "また{明日|あした}ね。",
+    "register": "casual",
+    "translation_ko": "내일 또 봐",
+    "note_ko": "「明日」는 あした(또는 あす). 친구·가족끼리 쓰는 헤어질 때 인사"
+  },
+  {
+    "id": "en14",
+    "situation_ko": "곧 도착한다고 알릴 때",
+    "expression_jp": "あと十分で着くよ。",
+    "ruby": "あと{十分|じゅっぷん}で{着|つ}くよ。",
+    "register": "casual",
+    "translation_ko": "10분 있으면 도착해",
+    "note_ko": "十分은 じゅっぷん(じっぷん도 가능). 「着く」는 도착하다"
+  },
+  {
+    "id": "en15",
+    "situation_ko": "값이 비싸다고 느껴질 때",
+    "expression_jp": "ちょっと高いですね。",
+    "ruby": "ちょっと{高|たか}いですね。",
+    "register": "polite",
+    "translation_ko": "좀 비싸네요",
+    "note_ko": "「高い」는 값이 비싸다는 뜻도 됩니다. 반대는 「安い」"
+  },
+  {
+    "id": "en16",
+    "situation_ko": "값을 조금 깎아 달라고 할 때",
+    "expression_jp": "もう少し安くなりませんか。",
+    "ruby": "もう{少|すこ}し{安|やす}くなりませんか。",
+    "register": "polite",
+    "translation_ko": "조금 더 싸게 안 될까요?",
+    "note_ko": "「〜になりませんか」는 정중하게 부탁하는 형태입니다"
+  }
+]

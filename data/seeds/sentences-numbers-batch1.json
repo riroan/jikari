@@ -1,0 +1,461 @@
+[
+  {
+    "id": "sn01",
+    "sentence": "コーヒーを＿＿＿ください。",
+    "blank": "一杯",
+    "blankRuby": "{一杯|いっぱい}",
+    "distractors": [
+      "一枚",
+      "一匹",
+      "一回"
+    ],
+    "translation": "커피 한 잔 주세요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn02",
+    "sentence": "本屋でノートを＿＿＿買いました。",
+    "sentenceRuby": "{本屋|ほんや}でノートを＿＿＿{買|か}いました。",
+    "blank": "一冊",
+    "blankRuby": "{一冊|いっさつ}",
+    "distractors": [
+      "一杯",
+      "一台",
+      "一匹"
+    ],
+    "translation": "서점에서 공책을 한 권 샀습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn03",
+    "sentence": "切手を＿＿＿ください。",
+    "sentenceRuby": "{切手|きって}を＿＿＿ください。",
+    "blank": "一枚",
+    "blankRuby": "{一枚|いちまい}",
+    "distractors": [
+      "一冊",
+      "一杯",
+      "一台"
+    ],
+    "translation": "우표를 한 장 주세요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn04",
+    "sentence": "庭に猫が＿＿＿います。",
+    "sentenceRuby": "{庭|にわ}に{猫|ねこ}が＿＿＿います。",
+    "blank": "三匹",
+    "blankRuby": "{三匹|さんびき}",
+    "distractors": [
+      "三本",
+      "三台",
+      "三杯"
+    ],
+    "translation": "마당에 고양이가 세 마리 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn05",
+    "sentence": "駐車場に車が＿＿＿あります。",
+    "sentenceRuby": "{駐車場|ちゅうしゃじょう}に{車|くるま}が＿＿＿あります。",
+    "blank": "一台",
+    "blankRuby": "{一台|いちだい}",
+    "distractors": [
+      "一本",
+      "一匹",
+      "一枚"
+    ],
+    "translation": "주차장에 차가 한 대 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn06",
+    "sentence": "ペンを＿＿＿持っています。",
+    "sentenceRuby": "ペンを＿＿＿{持|も}っています。",
+    "blank": "三本",
+    "blankRuby": "{三本|さんぼん}",
+    "distractors": [
+      "三杯",
+      "三匹",
+      "三冊"
+    ],
+    "translation": "펜을 세 자루 가지고 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn07",
+    "sentence": "りんごを＿＿＿食べました。",
+    "sentenceRuby": "りんごを＿＿＿{食|た}べました。",
+    "blank": "三個",
+    "blankRuby": "{三個|さんこ}",
+    "distractors": [
+      "三階",
+      "三冊",
+      "三匹"
+    ],
+    "translation": "사과를 세 개 먹었습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn08",
+    "sentence": "薬を一日に＿＿＿飲みます。",
+    "sentenceRuby": "{薬|くすり}を{一日|いちにち}に＿＿＿{飲|の}みます。",
+    "blank": "三回",
+    "blankRuby": "{三回|さんかい}",
+    "distractors": [
+      "三階",
+      "三匹",
+      "三冊"
+    ],
+    "translation": "약을 하루에 세 번 먹습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn09",
+    "sentence": "この店は＿＿＿にあります。",
+    "sentenceRuby": "この{店|みせ}は＿＿＿にあります。",
+    "blank": "三階",
+    "blankRuby": "{三階|さんがい}",
+    "distractors": [
+      "三回",
+      "三歳",
+      "三匹"
+    ],
+    "translation": "이 가게는 3층에 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn10",
+    "sentence": "妹は今年＿＿＿になります。",
+    "sentenceRuby": "{妹|いもうと}は{今年|ことし}＿＿＿になります。",
+    "blank": "八歳",
+    "blankRuby": "{八歳|はっさい}",
+    "distractors": [
+      "八回",
+      "八本",
+      "八台"
+    ],
+    "translation": "여동생은 올해 여덟 살이 됩니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn11",
+    "sentence": "娘は来月＿＿＿になります。",
+    "sentenceRuby": "{娘|むすめ}は{来月|らいげつ}＿＿＿になります。",
+    "blank": "二十歳",
+    "blankRuby": "{二十歳|はたち}",
+    "distractors": [
+      "二十回",
+      "二十冊",
+      "二十本"
+    ],
+    "translation": "딸은 다음 달에 스무 살이 됩니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn12",
+    "sentence": "子どもが＿＿＿います。",
+    "sentenceRuby": "{子|こ}どもが＿＿＿います。",
+    "blank": "二人",
+    "blankRuby": "{二人|ふたり}",
+    "distractors": [
+      "二つ",
+      "二匹",
+      "二台"
+    ],
+    "translation": "아이가 두 명 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn13",
+    "sentence": "客が＿＿＿来ました。",
+    "sentenceRuby": "{客|きゃく}が＿＿＿{来|き}ました。",
+    "blank": "三人",
+    "blankRuby": "{三人|さんにん}",
+    "distractors": [
+      "三冊",
+      "三杯",
+      "三台"
+    ],
+    "translation": "손님이 세 명 왔습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn14",
+    "sentence": "家族は＿＿＿ですか。",
+    "sentenceRuby": "{家族|かぞく}は＿＿＿ですか。",
+    "blank": "何人",
+    "blankRuby": "{何人|なんにん}",
+    "distractors": [
+      "何冊",
+      "何匹",
+      "何階"
+    ],
+    "translation": "가족은 몇 명이에요?",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn15",
+    "sentence": "ケーキを＿＿＿食べました。",
+    "sentenceRuby": "ケーキを＿＿＿{食|た}べました。",
+    "blank": "一つ",
+    "blankRuby": "{一|ひと}つ",
+    "distractors": [
+      "一人",
+      "一台",
+      "一階"
+    ],
+    "translation": "케이크를 하나 먹었습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn16",
+    "sentence": "みかんを＿＿＿ください。",
+    "blank": "五つ",
+    "blankRuby": "{五|いつ}つ",
+    "distractors": [
+      "五人",
+      "五台",
+      "五歳"
+    ],
+    "translation": "귤을 다섯 개 주세요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn17",
+    "sentence": "傘を＿＿＿持っています。",
+    "sentenceRuby": "{傘|かさ}を＿＿＿{持|も}っています。",
+    "blank": "一本",
+    "blankRuby": "{一本|いっぽん}",
+    "distractors": [
+      "一枚",
+      "一匹",
+      "一階"
+    ],
+    "translation": "우산을 한 개 가지고 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn18",
+    "sentence": "水を＿＿＿飲みました。",
+    "sentenceRuby": "{水|みず}を＿＿＿{飲|の}みました。",
+    "blank": "三杯",
+    "blankRuby": "{三杯|さんばい}",
+    "distractors": [
+      "三枚",
+      "三階",
+      "三歳"
+    ],
+    "translation": "물을 세 잔 마셨습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn19",
+    "sentence": "犬を＿＿＿飼っています。",
+    "sentenceRuby": "{犬|いぬ}を＿＿＿{飼|か}っています。",
+    "blank": "一匹",
+    "blankRuby": "{一匹|いっぴき}",
+    "distractors": [
+      "一冊",
+      "一台",
+      "一回"
+    ],
+    "translation": "개를 한 마리 키우고 있습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn20",
+    "sentence": "本を＿＿＿読みました。",
+    "sentenceRuby": "{本|ほん}を＿＿＿{読|よ}みました。",
+    "blank": "八冊",
+    "blankRuby": "{八冊|はっさつ}",
+    "distractors": [
+      "八枚",
+      "八匹",
+      "八杯"
+    ],
+    "translation": "책을 여덟 권 읽었습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn21",
+    "sentence": "昼ご飯は＿＿＿でした。",
+    "sentenceRuby": "{昼|ひる}ご{飯|はん}は＿＿＿でした。",
+    "blank": "八百円",
+    "blankRuby": "{八百円|はっぴゃくえん}",
+    "distractors": [
+      "七百円",
+      "九百円",
+      "四百円"
+    ],
+    "translation": "점심은 800엔이었습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn22",
+    "sentence": "このシャツは＿＿＿です。",
+    "blank": "三千円",
+    "blankRuby": "{三千円|さんぜんえん}",
+    "distractors": [
+      "二千円",
+      "五千円",
+      "四千円"
+    ],
+    "translation": "이 셔츠는 3000엔입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn23",
+    "sentence": "卵は十個で＿＿＿です。",
+    "sentenceRuby": "{卵|たまご}は{十個|じゅっこ}で＿＿＿です。",
+    "blank": "六百円",
+    "blankRuby": "{六百円|ろっぴゃくえん}",
+    "distractors": [
+      "五百円",
+      "九百円",
+      "七百円"
+    ],
+    "translation": "달걀은 열 개에 600엔입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn24",
+    "sentence": "今、＿＿＿です。",
+    "sentenceRuby": "{今|いま}、＿＿＿です。",
+    "blank": "四時半",
+    "blankRuby": "{四時半|よじはん}",
+    "distractors": [
+      "三時半",
+      "五時半",
+      "七時半"
+    ],
+    "translation": "지금 4시 반입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn25",
+    "sentence": "今日は月曜日です。明日は＿＿＿です。",
+    "sentenceRuby": "{今日|きょう}は{月曜日|げつようび}です。{明日|あした}は＿＿＿です。",
+    "blank": "火曜日",
+    "blankRuby": "{火曜日|かようび}",
+    "distractors": [
+      "木曜日",
+      "土曜日",
+      "日曜日"
+    ],
+    "translation": "오늘은 월요일입니다. 내일은 화요일입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn26",
+    "sentence": "昨日は水曜日でした。今日は＿＿＿です。",
+    "sentenceRuby": "{昨日|きのう}は{水曜日|すいようび}でした。{今日|きょう}は＿＿＿です。",
+    "blank": "木曜日",
+    "blankRuby": "{木曜日|もくようび}",
+    "distractors": [
+      "火曜日",
+      "金曜日",
+      "日曜日"
+    ],
+    "translation": "어제는 수요일이었습니다. 오늘은 목요일입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn27",
+    "sentence": "土曜日の次の日は＿＿＿です。",
+    "sentenceRuby": "{土曜日|どようび}の{次|つぎ}の{日|ひ}は＿＿＿です。",
+    "blank": "日曜日",
+    "blankRuby": "{日曜日|にちようび}",
+    "distractors": [
+      "月曜日",
+      "金曜日",
+      "水曜日"
+    ],
+    "translation": "토요일 다음 날은 일요일입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn28",
+    "sentence": "朝の九時は＿＿＿九時です。",
+    "sentenceRuby": "{朝|あさ}の{九時|くじ}は＿＿＿{九時|くじ}です。",
+    "blank": "午前",
+    "blankRuby": "{午前|ごぜん}",
+    "distractors": [
+      "午後",
+      "毎日",
+      "昨日"
+    ],
+    "translation": "아침 9시는 오전 9시입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn29",
+    "sentence": "夜の十時は＿＿＿十時です。",
+    "sentenceRuby": "{夜|よる}の{十時|じゅうじ}は＿＿＿{十時|じゅうじ}です。",
+    "blank": "午後",
+    "blankRuby": "{午後|ごご}",
+    "distractors": [
+      "午前",
+      "今日",
+      "明日"
+    ],
+    "translation": "밤 10시는 오후 10시입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn30",
+    "sentence": "一週間は＿＿＿です。",
+    "sentenceRuby": "{一週間|いっしゅうかん}は＿＿＿です。",
+    "blank": "七日",
+    "blankRuby": "{七日|なのか}",
+    "distractors": [
+      "五日",
+      "九日",
+      "十日"
+    ],
+    "translation": "일주일은 7일입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn31",
+    "sentence": "私の誕生日は三月＿＿＿です。",
+    "sentenceRuby": "{私|わたし}の{誕生日|たんじょうび}は{三月|さんがつ}＿＿＿です。",
+    "blank": "二十日",
+    "blankRuby": "{二十日|はつか}",
+    "distractors": [
+      "二日",
+      "四日",
+      "九日"
+    ],
+    "translation": "내 생일은 3월 20일입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn32",
+    "sentence": "子どもの日は五月＿＿＿です。",
+    "sentenceRuby": "{子|こ}どもの{日|ひ}は{五月|ごがつ}＿＿＿です。",
+    "blank": "五日",
+    "blankRuby": "{五日|いつか}",
+    "distractors": [
+      "一日",
+      "三日",
+      "八日"
+    ],
+    "translation": "어린이날은 5월 5일입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "sn33",
+    "sentence": "二日の前の日は＿＿＿です。",
+    "sentenceRuby": "{二日|ふつか}の{前|まえ}の{日|ひ}は＿＿＿です。",
+    "blank": "一日",
+    "blankRuby": "{一日|ついたち}",
+    "distractors": [
+      "三日",
+      "四日",
+      "五日"
+    ],
+    "translation": "2일의 전날은 1일입니다.",
+    "jlptLevel": 5
+  }
+]

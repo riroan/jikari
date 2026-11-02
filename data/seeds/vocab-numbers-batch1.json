@@ -1,0 +1,1157 @@
+[
+  {
+    "id": "一",
+    "word": "一",
+    "reading": "いち",
+    "meanings": [
+      "one"
+    ],
+    "koreanMeanings": [
+      "일",
+      "하나"
+    ],
+    "ruby": "{一|いち}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "二",
+    "word": "二",
+    "reading": "に",
+    "meanings": [
+      "two"
+    ],
+    "koreanMeanings": [
+      "이"
+    ],
+    "ruby": "{二|に}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三",
+    "word": "三",
+    "reading": "さん",
+    "meanings": [
+      "three"
+    ],
+    "koreanMeanings": [
+      "삼"
+    ],
+    "ruby": "{三|さん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "四",
+    "word": "四",
+    "reading": "よん",
+    "meanings": [
+      "four (read よん; し is used in some compounds)"
+    ],
+    "koreanMeanings": [
+      "사",
+      "넷"
+    ],
+    "ruby": "{四|よん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "五",
+    "word": "五",
+    "reading": "ご",
+    "meanings": [
+      "five"
+    ],
+    "koreanMeanings": [
+      "오"
+    ],
+    "ruby": "{五|ご}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "六",
+    "word": "六",
+    "reading": "ろく",
+    "meanings": [
+      "six"
+    ],
+    "koreanMeanings": [
+      "육"
+    ],
+    "ruby": "{六|ろく}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "七",
+    "word": "七",
+    "reading": "なな",
+    "meanings": [
+      "seven (なな; しち in some compounds)"
+    ],
+    "koreanMeanings": [
+      "칠"
+    ],
+    "ruby": "{七|なな}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八",
+    "word": "八",
+    "reading": "はち",
+    "meanings": [
+      "eight"
+    ],
+    "koreanMeanings": [
+      "팔"
+    ],
+    "ruby": "{八|はち}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "九",
+    "word": "九",
+    "reading": "きゅう",
+    "meanings": [
+      "nine (きゅう; く in some compounds)"
+    ],
+    "koreanMeanings": [
+      "구"
+    ],
+    "ruby": "{九|きゅう}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "百",
+    "word": "百",
+    "reading": "ひゃく",
+    "meanings": [
+      "hundred"
+    ],
+    "koreanMeanings": [
+      "백"
+    ],
+    "ruby": "{百|ひゃく}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三百",
+    "word": "三百",
+    "reading": "さんびゃく",
+    "meanings": [
+      "three hundred (びゃく)"
+    ],
+    "koreanMeanings": [
+      "삼백"
+    ],
+    "ruby": "{三百|さんびゃく}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "六百",
+    "word": "六百",
+    "reading": "ろっぴゃく",
+    "meanings": [
+      "six hundred (ろっぴゃく)"
+    ],
+    "koreanMeanings": [
+      "육백"
+    ],
+    "ruby": "{六百|ろっぴゃく}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八百",
+    "word": "八百",
+    "reading": "はっぴゃく",
+    "meanings": [
+      "eight hundred (はっぴゃく)"
+    ],
+    "koreanMeanings": [
+      "팔백"
+    ],
+    "ruby": "{八百|はっぴゃく}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "千",
+    "word": "千",
+    "reading": "せん",
+    "meanings": [
+      "thousand"
+    ],
+    "koreanMeanings": [
+      "천"
+    ],
+    "ruby": "{千|せん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三千",
+    "word": "三千",
+    "reading": "さんぜん",
+    "meanings": [
+      "three thousand (ぜん)"
+    ],
+    "koreanMeanings": [
+      "삼천"
+    ],
+    "ruby": "{三千|さんぜん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八千",
+    "word": "八千",
+    "reading": "はっせん",
+    "meanings": [
+      "eight thousand (はっせん)"
+    ],
+    "koreanMeanings": [
+      "팔천"
+    ],
+    "ruby": "{八千|はっせん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一万",
+    "word": "一万",
+    "reading": "いちまん",
+    "meanings": [
+      "ten thousand (一 is required before 万)"
+    ],
+    "koreanMeanings": [
+      "만",
+      "일만"
+    ],
+    "ruby": "{一万|いちまん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "百円",
+    "word": "百円",
+    "reading": "ひゃくえん",
+    "meanings": [
+      "100 yen"
+    ],
+    "koreanMeanings": [
+      "백 엔"
+    ],
+    "ruby": "{百円|ひゃくえん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "千円",
+    "word": "千円",
+    "reading": "せんえん",
+    "meanings": [
+      "1,000 yen"
+    ],
+    "koreanMeanings": [
+      "천 엔"
+    ],
+    "ruby": "{千円|せんえん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一万円",
+    "word": "一万円",
+    "reading": "いちまんえん",
+    "meanings": [
+      "10,000 yen"
+    ],
+    "koreanMeanings": [
+      "만 엔"
+    ],
+    "ruby": "{一万円|いちまんえん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何円",
+    "word": "何円",
+    "reading": "なんえん",
+    "meanings": [
+      "how many yen"
+    ],
+    "koreanMeanings": [
+      "몇 엔"
+    ],
+    "ruby": "{何円|なんえん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何時",
+    "word": "何時",
+    "reading": "なんじ",
+    "meanings": [
+      "what time"
+    ],
+    "koreanMeanings": [
+      "몇 시"
+    ],
+    "ruby": "{何時|なんじ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "四時",
+    "word": "四時",
+    "reading": "よじ",
+    "meanings": [
+      "four o'clock (よじ, not よんじ/しじ)"
+    ],
+    "koreanMeanings": [
+      "4시"
+    ],
+    "ruby": "{四時|よじ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "七時",
+    "word": "七時",
+    "reading": "しちじ",
+    "meanings": [
+      "seven o'clock (しちじ, not ななじ)"
+    ],
+    "koreanMeanings": [
+      "7시"
+    ],
+    "ruby": "{七時|しちじ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "九時",
+    "word": "九時",
+    "reading": "くじ",
+    "meanings": [
+      "nine o'clock (くじ, not きゅうじ)"
+    ],
+    "koreanMeanings": [
+      "9시"
+    ],
+    "ruby": "{九時|くじ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何分",
+    "word": "何分",
+    "reading": "なんぷん",
+    "meanings": [
+      "how many minutes"
+    ],
+    "koreanMeanings": [
+      "몇 분"
+    ],
+    "ruby": "{何分|なんぷん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一分",
+    "word": "一分",
+    "reading": "いっぷん",
+    "meanings": [
+      "one minute (いっぷん)"
+    ],
+    "koreanMeanings": [
+      "1분"
+    ],
+    "ruby": "{一分|いっぷん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三分",
+    "word": "三分",
+    "reading": "さんぷん",
+    "meanings": [
+      "three minutes (さんぷん)"
+    ],
+    "koreanMeanings": [
+      "3분"
+    ],
+    "ruby": "{三分|さんぷん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "四分",
+    "word": "四分",
+    "reading": "よんぷん",
+    "meanings": [
+      "four minutes (よんぷん)"
+    ],
+    "koreanMeanings": [
+      "4분"
+    ],
+    "ruby": "{四分|よんぷん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "六分",
+    "word": "六分",
+    "reading": "ろっぷん",
+    "meanings": [
+      "six minutes (ろっぷん)"
+    ],
+    "koreanMeanings": [
+      "6분"
+    ],
+    "ruby": "{六分|ろっぷん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八分",
+    "word": "八分",
+    "reading": "はっぷん",
+    "meanings": [
+      "eight minutes (はっぷん)"
+    ],
+    "koreanMeanings": [
+      "8분"
+    ],
+    "ruby": "{八分|はっぷん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "半",
+    "word": "半",
+    "reading": "はん",
+    "meanings": [
+      "half; half past (三時半)"
+    ],
+    "koreanMeanings": [
+      "반",
+      "30분"
+    ],
+    "ruby": "{半|はん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "月曜日",
+    "word": "月曜日",
+    "reading": "げつようび",
+    "meanings": [
+      "Monday"
+    ],
+    "koreanMeanings": [
+      "월요일"
+    ],
+    "ruby": "{月曜日|げつようび}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何曜日",
+    "word": "何曜日",
+    "reading": "なんようび",
+    "meanings": [
+      "what day of the week"
+    ],
+    "koreanMeanings": [
+      "무슨 요일"
+    ],
+    "ruby": "{何曜日|なんようび}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "四月",
+    "word": "四月",
+    "reading": "しがつ",
+    "meanings": [
+      "April (しがつ, not よんがつ)"
+    ],
+    "koreanMeanings": [
+      "4월"
+    ],
+    "ruby": "{四月|しがつ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "七月",
+    "word": "七月",
+    "reading": "しちがつ",
+    "meanings": [
+      "July (しちがつ)"
+    ],
+    "koreanMeanings": [
+      "7월"
+    ],
+    "ruby": "{七月|しちがつ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "九月",
+    "word": "九月",
+    "reading": "くがつ",
+    "meanings": [
+      "September (くがつ)"
+    ],
+    "koreanMeanings": [
+      "9월"
+    ],
+    "ruby": "{九月|くがつ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一日",
+    "word": "一日",
+    "reading": "ついたち",
+    "meanings": [
+      "the 1st of the month"
+    ],
+    "koreanMeanings": [
+      "1일",
+      "초하루"
+    ],
+    "ruby": "{一日|ついたち}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "二日",
+    "word": "二日",
+    "reading": "ふつか",
+    "meanings": [
+      "the 2nd; two days"
+    ],
+    "koreanMeanings": [
+      "2일",
+      "이틀"
+    ],
+    "ruby": "{二日|ふつか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三日",
+    "word": "三日",
+    "reading": "みっか",
+    "meanings": [
+      "the 3rd; three days"
+    ],
+    "koreanMeanings": [
+      "3일",
+      "사흘"
+    ],
+    "ruby": "{三日|みっか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "四日",
+    "word": "四日",
+    "reading": "よっか",
+    "meanings": [
+      "the 4th; four days"
+    ],
+    "koreanMeanings": [
+      "4일",
+      "나흘"
+    ],
+    "ruby": "{四日|よっか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "五日",
+    "word": "五日",
+    "reading": "いつか",
+    "meanings": [
+      "the 5th; five days"
+    ],
+    "koreanMeanings": [
+      "5일",
+      "닷새"
+    ],
+    "ruby": "{五日|いつか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "六日",
+    "word": "六日",
+    "reading": "むいか",
+    "meanings": [
+      "the 6th; six days"
+    ],
+    "koreanMeanings": [
+      "6일",
+      "엿새"
+    ],
+    "ruby": "{六日|むいか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "七日",
+    "word": "七日",
+    "reading": "なのか",
+    "meanings": [
+      "the 7th; seven days"
+    ],
+    "koreanMeanings": [
+      "7일",
+      "이레"
+    ],
+    "ruby": "{七日|なのか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八日",
+    "word": "八日",
+    "reading": "ようか",
+    "meanings": [
+      "the 8th; eight days"
+    ],
+    "koreanMeanings": [
+      "8일",
+      "여드레"
+    ],
+    "ruby": "{八日|ようか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "九日",
+    "word": "九日",
+    "reading": "ここのか",
+    "meanings": [
+      "the 9th; nine days"
+    ],
+    "koreanMeanings": [
+      "9일",
+      "아흐레"
+    ],
+    "ruby": "{九日|ここのか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "十日",
+    "word": "十日",
+    "reading": "とおか",
+    "meanings": [
+      "the 10th; ten days"
+    ],
+    "koreanMeanings": [
+      "10일",
+      "열흘"
+    ],
+    "ruby": "{十日|とおか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "二十日",
+    "word": "二十日",
+    "reading": "はつか",
+    "meanings": [
+      "the 20th; twenty days"
+    ],
+    "koreanMeanings": [
+      "20일"
+    ],
+    "ruby": "{二十日|はつか}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何日",
+    "word": "何日",
+    "reading": "なんにち",
+    "meanings": [
+      "what day of the month; how many days"
+    ],
+    "koreanMeanings": [
+      "며칠"
+    ],
+    "ruby": "{何日|なんにち}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一つ",
+    "word": "一つ",
+    "reading": "ひとつ",
+    "meanings": [
+      "one (thing)"
+    ],
+    "koreanMeanings": [
+      "한 개",
+      "하나"
+    ],
+    "ruby": "{一|ひと}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "二つ",
+    "word": "二つ",
+    "reading": "ふたつ",
+    "meanings": [
+      "two (things)"
+    ],
+    "koreanMeanings": [
+      "두 개",
+      "둘"
+    ],
+    "ruby": "{二|ふた}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三つ",
+    "word": "三つ",
+    "reading": "みっつ",
+    "meanings": [
+      "three (things)"
+    ],
+    "koreanMeanings": [
+      "세 개",
+      "셋"
+    ],
+    "ruby": "{三|みっ}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "四つ",
+    "word": "四つ",
+    "reading": "よっつ",
+    "meanings": [
+      "four (things)"
+    ],
+    "koreanMeanings": [
+      "네 개",
+      "넷"
+    ],
+    "ruby": "{四|よっ}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "五つ",
+    "word": "五つ",
+    "reading": "いつつ",
+    "meanings": [
+      "five (things)"
+    ],
+    "koreanMeanings": [
+      "다섯 개"
+    ],
+    "ruby": "{五|いつ}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "六つ",
+    "word": "六つ",
+    "reading": "むっつ",
+    "meanings": [
+      "six (things)"
+    ],
+    "koreanMeanings": [
+      "여섯 개"
+    ],
+    "ruby": "{六|むっ}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "七つ",
+    "word": "七つ",
+    "reading": "ななつ",
+    "meanings": [
+      "seven (things)"
+    ],
+    "koreanMeanings": [
+      "일곱 개"
+    ],
+    "ruby": "{七|なな}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八つ",
+    "word": "八つ",
+    "reading": "やっつ",
+    "meanings": [
+      "eight (things)"
+    ],
+    "koreanMeanings": [
+      "여덟 개"
+    ],
+    "ruby": "{八|やっ}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "九つ",
+    "word": "九つ",
+    "reading": "ここのつ",
+    "meanings": [
+      "nine (things)"
+    ],
+    "koreanMeanings": [
+      "아홉 개"
+    ],
+    "ruby": "{九|ここの}つ",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一個",
+    "word": "一個",
+    "reading": "いっこ",
+    "meanings": [
+      "one (small item)"
+    ],
+    "koreanMeanings": [
+      "1개"
+    ],
+    "ruby": "{一個|いっこ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三個",
+    "word": "三個",
+    "reading": "さんこ",
+    "meanings": [
+      "three (small items)"
+    ],
+    "koreanMeanings": [
+      "3개"
+    ],
+    "ruby": "{三個|さんこ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一枚",
+    "word": "一枚",
+    "reading": "いちまい",
+    "meanings": [
+      "one flat thing (sheet, ticket)"
+    ],
+    "koreanMeanings": [
+      "한 장"
+    ],
+    "ruby": "{一枚|いちまい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一本",
+    "word": "一本",
+    "reading": "いっぽん",
+    "meanings": [
+      "one long thing (pen, bottle, umbrella)"
+    ],
+    "koreanMeanings": [
+      "한 자루",
+      "한 병"
+    ],
+    "ruby": "{一本|いっぽん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "二本",
+    "word": "二本",
+    "reading": "にほん",
+    "meanings": [
+      "two long things (にほん)"
+    ],
+    "koreanMeanings": [
+      "두 자루",
+      "두 병"
+    ],
+    "ruby": "{二本|にほん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三本",
+    "word": "三本",
+    "reading": "さんぼん",
+    "meanings": [
+      "three long things (ぼん)"
+    ],
+    "koreanMeanings": [
+      "세 자루",
+      "세 병"
+    ],
+    "ruby": "{三本|さんぼん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "六本",
+    "word": "六本",
+    "reading": "ろっぽん",
+    "meanings": [
+      "six long things (ろっぽん)"
+    ],
+    "koreanMeanings": [
+      "여섯 자루",
+      "여섯 병"
+    ],
+    "ruby": "{六本|ろっぽん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八本",
+    "word": "八本",
+    "reading": "はっぽん",
+    "meanings": [
+      "eight long things (はっぽん)"
+    ],
+    "koreanMeanings": [
+      "여덟 자루",
+      "여덟 병"
+    ],
+    "ruby": "{八本|はっぽん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何本",
+    "word": "何本",
+    "reading": "なんぼん",
+    "meanings": [
+      "how many long things"
+    ],
+    "koreanMeanings": [
+      "몇 자루",
+      "몇 병"
+    ],
+    "ruby": "{何本|なんぼん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一冊",
+    "word": "一冊",
+    "reading": "いっさつ",
+    "meanings": [
+      "one book/volume (いっさつ)"
+    ],
+    "koreanMeanings": [
+      "한 권"
+    ],
+    "ruby": "{一冊|いっさつ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八冊",
+    "word": "八冊",
+    "reading": "はっさつ",
+    "meanings": [
+      "eight books (はっさつ)"
+    ],
+    "koreanMeanings": [
+      "여덟 권"
+    ],
+    "ruby": "{八冊|はっさつ}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三人",
+    "word": "三人",
+    "reading": "さんにん",
+    "meanings": [
+      "three people (regular reading from 3)"
+    ],
+    "koreanMeanings": [
+      "세 명"
+    ],
+    "ruby": "{三人|さんにん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "四人",
+    "word": "四人",
+    "reading": "よにん",
+    "meanings": [
+      "four people (よにん, not よんにん)"
+    ],
+    "koreanMeanings": [
+      "네 명"
+    ],
+    "ruby": "{四人|よにん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何人",
+    "word": "何人",
+    "reading": "なんにん",
+    "meanings": [
+      "how many people"
+    ],
+    "koreanMeanings": [
+      "몇 명"
+    ],
+    "ruby": "{何人|なんにん}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一台",
+    "word": "一台",
+    "reading": "いちだい",
+    "meanings": [
+      "one machine/vehicle"
+    ],
+    "koreanMeanings": [
+      "한 대"
+    ],
+    "ruby": "{一台|いちだい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一匹",
+    "word": "一匹",
+    "reading": "いっぴき",
+    "meanings": [
+      "one small animal (いっぴき)"
+    ],
+    "koreanMeanings": [
+      "한 마리"
+    ],
+    "ruby": "{一匹|いっぴき}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三匹",
+    "word": "三匹",
+    "reading": "さんびき",
+    "meanings": [
+      "three small animals (びき)"
+    ],
+    "koreanMeanings": [
+      "세 마리"
+    ],
+    "ruby": "{三匹|さんびき}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "六匹",
+    "word": "六匹",
+    "reading": "ろっぴき",
+    "meanings": [
+      "six small animals (ろっぴき)"
+    ],
+    "koreanMeanings": [
+      "여섯 마리"
+    ],
+    "ruby": "{六匹|ろっぴき}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一杯",
+    "word": "一杯",
+    "reading": "いっぱい",
+    "meanings": [
+      "one cup/glass (いっぱい)"
+    ],
+    "koreanMeanings": [
+      "한 잔"
+    ],
+    "ruby": "{一杯|いっぱい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三杯",
+    "word": "三杯",
+    "reading": "さんばい",
+    "meanings": [
+      "three cups/glasses (ばい)"
+    ],
+    "koreanMeanings": [
+      "세 잔"
+    ],
+    "ruby": "{三杯|さんばい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一回",
+    "word": "一回",
+    "reading": "いっかい",
+    "meanings": [
+      "once; one time"
+    ],
+    "koreanMeanings": [
+      "한 번"
+    ],
+    "ruby": "{一回|いっかい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三回",
+    "word": "三回",
+    "reading": "さんかい",
+    "meanings": [
+      "three times"
+    ],
+    "koreanMeanings": [
+      "세 번"
+    ],
+    "ruby": "{三回|さんかい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一歳",
+    "word": "一歳",
+    "reading": "いっさい",
+    "meanings": [
+      "one year old (いっさい)"
+    ],
+    "koreanMeanings": [
+      "한 살"
+    ],
+    "ruby": "{一歳|いっさい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "八歳",
+    "word": "八歳",
+    "reading": "はっさい",
+    "meanings": [
+      "eight years old (はっさい)"
+    ],
+    "koreanMeanings": [
+      "여덟 살"
+    ],
+    "ruby": "{八歳|はっさい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "二十歳",
+    "word": "二十歳",
+    "reading": "はたち",
+    "meanings": [
+      "twenty years old (special reading はたち)"
+    ],
+    "koreanMeanings": [
+      "스무 살"
+    ],
+    "ruby": "{二十歳|はたち}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何歳",
+    "word": "何歳",
+    "reading": "なんさい",
+    "meanings": [
+      "how old (age)"
+    ],
+    "koreanMeanings": [
+      "몇 살"
+    ],
+    "ruby": "{何歳|なんさい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "一階",
+    "word": "一階",
+    "reading": "いっかい",
+    "meanings": [
+      "first floor (いっかい)"
+    ],
+    "koreanMeanings": [
+      "1층"
+    ],
+    "ruby": "{一階|いっかい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "三階",
+    "word": "三階",
+    "reading": "さんがい",
+    "meanings": [
+      "third floor (がい)"
+    ],
+    "koreanMeanings": [
+      "3층"
+    ],
+    "ruby": "{三階|さんがい}",
+    "jlptLevel": 5
+  },
+  {
+    "id": "何階",
+    "word": "何階",
+    "reading": "なんがい",
+    "meanings": [
+      "which floor"
+    ],
+    "koreanMeanings": [
+      "몇 층"
+    ],
+    "ruby": "{何階|なんがい}",
+    "jlptLevel": 5
+  }
+]
