@@ -115,7 +115,7 @@
     "sentence": "りんご＿＿＿みかんを買いました。",
     "sentenceRuby": "りんご＿＿＿みかんを{買|か}いました。",
     "blank": "や",
-    "distractors": ["と", "も", "の"],
+    "distractors": ["を", "も", "の"],
     "translation": "사과랑 귤 (등)을 샀습니다.",
     "jlptLevel": 5
   },
@@ -275,7 +275,7 @@
     "sentence": "これは新しい車です＿＿＿。",
     "sentenceRuby": "これは{新|あたら}しい{車|くるま}です＿＿＿。",
     "blank": "よ",
-    "distractors": ["ね", "か", "の"],
+    "distractors": ["は", "か", "の"],
     "translation": "이것은 새 차예요.",
     "jlptLevel": 5
   },
@@ -285,7 +285,7 @@
     "sentence": "お茶＿＿＿コーヒーを飲みます。",
     "sentenceRuby": "{お茶|おちゃ}＿＿＿コーヒーを{飲|の}みます。",
     "blank": "と",
-    "distractors": ["や", "も", "の"],
+    "distractors": ["に", "も", "の"],
     "translation": "차와 커피를 마십니다.",
     "jlptLevel": 5
   },

@@ -103,10 +103,10 @@
     "id": "s66",
     "sentence": "妹は＿＿＿が好きです。",
     "sentenceRuby": "{妹|いもうと}は＿＿＿が{好|す}きです。",
-    "blank": "猫",
-    "blankRuby": "{猫|ねこ}",
+    "blank": "魚",
+    "blankRuby": "{魚|さかな}",
     "distractors": ["時計", "銀行", "手紙"],
-    "translation": "여동생은 고양이를 좋아한다.",
+    "translation": "여동생은 생선을 좋아한다.",
     "jlptLevel": 5
   },
   {
@@ -175,7 +175,7 @@
     "sentenceRuby": "＿＿＿を{持|も}って{学校|がっこう}に{行|い}く。",
     "blank": "本",
     "blankRuby": "{本|ほん}",
-    "distractors": ["車", "猫", "病院"],
+    "distractors": ["車", "駅", "病院"],
     "translation": "책을 가지고 학교에 간다.",
     "jlptLevel": 5
   },

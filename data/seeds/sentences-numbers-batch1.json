@@ -42,8 +42,8 @@
   },
   {
     "id": "sn04",
-    "sentence": "庭に猫が＿＿＿います。",
-    "sentenceRuby": "{庭|にわ}に{猫|ねこ}が＿＿＿います。",
+    "sentence": "庭にねこが＿＿＿います。",
+    "sentenceRuby": "{庭|にわ}にねこが＿＿＿います。",
     "blank": "三匹",
     "blankRuby": "{三匹|さんびき}",
     "distractors": [

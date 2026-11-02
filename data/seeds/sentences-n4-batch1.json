@@ -185,7 +185,7 @@
     "sentenceRuby": "{電車|でんしゃ}の＿＿＿を{買|か}う。",
     "blank": "切符",
     "blankRuby": "{切符|きっぷ}",
-    "distractors": ["猫", "魚", "電話"],
+    "distractors": ["駅", "魚", "電話"],
     "translation": "전철 표를 산다.",
     "jlptLevel": 4
   },
@@ -195,7 +195,7 @@
     "sentenceRuby": "{雨|あめ}の{日|ひ}は＿＿＿を{持|も}って{出|で}かける。",
     "blank": "傘",
     "blankRuby": "{傘|かさ}",
-    "distractors": ["猫", "時計", "魚"],
+    "distractors": ["銀行", "時計", "魚"],
     "translation": "비 오는 날은 우산을 들고 나간다.",
     "jlptLevel": 4
   }

@@ -31,8 +31,8 @@
   },
   {
     "id": "s104",
-    "sentence": "＿＿＿に花が咲く。",
-    "sentenceRuby": "＿＿＿に{花|はな}が{咲|さ}く。",
+    "sentence": "＿＿＿に花がさく。",
+    "sentenceRuby": "＿＿＿に{花|はな}がさく。",
     "blank": "春",
     "blankRuby": "{春|はる}",
     "distractors": ["時計", "公園", "電話"],
@@ -95,7 +95,7 @@
     "sentenceRuby": "{友達|ともだち}と＿＿＿を{撮|と}る。",
     "blank": "写真",
     "blankRuby": "{写真|しゃしん}",
-    "distractors": ["時計", "魚", "猫"],
+    "distractors": ["時計", "魚", "電話"],
     "translation": "친구와 사진을 찍는다.",
     "jlptLevel": 4
   },
@@ -161,12 +161,12 @@
   },
   {
     "id": "s117",
-    "sentence": "私の電話＿＿＿は三番です。",
-    "sentenceRuby": "{私|わたし}の{電話|でんわ}＿＿＿は{三番|さんばん}です。",
+    "sentence": "先生の電話＿＿＿を聞く。",
+    "sentenceRuby": "{先生|せんせい}の{電話|でんわ}＿＿＿を{聞|き}く。",
     "blank": "番号",
     "blankRuby": "{番号|ばんごう}",
     "distractors": ["色", "花", "手紙"],
-    "translation": "제 전화번호는 3번입니다.",
+    "translation": "선생님의 전화번호를 묻는다.",
     "jlptLevel": 4
   },
   {
@@ -191,8 +191,8 @@
   },
   {
     "id": "s120",
-    "sentence": "犬や猫は＿＿＿です。",
-    "sentenceRuby": "{犬|いぬ}や{猫|ねこ}は＿＿＿です。",
+    "sentence": "犬やねこは＿＿＿です。",
+    "sentenceRuby": "{犬|いぬ}やねこは＿＿＿です。",
     "blank": "動物",
     "blankRuby": "{動物|どうぶつ}",
     "distractors": ["傘", "手紙", "果物"],

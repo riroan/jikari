@@ -61,12 +61,12 @@
   },
   {
     "id": "s127",
-    "sentence": "プレゼントを＿＿＿。",
-    "sentenceRuby": "プレゼントを＿＿＿。",
+    "sentence": "来週、日本語の試験を＿＿＿。",
+    "sentenceRuby": "{来週|らいしゅう}、{日本語|にほんご}の{試験|しけん}を＿＿＿。",
     "blank": "受ける",
     "blankRuby": "{受|う}ける",
     "distractors": ["売る", "飲む", "閉める"],
-    "translation": "선물을 받는다.",
+    "translation": "다음 주에 일본어 시험을 본다.",
     "jlptLevel": 4
   },
   {
@@ -91,12 +91,12 @@
   },
   {
     "id": "s130",
-    "sentence": "もう＿＿＿食べた。",
-    "sentenceRuby": "もう＿＿＿{食|た}べた。",
+    "sentence": "寿司を＿＿＿食べたことがある。",
+    "sentenceRuby": "{寿司|すし}を＿＿＿{食|た}べたことがある。",
     "blank": "一度",
     "blankRuby": "{一度|いちど}",
     "distractors": ["色", "花", "傘"],
-    "translation": "이미 한 번 먹었다.",
+    "translation": "초밥을 한 번 먹어 본 적이 있다.",
     "jlptLevel": 4
   },
   {
