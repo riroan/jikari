@@ -2,6 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { SUBJECTS } from "@/lib/subjects";
+import { topDueKey } from "@/lib/due";
+import { useDueByKey } from "@/lib/use-due-by-key";
 import type { RunSummary } from "@/lib/quiz-run";
 
 const font = (s: string) =>
@@ -21,6 +25,12 @@ export function SessionSummary({
 }) {
   const { total, correct, accuracy, bestStreak, missed } = summary;
   const ref = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const dueByKey = useDueByKey();
+  // 다른 과목에 복습이 남아 있으면 홈을 거치지 않고 바로 이어간다.
+  const others = SUBJECTS.filter((s) => !pathname.startsWith(s.base));
+  const top = topDueKey(dueByKey, others.map((s) => s.dueKey));
+  const nextSubject = top && others.find((s) => s.dueKey === top.key);
   useEffect(() => ref.current?.focus({ preventScroll: true }), []);
   return (
     <section
@@ -71,12 +81,25 @@ export function SessionSummary({
       )}
 
       <div className="flex flex-col gap-2 pb-[max(0rem,var(--safe-bottom))]">
+        {nextSubject && top && (
+          <Link
+            href={nextSubject.base}
+            style={{ minHeight: 44 }}
+            className={`${btn} border-[color:var(--fg)] text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)]`}
+          >
+            다음 복습: {nextSubject.ko} {top.count}장 →
+          </Link>
+        )}
         {missed.length > 0 && (
           <button
             type="button"
             onClick={onRetry}
             style={{ minHeight: 44 }}
-            className={`${btn} border-[color:var(--fg)] text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)]`}
+            className={`${btn} ${
+              nextSubject
+                ? "border-[color:var(--line)] text-[color:var(--fg-soft)]"
+                : "border-[color:var(--fg)] text-[color:var(--fg)]"
+            } hover:bg-[color:var(--bg-deep)]`}
           >
             틀린 것만 다시
           </button>

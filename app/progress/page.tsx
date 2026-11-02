@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useIsClient } from "@/lib/use-is-client";
+import { useIsClient, useClientNow } from "@/lib/use-is-client";
 import { ModePageShell } from "@/components/ModePageShell";
 import { Heatmap } from "@/components/Heatmap";
 import { useStore } from "@/lib/store";
@@ -9,6 +9,7 @@ import { useCardsStore } from "@/lib/cards-store";
 import { masteryLevel } from "@/lib/srs";
 import { INITIAL_RATING, ratingBand } from "@/lib/rating";
 import { weakCardIds } from "@/lib/weak";
+import { forecastDue } from "@/lib/forecast";
 import { RubyText } from "@/components/Furigana";
 import Link from "next/link";
 import type { KanjiCard } from "@/lib/types";
@@ -100,6 +101,12 @@ export default function ProgressPage() {
   // Single pass — earlier two filters scanned the deck twice.
   // Pre-hydration we return 0/0/0 instead of "all fresh" so the NEW chip
   // doesn't flicker (total → remaining) when the store rehydrates.
+  const now = useClientNow();
+  const forecast = useMemo(
+    () => forecastDue(now === null ? {} : states, now ?? 0),
+    [now, states],
+  );
+
   const counts = useMemo(() => {
     if (!mounted) return { mastered: 0, learning: 0, fresh: 0 };
     let mastered = 0;
@@ -229,6 +236,33 @@ export default function ProgressPage() {
           ))}
         </section>
       )}
+
+      <section className="mb-8" aria-labelledby="progress-forecast-heading">
+        <div
+          id="progress-forecast-heading"
+          className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium"
+        >
+          복습 예보
+        </div>
+        <ul role="list">
+          {(
+            [
+              ["오늘", forecast.today],
+              ["내일", forecast.tomorrow],
+              ["7일 내", forecast.week],
+            ] as const
+          ).map(([label, n]) => (
+            <li
+              key={label}
+              className="flex items-baseline justify-between gap-4 py-2.5 border-t border-[color:var(--line)]"
+              style={{ minHeight: 44 }}
+            >
+              <span className="text-body text-[color:var(--fg)]">{label}</span>
+              <span className="text-body tabular-nums text-[color:var(--fg-soft)]">{n}장</span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="mb-8" aria-labelledby="progress-level-heading">
         <div
