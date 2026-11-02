@@ -150,7 +150,7 @@ export default function Home() {
         </section>
 
         {/* Footer nav */}
-        <nav className="flex justify-center items-center text-caption text-[color:var(--fg-faint)] tracking-caption font-medium">
+        <nav className="flex justify-center items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-tab font-medium">
           <Link
             href="/"
             aria-current="page"

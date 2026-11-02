@@ -42,7 +42,7 @@ export function ThemeCycleButton({ className }: { className?: string }) {
       aria-label={`테마: ${LABEL[display]} (클릭하면 다음 테마로 전환)`}
       className={
         className ??
-        "inline-flex items-center justify-center min-h-[44px] px-2 hover:text-[color:var(--fg-soft)] transition-colors"
+        "inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)] transition-colors"
       }
     >
       {LABEL[display]}

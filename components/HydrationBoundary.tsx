@@ -32,7 +32,7 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
 
   if (error || (progressFailed && progressHydrated)) {
     return (
-      <div className="min-h-full flex flex-col items-center justify-center gap-5 p-8 text-center">
+      <div className="flex-1 flex flex-col items-center justify-center gap-5 p-8 text-center">
         <p
           className="text-caption text-[color:var(--accent-korean)] leading-relaxed"
           style={{ fontFamily: "var(--font-jp-sans)" }}
