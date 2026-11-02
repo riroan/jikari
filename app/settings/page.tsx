@@ -118,8 +118,8 @@ export default function SettingsPage() {
           백업 / 복원
         </h2>
         <p className="text-caption text-[color:var(--fg-soft)] leading-relaxed mb-4">
-          localStorage는 브라우저가 캐시를 정리하면 사라집니다. 정기적으로 JSON을 내보내 저장해두세요.
-          iOS Safari는 7일 이상 앱 미사용 시 데이터를 삭제할 수 있습니다.
+          학습 기록은 서버 DB에 저장됩니다. DB를 옮기거나 초기화하기 전에는
+          JSON으로 내보내 두세요.
         </p>
         <div className="flex flex-col gap-2">
           <button
@@ -212,7 +212,7 @@ export default function SettingsPage() {
               })
             }
             aria-label="타이핑 시작 박스"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 py-1.5 text-small text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
+            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)] focus:outline-none"
             style={{ minHeight: 36, minWidth: 64 }}
           >
             <option value={2}>2 (공격적)</option>
@@ -389,7 +389,7 @@ function ThemeChoice({
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.id)}
-            className={`px-3 py-1.5 text-caption tracking-wide min-h-[36px] transition-colors ${
+            className={`px-3 py-1.5 text-caption tracking-wide min-h-11 transition-colors ${
               i > 0 ? "border-l border-[color:var(--line)]" : ""
             } ${
               active
@@ -421,7 +421,8 @@ function Toggle({
       aria-checked={checked}
       aria-label={ariaLabel}
       onClick={() => onChange(!checked)}
-      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors border border-[color:var(--line)]"
+      // 스위치는 24px 높이 그대로 두고 터치 영역만 위아래로 44px까지 넓힌다.
+      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors border border-[color:var(--line)] before:absolute before:inset-x-0 before:-inset-y-2.5 before:content-['']"
       style={{
         background: checked
           ? "color-mix(in oklab, var(--accent-progress) 85%, transparent)"

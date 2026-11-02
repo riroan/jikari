@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { aggregateDueByKey, totalDue } from "@/lib/due";
+import { aggregateDueByKey, topDueKey, totalDue } from "@/lib/due";
 import type { LearningState } from "@/lib/types";
 
 const NOW = 1_000_000;
@@ -94,5 +94,23 @@ describe("totalDue", () => {
 
   it("returns 0 for an empty map", () => {
     expect(totalDue({})).toBe(0);
+  });
+});
+
+describe("topDueKey", () => {
+  const ORDER = ["kanji", "vocab", "grammar"];
+
+  it("복습이 가장 많이 쌓인 과목을 고른다", () => {
+    expect(topDueKey({ kanji: 3, vocab: 9, grammar: 5 }, ORDER)).toEqual({ key: "vocab", count: 9 });
+  });
+
+  it("동점이면 앞선 행이 이긴다 (렌더마다 목적지가 흔들리지 않게)", () => {
+    expect(topDueKey({ kanji: 4, vocab: 4 }, ORDER)).toEqual({ key: "kanji", count: 4 });
+  });
+
+  it("복습이 없거나 모르는 키뿐이면 null", () => {
+    expect(topDueKey({}, ORDER)).toBeNull();
+    expect(topDueKey({ kanji: 0 }, ORDER)).toBeNull();
+    expect(topDueKey({ unknown: 7 }, ORDER)).toBeNull();
   });
 });

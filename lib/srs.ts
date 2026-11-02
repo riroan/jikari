@@ -8,6 +8,8 @@ import type { CardMode, LearningState } from "./types";
  *
  * Rules:
  *   - Correct: box +1 (cap 5), nextDue = now + intervalDays(newBox)
+ *   - Correct at box 5: interval = 2 × time actually survived since the last
+ *     review, clamped to [14, 180] days (see {@link graduatedIntervalMs})
  *   - Wrong (answerMode='choice'): box → 1, nextDue = now + 1 day
  *   - Wrong (answerMode='typed'):  box → max(1, box-1), nextDue = now + 1 day
  *     (typed은 오타·送り仮名·표기 변이로 box 5→1 리셋이 과함. -1 스텝이 공정.)
@@ -71,6 +73,27 @@ export function newLearningState(
   };
 }
 
+/** Longest gap between reviews of a box-5 card. */
+export const MAX_INTERVAL_DAYS = 180;
+
+/**
+ * A fixed 14-day cap brings every mastered card back twice a month forever,
+ * so review load grows with the deck instead of with what is still shaky.
+ * Box 5 instead doubles the gap the card just survived — derived from
+ * lastReviewed alone, so no extra column is stored.
+ *
+ * Elapsed time, not the scheduled interval: the quiz deck can serve a card
+ * before it is due, and an early correct answer proves nothing new, so it
+ * falls back to the 14-day floor rather than doubling a schedule it never
+ * tested.
+ */
+function graduatedIntervalMs(state: LearningState, now: number): number {
+  const floor = INTERVAL_DAYS[5] * DAY_MS;
+  if (state.box < 5 || state.lastReviewed === 0) return floor;
+  const survived = now - state.lastReviewed;
+  return Math.min(MAX_INTERVAL_DAYS * DAY_MS, Math.max(floor, 2 * survived));
+}
+
 export function advance(
   state: LearningState,
   correct: boolean,
@@ -82,7 +105,9 @@ export function advance(
     return {
       ...state,
       box: newBox,
-      nextDue: now + INTERVAL_DAYS[newBox] * DAY_MS,
+      nextDue:
+        now +
+        (newBox === 5 ? graduatedIntervalMs(state, now) : INTERVAL_DAYS[newBox] * DAY_MS),
       correctStreak: state.correctStreak + 1,
       lastReviewed: now,
     };

@@ -8,6 +8,7 @@ import {
   masteryLevel,
   pickMode,
   INTERVALS,
+  MAX_INTERVAL_DAYS,
 } from "@/lib/srs";
 import type { LearningState } from "@/lib/types";
 
@@ -48,6 +49,40 @@ describe("advance — correct answer", () => {
     const next = advance(s, true, NOW);
     expect(next.box).toBe(5);
     expect(next.nextDue).toBe(NOW + 14 * DAY);
+  });
+});
+
+describe("advance — box 5 graduated interval", () => {
+  const box5 = (lastReviewed: number): LearningState => ({
+    ...newLearningState("kanji", "日", NOW),
+    box: 5,
+    lastReviewed,
+    nextDue: lastReviewed + 14 * DAY,
+  });
+
+  it("box 4 → 5 still lands on the 14-day floor", () => {
+    const s: LearningState = { ...box5(NOW - 7 * DAY), box: 4 };
+    expect(advance(s, true, NOW).nextDue).toBe(NOW + 14 * DAY);
+  });
+
+  it("doubles the gap the card survived", () => {
+    expect(advance(box5(NOW - 14 * DAY), true, NOW).nextDue).toBe(NOW + 28 * DAY);
+    expect(advance(box5(NOW - 28 * DAY), true, NOW).nextDue).toBe(NOW + 56 * DAY);
+  });
+
+  it("an early review does not grow the interval", () => {
+    // 랜덤 덱이 하루 만에 다시 낸 카드 — 맞혀도 14일 바닥 그대로.
+    expect(advance(box5(NOW - 1 * DAY), true, NOW).nextDue).toBe(NOW + 14 * DAY);
+  });
+
+  it("caps at MAX_INTERVAL_DAYS", () => {
+    expect(advance(box5(NOW - 150 * DAY), true, NOW).nextDue).toBe(
+      NOW + MAX_INTERVAL_DAYS * DAY,
+    );
+  });
+
+  it("a wrong answer still resets to tomorrow", () => {
+    expect(advance(box5(NOW - 100 * DAY), false, NOW).nextDue).toBe(NOW + DAY);
   });
 });
 

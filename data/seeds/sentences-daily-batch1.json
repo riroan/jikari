@@ -1,0 +1,202 @@
+[
+  {
+    "id": "s181",
+    "sentence": "毎朝六時に＿＿＿。",
+    "sentenceRuby": "{毎朝|まいあさ}{六時|ろくじ}に＿＿＿。",
+    "blank": "起きる",
+    "blankRuby": "{起|お}きる",
+    "distractors": ["貸す", "払う", "切る"],
+    "translation": "매일 아침 6시에 일어난다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s182",
+    "sentence": "夜は十一時に＿＿＿。",
+    "sentenceRuby": "{夜|よる}は{十一時|じゅういちじ}に＿＿＿。",
+    "blank": "寝る",
+    "blankRuby": "{寝|ね}る",
+    "distractors": ["読む", "使う", "買う"],
+    "translation": "밤에는 11시에 잔다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s183",
+    "sentence": "冷たい水を＿＿＿。",
+    "sentenceRuby": "{冷|つめ}たい{水|みず}を＿＿＿。",
+    "blank": "飲む",
+    "blankRuby": "{飲|の}む",
+    "distractors": ["歩く", "住む", "働く"],
+    "translation": "차가운 물을 마신다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s184",
+    "sentence": "友達に手紙を＿＿＿。",
+    "sentenceRuby": "{友達|ともだち}に{手紙|てがみ}を＿＿＿。",
+    "blank": "書く",
+    "blankRuby": "{書|か}く",
+    "distractors": ["走る", "座る", "入る"],
+    "translation": "친구에게 편지를 쓴다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s185",
+    "sentence": "図書館で本を＿＿＿。",
+    "sentenceRuby": "{図書館|としょかん}で{本|ほん}を＿＿＿。",
+    "blank": "読む",
+    "blankRuby": "{読|よ}む",
+    "distractors": ["帰る", "出る", "呼ぶ"],
+    "translation": "도서관에서 책을 읽는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s186",
+    "sentence": "駅まで＿＿＿。",
+    "sentenceRuby": "{駅|えき}まで＿＿＿。",
+    "blank": "歩く",
+    "blankRuby": "{歩|ある}く",
+    "distractors": ["切る", "見せる", "払う"],
+    "translation": "역까지 걷는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s187",
+    "sentence": "ドアを＿＿＿。",
+    "sentenceRuby": "ドアを＿＿＿。",
+    "blank": "開ける",
+    "blankRuby": "{開|あ}ける",
+    "distractors": ["慣れる", "降りる", "起きる"],
+    "translation": "문을 연다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s188",
+    "sentence": "この荷物は＿＿＿です。",
+    "sentenceRuby": "この{荷物|にもつ}は＿＿＿です。",
+    "blank": "重い",
+    "blankRuby": "{重|おも}い",
+    "distractors": ["寒い", "痛い", "暑い"],
+    "translation": "이 짐은 무겁다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s189",
+    "sentence": "冬は＿＿＿ので、コートを着ます。",
+    "sentenceRuby": "{冬|ふゆ}は＿＿＿ので、コートを{着|き}ます。",
+    "blank": "寒い",
+    "blankRuby": "{寒|さむ}い",
+    "distractors": ["辛い", "甘い", "短い"],
+    "translation": "겨울은 추워서 코트를 입는다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s190",
+    "sentence": "このカレーは＿＿＿です。",
+    "sentenceRuby": "このカレーは＿＿＿です。",
+    "blank": "辛い",
+    "blankRuby": "{辛|から}い",
+    "distractors": ["長い", "忙しい", "短い"],
+    "translation": "이 카레는 맵다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s191",
+    "sentence": "歯が＿＿＿ので、病院に行きます。",
+    "sentenceRuby": "{歯|は}が＿＿＿ので、{病院|びょういん}に{行|い}きます。",
+    "blank": "痛い",
+    "blankRuby": "{痛|いた}い",
+    "distractors": ["高い", "大きい", "古い"],
+    "translation": "이가 아파서 병원에 간다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s192",
+    "sentence": "今日は仕事が＿＿＿です。",
+    "sentenceRuby": "{今日|きょう}は{仕事|しごと}が＿＿＿です。",
+    "blank": "忙しい",
+    "blankRuby": "{忙|いそが}しい",
+    "distractors": ["冷たい", "暑い", "寒い"],
+    "translation": "오늘은 일이 바쁘다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s193",
+    "sentence": "この店は＿＿＿ので、毎日来ます。",
+    "sentenceRuby": "この{店|みせ}は＿＿＿ので、{毎日|まいにち}{来|き}ます。",
+    "blank": "安い",
+    "blankRuby": "{安|やす}い",
+    "distractors": ["長い", "痛い", "重い"],
+    "translation": "이 가게는 싸서 매일 온다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s194",
+    "sentence": "＿＿＿にケーキを食べた。",
+    "sentenceRuby": "＿＿＿にケーキを{食|た}べた。",
+    "blank": "誕生日",
+    "blankRuby": "{誕生日|たんじょうび}",
+    "distractors": ["荷物", "鍵", "駅"],
+    "translation": "생일에 케이크를 먹었다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s195",
+    "sentence": "毎朝公園を＿＿＿する。",
+    "sentenceRuby": "{毎朝|まいあさ}{公園|こうえん}を＿＿＿する。",
+    "blank": "散歩",
+    "blankRuby": "{散歩|さんぽ}",
+    "distractors": ["運転", "勉強", "週末"],
+    "translation": "매일 아침 공원을 산책한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s196",
+    "sentence": "家の＿＿＿をなくした。",
+    "sentenceRuby": "{家|いえ}の＿＿＿をなくした。",
+    "blank": "鍵",
+    "blankRuby": "{鍵|かぎ}",
+    "distractors": ["天気", "時代", "週末"],
+    "translation": "집 열쇠를 잃어버렸다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s197",
+    "sentence": "重い＿＿＿を持つ。",
+    "sentenceRuby": "{重|おも}い＿＿＿を{持|も}つ。",
+    "blank": "荷物",
+    "blankRuby": "{荷物|にもつ}",
+    "distractors": ["散歩", "予約", "週末"],
+    "translation": "무거운 짐을 든다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s198",
+    "sentence": "来週レストランを＿＿＿する。",
+    "sentenceRuby": "{来週|らいしゅう}レストランを＿＿＿する。",
+    "blank": "予約",
+    "blankRuby": "{予約|よやく}",
+    "distractors": ["散歩", "運転", "買い物"],
+    "translation": "다음 주에 레스토랑을 예약한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s199",
+    "sentence": "父は毎日車を＿＿＿する。",
+    "sentenceRuby": "{父|ちち}は{毎日|まいにち}{車|くるま}を＿＿＿する。",
+    "blank": "運転",
+    "blankRuby": "{運転|うんてん}",
+    "distractors": ["散歩", "買い物", "勉強"],
+    "translation": "아버지는 매일 차를 운전한다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s200",
+    "sentence": "＿＿＿は友達と買い物に行く。",
+    "sentenceRuby": "＿＿＿は{友達|ともだち}と{買|か}い{物|もの}に{行|い}く。",
+    "blank": "週末",
+    "blankRuby": "{週末|しゅうまつ}",
+    "distractors": ["鍵", "財布", "運転"],
+    "translation": "주말에는 친구와 쇼핑하러 간다.",
+    "jlptLevel": 4
+  }
+]

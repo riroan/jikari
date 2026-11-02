@@ -1,0 +1,334 @@
+[
+  {
+    "id": "e005",
+    "situation_ko": "식사를 시작하기 전에",
+    "expression_jp": "いただきます",
+    "register": "polite",
+    "translation_ko": "잘 먹겠습니다",
+    "note_ko": "먹기 전에 꼭 하는 말. 음식과 만든 사람에 대한 감사의 뜻이라 혼자 먹을 때도 합니다"
+  },
+  {
+    "id": "e006",
+    "situation_ko": "식사를 마치고",
+    "expression_jp": "ごちそうさまでした",
+    "register": "polite",
+    "translation_ko": "잘 먹었습니다",
+    "note_ko": "식당에서 나갈 때 점원에게도 말합니다. 친구·가족끼리는 「ごちそうさま」로 줄여요"
+  },
+  {
+    "id": "e007",
+    "situation_ko": "식당에서 점원이 몇 명인지 물을 때",
+    "expression_jp": "二人です。",
+    "ruby": "{二人|ふたり}です。",
+    "register": "polite",
+    "translation_ko": "두 명이에요",
+    "note_ko": "一人(ひとり)·二人(ふたり)는 읽기가 특수해서 그대로 외우는 게 빠릅니다. 세 명부터는 三人(さんにん)"
+  },
+  {
+    "id": "e008",
+    "situation_ko": "식당에서 뭘 시킬지 고민될 때",
+    "expression_jp": "おすすめは何ですか。",
+    "ruby": "おすすめは{何|なん}ですか。",
+    "register": "polite",
+    "translation_ko": "추천 메뉴가 뭐예요?",
+    "note_ko": "「何」는 뒤에 です가 오면 なん으로 읽습니다"
+  },
+  {
+    "id": "e009",
+    "situation_ko": "식당에서 계산하고 싶을 때",
+    "expression_jp": "お会計をお願いします。",
+    "ruby": "お{会計|かいけい}をお{願|ねが}いします。",
+    "register": "polite",
+    "translation_ko": "계산해 주세요",
+    "note_ko": "점원을 부르고 나서 하는 말. 손으로 ×를 만들어 보여 줘도 통합니다"
+  },
+  {
+    "id": "e010",
+    "situation_ko": "가게에서 가격을 물을 때",
+    "expression_jp": "これはいくらですか。",
+    "register": "polite",
+    "translation_ko": "이건 얼마예요?",
+    "note_ko": "「いくら」는 가격을 묻는 말. 개수는 「いくつ」"
+  },
+  {
+    "id": "e011",
+    "situation_ko": "물건을 고르고 계산대에서",
+    "expression_jp": "これをください。",
+    "register": "polite",
+    "translation_ko": "이거 주세요",
+    "note_ko": "물건을 손으로 가리키며 말하면 됩니다"
+  },
+  {
+    "id": "e012",
+    "situation_ko": "편의점에서 봉투를 안 받고 싶을 때",
+    "expression_jp": "袋はいりません。",
+    "ruby": "{袋|ふくろ}はいりません。",
+    "register": "polite",
+    "translation_ko": "봉투는 필요 없어요",
+    "note_ko": "일본 편의점 봉투는 유료라 점원이 「袋はご利用ですか」라고 묻기도 합니다"
+  },
+  {
+    "id": "e013",
+    "situation_ko": "점원이 기다려 달라고 할 때",
+    "expression_jp": "少々お待ちください。",
+    "ruby": "{少々|しょうしょう}お{待|ま}ちください。",
+    "register": "polite",
+    "translation_ko": "잠시만 기다려 주세요",
+    "note_ko": "점원이 쓰는 정중한 말. 친구에게는 「ちょっと待って」"
+  },
+  {
+    "id": "e014",
+    "situation_ko": "길에서 사람을 불러 세울 때",
+    "expression_jp": "すみません、ちょっといいですか。",
+    "register": "polite",
+    "translation_ko": "저기요, 잠깐 괜찮으세요?",
+    "note_ko": "「すみません」은 사과뿐 아니라 말을 걸 때도 씁니다"
+  },
+  {
+    "id": "e015",
+    "situation_ko": "역을 찾을 때",
+    "expression_jp": "駅はどこですか。",
+    "ruby": "{駅|えき}はどこですか。",
+    "register": "polite",
+    "translation_ko": "역이 어디예요?",
+    "note_ko": "「どこ」 앞에 장소를 넣으면 다 통합니다: トイレはどこですか"
+  },
+  {
+    "id": "e016",
+    "situation_ko": "길을 잃었을 때",
+    "expression_jp": "道に迷いました。",
+    "ruby": "{道|みち}に{迷|まよ}いました。",
+    "register": "polite",
+    "translation_ko": "길을 잃었어요",
+    "note_ko": "「迷う」는 헤매다. 도움을 청할 때 「すみません」과 함께 씁니다"
+  },
+  {
+    "id": "e017",
+    "situation_ko": "환승이 필요한지 물을 때",
+    "expression_jp": "乗り換えは必要ですか。",
+    "ruby": "{乗|の}り{換|か}えは{必要|ひつよう}ですか。",
+    "register": "polite",
+    "translation_ko": "환승해야 하나요?",
+    "note_ko": "「乗り換え」는 환승. 역 안내에서 자주 보이는 단어입니다"
+  },
+  {
+    "id": "e018",
+    "situation_ko": "약속에 늦었을 때 (정중하게)",
+    "expression_jp": "遅れてすみません。",
+    "ruby": "{遅|おく}れてすみません。",
+    "register": "polite",
+    "translation_ko": "늦어서 죄송해요",
+    "note_ko": "「ごめんなさい」보다 한 단계 정중하고 직장에서도 씁니다"
+  },
+  {
+    "id": "e019",
+    "situation_ko": "친구에게 늦는다고 연락할 때",
+    "expression_jp": "ごめん、ちょっと遅れる。",
+    "ruby": "ごめん、ちょっと{遅|おく}れる。",
+    "register": "casual",
+    "translation_ko": "미안, 조금 늦을 것 같아",
+    "note_ko": "일본에서는 늦을 것 같을 때 미리 알리는 게 기본 매너예요. 이유도 짧게 덧붙이면 좋아요"
+  },
+  {
+    "id": "e020",
+    "situation_ko": "친구가 어디 있는지 물을 때",
+    "expression_jp": "今どこ？",
+    "ruby": "{今|いま}どこ？",
+    "register": "casual",
+    "translation_ko": "지금 어디야?",
+    "note_ko": "메신저·전화에서 가장 자주 쓰는 말. 정중하게는 「今どちらですか」"
+  },
+  {
+    "id": "e021",
+    "situation_ko": "곧 도착한다고 알릴 때",
+    "expression_jp": "もうすぐ着くよ。",
+    "ruby": "もうすぐ{着|つ}くよ。",
+    "register": "casual",
+    "translation_ko": "곧 도착해",
+    "note_ko": "문장 끝의 「よ」는 상대가 모르는 정보를 알려 주는 느낌"
+  },
+  {
+    "id": "e022",
+    "situation_ko": "오랜만에 친구를 만났을 때",
+    "expression_jp": "久しぶり！元気だった？",
+    "ruby": "{久|ひさ}しぶり！{元気|げんき}だった？",
+    "register": "casual",
+    "translation_ko": "오랜만이야! 잘 지냈어?",
+    "note_ko": "윗사람에게는 「お久しぶりです。お元気でしたか」"
+  },
+  {
+    "id": "e023",
+    "situation_ko": "가볍게 안부를 물을 때",
+    "expression_jp": "最近どう？",
+    "ruby": "{最近|さいきん}どう？",
+    "register": "casual",
+    "translation_ko": "요즘 어때?",
+    "note_ko": "대답은 「まあまあ」(그럭저럭)가 가장 자연스러워요"
+  },
+  {
+    "id": "e024",
+    "situation_ko": "처음 만난 사람에게 끝인사로",
+    "expression_jp": "よろしくお願いします。",
+    "ruby": "よろしく{お願|ねが}いします。",
+    "register": "polite",
+    "translation_ko": "잘 부탁드립니다",
+    "note_ko": "첫 만남뿐 아니라 부탁할 때 마무리로도 두루 씁니다"
+  },
+  {
+    "id": "e025",
+    "situation_ko": "퇴근하며 동료에게",
+    "expression_jp": "お先に失礼します。",
+    "ruby": "お{先|さき}に{失礼|しつれい}します。",
+    "register": "polite",
+    "translation_ko": "먼저 가보겠습니다",
+    "note_ko": "남아 있는 사람에게 하는 말. 답은 「お疲れ様でした」"
+  },
+  {
+    "id": "e026",
+    "situation_ko": "몸이 안 좋은 사람에게",
+    "expression_jp": "お大事に。",
+    "ruby": "お{大事|だいじ}に。",
+    "register": "polite",
+    "translation_ko": "몸조리 잘하세요",
+    "note_ko": "아픈 사람에게 헤어질 때 하는 말. 친구에게는 「お大事にね」"
+  },
+  {
+    "id": "e027",
+    "situation_ko": "떠나는 사람에게",
+    "expression_jp": "気をつけて。",
+    "ruby": "{気|き}をつけて。",
+    "register": "casual",
+    "translation_ko": "조심해",
+    "note_ko": "「行ってらっしゃい」와 함께 쓰기도 해요"
+  },
+  {
+    "id": "e028",
+    "situation_ko": "도움을 받고 가볍게 감사할 때",
+    "expression_jp": "ありがとう。助かったよ。",
+    "ruby": "ありがとう。{助|たす}かったよ。",
+    "register": "casual",
+    "translation_ko": "고마워. 살았다",
+    "note_ko": "「助かる」는 도움이 돼서 곤란이 풀렸다는 느낌. 정중하게는 「助かりました」"
+  },
+  {
+    "id": "e029",
+    "situation_ko": "감사 인사를 받고 답할 때",
+    "expression_jp": "どういたしまして。",
+    "register": "polite",
+    "translation_ko": "천만에요",
+    "note_ko": "일상에서는 「いえいえ」「こちらこそ」가 더 자주 쓰입니다"
+  },
+  {
+    "id": "e030",
+    "situation_ko": "사과를 받고 괜찮다고 할 때",
+    "expression_jp": "気にしないで。",
+    "ruby": "{気|き}にしないで。",
+    "register": "casual",
+    "translation_ko": "신경 쓰지 마",
+    "note_ko": "정중하게는 「お気になさらず」"
+  },
+  {
+    "id": "e031",
+    "situation_ko": "부탁을 꺼낼 때",
+    "expression_jp": "お願いがあるんですが。",
+    "ruby": "お{願|ねが}いがあるんですが。",
+    "register": "polite",
+    "translation_ko": "부탁이 있는데요",
+    "note_ko": "「〜んですが」로 말끝을 흐리면 부드럽게 운을 떼는 느낌"
+  },
+  {
+    "id": "e032",
+    "situation_ko": "잘 못 들었을 때",
+    "expression_jp": "もう一度お願いします。",
+    "ruby": "もう{一度|いちど}お{願|ねが}いします。",
+    "register": "polite",
+    "translation_ko": "한 번 더 부탁드려요",
+    "note_ko": "「もう一回言ってください」보다 정중해요"
+  },
+  {
+    "id": "e033",
+    "situation_ko": "말이 빨라서 못 따라갈 때",
+    "expression_jp": "ゆっくり話してもらえますか。",
+    "ruby": "ゆっくり{話|はな}してもらえますか。",
+    "register": "polite",
+    "translation_ko": "천천히 말해 주실 수 있어요?",
+    "note_ko": "「〜てもらえますか」는 부탁의 기본 틀"
+  },
+  {
+    "id": "e034",
+    "situation_ko": "일본어 실력을 설명할 때",
+    "expression_jp": "日本語はまだ勉強中です。",
+    "ruby": "{日本語|にほんご}はまだ{勉強中|べんきょうちゅう}です。",
+    "register": "polite",
+    "translation_ko": "일본어는 아직 공부 중이에요",
+    "note_ko": "「まだ」 덕분에 겸손하면서도 상대가 배려해 줍니다"
+  },
+  {
+    "id": "e035",
+    "situation_ko": "상대 이야기에 맞장구칠 때",
+    "expression_jp": "なるほど。",
+    "register": "casual",
+    "translation_ko": "그렇구나",
+    "note_ko": "「そうですか」보다 이해했다는 느낌. 윗사람에게 쓸 땐 「なるほどですね」보다 「なるほど、そうなんですね」"
+  },
+  {
+    "id": "e036",
+    "situation_ko": "놀랐을 때",
+    "expression_jp": "本当に？",
+    "ruby": "{本当|ほんとう}に？",
+    "register": "casual",
+    "translation_ko": "정말?",
+    "note_ko": "억양을 올리면 되묻는 말. 같은 뜻으로 「マジで？」도 많이 쓰는데 더 속어예요"
+  },
+  {
+    "id": "e037",
+    "situation_ko": "믿기지 않는 소식을 들었을 때",
+    "expression_jp": "うそ！",
+    "register": "casual",
+    "translation_ko": "헐! 거짓말!",
+    "note_ko": "정말 거짓말이라고 따지는 게 아니라 놀람을 표현하는 말"
+  },
+  {
+    "id": "e038",
+    "situation_ko": "몰랐던 사실을 알게 됐을 때",
+    "expression_jp": "知らなかった。",
+    "ruby": "{知|し}らなかった。",
+    "register": "casual",
+    "translation_ko": "몰랐어",
+    "note_ko": "정중하게는 「知りませんでした」"
+  },
+  {
+    "id": "e039",
+    "situation_ko": "좋은 소식을 들었을 때",
+    "expression_jp": "おめでとう！",
+    "register": "casual",
+    "translation_ko": "축하해!",
+    "note_ko": "정중하게는 「おめでとうございます」"
+  },
+  {
+    "id": "e040",
+    "situation_ko": "상대를 응원할 때",
+    "expression_jp": "がんばってね。",
+    "register": "casual",
+    "translation_ko": "힘내",
+    "note_ko": "「がんばれ」는 명령이라 강하고, 「ね」를 붙이면 부드러워요"
+  },
+  {
+    "id": "e041",
+    "situation_ko": "힘들어 보이는 사람에게",
+    "expression_jp": "無理しないでね。",
+    "ruby": "{無理|むり}しないでね。",
+    "register": "casual",
+    "translation_ko": "무리하지 마",
+    "note_ko": "상대를 걱정하는 말. 정중하게는 「無理なさらないでください」"
+  },
+  {
+    "id": "e042",
+    "situation_ko": "초대를 부드럽게 거절할 때",
+    "expression_jp": "また今度ね。",
+    "ruby": "また{今度|こんど}ね。",
+    "register": "casual",
+    "translation_ko": "다음에 또 하자",
+    "note_ko": "실제 약속이 아니라 완곡한 거절일 때가 많아요"
+  }
+]

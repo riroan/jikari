@@ -212,7 +212,11 @@ export function QuizCard({
           <button
             type="button"
             onClick={advance}
-            className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
+            // 가로 모드(높이 ~400px)에선 정답 면이 길어 이 버튼이 화면 밖으로
+            // 밀린다. 보이는 상태면 "nearest"는 아무것도 하지 않는다.
+            // scroll-mb: 화면 바닥(홈 인디케이터)에 붙지 않고 한 줄 위에 멈춘다.
+            ref={(el) => el?.scrollIntoView?.({ block: "nearest" })}
+            className="scroll-mb-[calc(var(--safe-bottom)+1rem)] px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
             style={{ minHeight: 44 }}
             aria-label="다음 문제"
           >

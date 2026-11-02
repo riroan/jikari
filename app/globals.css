@@ -11,6 +11,16 @@
 :root {
   color-scheme: light dark;
 
+  /*
+   * 기기 안전 영역 (노치·Dynamic Island·홈 인디케이터). viewport-fit=cover라
+   * 콘텐츠가 이 영역까지 그려지므로 레이아웃이 직접 비켜야 한다. 한 곳에서
+   * 토큰으로 받아 두면 셸이 같은 값을 쓰고, 검증 때 값을 덮어쓸 수도 있다.
+   */
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+
   /* Light — Quiet Paper */
   --paper:       #F5EFE4;
   --paper-deep:  #EDE5D4;
@@ -199,8 +209,22 @@ html, body {
 
 body {
   font-feature-settings: 'ss01';
+  /* 배경색은 html이 칠한다 — 아래 ::before가 body 배경에 가려지지 않게. */
+  background: transparent;
+}
+
+/*
+ * 그라디언트는 화면에 고정. `background-attachment: fixed`는 iOS Safari가
+ * 지원하지 않아 (무시하거나 문서 전체 높이에 맞춰 늘어난다) 기기에서만
+ * 데스크톱과 다르게 보였다. fixed 의사 요소는 어디서나 같다.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image: var(--bg-gradient);
-  background-attachment: fixed;
 }
 
 /*

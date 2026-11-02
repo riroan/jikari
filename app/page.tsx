@@ -8,7 +8,7 @@ import { Heatmap } from "@/components/Heatmap";
 import { HomeHeader } from "@/components/HomeHeader";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 import { currentStreak as computeStreak, toLocalDateKey } from "@/lib/heatmap";
-import { totalDue } from "@/lib/due";
+import { topDueKey, totalDue } from "@/lib/due";
 import { useDueByKey } from "@/lib/use-due-by-key";
 
 /**
@@ -60,10 +60,20 @@ export default function Home() {
 
   const dueByKey = useDueByKey();
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
+  // 한 번에 시작할 곳 — 복습이 제일 많이 쌓인 과목. 모드 8개를 하나씩 열어
+  // 보지 않아도 오늘 할 일이 바로 시작된다.
+  const nextReview = useMemo(() => {
+    const top = topDueKey(
+      dueByKey,
+      SUBJECTS.map((s) => s.dueKey),
+    );
+    const subject = top && SUBJECTS.find((s) => s.dueKey === top.key);
+    return top && subject ? { subject, count: top.count } : null;
+  }, [dueByKey]);
 
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-full max-w-[390px] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-8 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+    <main className="flex-1 flex justify-center pl-[var(--safe-left)] pr-[var(--safe-right)]">
+      <div className="w-full max-w-[390px] px-6 pt-[calc(var(--safe-top)+2rem)] pb-[max(2.5rem,var(--safe-bottom))]">
         <HomeHeader
           hydrated={hydrated}
           studiedToday={studiedToday}
@@ -71,6 +81,25 @@ export default function Home() {
           todayCount={todayCount}
           dueCount={dueCount}
         />
+
+        {nextReview && (
+          <Link
+            href={nextReview.subject.base}
+            className="flex items-center justify-between gap-3 border border-[color:var(--accent-progress)] rounded-sm px-4 py-3 mb-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
+          >
+            <span className="flex items-baseline gap-3">
+              <span className="text-body font-medium text-[color:var(--fg)]">
+                오늘의 복습
+              </span>
+              <span className="text-caption text-[color:var(--accent-progress)] tracking-tab tabular-nums">
+                復習 {dueCount}
+              </span>
+            </span>
+            <span className="text-caption text-[color:var(--fg-soft)] tracking-wide whitespace-nowrap">
+              {nextReview.subject.ko}부터 →
+            </span>
+          </Link>
+        )}
 
         {/* Units entry — chapter mastery view (uses subject-row visual language) */}
         <Link
@@ -156,19 +185,24 @@ function SubjectRow({
 }) {
   return (
     <div className="bg-[color:var(--bg)] flex items-center px-4 py-4">
-      <div className="flex-1 flex items-baseline gap-3 min-w-0">
+      {/*
+        폭이 좁을 때(Safari 페이지 확대 125% ≈ 322px, 디스플레이 확대) 일본어 표기와
+        개수 칩이 한 글자씩 줄바꿈되고 이름이 잘렸다. 표기·칩은 줄바꿈 없이
+        고정하고, 이름만 마지막 수단으로 줄어든다.
+      */}
+      <div className="flex-1 flex items-baseline gap-2 min-w-0">
         <span className="text-body font-medium text-[color:var(--fg)] truncate">
           {ko}
         </span>
         <span
-          className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
+          className="text-label text-[color:var(--fg-faint)] tracking-[0.08em] whitespace-nowrap shrink-0"
           style={{ fontFamily: "var(--font-jp-sans)" }}
         >
           {jp}
         </span>
         {dueCount > 0 && (
           <span
-            className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium"
+            className="text-tiny tabular-nums tracking-wide text-[color:var(--accent-progress)] font-medium whitespace-nowrap shrink-0"
             aria-label={`복습 ${dueCount}장 대기`}
           >
             ・{dueCount}
@@ -187,7 +221,7 @@ function ActionLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="text-caption text-[color:var(--fg-soft)] tracking-wide px-4 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] flex items-center"
+      className="text-caption text-[color:var(--fg-soft)] tracking-wide px-3 py-3 rounded-sm hover:bg-[color:var(--bg-deep)] hover:text-[color:var(--fg)] transition-colors min-h-[44px] min-w-[44px] justify-center flex items-center"
     >
       {label}
     </Link>

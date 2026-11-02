@@ -1,7 +1,17 @@
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, test } from "vitest";
+import { validate as validateExpression } from "../scripts/add-expression";
+import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
+import { parseGrammarCardArray } from "@/lib/grammar-schema";
+import { conjugate } from "@/lib/conjugation";
+import { conjugateAdj } from "@/lib/adjective";
+import { ALL_CONJUGATION_FORMS } from "@/lib/types";
 import {
+  centerTell,
   chooseDirection,
   generateChoices,
+  generateExpressionChoices,
   generateGrammarQuizChoices,
   generateKanjiChoices,
   generateVocabChoices,
@@ -11,6 +21,7 @@ import {
   readingShape,
 } from "@/lib/data";
 import type {
+  ExpressionCard,
   GrammarPatternQuiz,
   KanjiCard,
   ParticleContrastQuiz,
@@ -180,6 +191,67 @@ describe("kanaDistance", () => {
   });
 });
 
+describe("generateExpressionChoices distractor quality", () => {
+  const e = (id: string, register: ExpressionCard["register"]): ExpressionCard => ({
+    id,
+    situation_ko: `상황 ${id}`,
+    expression_jp: `表現${id}`,
+    register,
+    translation_ko: `뜻 ${id}`,
+  });
+
+  function seedDeck() {
+    // 반말 20장, 존댓말 20장 — 선지 창(3 × 4 = 12)보다 각 버킷이 넉넉해야 한다.
+    useCardsStore.setState({
+      expressions: [
+        ...Array.from({ length: 20 }, (_, i) => e(`c${i}`, "casual")),
+        ...Array.from({ length: 20 }, (_, i) => e(`p${i}`, "polite")),
+      ],
+    });
+  }
+
+  test.each(["recall", "recognition"] as const)(
+    "%s 선지는 같은 register에서 나온다",
+    (direction) => {
+      seedDeck();
+      const target = e("p0", "polite");
+      let same = 0;
+      let total = 0;
+      for (let seed = 0; seed < 50; seed++) {
+        const { correct, choices } = generateExpressionChoices(target, direction, seed);
+        for (const c of choices) {
+          if (c === correct) continue;
+          total++;
+          if (/p\d+/.test(c)) same++;
+        }
+      }
+      // 덱의 절반만 같은 register — 무작위면 0.5 언저리.
+      expect(same / total).toBeGreaterThan(0.8);
+    },
+  );
+
+  test("카드가 적은 덱에서도 선지가 굶지 않는다", () => {
+    useCardsStore.setState({ expressions: [e("a", "polite"), e("b", "casual"), e("c", "casual")] });
+    const { correct, choices } = generateExpressionChoices(e("a", "polite"), "recall", 3);
+    expect(choices).toContain(correct);
+    expect(new Set(choices).size).toBe(choices.length);
+    expect(choices).toHaveLength(3);
+  });
+});
+
+describe("centerTell", () => {
+  test("정답이 유일한 중심이면 1", () => {
+    expect(centerTell("がく", ["かく", "がい", "はく"])).toBe(1);
+  });
+  test("중심이 아니면 0", () => {
+    expect(centerTell("がく", ["かく", "かい", "かん"])).toBe(0);
+  });
+  test("공동 중심이면 1/공동 수", () => {
+    // ab/ac/bb/bc 넷 다 거리 합 4 — 네 선지가 공동 중심.
+    expect(centerTell("ab", ["ac", "bb", "bc"])).toBeCloseTo(0.25);
+  });
+});
+
 describe("readingShape", () => {
   test("buckets 전체형 훈독 by ending", () => {
     expect(readingShape("なく")).toBe("v");
@@ -296,6 +368,24 @@ describe("generateKanjiChoices distractor quality", () => {
     expect(choices).toHaveLength(3);
   });
 
+  test("정답이 선지 무리의 한가운데에 놓이지 않는다", () => {
+    // 정답의 이웃(편집거리 1)이 넉넉한 덱 — 예전에는 이웃 3개가 그대로 뽑혀
+    // "나머지와 가장 닮은 선지"를 고르면 판독 없이 맞힐 수 있었다.
+    const neighbors = ["かく", "がい", "はく", "がん", "とく", "ろく", "がつ", "まく", "かい", "さく", "がき", "ばく"];
+    useCardsStore.setState({
+      kanji: [k("学", ["がく"], []), ...neighbors.map((r, i) => k(`n${i}`, [r], []))],
+    });
+    const target = k("学", ["がく"], []);
+    let tell = 0;
+    const N = 60;
+    for (let seed = 0; seed < N; seed++) {
+      const { correct, choices } = generateKanjiChoices(target, "on", seed);
+      tell += centerTell(correct, choices.filter((c) => c !== correct));
+    }
+    // 우연히 고르면 0.25. 중심 고르기가 그보다 확연히 유리하면 안 된다.
+    expect(tell / N).toBeLessThan(0.35);
+  });
+
   test("same seed is stable (SRS replay)", () => {
     seedDeck();
     const target = k("的", ["てき"], ["まと"]);
@@ -365,11 +455,248 @@ describe("generateVocabChoices distractor quality", () => {
     }
   });
 
+  test("뜻을 공유하는 다른 단어는 선지로 나오지 않는다 (정답이 둘이 되는 것 방지)", () => {
+    seedDeck();
+    const wakaru: VocabCard = { ...v("分かる", "알다", "godan"), koreanMeanings: ["알다", "이해하다"] };
+    const shiru = v("知る", "알다", "godan");
+    useCardsStore.setState({ vocab: [wakaru, shiru, ...useCardsStore.getState().vocab] });
+    for (let seed = 0; seed < 40; seed++) {
+      expect(generateVocabChoices(shiru, "recall", seed).choices).not.toContain("分かる");
+      expect(generateVocabChoices(wakaru, "recall", seed).choices).not.toContain("知る");
+      expect(generateVocabChoices(shiru, "recognition", seed).choices).not.toContain("이해하다");
+    }
+  });
+
   test("얇은 덱에서도 선지가 굶지 않는다", () => {
     useCardsStore.setState({ vocab: [v("犬", "개"), v("猫", "고양이"), v("鳥", "새")] });
     const { correct, choices } = generateVocabChoices(v("犬", "개"), "recognition", 3);
     expect(choices).toContain(correct);
     expect(new Set(choices).size).toBe(choices.length);
     expect(choices).toHaveLength(3);
+  });
+});
+
+describe("seed files", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const ids = (prefix: string) =>
+    readdirSync(dir)
+      .filter((f) => f.startsWith(prefix) && f.endsWith(".json"))
+      .flatMap((f) =>
+        (JSON.parse(readFileSync(path.join(dir, f), "utf8")) as { id: string }[]).map(
+          (c) => `${c.id}  (${f})`,
+        ),
+      );
+
+  // add-*.ts는 이미 있는 id를 건너뛴다. 같은 id가 두 파일에 있으면 먼저
+  // import한 쪽만 남고 나머지(급수·읽기 정정 포함)는 조용히 버려진다.
+  test.each(["kanji-", "vocab-", "sentences-", "particles-", "expressions-"])(
+    "%s 시드는 파일 사이에서 id가 겹치지 않는다",
+    (prefix) => {
+      const all = ids(prefix);
+      const bare = all.map((x) => x.split("  ")[0]);
+      const dup = bare.filter((id, i) => bare.indexOf(id) !== i);
+      expect(dup, `중복 id: ${dup.join(", ")}`).toEqual([]);
+    },
+  );
+});
+
+describe("expression seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const cards = readdirSync(dir)
+    .filter((f) => f.startsWith("expressions-") && f.endsWith(".json"))
+    .flatMap((f) =>
+      (JSON.parse(readFileSync(path.join(dir, f), "utf8")) as Record<string, unknown>[]).map(
+        (c, i) => ({ file: f, i, c }),
+      ),
+    );
+
+  test("모든 카드가 add-expression 검증을 통과한다", () => {
+    for (const { file, i, c } of cards) {
+      expect(() => validateExpression(c, i), file).not.toThrow();
+    }
+  });
+
+  // 한자가 들어 있는데 ruby가 없거나, ruby가 표현과 어긋나면 카드 앞면이 틀어진다.
+  test("ruby를 벗기면 expression_jp와 같고, 후리가나는 가나뿐이다", () => {
+    const KANJI = /[\u4e00-\u9fff]/;
+    for (const { file, c } of cards) {
+      const jp = c.expression_jp as string;
+      const ruby = c.ruby as string | undefined;
+      if (!ruby) {
+        expect(KANJI.test(jp), `${file} ${c.id}: 한자가 있는데 ruby가 없다`).toBe(false);
+        continue;
+      }
+      const segs = parseMarkup(ruby);
+      expect(stripMarkup(segs), `${file} ${c.id}`).toBe(jp);
+      for (const seg of segs) {
+        if (seg.kind === "ruby") {
+          expect(seg.furigana, `${c.id} ${seg.base}`).toMatch(/^[\u3041-\u309f\u30fc]+$/);
+        }
+      }
+    }
+  });
+});
+
+describe("vocab seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const cards = readdirSync(dir)
+    .filter((f) => f.startsWith("vocab-") && f.endsWith(".json"))
+    .flatMap((f) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as VocabCard[]);
+
+  const KANA = /^[\u3041-\u309f\u30a0-\u30ff]+$/;
+
+  // ruby의 후리가나로 base를 치환하면 reading과 같아야 한다 — 오타(예: たべる→たへる)를
+  // 막는다. 카드 앞면의 후리가나와 정답 reading이 따로 놀면 안 된다.
+  test("ruby가 word·reading과 일치하고 reading은 가나뿐이다", () => {
+    for (const c of cards) {
+      expect(c.reading, `${c.id} reading`).toMatch(KANA);
+      if (!c.ruby) continue;
+      const segs = parseMarkup(c.ruby);
+      expect(stripMarkup(segs), `${c.id} ruby→word`).toBe(c.word);
+      const read = segs
+        .map((g) => (g.kind === "ruby" ? g.furigana : g.kind === "text" ? g.text : ""))
+        .join("");
+      expect(read, `${c.id} ruby→reading`).toBe(c.reading);
+    }
+  });
+
+  // verbGroup/adjGroup이 틀리면 활용 퀴즈가 틀린 정답을 낸다. 엔진이 던지지 않고,
+  // 기본형·마스형이 말이 되는지 본다.
+  test("verbGroup은 활용 엔진을 통과한다", () => {
+    for (const c of cards) {
+      if (!c.verbGroup || c.verbGroup === "not_verb") continue;
+      for (const form of ALL_CONJUGATION_FORMS) {
+        expect(() => conjugate(c.word, c.verbGroup!, form), `${c.id} ${form}`).not.toThrow();
+      }
+    }
+  });
+
+  // る로 끝나는 五段(帰る・入る・走る・切る)은 一段처럼 보여 그룹을 잘못 넣기 쉽다.
+  // 시드의 verbGroup으로 활용한 결과가 실제 일본어와 같은지 직접 대조한다.
+  test.each([
+    ["帰る", "te", "帰って"],
+    ["入る", "ta", "入った"],
+    ["走る", "nai", "走らない"],
+    ["切る", "masu", "切ります"],
+    ["起きる", "te", "起きて"],
+    ["見る", "nai", "見ない"],
+    ["借りる", "ta", "借りた"],
+    ["書く", "te", "書いて"],
+    ["飲む", "te", "飲んで"],
+    ["買う", "nai", "買わない"],
+    ["話す", "ta", "話した"],
+    ["来る", "te", "来て"],
+    ["する", "nai", "しない"],
+    ["散歩する", "masu", "散歩します"],
+  ] as const)("%s의 %s형은 %s", (word, form, expected) => {
+    const card = cards.find((c) => c.word === word);
+    expect(card, `${word} 시드 없음`).toBeDefined();
+    expect(conjugate(word, card!.verbGroup!, form)).toBe(expected);
+  });
+
+  // 타이핑 모드는 한국어 뜻을 완전 일치로 비교한다 (lib/normalize.ts). 뜻에 "(글을) 쓰다"
+  // 같은 괄호가 있으면 "쓰다"라고 쳐도 오답이 된다. 보조 설명은 meanings(영어)에 둔다.
+  test("한국어 뜻에는 괄호가 없다", () => {
+    for (const c of cards) {
+      for (const m of c.koreanMeanings) expect(m, `${c.id}: ${m}`).not.toMatch(/[()（）]/);
+    }
+  });
+
+  test("그룹이 정해진 카드는 한쪽 품사뿐이다", () => {
+    for (const c of cards) {
+      const isVerb = !!c.verbGroup && c.verbGroup !== "not_verb";
+      const isAdj = !!c.adjGroup && c.adjGroup !== "not_adj";
+      expect(isVerb && isAdj, `${c.id}: 동사이면서 형용사`).toBe(false);
+    }
+  });
+
+  test("い형용사는 い로 끝나고 활용 엔진을 통과한다", () => {
+    for (const c of cards) {
+      if (c.adjGroup === "i_adj") expect(c.reading, c.id).toMatch(/い$/);
+      if (c.adjGroup && c.adjGroup !== "not_adj") {
+        expect(() => conjugateAdj(c.word, c.adjGroup!, "negative"), c.id).not.toThrow();
+      }
+    }
+  });
+});
+
+describe("sentence seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  const files = readdirSync(dir).filter(
+    (f) => (f.startsWith("sentences-") || f.startsWith("particles-")) && f.endsWith(".json"),
+  );
+  type S = { id: string; sentence: string; sentenceRuby?: string; blank: string; blankRuby?: string; distractors: string[] };
+  const load = (f: string) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as S[];
+
+  test("빈칸은 하나, 오답은 서로 다른 3개이고 정답과 다르다", () => {
+    for (const f of files) {
+      for (const c of load(f)) {
+        expect(c.sentence.split("＿＿＿").length - 1, `${f} ${c.id}: 빈칸 개수`).toBe(1);
+        expect(c.distractors, `${f} ${c.id}`).toHaveLength(3);
+        expect(new Set(c.distractors).size, `${c.id}: 오답 중복`).toBe(3);
+        expect(c.distractors, `${c.id}: 정답이 오답에 섞임`).not.toContain(c.blank);
+      }
+    }
+  });
+
+  test("ruby를 벗기면 원문과 같다", () => {
+    for (const f of files) {
+      for (const c of load(f)) {
+        if (c.sentenceRuby) expect(stripMarkup(parseMarkup(c.sentenceRuby)), `${c.id} sentence`).toBe(c.sentence);
+        if (c.blankRuby) expect(stripMarkup(parseMarkup(c.blankRuby)), `${c.id} blank`).toBe(c.blank);
+      }
+    }
+  });
+
+  // 오래된 배치는 傘·時計·花가 오답을 독점했다 (전 시드의 25%). 새 배치는 오답이
+  // 몇 단어로 쏠리면 "저건 정답이 아니다"를 외우게 되므로 한 단어의 몫을 제한한다.
+  test.each(files.filter((f) => f.startsWith("sentences-daily-")))(
+    "%s: 한 단어가 오답의 15% 넘는 카드에 쓰이지 않는다",
+    (f) => {
+      const cards = load(f);
+      const use = new Map<string, number>();
+      for (const c of cards) for (const d of c.distractors) use.set(d, (use.get(d) ?? 0) + 1);
+      const [word, n] = [...use].sort((a, b) => b[1] - a[1])[0];
+      expect(n / cards.length, `${word}가 ${n}/${cards.length}장`).toBeLessThanOrEqual(0.15);
+    },
+  );
+});
+
+describe("grammar seeds", () => {
+  const dir = path.join(process.cwd(), "data");
+  const files = readdirSync(dir).filter((f) => /^grammar-(n5|daily)/.test(f) && f.endsWith(".json"));
+  const load = (f: string) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as unknown;
+
+  test.each(files)("%s는 스키마를 통과한다", (f) => {
+    // 스키마 위반이면 던진다 (zod 이슈가 메시지에 담긴다).
+    const cards = parseGrammarCardArray(load(f));
+    expect(cards.length).toBeGreaterThan(0);
+  });
+
+  test("파일 사이에서 id가 겹치지 않는다", () => {
+    const ids = files.flatMap((f) => (load(f) as { id: string }[]).map((c) => c.id));
+    expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
+  });
+
+  type Pattern = {
+    id: string;
+    type: string;
+    pattern: string;
+    examples: { jp: string }[];
+    quizzes: { sentence: string; correct: string; distractors: string[] }[];
+  };
+
+  test("문형 카드: 예문에 하이라이트가 있고 정답은 오답과 다르다", () => {
+    for (const f of files) {
+      for (const c of (load(f) as Pattern[]).filter((x) => x.type === "pattern")) {
+        for (const ex of c.examples) {
+          expect(ex.jp, `${c.id}: 예문에 [[하이라이트]]가 없다`).toMatch(/\[\[.+\]\]/);
+        }
+        for (const q of c.quizzes) {
+          expect(q.distractors, `${c.id}: 정답이 오답에 섞임`).not.toContain(q.correct);
+          expect(new Set(q.distractors).size, `${c.id}: 오답 중복`).toBe(3);
+        }
+      }
+    }
   });
 });

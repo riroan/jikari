@@ -64,8 +64,11 @@ export function ModePageShell({
       : "text-title leading-none font-semibold tracking-tab text-[color:var(--fg)]";
 
   return (
-    <main className="flex-1 flex justify-center">
-      <div className="w-full max-w-[390px] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-4 md:pt-8 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+    // 좌우 안전 영역은 화면 가장자리 기준이라 바깥 main에 둔다. 가운데 정렬된
+    // 390px 박스 안쪽에 두면 박스가 이미 가장자리에서 먼 가로 모드에서 내용 폭만
+    // 줄어(342→266px) 제목과 버튼이 줄바꿈된다.
+    <main className="flex-1 flex justify-center pl-[var(--safe-left)] pr-[var(--safe-right)]">
+      <div className="w-full max-w-[390px] px-6 pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[max(1.5rem,var(--safe-bottom))] md:pb-[max(2.5rem,var(--safe-bottom))]">
         <header
           className="flex justify-between items-baseline mb-[var(--header-mb-mobile)] md:mb-[var(--header-mb)]"
           style={
