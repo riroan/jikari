@@ -90,7 +90,7 @@ export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = g
   }
 
   const [stRows] = await pool.query<RowDataPacket[]>(
-    "SELECT theme, show_furigana, typing_threshold_box, last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1"
+    "SELECT theme, show_furigana, typing_threshold_box, daily_goal, last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1"
   );
   const st = stRows[0];
 

@@ -12,8 +12,12 @@ const conn = {
     if (sql.includes("FROM heatmap_days")) return [rows.hm ?? [], []];
     if (sql.includes("FROM quiz_stats")) return [[], []];
     if (sql.includes("FROM ratings")) return [[], []];
-    if (sql.includes("FROM app_settings"))
-      return [[{ theme: "system", show_furigana: 1, typing_threshold_box: 4, last_active_at: 5, current_streak: 1, schema_version: 6 }], []];
+    if (sql.includes("FROM app_settings")) {
+      // Like MySQL: a column that is not in the SELECT list is absent from the row.
+      const row: Record<string, unknown> = { theme: "system", show_furigana: 1, typing_threshold_box: 4, last_active_at: 5, current_streak: 1, schema_version: 6 };
+      if (sql.includes("daily_goal")) row.daily_goal = 50;
+      return [[row], []];
+    }
     return [[], []];
   }),
   beginTransaction: vi.fn(async () => void calls.push("BEGIN")),
@@ -44,6 +48,13 @@ describe("progressTag", () => {
     expect(sameTag('W/"abc"', '"abc"')).toBe(true);
     expect(sameTag('"abc-gzip"', '"abc"')).toBe(true);
     expect(sameTag('"abd"', '"abc"')).toBe(false);
+  });
+});
+
+describe("getProgress settings", () => {
+  test("reads the saved daily goal instead of always falling back to 20", async () => {
+    const s = await getProgress(conn as never);
+    expect(s.settings.dailyGoal).toBe(50);
   });
 });
 
