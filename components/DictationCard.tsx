@@ -94,7 +94,7 @@ export function DictationCard({
             </div>
           </div>
           <div className="flex items-center justify-end gap-1">
-            <SpeakButton text={card.ruby ?? card.expression_jp} />
+            <SpeakButton text={card.ruby ?? card.expression_jp} slow />
             <button
               ref={nextRef}
               type="button"

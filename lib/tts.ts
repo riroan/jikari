@@ -1,4 +1,5 @@
 import { parseMarkup, stripMarkup } from "./jp-markup";
+import { SLOW_ONCE_RATE, clampRate, currentRate } from "./tts-speed";
 
 /** `{食|た}べる` / `[[〜]]` markup → plain speakable text (ruby → base kanji). */
 export function toSpeakable(text: string): string {
@@ -12,14 +13,14 @@ export function toSpeakable(text: string): string {
 // iOS WebKit may GC an utterance mid-speech (silent cut-off) — hold a reference.
 let current: SpeechSynthesisUtterance | null = null;
 
-export function speak(text: string, rate = 0.9): void {
+export function speak(text: string, rate: number = currentRate()): void {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   const plain = toSpeakable(text);
   if (!plain) return;
   const synth = window.speechSynthesis;
   const u = new SpeechSynthesisUtterance(plain);
   u.lang = "ja-JP";
-  u.rate = rate;
+  u.rate = clampRate(rate);
   const voice = synth.getVoices().find((v) => v.lang.replace("_", "-") === "ja-JP");
   if (voice) u.voice = voice;
   current = u;
@@ -34,3 +35,6 @@ export function speak(text: string, rate = 0.9): void {
     synth.speak(u);
   }
 }
+
+/** Replay slower than any preference (「느리게」 control). */
+export const speakSlow = (text: string) => speak(text, SLOW_ONCE_RATE);

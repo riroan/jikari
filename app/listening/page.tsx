@@ -14,7 +14,7 @@ import { useCardsStore } from "@/lib/cards-store";
 import { generateChoices, generateVocabChoices, getSentence, getVocab } from "@/lib/data";
 import { shuffleIds } from "@/lib/deck";
 import { dictationReading } from "@/lib/dictation";
-import { speak } from "@/lib/tts";
+import { speak, speakSlow } from "@/lib/tts";
 import { useIsClient } from "@/lib/use-is-client";
 import { useQuizRun } from "@/lib/use-quiz-run";
 
@@ -275,7 +275,7 @@ function ListenPrompt({ text, label = "들리는 말의 뜻은?" }: { text: stri
         {played && (
           <button
             type="button"
-            onClick={() => speak(text, 0.6)}
+            onClick={() => speakSlow(text)}
             style={{ minHeight: 56 }}
             className={btn}
           >

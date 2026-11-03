@@ -1,10 +1,10 @@
 "use client";
 
-import { speak } from "@/lib/tts";
+import { speak, speakSlow } from "@/lib/tts";
 
 /** Quiet speaker icon; 44px tap target. Only render where the answer is already revealed. */
-export function SpeakButton({ text }: { text: string }) {
-  return (
+export function SpeakButton({ text, slow = false }: { text: string; slow?: boolean }) {
+  const main = (
     <button
       type="button"
       onClick={() => speak(text)}
@@ -21,5 +21,19 @@ export function SpeakButton({ text }: { text: string }) {
         />
       </svg>
     </button>
+  );
+  if (!slow) return main;
+  return (
+    <>
+      {main}
+      <button
+        type="button"
+        onClick={() => speakSlow(text)}
+        aria-label="천천히 듣기"
+        className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] px-1 text-caption text-[color:var(--fg-faint)] hover:text-[color:var(--fg)] transition-colors"
+      >
+        느리게
+      </button>
+    </>
   );
 }

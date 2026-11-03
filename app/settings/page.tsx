@@ -9,6 +9,9 @@ import type { PersistedState } from "@/lib/types";
 import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
 import { useCardsStore } from "@/lib/cards-store";
 import { useClientNow } from "@/lib/use-is-client";
+import { useLocalPref } from "@/lib/use-local-pref";
+import { SPEED_KEY, SPEED_RATES, isSpeechSpeed, type SpeechSpeed } from "@/lib/tts-speed";
+import { speak } from "@/lib/tts";
 import {
   RESPACE_DAYS,
   buildUndo,
@@ -53,6 +56,7 @@ export default function SettingsPage() {
   const settings = useStore((s) => s.settings);
   const updateSettings = useStore((s) => s.updateSettings);
 
+  const [speed, setSpeed] = useLocalPref<SpeechSpeed>(SPEED_KEY, "normal", isSpeechSpeed);
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [pending, setPending] = useState<PersistedState | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -325,6 +329,28 @@ export default function SettingsPage() {
                 {n}
               </option>
             ))}
+          </select>
+        </label>
+        <label className="flex justify-between items-center text-small py-2">
+          <span className="text-[color:var(--fg-soft)]">
+            발음 속도
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5 break-keep">
+              이 기기에서 모든 발음 듣기에 적용
+            </span>
+          </span>
+          <select
+            value={speed}
+            onChange={(e) => {
+              const next = e.target.value as SpeechSpeed;
+              setSpeed(next);
+              speak("ありがとう", SPEED_RATES[next]);
+            }}
+            aria-label="발음 속도"
+            className="shrink-0 bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            style={{ minHeight: 44, minWidth: 64 }}
+          >
+            <option value="normal">보통</option>
+            <option value="slow">느리게</option>
           </select>
         </label>
         <div id="backlog" className="flex justify-between items-center text-small py-2 gap-4 scroll-mt-4">
