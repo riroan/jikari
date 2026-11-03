@@ -9,19 +9,23 @@ export const MIN_CHUNKS = 3;
 export const MAX_CHUNKS = 7;
 
 const UNIT = /\{[^|{}]+\|[^|{}]+\}|[\s\S]/gu;
-const isKanji = (u: string) => u.length > 1 || /[一-鿿々]/u.test(u);
+// 루비 단위만 "{"로 시작한다. (서로게이트 쌍 글자는 length 2라서 length로 구분하면 안 됨)
+const isRuby = (u: string) => u.startsWith("{") && u.length > 1;
+const isKanji = (u: string) => isRuby(u) || /[一-鿿々]/u.test(u);
 const isKata = (u: string) => /[゠-ヿ]/u.test(u);
 // 한 글자 조사. 앞이 가나일 때는 단어 내부(でも, にほん…) 오탐이 적은 것만 자른다.
 const PARTICLES_AFTER_ANY = "はがをにでともへの";
 const PARTICLES_AFTER_KANA = "はがを";
+// 정형 표현은 내부에서 자르지 않는다.
+const FIXED = ["ありがとう", "ございます", "よろしく", "すみません", "おはよう", "こんにちは", "こんばんは", "いただきます", "ごちそうさま"].map((w) => [...w]);
 
 /** 마크업 단위(루비 하나 또는 글자 하나) 사이 경계를 골라 청크로 자른다. 못 자르면 null. */
 export function segmentSentence(markup: string): string[] | null {
   const units = markup.match(UNIT) ?? [];
   // 루비 외의 마크업 잔여물(하이라이트, 짝 없는 괄호)은 자르지 않는다.
-  if (units.some((u) => u.length === 1 && "{}|[]".includes(u))) return null;
+  if (units.some((u) => !isRuby(u) && "{}|[]".includes(u))) return null;
   const n = units.length;
-  const plainAt = (i: number) => (units[i].length > 1 ? "" : units[i]);
+  const plainAt = (i: number) => (isRuby(units[i]) ? "" : units[i]);
   const cut = new Array<boolean>(n).fill(false); // cut[i]: units[i] 뒤에서 자름
 
   for (let i = 0; i < n - 1; i++) {
@@ -37,7 +41,10 @@ export function segmentSentence(markup: string): string[] | null {
     }
     // から/まで/より: 직전 단위가 한자·가타카나일 때만
     const wordy = i > 0 && (isKanji(prev) || isKata(prev));
-    if (wordy && ((u === "か" && next === "ら") || (u === "ま" && next === "で") || (u === "よ" && next === "り"))) cut[i + 1] = true;
+    if (wordy && ((u === "か" && next === "ら") || (u === "ま" && next === "で") || (u === "よ" && next === "り"))) {
+      // から|の → からの 로 붙이고 の 뒤에서 자른다
+      cut[i + 1 < n - 1 && plainAt(i + 2) === "の" ? i + 2 : i + 1] = true;
+    }
     // 명사+です/でした 앞
     if (u === "で" && (next === "す" || (next === "し" && plainAt(i + 2) === "た")) && i > 0 && (isKanji(prev) || isKata(prev))) {
       cut[i - 1] = true;
@@ -45,6 +52,12 @@ export function segmentSentence(markup: string): string[] | null {
     }
   }
   cut[n - 1] = false;
+  const safe = [...cut];
+  for (const w of FIXED)
+    for (let s = 0; s + w.length <= n; s++)
+      if (w.every((c, k) => units[s + k] === c)) for (let k = 0; k < w.length - 1; k++) safe[s + k] = false;
+  // 보호하면 청크가 모자란 문장은 거친 컷이라도 살린다.
+  if (safe.filter(Boolean).length + 1 >= MIN_CHUNKS) cut.splice(0, n, ...safe);
   // 문장 끝 기호·종조사 앞에서는 자르지 않는다 (뒤에서 앞으로 되돌림).
   for (let i = 0; i < n - 1; i++) {
     if (cut[i] && "。！？!?…ー".includes(plainAt(i + 1)) && plainAt(i + 1) !== "") cut[i] = false;

@@ -31,6 +31,26 @@ describe("segmentSentence", () => {
   });
 });
 
+describe("rough-cut rules", () => {
+  test("fixed phrases are never split", () => {
+    const c = segmentSentence("{私|わたし}は{先生|せんせい}にありがとうございます。")!;
+    expect(c.join("")).toBe("{私|わたし}は{先生|せんせい}にありがとうございます。");
+    expect(c.some((x) => x.includes("ありがとう"))).toBe(true);
+    const d = segmentSentence("{私|わたし}は{友達|ともだち}と{朝|あさ}こんにちはと{言|い}う。")!;
+    expect(d.some((x) => x.includes("こんにちは"))).toBe(true);
+  });
+  test("から + の stays together", () => {
+    const c = segmentSentence("{母|はは}からの{手紙|てがみ}に{返事|へんじ}を{書|か}く。")!;
+    expect(c[0]).toBe("{母|はは}からの");
+  });
+  test("surrogate-pair characters are not treated as ruby units", () => {
+    const s = "𠮷{野|の}家で{友達|ともだち}と{食|た}べる。";
+    const c = segmentSentence(s)!;
+    expect(c.join("")).toBe(s);
+    expect(segmentSentence("𠮷は{水|みず}を{飲|の}む。")![0]).toBe("𠮷は");
+  });
+});
+
 describe("isAssembled", () => {
   const orig = ["{私|わたし}は", "{水|みず}を", "飲む"];
   test("exact, wrong and equivalent arrangements", () => {
