@@ -17,12 +17,22 @@ let storedPending: boolean | null = null; // cached "a pending copy exists in lo
 let baseSettings: PersistedState["settings"] | undefined;
 let baseRatings: Ratings | undefined;
 /**
+ * Version tag (ETag) of the server state this session last saw (GET or successful PUT). Sent as If-Match;
+ * the server answers 409 + its current state if someone else saved since. null = unknown/old server -> unconditional.
+ */
+let serverTag: string | null = null;
+/** Consecutive 409 merge-retries in the current flush chain; past the cap we fall back to backoff. */
+let conflicts = 0;
+const MAX_CONFLICTS = 5;
+/**
  * The GET was answered by the service worker from its last-good copy (offline). It is good enough to
  * study from, but NEVER to save over the server: answers only queue in localStorage until a fresh GET succeeds.
  */
 let snapshot = false;
 let resyncTimer: ReturnType<typeof setInterval> | null = null;
 export const RESYNC_EVENT = "jikari:resync";
+/** A 409 merge produced a state the in-memory store lacks: HydrationBoundary re-hydrates from it. */
+export const MERGED_EVENT = "jikari:merged";
 /** Offline-snapshot mode: ask the store to re-run the GET (HydrationBoundary listens). */
 function requestResync() {
   if (
@@ -138,6 +148,8 @@ export function __resetRemoteStorageForTests() {
   storedPending = null;
   baseSettings = undefined;
   baseRatings = undefined;
+  serverTag = null;
+  conflicts = 0;
   getInFlight = null;
   setSnapshot(false);
 }
@@ -158,9 +170,16 @@ async function flush() {
     const parsed = JSON.parse(value) as { state: unknown };
     const res = await fetch("/api/progress", {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(serverTag ? { "If-Match": serverTag } : {}),
+      },
       body: JSON.stringify(parsed.state),
     });
+    if (res.status === 409) {
+      await onConflict(res, value);
+      return;
+    }
     if (!res.ok) {
       const retryable =
         res.status < 400 ||
@@ -184,7 +203,9 @@ async function flush() {
       return;
     }
     failures = 0;
+    conflicts = 0;
     saveFailed = false;
+    serverTag = res.headers.get("ETag");
     const saved = parsed.state as Partial<PersistedState> | undefined;
     baseSettings = saved?.settings;
     baseRatings = saved?.ratings;
@@ -200,6 +221,27 @@ async function flush() {
     inFlight = false;
     emit();
   }
+}
+
+/**
+ * 409: another device saved since our last GET. Fold the server's current state into what we are
+ * saving (same merge as after offline), adopt its tag, ask the store to adopt the merge, and retry.
+ */
+async function onConflict(res: Response, value: string) {
+  const server = (await res.json()) as PersistedState;
+  const tag = res.headers.get("ETag");
+  let merged = server;
+  for (const v of pending != null && pending !== value ? [value, pending] : [value]) {
+    merged = mergeState(merged, (JSON.parse(v) as { state: PersistedState }).state, baseSettings, baseRatings);
+  }
+  serverTag = tag;
+  baseSettings = server.settings;
+  baseRatings = server.ratings;
+  pending = JSON.stringify({ state: merged, version: merged.schemaVersion ?? 0 });
+  writeEnvelope(pending);
+  if (typeof window !== "undefined") window.dispatchEvent(new Event(MERGED_EVENT));
+  if (++conflicts > MAX_CONFLICTS) schedule(backoffMs(++failures));
+  else schedule(0);
 }
 
 /** Retry now (network came back / app foregrounded). */
@@ -234,6 +276,7 @@ async function loadAndMerge(): Promise<string | null> {
     setSnapshot(fromSnapshot);
     if (!fromSnapshot) loaded = true;
     loadFailed = false;
+    serverTag = fromSnapshot ? null : res.headers.get("ETag");
     const env0 = readEnvelope();
     baseSettings = fromSnapshot && env0?.base ? env0.base : state.settings;
     baseRatings = fromSnapshot && env0?.baseRatings ? env0.baseRatings : state.ratings;

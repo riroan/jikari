@@ -1,5 +1,7 @@
 import "server-only";
 import type { RowDataPacket } from "mysql2";
+import type { Pool, PoolConnection } from "mysql2/promise";
+import { progressTag, sameTag } from "../progress-tag";
 import { getPool } from "./client";
 import { normalizeDailyGoal } from "../daily-goal";
 import type {
@@ -33,8 +35,7 @@ function coerceBox(raw: unknown): 1 | 2 | 3 | 4 | 5 | null {
     : null;
 }
 
-export async function getProgress(): Promise<PersistedState> {
-  const pool = getPool();
+export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = getPool()): Promise<PersistedState> {
 
   const [lsRows] = await pool.query<RowDataPacket[]>(
     "SELECT card_key, mode, card_id, box, next_due, correct_streak, last_reviewed FROM learning_states"
@@ -138,10 +139,46 @@ export async function getProgress(): Promise<PersistedState> {
   };
 }
 
-export async function putProgress(state: PersistedState): Promise<void> {
+/** One consistent snapshot (a plain getProgress runs 5 separate queries and could straddle a PUT). */
+export async function getProgressSnapshot(): Promise<PersistedState> {
   const conn = await getPool().getConnection();
   try {
+    await conn.query("START TRANSACTION WITH CONSISTENT SNAPSHOT");
+    const state = await getProgress(conn);
+    await conn.commit();
+    return state;
+  } finally {
+    conn.release();
+  }
+}
+
+export type PutResult =
+  | { ok: true; tag: string }
+  | { ok: false; current: PersistedState; tag: string };
+
+const LOCK = "jikari:progress-put";
+
+/**
+ * Replace the whole state. With `ifMatch`, only if it equals the CURRENT version tag
+ * (checked under a named DB lock so concurrent PUTs serialize); otherwise nothing is written
+ * and the current state is returned. No `ifMatch` (old clients) -> unconditional.
+ */
+export async function putProgress(state: PersistedState, ifMatch?: string | null): Promise<PutResult> {
+  const conn = await getPool().getConnection();
+  let locked = false;
+  try {
+    const [lr] = await conn.query<RowDataPacket[]>("SELECT GET_LOCK(?, 10) AS l", [LOCK]);
+    if (Number(lr[0]?.l) !== 1) throw new Error("progress lock timeout");
+    locked = true;
     await conn.beginTransaction();
+    if (ifMatch) {
+      const current = await getProgress(conn);
+      const tag = progressTag(current);
+      if (!sameTag(ifMatch, tag)) {
+        await conn.rollback();
+        return { ok: false, current, tag };
+      }
+    }
 
     await conn.query("DELETE FROM learning_states");
     const learningList = Object.values(state.learningStates);
@@ -211,11 +248,14 @@ export async function putProgress(state: PersistedState): Promise<void> {
       ]
     );
 
+    const tag = progressTag(await getProgress(conn));
     await conn.commit();
+    return { ok: true, tag };
   } catch (e) {
     await conn.rollback();
     throw e;
   } finally {
+    if (locked) await conn.query("SELECT RELEASE_LOCK(?)", [LOCK]).catch(() => {});
     conn.release();
   }
 }

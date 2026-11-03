@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useCardsStore } from "@/lib/cards-store";
-import { getProgressLoadFailed, RESYNC_EVENT, subscribeSync } from "@/lib/remote-storage";
+import { getProgressLoadFailed, MERGED_EVENT, RESYNC_EVENT, subscribeSync } from "@/lib/remote-storage";
 import { useStore } from "@/lib/store";
 
 export function HydrationBoundary({ children }: { children: React.ReactNode }) {
@@ -33,15 +33,27 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
 
   // Back online after running on the SW's offline snapshot: re-GET fresh, merge queued answers, PUT once.
   useEffect(() => {
+    let again = false; // an event arrived while a rehydrate was running: run once more after it
     const resync = () => {
-      if (retrying.current) return;
+      if (retrying.current) {
+        again = true;
+        return;
+      }
       retrying.current = true;
       void Promise.resolve(useStore.persist.rehydrate()).finally(() => {
         retrying.current = false;
+        if (again) {
+          again = false;
+          resync();
+        }
       });
     };
     window.addEventListener(RESYNC_EVENT, resync);
-    return () => window.removeEventListener(RESYNC_EVENT, resync);
+    window.addEventListener(MERGED_EVENT, resync);
+    return () => {
+      window.removeEventListener(RESYNC_EVENT, resync);
+      window.removeEventListener(MERGED_EVENT, resync);
+    };
   }, []);
 
   if (error || (progressFailed && progressHydrated)) {
