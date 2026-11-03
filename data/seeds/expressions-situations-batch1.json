@@ -1,0 +1,182 @@
+[
+  {
+    "id": "e043",
+    "situation_ko": "병원에서 열이 있다고 말할 때",
+    "expression_jp": "熱があるんです。",
+    "ruby": "{熱|ねつ}があるんです。",
+    "register": "polite",
+    "translation_ko": "열이 있어요",
+    "note_ko": "「〜んです」는 이유·사정을 설명하는 말투라 증상을 말할 때 자연스러워요. 열은 熱(ねつ)"
+  },
+  {
+    "id": "e044",
+    "situation_ko": "병원에서 어디가 아픈지 말할 때",
+    "expression_jp": "頭が痛いです。",
+    "ruby": "{頭|あたま}が{痛|いた}いです。",
+    "register": "polite",
+    "translation_ko": "머리가 아파요",
+    "note_ko": "아픈 부위만 바꿔 「お腹(なか)が痛いです」「のどが痛いです」처럼 씁니다"
+  },
+  {
+    "id": "e045",
+    "situation_ko": "예약 없이 병원이나 식당에 갔을 때",
+    "expression_jp": "予約をしていないんですが、大丈夫ですか。",
+    "ruby": "{予約|よやく}をしていないんですが、{大丈夫|だいじょうぶ}ですか。",
+    "register": "polite",
+    "translation_ko": "예약은 안 했는데 괜찮을까요?",
+    "note_ko": "「〜んですが」로 사정을 먼저 말하고 부탁·확인을 잇는 흐름이 일본어다운 말투예요"
+  },
+  {
+    "id": "e046",
+    "situation_ko": "회사에 전화해서 찾는 사람을 부를 때",
+    "expression_jp": "田中ですが、山田さんはいらっしゃいますか。",
+    "ruby": "{田中|たなか}ですが、{山田|やまだ}さんはいらっしゃいますか。",
+    "register": "polite",
+    "translation_ko": "다나카인데요, 야마다 씨 계신가요?",
+    "note_ko": "いらっしゃいますか는 「いますか」의 존경 표현. 자기 쪽 사람에게는 쓰지 않아요"
+  },
+  {
+    "id": "e047",
+    "situation_ko": "지금 통화하기 어려워서 나중에 다시 걸 때",
+    "expression_jp": "後でかけ直します。",
+    "ruby": "{後|あと}でかけ{直|なお}します。",
+    "register": "polite",
+    "translation_ko": "나중에 다시 걸게요",
+    "note_ko": "かけ直す는 한 번 끊고 다시 거는 것. 상대가 걸어 주길 바라면 「かけ直していただけますか」"
+  },
+  {
+    "id": "e048",
+    "situation_ko": "전화 소리가 작아서 잘 안 들릴 때",
+    "expression_jp": "もう少し大きな声でお願いします。",
+    "ruby": "もう{少|すこ}し{大|おお}きな{声|こえ}でお{願|ねが}いします。",
+    "register": "polite",
+    "translation_ko": "조금만 더 큰 소리로 부탁드려요",
+    "note_ko": "「声が小さくて聞こえません」보다 부드럽게 요청하는 말이에요"
+  },
+  {
+    "id": "e049",
+    "situation_ko": "문이나 엘리베이터 앞에서 먼저 가라고 양보할 때",
+    "expression_jp": "お先にどうぞ。",
+    "ruby": "お{先|さき}にどうぞ。",
+    "register": "polite",
+    "translation_ko": "먼저 가세요",
+    "note_ko": "「お先に失礼します」는 먼저 떠날 때, 「お先にどうぞ」는 상대에게 먼저 하라고 권할 때"
+  },
+  {
+    "id": "e050",
+    "situation_ko": "상사나 동료에게 말을 걸기 전에",
+    "expression_jp": "今、お時間よろしいですか。",
+    "ruby": "{今|いま}、お{時間|じかん}よろしいですか。",
+    "register": "polite",
+    "translation_ko": "지금 시간 괜찮으세요?",
+    "note_ko": "よろしい는 「いい」의 정중한 말. 말 걸기 전에 상대 사정을 먼저 묻는 습관이에요"
+  },
+  {
+    "id": "e051",
+    "situation_ko": "업무 질문에 바로 답할 수 없을 때",
+    "expression_jp": "確認してから、ご連絡します。",
+    "ruby": "{確認|かくにん}してから、ご{連絡|れんらく}します。",
+    "register": "polite",
+    "translation_ko": "확인하고 나서 연락드리겠습니다",
+    "note_ko": "모르는 걸 얼버무리지 않고 시간을 버는 무난한 업무 표현이에요"
+  },
+  {
+    "id": "e052",
+    "situation_ko": "업무 지시나 부탁을 받아들일 때",
+    "expression_jp": "承知しました。",
+    "ruby": "{承知|しょうち}しました。",
+    "register": "polite",
+    "translation_ko": "알겠습니다",
+    "note_ko": "「了解しました」는 동료끼리는 괜찮지만 윗사람에게는 承知しました나 かしこまりました가 안전해요"
+  },
+  {
+    "id": "e053",
+    "situation_ko": "전화나 업무 대화를 끝맺으며 정중하게 인사할 때",
+    "expression_jp": "失礼いたします。",
+    "ruby": "{失礼|しつれい}いたします。",
+    "register": "humble",
+    "translation_ko": "실례하겠습니다",
+    "note_ko": "「失礼します」보다 한 단계 정중한 겸양 표현. 전화를 끊기 직전에 많이 써요"
+  },
+  {
+    "id": "e054",
+    "situation_ko": "업무 전화나 메일을 시작하는 인사로",
+    "expression_jp": "お世話になっております。",
+    "ruby": "お{世話|せわ}になっております。",
+    "register": "polite",
+    "translation_ko": "늘 신세 지고 있습니다",
+    "note_ko": "실제로 신세 졌는지와 상관없이 쓰는 업무 첫인사예요"
+  },
+  {
+    "id": "e055",
+    "situation_ko": "힘든 하루를 마치고 혼잣말로",
+    "expression_jp": "疲れた。",
+    "ruby": "{疲|つか}れた。",
+    "register": "casual",
+    "translation_ko": "피곤하다",
+    "note_ko": "친구·가족 사이의 말. 윗사람 앞에서는 「疲れました」"
+  },
+  {
+    "id": "e056",
+    "situation_ko": "앞둔 일이 기대될 때",
+    "expression_jp": "楽しみだね。",
+    "ruby": "{楽|たの}しみだね。",
+    "register": "casual",
+    "translation_ko": "기대된다",
+    "note_ko": "정중하게는 「楽しみです」. 여행·약속 같은 앞으로의 일에 써요"
+  },
+  {
+    "id": "e057",
+    "situation_ko": "발표나 시험 전에 긴장될 때",
+    "expression_jp": "ちょっと緊張してる。",
+    "ruby": "ちょっと{緊張|きんちょう}してる。",
+    "register": "casual",
+    "translation_ko": "좀 긴장돼",
+    "note_ko": "「してる」는 「している」의 줄임말이에요. 마음 상태를 가볍게 털어놓는 말"
+  },
+  {
+    "id": "e058",
+    "situation_ko": "초대나 권유를 정중하게 거절할 때",
+    "expression_jp": "せっかくですが、今回は遠慮します。",
+    "ruby": "せっかくですが、{今回|こんかい}は{遠慮|えんりょ}します。",
+    "register": "polite",
+    "translation_ko": "모처럼이지만 이번에는 사양할게요",
+    "note_ko": "「せっかくですが」가 호의에 감사하는 뜻이라 거절이 부드러워져요"
+  },
+  {
+    "id": "e059",
+    "situation_ko": "부탁을 돌려서 거절할 때",
+    "expression_jp": "ちょっと難しいですね。",
+    "ruby": "ちょっと{難|むずか}しいですね。",
+    "register": "polite",
+    "translation_ko": "좀 어렵겠네요",
+    "note_ko": "「無理です」는 너무 직접적이라, 일본어는 이렇게 완곡하게 거절하는 일이 많아요"
+  },
+  {
+    "id": "e060",
+    "situation_ko": "날씨로 가볍게 말을 건넬 때",
+    "expression_jp": "今日は暑いですね。",
+    "ruby": "{今日|きょう}は{暑|あつ}いですね。",
+    "register": "polite",
+    "translation_ko": "오늘 덥네요",
+    "note_ko": "「〜ですね」로 공감을 구하는 인사. 暑い는 날씨, 熱い는 뜨거운 물건"
+  },
+  {
+    "id": "e061",
+    "situation_ko": "비가 막 내리기 시작했을 때",
+    "expression_jp": "雨、降ってきたね。",
+    "ruby": "{雨|あめ}、{降|ふ}ってきたね。",
+    "register": "casual",
+    "translation_ko": "비 오기 시작하네",
+    "note_ko": "「〜てきた」는 어떤 상태가 시작되어 다가오는 느낌을 나타내요"
+  },
+  {
+    "id": "e062",
+    "situation_ko": "힘들어 보이는 동료에게 도움을 제안할 때",
+    "expression_jp": "手伝おうか？",
+    "ruby": "{手伝|てつだ}おうか？",
+    "register": "casual",
+    "translation_ko": "도와줄까?",
+    "note_ko": "정중하게는 「お手伝いしましょうか」. 의지형(〜おう)+か로 제안해요"
+  }
+]
