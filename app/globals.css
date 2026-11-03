@@ -272,6 +272,17 @@ body::before {
   }
 }
 
+/* 말하기 탭: 듣는 중 마이크 링 (reduced-motion은 위 전역 규칙이 정지) */
+@keyframes mic-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-korean) 40%, transparent); }
+  100% { box-shadow: 0 0 0 14px transparent; }
+}
+.speak-mic[data-listening="true"] {
+  border-color: var(--accent-korean);
+  color: var(--accent-korean);
+  animation: mic-ring 1.2s ease-out infinite;
+}
+
 /* Shake animation for wrong answers — CSS (not Framer) per DESIGN.md § 7 */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }

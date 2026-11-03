@@ -7,6 +7,7 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
+import { SpeakingCard } from "@/components/SpeakingCard";
 import { DictationCard } from "@/components/DictationCard";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useCardsStore } from "@/lib/cards-store";
@@ -30,11 +31,12 @@ export default function ListeningPage() {
   );
 }
 
-type Kind = "word" | "sentence" | "dictation";
+type Kind = "word" | "sentence" | "dictation" | "speaking";
 
 function KindSwitch() {
   const k = useSearchParams().get("kind");
-  const kind = k === "sentence" || k === "dictation" ? k : "word";
+  const kind = k === "sentence" || k === "dictation" || k === "speaking" ? k : "word";
+  if (kind === "speaking") return <Speaking />;
   return kind === "dictation" ? <Dictation /> : <Listening key={kind} kind={kind} />;
 }
 
@@ -161,8 +163,7 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
 // 받아쓰기: 짧은 표현 카드 중 읽기를 후리가나에서 뽑을 수 있는 것만 (SRS 무관, 표현 덱은 읽기만 빌린다).
 const MAX_DICTATION_LEN = 24;
 
-function Dictation() {
-  const mounted = useIsClient();
+function useExpressionDeck() {
   const expressionIds = useCardsStore((s) => s.expressionIds);
   const expressionById = useCardsStore((s) => s.expressionById);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
@@ -175,6 +176,12 @@ function Dictation() {
     });
     return shuffleIds(ok, seed);
   }, [expressionIds, expressionById, seed]);
+  return { expressionById, deck, index, setIndex };
+}
+
+function Dictation() {
+  const mounted = useIsClient();
+  const { expressionById, deck, index, setIndex } = useExpressionDeck();
   const run = useQuizRun(deck.length);
 
   const shell = (children?: React.ReactNode) => (
@@ -205,6 +212,37 @@ function Dictation() {
       card={card}
       reading={reading}
       prompt={<ListenPrompt text={reading} label="들리는 대로 가나로 써 보세요" />}
+      onResolved={(ok) => {
+        run.record(card.id, ok, card.expression_jp, card.translation_ko);
+        if (!run.retrying) setIndex((i) => i + 1);
+      }}
+    />,
+  );
+}
+
+function Speaking() {
+  const mounted = useIsClient();
+  const { expressionById, deck, index, setIndex } = useExpressionDeck();
+  const run = useQuizRun(deck.length);
+  const shell = (children?: React.ReactNode) => (
+    <ModePageShell title="聞き取り" afterHeader={<KindTabs active="speaking" />}>
+      {children}
+    </ModePageShell>
+  );
+  if (!mounted) return shell();
+  if (deck.length === 0)
+    return shell(<EmptyCardsState label="말하기 할 표현이 아직 없어요." hint="표현 카드 시드 필요" />);
+  if (run.summary)
+    return shell(<SessionSummary summary={run.summary} onRetry={run.retryMissed} onNext={run.next} />);
+  const card = expressionById.get(run.retryId ?? deck[index % deck.length]);
+  const markup = card && (card.ruby ?? card.expression_jp);
+  const reading = markup ? dictationReading(markup) : null;
+  if (!card || !reading) return shell();
+  return shell(
+    <SpeakingCard
+      key={card.id}
+      card={card}
+      reading={reading}
       onResolved={(ok) => {
         run.record(card.id, ok, card.expression_jp, card.translation_ko);
         if (!run.retrying) setIndex((i) => i + 1);
@@ -274,6 +312,7 @@ function KindTabs({ active }: { active: Kind }) {
       {tab("/listening", "단어", active === "word")}
       {tab("/listening?kind=sentence", "문장", active === "sentence")}
       {tab("/listening?kind=dictation", "받아쓰기", active === "dictation")}
+      {tab("/listening?kind=speaking", "말하기", active === "speaking")}
     </div>
   );
 }
