@@ -36,6 +36,17 @@ function coerceBox(raw: unknown): 1 | 2 | 3 | 4 | 5 | null {
     : null;
 }
 
+/** Remote DB may not have migration 0013 (app_settings.daily_goal) yet: degrade instead of 500-ing the whole app. */
+let noDailyGoal = false;
+function isMissingDailyGoal(e: unknown): boolean {
+  const err = e as { errno?: number; message?: string };
+  return err?.errno === 1054 || /Unknown column/i.test(err?.message ?? "");
+}
+function markNoDailyGoal() {
+  if (!noDailyGoal) console.warn("[db] app_settings.daily_goal missing — run migration 0013; using the default daily goal until then");
+  noDailyGoal = true;
+}
+
 export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = getPool()): Promise<PersistedState> {
 
   const [lsRows] = await pool.query<RowDataPacket[]>(
@@ -90,9 +101,16 @@ export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = g
     ratings[mode] = Number(r.rating);
   }
 
-  const [stRows] = await pool.query<RowDataPacket[]>(
-    "SELECT theme, show_furigana, typing_threshold_box, daily_goal, last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1"
-  );
+  const settingsSql = (withGoal: boolean) =>
+    `SELECT theme, show_furigana, typing_threshold_box, ${withGoal ? "daily_goal, " : ""}last_active_at, current_streak, schema_version FROM app_settings WHERE id = 1`;
+  let stRows: RowDataPacket[];
+  try {
+    [stRows] = await pool.query<RowDataPacket[]>(settingsSql(!noDailyGoal));
+  } catch (e) {
+    if (noDailyGoal || !isMissingDailyGoal(e)) throw e;
+    markNoDailyGoal();
+    [stRows] = await pool.query<RowDataPacket[]>(settingsSql(false));
+  }
   const st = stRows[0];
 
   if (!st) {
@@ -151,6 +169,11 @@ export async function getProgressSnapshot(): Promise<PersistedState> {
   } finally {
     conn.release();
   }
+}
+
+/** Test-only. */
+export function __resetDailyGoalFlagForTests() {
+  noDailyGoal = false;
 }
 
 export type PutResult =
@@ -237,27 +260,35 @@ export async function putProgress(
       await conn.query("INSERT INTO ratings (mode, rating) VALUES ?", [rows]);
     }
 
-    await conn.query(
-      `INSERT INTO app_settings (id, theme, show_furigana, typing_threshold_box, daily_goal, last_active_at, current_streak, schema_version)
-       VALUES (1, ?, ?, ?, ?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE
-         theme = VALUES(theme),
-         show_furigana = VALUES(show_furigana),
-         typing_threshold_box = VALUES(typing_threshold_box),
-         daily_goal = VALUES(daily_goal),
-         last_active_at = VALUES(last_active_at),
-         current_streak = VALUES(current_streak),
-         schema_version = VALUES(schema_version)`,
-      [
-        state.settings.theme,
-        state.settings.showFurigana,
-        state.settings.typingThresholdBox,
-        state.settings.dailyGoal,
-        state.lastActiveAt,
-        state.currentStreak,
-        state.schemaVersion,
-      ]
-    );
+    const upsertSettings = (withGoal: boolean) =>
+      conn.query(
+        `INSERT INTO app_settings (id, theme, show_furigana, typing_threshold_box, ${withGoal ? "daily_goal, " : ""}last_active_at, current_streak, schema_version)
+         VALUES (1, ?, ?, ?, ${withGoal ? "?, " : ""}?, ?, ?)
+         ON DUPLICATE KEY UPDATE
+           theme = VALUES(theme),
+           show_furigana = VALUES(show_furigana),
+           typing_threshold_box = VALUES(typing_threshold_box),
+           ${withGoal ? "daily_goal = VALUES(daily_goal)," : ""}
+           last_active_at = VALUES(last_active_at),
+           current_streak = VALUES(current_streak),
+           schema_version = VALUES(schema_version)`,
+        [
+          state.settings.theme,
+          state.settings.showFurigana,
+          state.settings.typingThresholdBox,
+          ...(withGoal ? [state.settings.dailyGoal] : []),
+          state.lastActiveAt,
+          state.currentStreak,
+          state.schemaVersion,
+        ]
+      );
+    try {
+      await upsertSettings(!noDailyGoal);
+    } catch (e) {
+      if (noDailyGoal || !isMissingDailyGoal(e)) throw e;
+      markNoDailyGoal();
+      await upsertSettings(false);
+    }
 
     const tag = progressTag(await getProgress(conn));
     await conn.commit();

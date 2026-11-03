@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
 
@@ -27,7 +27,7 @@ const conn = {
 };
 vi.mock("@/lib/db/client", () => ({ getPool: () => ({ getConnection: async () => conn, query: conn.query }) }));
 
-import { getProgress, putProgress } from "@/lib/db/progress";
+import { __resetDailyGoalFlagForTests, getProgress, putProgress } from "@/lib/db/progress";
 import { progressTag, sameTag } from "@/lib/progress-tag";
 import { GET, PUT } from "@/app/api/progress/route";
 
@@ -55,6 +55,35 @@ describe("getProgress settings", () => {
   test("reads the saved daily goal instead of always falling back to 20", async () => {
     const s = await getProgress(conn as never);
     expect(s.settings.dailyGoal).toBe(50);
+  });
+});
+
+describe("missing app_settings.daily_goal column (migration 0013 not applied)", () => {
+  const impl = conn.query.getMockImplementation()!;
+  beforeEach(() => {
+    __resetDailyGoalFlagForTests();
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    conn.query.mockImplementation(async (sql: string, ...a: unknown[]) => {
+      if (sql.includes("daily_goal")) throw Object.assign(new Error("Unknown column 'daily_goal' in 'field list'"), { errno: 1054 });
+      return impl(sql, ...a);
+    });
+  });
+  afterEach(() => {
+    conn.query.mockImplementation(impl);
+    vi.restoreAllMocks();
+  });
+
+  test("GET falls back to the default goal and warns once", async () => {
+    expect((await getProgress(conn as never)).settings.dailyGoal).toBe(20);
+    await getProgress(conn as never);
+    expect(console.warn).toHaveBeenCalledTimes(1);
+  });
+
+  test("PUT skips the column instead of throwing", async () => {
+    const cur = await getProgress(conn as never);
+    expect((await putProgress(cur, progressTag(cur))).ok).toBe(true);
+    const sqls = conn.query.mock.calls.map(([q]) => String(q));
+    expect(sqls.filter((q) => q.startsWith("INSERT INTO app_settings")).every((q) => !q.includes("daily_goal"))).toBe(true);
   });
 });
 
