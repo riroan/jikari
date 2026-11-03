@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { SPEED_KEY, SPEED_RATES, clampRate, currentRate, getSpeechSpeed } from "./tts-speed";
+import { SPEED_KEY, SPEED_RATES, clampRate, currentRate, getSpeechSpeed } from "@/lib/tts-speed";
 
 function stubStorage(impl: Partial<Storage>) {
   vi.stubGlobal("localStorage", impl);
