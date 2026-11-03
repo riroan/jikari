@@ -156,7 +156,7 @@ export function SpeakingCard({
                 type="button"
                 onClick={phase === "listening" ? stop : start}
                 aria-pressed={phase === "listening"}
-                aria-label={phase === "listening" ? "듣기 멈추기" : "눌러서 말하기"}
+                aria-label="말하기"
                 className="speak-mic inline-flex items-center justify-center rounded-full border border-[color:var(--fg)] text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)] transition-colors"
                 data-listening={phase === "listening"}
                 style={{ width: 56, height: 56 }}

@@ -45,7 +45,7 @@ async function setSr(page: Page, sr: object) {
   await page.evaluate((v) => ((window as unknown as Record<string, unknown>).__sr = v), sr);
 }
 
-/** 현재 카드의 정답 표기. 짧은 카드는 close 시나리오(1글자 오차 ≥0.8)가 안 돼 다시 뽑는다. */
+/** 현재 카드의 정답 표기. 짧은 카드는 close 시나리오(1글자 오차가 6자 이상에서만)가 안 돼 다시 뽑는다. */
 async function openCard(page: Page, minLen = 0) {
   for (let i = 0; i < 30; i++) {
     await page.goto("/listening?kind=speaking");
@@ -56,7 +56,7 @@ async function openCard(page: Page, minLen = 0) {
   throw new Error("no card");
 }
 
-const mic = (page: Page) => page.getByRole("button", { name: "눌러서 말하기" });
+const mic = (page: Page) => page.getByRole("button", { name: "말하기", exact: true });
 
 test("speaking: exact -> reveals with furigana, recognizer config", async ({ page }) => {
   await fakeRecognition(page);
@@ -74,7 +74,7 @@ test("speaking: exact -> reveals with furigana, recognizer config", async ({ pag
 
 test("speaking: close shows 거의 맞아요 + heard, then reveal", async ({ page }) => {
   await fakeRecognition(page);
-  const card = await openCard(page, 5);
+  const card = await openCard(page, 6);
   await setSr(page, { mode: "result", alts: [card.expression_jp + "ん"] });
   await mic(page).click();
   await expect(page.getByText("거의 맞아요")).toBeVisible();

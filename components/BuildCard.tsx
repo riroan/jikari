@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnswerFeedback } from "@/components/AnswerFeedback";
 import { RubyText } from "@/components/Furigana";
 import { SpeakButton } from "@/components/SpeakButton";
@@ -34,6 +34,13 @@ export function BuildCard({
   const [result, setResult] = useState<boolean | null>(null);
   const done = result !== null;
   const full = placed.length === n;
+  const nextRef = useRef<HTMLButtonElement>(null);
+  // 확인 버튼이 사라지며 포커스를 잃으므로 다음 버튼으로 옮기고 화면 안으로 가져온다.
+  useEffect(() => {
+    if (!done) return;
+    nextRef.current?.focus({ preventScroll: true });
+    nextRef.current?.scrollIntoView?.({ block: "nearest" });
+  }, [done]);
 
   const check = () => {
     if (!full || done) return;
@@ -55,6 +62,7 @@ export function BuildCard({
       </div>
 
       <div
+        role="group"
         aria-label="만든 문장"
         className="flex flex-wrap content-start gap-2 min-h-[116px] py-3 border-y border-[color:var(--line)]"
         style={{ fontFamily: "var(--font-jp-serif)" }}
@@ -74,6 +82,7 @@ export function BuildCard({
       </div>
 
       <div
+        role="group"
         aria-label="청크"
         className="flex flex-wrap gap-2"
         style={{ fontFamily: "var(--font-jp-serif)" }}
@@ -96,6 +105,8 @@ export function BuildCard({
         })}
       </div>
 
+      <div className="flex flex-col gap-3">
+        <div role="status">{done && <AnswerFeedback correct={result} />}</div>
       {!done ? (
         <button
           type="button"
@@ -108,9 +119,6 @@ export function BuildCard({
         </button>
       ) : (
         <div className="flex flex-col gap-3">
-          <div role="status">
-            <AnswerFeedback correct={result} />
-          </div>
           <div
             className="text-h2 leading-[1.8] font-medium text-[color:var(--fg)]"
             style={{ fontFamily: "var(--font-jp-serif)" }}
@@ -122,7 +130,7 @@ export function BuildCard({
             <button
               type="button"
               onClick={() => onResolved(result)}
-              ref={(el) => el?.scrollIntoView?.({ block: "nearest" })}
+              ref={nextRef}
               style={{ minHeight: 56 }}
               className="scroll-mb-[calc(var(--safe-bottom)+1rem)] px-8 text-body font-medium rounded-sm border border-[color:var(--fg)] text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)] transition-colors"
               aria-label="다음 문제"
@@ -132,6 +140,7 @@ export function BuildCard({
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
