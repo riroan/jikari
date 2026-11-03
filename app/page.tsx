@@ -274,7 +274,7 @@ export default function Home() {
         </section>
 
         {/* Footer nav */}
-        <nav className="-mx-5 flex justify-between items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-[0.06em] font-medium">
+        <nav className="-mx-5 flex justify-between items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-[0.01em] min-[360px]:tracking-[0.06em] font-medium">
           <Link
             href="/"
             aria-current="page"
