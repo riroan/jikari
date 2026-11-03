@@ -14,6 +14,31 @@ const REJECTED_KEY = "jikari-pending-rejected-v1";
 type Envelope = { v: 1; base?: PersistedState["settings"]; value: string };
 let storedPending: boolean | null = null; // cached "a pending copy exists in localStorage"
 let baseSettings: PersistedState["settings"] | undefined;
+/**
+ * The GET was answered by the service worker from its last-good copy (offline). It is good enough to
+ * study from, but NEVER to save over the server: answers only queue in localStorage until a fresh GET succeeds.
+ */
+let snapshot = false;
+let resyncTimer: ReturnType<typeof setInterval> | null = null;
+export const RESYNC_EVENT = "jikari:resync";
+/** Offline-snapshot mode: ask the store to re-run the GET (HydrationBoundary listens). */
+function requestResync() {
+  if (snapshot && typeof navigator !== "undefined" && navigator.onLine !== false) {
+    window.dispatchEvent(new Event(RESYNC_EVENT));
+  }
+}
+function setSnapshot(on: boolean) {
+  snapshot = on;
+  if (on && !resyncTimer) resyncTimer = setInterval(requestResync, 15_000);
+  if (!on && resyncTimer) {
+    clearInterval(resyncTimer);
+    resyncTimer = null;
+  }
+}
+/** True while the store runs on the SW's offline snapshot (read-mostly; saves are queued). */
+export function isOfflineSnapshot() {
+  return snapshot;
+}
 
 function readEnvelope(): Envelope | null {
   try {
@@ -97,6 +122,7 @@ export function __resetRemoteStorageForTests() {
   loaded = false;
   storedPending = null;
   baseSettings = undefined;
+  setSnapshot(false);
 }
 
 function schedule(ms: number) {
@@ -151,6 +177,7 @@ async function flush() {
 
 /** Retry now (network came back / app foregrounded). */
 function kick() {
+  requestResync();
   if (pending != null && !inFlight) schedule(0);
   emit();
 }
@@ -167,9 +194,12 @@ export const remoteStorage: StateStorage = {
       const res = await fetch("/api/progress", { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       let state = (await res.json()) as { schemaVersion?: number } & Partial<PersistedState>;
-      loaded = true;
+      const fromSnapshot = res.headers.get("X-Jikari-Offline-Snapshot") === "1";
+      setSnapshot(fromSnapshot);
+      if (!fromSnapshot) loaded = true;
       loadFailed = false;
-      baseSettings = state.settings;
+      const env0 = readEnvelope();
+      baseSettings = fromSnapshot && env0?.base ? env0.base : state.settings;
       // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
       const queued = pending ?? readEnvelope()?.value ?? null;
       if (queued != null) {
@@ -180,8 +210,12 @@ export const remoteStorage: StateStorage = {
             state = mergeState(state as PersistedState, local, env?.base);
             pending = JSON.stringify({ state, version: state.schemaVersion ?? 0 });
             writeEnvelope(pending);
-            failures = 0;
-            schedule(0);
+            if (fromSnapshot) {
+              pending = null; // offline snapshot: queue only, the fresh GET will merge again
+            } else {
+              failures = 0;
+              schedule(0);
+            }
           }
         } catch (err) {
           console.error("[remote-storage] could not merge pending copy:", err);
@@ -197,6 +231,11 @@ export const remoteStorage: StateStorage = {
     }
   },
   setItem: (_name, value) => {
+    if (snapshot) {
+      writeEnvelope(value); // durable queue; flushed after the next fresh GET + merge
+      emit();
+      return;
+    }
     if (!loaded) {
       console.warn("[remote-storage] progress never loaded — not saving over the server copy");
       return;

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import { FuriganaBoundary } from "@/components/FuriganaBoundary";
 import { HydrationBoundary } from "@/components/HydrationBoundary";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { SyncStatus } from "@/components/SyncStatus";
 import { ThemeApplier } from "@/components/ThemeApplier";
 import "./globals.css";
@@ -68,6 +69,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeApplier />
+        <ServiceWorkerRegister />
         <SyncStatus />
         <HydrationBoundary>
           <FuriganaBoundary>{children}</FuriganaBoundary>

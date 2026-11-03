@@ -186,6 +186,46 @@ describe("remoteStorage", () => {
       expect(localStorage.getItem("jikari-pending-v1")).not.toBeNull();
     });
 
+    test("offline snapshot GET: queues to localStorage, never PUTs; fresh GET later merges and PUTs once", async () => {
+      fetchMock.mockResolvedValueOnce(
+        new Response(JSON.stringify(full({ learningStates: { "vocab:a": ls("a", 1) } })), {
+          headers: { "X-Jikari-Offline-Snapshot": "1" },
+        }),
+      );
+      await remoteStorage.getItem("jikari");
+      remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 700) } })));
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(putCalls(fetchMock)).toHaveLength(0);
+      expect(localStorage.getItem("jikari-pending-v1")).not.toBeNull();
+      expect(getSyncStatus()).toBe("pending");
+
+      fetchMock.mockResolvedValueOnce(Response.json(full({ learningStates: { "vocab:z": ls("z", 5) } })));
+      fetchMock.mockResolvedValue(Response.json({ ok: true }));
+      await remoteStorage.getItem("jikari");
+      await vi.advanceTimersByTimeAsync(10);
+      const puts = putCalls(fetchMock);
+      expect(puts).toHaveLength(1);
+      const body = JSON.parse((puts[0][1] as RequestInit).body as string);
+      expect(Object.keys(body.learningStates).sort()).toEqual(["vocab:a", "vocab:z"]);
+      expect(body.learningStates["vocab:a"].lastReviewed).toBe(700);
+      expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
+    });
+
+    test("offline snapshot hydration shows queued answers from the previous session", async () => {
+      localStorage.setItem(
+        "jikari-pending-v1",
+        JSON.stringify({ v: 1, value: val(full({ learningStates: { "vocab:a": ls("a", 900) } })) }),
+      );
+      __resetRemoteStorageForTests();
+      fetchMock.mockResolvedValueOnce(
+        new Response(JSON.stringify(full({})), { headers: { "X-Jikari-Offline-Snapshot": "1" } }),
+      );
+      const out = JSON.parse((await remoteStorage.getItem("jikari"))!);
+      expect(out.state.learningStates["vocab:a"].lastReviewed).toBe(900);
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(putCalls(fetchMock)).toHaveLength(0);
+    });
+
     test("corrupt stored copy is ignored", async () => {
       localStorage.setItem("jikari-pending-v1", "{nope");
       __resetRemoteStorageForTests();
