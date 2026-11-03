@@ -390,14 +390,8 @@ export function generateGrammarQuizChoices(
 // Pure helpers (seed-based for test stability)
 // ─────────────────────────────────────────────────────────────
 
-function sampleUnique<T>(pool: T[], n: number, seed: number): T[] {
-  const uniquePool = Array.from(new Set(pool));
-  const shuffled = shuffle(uniquePool, seed);
-  return shuffled.slice(0, n);
-}
-
 /**
- * 점수 상위권에서 n개를 시드로 뽑는다. `sampleUnique`의 가중치 버전.
+ * 점수 상위권에서 n개를 시드로 뽑는다.
  *
  * 상위 n개를 그대로 쓰지 않고 4배 창(window)을 두는 이유: 에폭이 바뀌어도
  * 같은 선지 3개만 반복되면 판독이 아니라 선지 배열을 외우게 된다.
