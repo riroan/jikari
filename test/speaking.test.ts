@@ -24,9 +24,15 @@ describe("judgeSpeech", () => {
   it("miss: unrelated", () => {
     expect(judgeSpeech(["こんにちは"], R, T).tier).toBe("miss");
   });
-  it("short phrase one char off is a miss (below 0.8)", () => {
-    expect(judgeSpeech(["ありがと"], "ありがとう", "ありがとう").tier).toBe("close");
-    expect(judgeSpeech(["あり"], "ありがとう", "ありがとう").tier).toBe("miss");
+  it("short phrases (<6 chars) are exact-or-miss", () => {
+    expect(judgeSpeech(["こんばんは"], "こんにちは", "こんにちは").tier).toBe("miss");
+    expect(judgeSpeech(["ありがと"], "ありがとう", "ありがとう").tier).toBe("miss");
+    expect(judgeSpeech(["こんにちは"], "こんにちは", "こんにちは").tier).toBe("exact");
+  });
+  it("close needs len>=6 and edits <= max(1, floor(len*0.2))", () => {
+    expect(judgeSpeech(["おやすみなさ"], "おやすみなさい", "おやすみなさい").tier).toBe("close"); // 7 chars, 1 edit
+    expect(judgeSpeech(["おやすみな"], "おやすみなさい", "おやすみなさい").tier).toBe("miss"); // 2 edits
+    expect(judgeSpeech(["おはようござます"], "おはようございます", "おはようございます").tier).toBe("close");
   });
   it("empty / blank alternatives are a miss with empty heard", () => {
     expect(judgeSpeech([], R, T)).toMatchObject({ tier: "miss", heard: "" });
