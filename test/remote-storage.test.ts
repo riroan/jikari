@@ -226,6 +226,18 @@ describe("remoteStorage", () => {
       expect(putCalls(fetchMock)).toHaveLength(0);
     });
 
+    test("offline + queued answers reports offline-queued; snapshot with nothing queued reports snapshot", async () => {
+      fetchMock.mockResolvedValueOnce(
+        new Response(JSON.stringify(full({})), { headers: { "X-Jikari-Offline-Snapshot": "1" } }),
+      );
+      await remoteStorage.getItem("jikari");
+      expect(getSyncStatus()).toBe("snapshot");
+      remoteStorage.setItem("jikari", val(full({})));
+      const nav = vi.spyOn(navigator, "onLine", "get").mockReturnValue(false);
+      expect(getSyncStatus()).toBe("offline-queued");
+      nav.mockRestore();
+    });
+
     test("corrupt stored copy is ignored", async () => {
       localStorage.setItem("jikari-pending-v1", "{nope");
       __resetRemoteStorageForTests();

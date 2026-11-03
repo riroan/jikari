@@ -99,10 +99,12 @@ export function subscribeSync(cb: () => void) {
   listeners.add(cb);
   return () => void listeners.delete(cb);
 }
-export type SyncStatus = "idle" | "pending" | "offline" | "failed";
+export type SyncStatus = "idle" | "pending" | "offline" | "offline-queued" | "snapshot" | "failed";
 export function getSyncStatus(): SyncStatus {
-  if (typeof navigator !== "undefined" && navigator.onLine === false) return "offline";
-  if (pending != null || inFlight || hasStoredPending()) return "pending";
+  const queued = pending != null || inFlight || hasStoredPending();
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return queued ? "offline-queued" : "offline";
+  if (queued) return "pending";
+  if (snapshot) return "snapshot"; // opened from the SW's offline copy, fresh GET not yet done
   return saveFailed ? "failed" : "idle";
 }
 /** True when the initial progress GET failed (store is on empty defaults, saving is blocked). */

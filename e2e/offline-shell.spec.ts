@@ -39,6 +39,7 @@ test("app opens offline from the SW cache, queues answers, syncs merged when bac
   }
   await page.getByRole("button", { name: "다음 문제" }).click();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("jikari-pending-v1") != null)).toBe(true);
+  await expect(page.getByText("오프라인 — 풀이는 저장돼요")).toBeVisible();
   expect(puts.length).toBeLessThanOrEqual(0);
 
   await page.goto("/settings"); // never visited online: falls back to the cached shell
