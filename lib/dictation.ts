@@ -8,7 +8,7 @@ const IGNORED = /[\s、。，．,.！？!?…・「」『』（）()〜~―—-]
 const KANA_ONLY = /^[ぁ-ゟァ-ヿー]+$/;
 
 // toKatakana→normalize: 長音 ー가 모음으로 풀려 こーひー = コーヒー = こうひい.
-const clean = (s: string) => normalizeJapanese(toKatakana(s.replace(IGNORED, "")));
+export const clean = (s: string) => normalizeJapanese(toKatakana(s.replace(IGNORED, "")));
 
 // 데이터에 `{お疲|つか}れ`처럼 base 앞뒤 가나가 후리가나에서 빠진 경우가 있다 → 보충.
 function rubyReading(base: string, furi: string): string {
