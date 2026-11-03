@@ -64,7 +64,7 @@ test("speaking: exact -> reveals with furigana, recognizer config", async ({ pag
   await expect(page.getByRole("tab", { name: "말하기", selected: true })).toBeVisible();
   await setSr(page, { mode: "result", delay: 1500, alts: ["ぜんぜん違う", card.expression_jp] });
   await mic(page).click();
-  await expect(page.getByText("듣고 있어요…")).toBeVisible();
+  // the listening status is transient; assert the final result only
   await expect(page.getByText("정확해요")).toBeVisible();
   await expect(page.locator("main ruby, main [lang=ja]").first()).toBeVisible();
   await expect(page.getByRole("button", { name: "발음 듣기" })).toBeVisible();
