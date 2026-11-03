@@ -14,6 +14,7 @@ import { useDueByKey } from "@/lib/use-due-by-key";
 import { SUBJECTS } from "@/lib/subjects";
 import { forecastDue } from "@/lib/forecast";
 import { DailyPhrase } from "@/components/DailyPhrase";
+import { useMisses } from "@/lib/use-misses";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -47,6 +48,7 @@ export default function Home() {
     [hydrated, learningStates, now],
   );
   const dueByKey = useDueByKey();
+  const missCount = useMisses().length;
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
   const { today: dueToday, backlog } = splitDue(dueCount, DAILY_GOAL);
   // 한 번에 시작할 곳 — 복습이 제일 많이 쌓인 과목. 모드 8개를 하나씩 열어
@@ -197,6 +199,28 @@ export default function Home() {
             →
           </span>
         </Link>
+
+        {missCount > 0 && (
+          <Link
+            href="/mistakes"
+            className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-2 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
+          >
+            <span className="flex items-baseline gap-3">
+              <span className="text-body font-medium text-[color:var(--fg)]">
+                오답 노트
+              </span>
+              <span
+                className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
+                style={{ fontFamily: "var(--font-jp-sans)" }}
+              >
+                誤答
+              </span>
+            </span>
+            <span className="text-caption tabular-nums text-[color:var(--fg-soft)] tracking-wide">
+              {missCount}장 →
+            </span>
+          </Link>
+        )}
 
         <Link
           href="/reading"

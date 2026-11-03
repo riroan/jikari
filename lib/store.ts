@@ -22,6 +22,7 @@ import {
 import { incrementToday, currentStreak } from "./heatmap";
 import { INITIAL_RATING, updateRating } from "./rating";
 import { remoteStorage } from "./remote-storage";
+import { recordMissAnswer } from "./misses";
 
 interface StoreActions {
   /**
@@ -86,6 +87,7 @@ export const useStore = create<Store>()(
 
       review: (mode, cardId, correct, answerMode = "choice", difficulty) => {
         const now = Date.now();
+        recordMissAnswer(mode, cardId, correct, now);
         const key = cardKey(mode, cardId);
         const states = get().learningStates;
         const existing = states[key];
