@@ -77,6 +77,21 @@ describe("remoteStorage: optimistic concurrency", () => {
     window.removeEventListener(MERGED_EVENT, merged);
   });
 
+  test("an answer in the window between the 409 merge and the rehydrate does not overwrite the merge", async () => {
+    await load();
+    fetchMock
+      .mockResolvedValueOnce(withTag(full({ learningStates: { "vocab:b": ls("b", 50) } }), '"t2"', 409))
+      .mockResolvedValue(withTag({ ok: true }, '"t3"'));
+    remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 7) } })));
+    await vi.advanceTimersByTimeAsync(0);
+    await vi.advanceTimersByTimeAsync(600);
+    // store has NOT rehydrated yet (still only knows "a"); user answers "c"
+    remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 7), "vocab:c": ls("c", 60) } })));
+    await vi.advanceTimersByTimeAsync(700);
+    const last = putBody(puts().length - 1);
+    expect(Object.keys(last.learningStates).sort()).toEqual(["vocab:a", "vocab:b", "vocab:c"]);
+  });
+
   test("409 keeps the pending copy until a PUT finally succeeds", async () => {
     await load();
     fetchMock.mockResolvedValueOnce(withTag(full(), '"t2"', 409)).mockRejectedValue(new Error("down"));
@@ -165,6 +180,25 @@ describe("remoteStorage: explicit replace (restore / reset)", () => {
     expect(puts()).toHaveLength(2);
     expect(putHeader(1, "If-Match")).toBe('"t3"');
     expect(Object.keys(putBody(1).learningStates)).toEqual(["vocab:old"]);
+  });
+
+  test("a restore rejected with 4xx does not leave replace stuck: next 409 merges", async () => {
+    fetchMock.mockResolvedValueOnce(withTag(full(), '"t0"'));
+    await remoteStorage.getItem("jikari");
+    fetchMock.mockResolvedValueOnce(new Response("bad", { status: 400 }));
+    markReplaceNext();
+    remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:old": ls("old", 10) } })));
+    await vi.advanceTimersByTimeAsync(700);
+    expect(puts()).toHaveLength(1);
+    fetchMock
+      .mockResolvedValueOnce(withTag(full({ learningStates: { "vocab:b": ls("b", 5) } }), '"t2"', 409))
+      .mockResolvedValue(withTag({ ok: true }, '"t3"'));
+    remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 20) } })));
+    expect(JSON.parse(localStorage.getItem("jikari-pending-v1")!).replace).toBeUndefined();
+    await vi.advanceTimersByTimeAsync(700);
+    expect(putHeader(0, "X-Jikari-Replace")).toBe("1");
+    expect(putHeader(1, "X-Jikari-Replace")).toBeUndefined();
+    expect(Object.keys(putBody(2).learningStates).sort()).toEqual(["vocab:a", "vocab:b"]);
   });
 
   test("after the replace is saved, later writes merge normally again", async () => {

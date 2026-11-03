@@ -33,6 +33,14 @@ let replaceRetries = 0;
 export function markReplaceNext() {
   replaceArmed = true;
 }
+/**
+ * A 409 merge produced `lastMerged`, but the zustand store still holds the pre-merge state until the
+ * rehydrate GET lands. Writes in that window are merged into `lastMerged` so a stale store never overwrites it.
+ * `mergeEpoch` lets a GET that started before the conflict (stale) not clear the flag.
+ */
+let staleStore = false;
+let lastMerged: PersistedState | null = null;
+let mergeEpoch = 0;
 /** Consecutive 409 merge-retries in the current flush chain; past the cap we fall back to backoff. */
 let conflicts = 0;
 const MAX_CONFLICTS = 5;
@@ -182,6 +190,9 @@ export function __resetRemoteStorageForTests() {
   replaceSeq = 0;
   replaceRetries = 0;
   getInFlight = null;
+  staleStore = false;
+  lastMerged = null;
+  mergeEpoch = 0;
   setSnapshot(false);
 }
 
@@ -227,6 +238,7 @@ async function flush() {
       );
       saveFailed = true;
       failures = 0;
+      if (wasReplace && seq === replaceSeq) replace = false; // a rejected restore must not stamp later answers as replace
       // keep the rejected payload for manual recovery instead of re-merging it on every load
       // (only the latest one, and PENDING is removed first so the two never coexist at full size)
       try {
@@ -237,7 +249,10 @@ async function flush() {
         }
       } catch {}
       if (pending == null) clearEnvelope();
-      if (pending != null) schedule(0);
+      else {
+        if (wasReplace) writeEnvelope(pending);
+        schedule(0);
+      }
       return;
     }
     failures = 0;
@@ -280,6 +295,9 @@ async function onConflict(res: Response, value: string) {
   baseRatings = server.ratings;
   pending = JSON.stringify({ state: merged, version: merged.schemaVersion ?? 0 });
   writeEnvelope(pending);
+  staleStore = true;
+  lastMerged = merged;
+  mergeEpoch++;
   if (typeof window !== "undefined") window.dispatchEvent(new Event(MERGED_EVENT));
   if (++conflicts > MAX_CONFLICTS) schedule(backoffMs(++failures));
   else schedule(0);
@@ -325,6 +343,7 @@ function getOnce(): Promise<string | null> {
 }
 
 async function loadAndMerge(): Promise<string | null> {
+  const epoch = mergeEpoch;
   try {
     const res = await fetch("/api/progress", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -366,6 +385,7 @@ async function loadAndMerge(): Promise<string | null> {
         console.error("[remote-storage] could not merge pending copy:", err);
       }
     }
+    if (epoch === mergeEpoch) staleStore = false; // the store is about to adopt a GET newer than the merge
     emit();
     return JSON.stringify({ state, version: state.schemaVersion ?? 0 });
   } catch (err) {
@@ -396,6 +416,13 @@ export const remoteStorage: StateStorage = {
         "[remote-storage] progress never loaded — not saving over the server copy",
       );
       return;
+    }
+    if (staleStore && lastMerged && !replace) {
+      // the store has not adopted the 409 merge yet: never save its stale state bare
+      const local = (JSON.parse(value) as { state: PersistedState }).state;
+      const m = mergeState(lastMerged, local, baseSettings, baseRatings);
+      lastMerged = m;
+      value = JSON.stringify({ state: m, version: m.schemaVersion ?? 0 });
     }
     pending = value;
     writeEnvelope(value);
