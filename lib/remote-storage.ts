@@ -2,6 +2,55 @@
 
 import type { StateStorage } from "zustand/middleware";
 import { backoffMs } from "./retry";
+import { mergeState } from "./merge-state";
+import type { PersistedState } from "./types";
+
+/**
+ * Durable copy of the not-yet-saved write, so closing the app offline loses nothing.
+ * Versioned key; envelope = { v, base (server settings it was based on), value (zustand JSON) }.
+ */
+const PENDING_KEY = "jikari-pending-v1";
+const REJECTED_KEY = "jikari-pending-rejected-v1";
+type Envelope = { v: 1; base?: PersistedState["settings"]; value: string };
+let storedPending: boolean | null = null; // cached "a pending copy exists in localStorage"
+let baseSettings: PersistedState["settings"] | undefined;
+
+function readEnvelope(): Envelope | null {
+  try {
+    const raw = localStorage.getItem(PENDING_KEY);
+    if (raw == null) return null;
+    const env = JSON.parse(raw) as Envelope;
+    if (env?.v !== 1 || typeof env.value !== "string") return null;
+    return env;
+  } catch {
+    return null;
+  }
+}
+function writeEnvelope(value: string) {
+  try {
+    localStorage.setItem(PENDING_KEY, JSON.stringify({ v: 1, base: baseSettings, value } satisfies Envelope));
+    storedPending = true;
+  } catch (err) {
+    // quota / private mode: in-memory pending still retries; durability is best-effort
+    console.warn("[remote-storage] could not persist pending write:", err);
+  }
+}
+function clearEnvelope() {
+  try {
+    localStorage.removeItem(PENDING_KEY);
+  } catch {}
+  storedPending = false;
+}
+function hasStoredPending(): boolean {
+  if (storedPending == null) {
+    try {
+      storedPending = typeof localStorage !== "undefined" && localStorage.getItem(PENDING_KEY) != null;
+    } catch {
+      storedPending = false;
+    }
+  }
+  return storedPending;
+}
 
 let timer: ReturnType<typeof setTimeout> | null = null;
 let pending: string | null = null;
@@ -28,7 +77,7 @@ export function subscribeSync(cb: () => void) {
 export type SyncStatus = "idle" | "pending" | "offline" | "failed";
 export function getSyncStatus(): SyncStatus {
   if (typeof navigator !== "undefined" && navigator.onLine === false) return "offline";
-  if (pending != null || inFlight) return "pending";
+  if (pending != null || inFlight || hasStoredPending()) return "pending";
   return saveFailed ? "failed" : "idle";
 }
 /** True when the initial progress GET failed (store is on empty defaults, saving is blocked). */
@@ -46,6 +95,8 @@ export function __resetRemoteStorageForTests() {
   loadFailed = false;
   saveFailed = false;
   loaded = false;
+  storedPending = null;
+  baseSettings = undefined;
 }
 
 function schedule(ms: number) {
@@ -74,12 +125,20 @@ async function flush() {
       console.error(`[remote-storage] PUT rejected (HTTP ${res.status}), dropping payload`);
       saveFailed = true;
       failures = 0;
+      // keep the rejected payload for manual recovery instead of re-merging it on every load
+      try {
+        const env = localStorage.getItem(PENDING_KEY);
+        if (env != null && pending == null) localStorage.setItem(REJECTED_KEY, env);
+      } catch {}
+      if (pending == null) clearEnvelope();
       if (pending != null) schedule(0);
       return;
     }
     failures = 0;
     saveFailed = false;
+    baseSettings = (parsed.state as Partial<PersistedState> | undefined)?.settings;
     if (pending != null) schedule(0); // newer state arrived mid-flight
+    else clearEnvelope();
   } catch (err) {
     console.error("[remote-storage] PUT failed, will retry:", err);
     if (pending == null) pending = value; // keep the data; a newer value wins
@@ -107,9 +166,27 @@ export const remoteStorage: StateStorage = {
     try {
       const res = await fetch("/api/progress", { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const state = (await res.json()) as { schemaVersion?: number };
+      let state = (await res.json()) as { schemaVersion?: number } & Partial<PersistedState>;
       loaded = true;
       loadFailed = false;
+      baseSettings = state.settings;
+      // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
+      const queued = pending ?? readEnvelope()?.value ?? null;
+      if (queued != null) {
+        try {
+          const local = (JSON.parse(queued) as { state: PersistedState }).state;
+          if (local && local.learningStates && state.learningStates) {
+            const env = readEnvelope();
+            state = mergeState(state as PersistedState, local, env?.base);
+            pending = JSON.stringify({ state, version: state.schemaVersion ?? 0 });
+            writeEnvelope(pending);
+            failures = 0;
+            schedule(0);
+          }
+        } catch (err) {
+          console.error("[remote-storage] could not merge pending copy:", err);
+        }
+      }
       emit();
       return JSON.stringify({ state, version: state.schemaVersion ?? 0 });
     } catch (err) {
@@ -125,6 +202,7 @@ export const remoteStorage: StateStorage = {
       return;
     }
     pending = value;
+    writeEnvelope(value);
     saveFailed = false;
     if (failures === 0) schedule(500); // during an outage keep the backoff timer
     emit();

@@ -11,6 +11,7 @@ describe("remoteStorage", () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+    localStorage.clear();
     __resetRemoteStorageForTests();
     vi.useFakeTimers();
     vi.spyOn(console, "error").mockImplementation(() => {});
@@ -128,5 +129,70 @@ describe("remoteStorage", () => {
     expect(putCalls(fetchMock)).toHaveLength(1);
     await vi.advanceTimersByTimeAsync(1500);
     expect(putCalls(fetchMock)).toHaveLength(2);
+  });
+
+  describe("durable pending copy", () => {
+    const ls = (id: string, lastReviewed: number) => ({
+      cardKey: `vocab:${id}`, mode: "vocab", cardId: id, box: 2, nextDue: 1, correctStreak: 1, lastReviewed,
+    });
+    const full = (over: Record<string, unknown>) => ({
+      schemaVersion: 6, learningStates: {}, heatmap: {}, lastActiveAt: 0, currentStreak: 0,
+      quizStats: {}, ratings: {}, settings: { theme: "system", showFurigana: true, typingThresholdBox: 4, dailyGoal: 20 }, ...over,
+    });
+    const val = (state: object) => JSON.stringify({ state, version: 6 });
+
+    test("offline PUT failure keeps a copy in localStorage; success clears it", async () => {
+      fetchMock.mockResolvedValueOnce(Response.json(full({})));
+      await remoteStorage.getItem("jikari");
+      fetchMock.mockRejectedValueOnce(new Error("offline")).mockResolvedValue(Response.json({ ok: true }));
+      remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 5) } })));
+      expect(localStorage.getItem("jikari-pending-v1")).not.toBeNull();
+      await vi.advanceTimersByTimeAsync(500);
+      expect(localStorage.getItem("jikari-pending-v1")).not.toBeNull();
+      await vi.advanceTimersByTimeAsync(2000);
+      expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
+      expect(getSyncStatus()).toBe("idle");
+    });
+
+    test("after reload: status is pending, fresh GET is merged with the stored copy and PUT once", async () => {
+      localStorage.setItem(
+        "jikari-pending-v1",
+        JSON.stringify({ v: 1, value: val(full({ lastActiveAt: 9, learningStates: { "vocab:a": ls("a", 900) } })) }),
+      );
+      __resetRemoteStorageForTests(); // simulate a fresh page load (module state gone, localStorage kept)
+      expect(getSyncStatus()).toBe("pending");
+      fetchMock.mockResolvedValueOnce(
+        Response.json(full({ learningStates: { "vocab:a": ls("a", 100), "vocab:b": ls("b", 50) } })),
+      );
+      const out = JSON.parse((await remoteStorage.getItem("jikari"))!);
+      expect(Object.keys(out.state.learningStates).sort()).toEqual(["vocab:a", "vocab:b"]);
+      fetchMock.mockResolvedValue(Response.json({ ok: true }));
+      await vi.advanceTimersByTimeAsync(10);
+      const puts = putCalls(fetchMock);
+      expect(puts).toHaveLength(1);
+      const body = JSON.parse((puts[0][1] as RequestInit).body as string);
+      expect(body.learningStates["vocab:a"].lastReviewed).toBe(900);
+      expect(body.learningStates["vocab:b"]).toBeDefined();
+      expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
+    });
+
+    test("failed GET never touches the stored copy", async () => {
+      localStorage.setItem("jikari-pending-v1", JSON.stringify({ v: 1, value: val(full({})) }));
+      __resetRemoteStorageForTests();
+      fetchMock.mockRejectedValueOnce(new Error("offline"));
+      await remoteStorage.getItem("jikari");
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(putCalls(fetchMock)).toHaveLength(0);
+      expect(localStorage.getItem("jikari-pending-v1")).not.toBeNull();
+    });
+
+    test("corrupt stored copy is ignored", async () => {
+      localStorage.setItem("jikari-pending-v1", "{nope");
+      __resetRemoteStorageForTests();
+      fetchMock.mockResolvedValueOnce(Response.json(full({})));
+      await remoteStorage.getItem("jikari");
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(putCalls(fetchMock)).toHaveLength(0);
+    });
   });
 });
