@@ -176,6 +176,42 @@ describe("remoteStorage", () => {
       expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
     });
 
+    test("concurrent reconnect triggers coalesce into one GET and one PUT; a write mid-flight adds exactly one more", async () => {
+      localStorage.setItem(
+        "jikari-pending-v1",
+        JSON.stringify({ v: 1, value: val(full({ learningStates: { "vocab:a": ls("a", 900) } })) }),
+      );
+      __resetRemoteStorageForTests();
+      const getCalls = () => fetchMock.mock.calls.filter(([, init]) => (init as RequestInit | undefined)?.method !== "PUT");
+      let releasePut!: () => void;
+      fetchMock.mockImplementation(async (_url: string, init?: RequestInit) => {
+        if (init?.method === "PUT") {
+          await new Promise<void>((r) => (releasePut = r));
+          return Response.json({ ok: true });
+        }
+        return Response.json(full({ learningStates: { "vocab:b": ls("b", 50) } }));
+      });
+
+      const a = remoteStorage.getItem("jikari"); // initial hydrate
+      const b = remoteStorage.getItem("jikari"); // resync / retry button
+      window.dispatchEvent(new Event("online"));
+      document.dispatchEvent(new Event("visibilitychange"));
+      await Promise.all([a, b]);
+      await vi.advanceTimersByTimeAsync(20_000); // 15s resync timer + backoff window
+      expect(getCalls()).toHaveLength(1);
+      expect(putCalls(fetchMock)).toHaveLength(1);
+
+      // newer local write while the PUT is in flight
+      remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 901) } })));
+      releasePut();
+      await vi.advanceTimersByTimeAsync(10);
+      expect(putCalls(fetchMock)).toHaveLength(2); // the newer write follows immediately
+      releasePut();
+      await vi.advanceTimersByTimeAsync(20_000);
+      expect(putCalls(fetchMock)).toHaveLength(2); // and only once
+      expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
+    });
+
     test("failed GET never touches the stored copy", async () => {
       localStorage.setItem("jikari-pending-v1", JSON.stringify({ v: 1, value: val(full({})) }));
       __resetRemoteStorageForTests();

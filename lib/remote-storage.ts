@@ -23,7 +23,11 @@ let resyncTimer: ReturnType<typeof setInterval> | null = null;
 export const RESYNC_EVENT = "jikari:resync";
 /** Offline-snapshot mode: ask the store to re-run the GET (HydrationBoundary listens). */
 function requestResync() {
-  if (snapshot && typeof navigator !== "undefined" && navigator.onLine !== false) {
+  if (
+    snapshot &&
+    typeof navigator !== "undefined" &&
+    navigator.onLine !== false
+  ) {
     window.dispatchEvent(new Event(RESYNC_EVENT));
   }
 }
@@ -53,7 +57,10 @@ function readEnvelope(): Envelope | null {
 }
 function writeEnvelope(value: string) {
   try {
-    localStorage.setItem(PENDING_KEY, JSON.stringify({ v: 1, base: baseSettings, value } satisfies Envelope));
+    localStorage.setItem(
+      PENDING_KEY,
+      JSON.stringify({ v: 1, base: baseSettings, value } satisfies Envelope),
+    );
     storedPending = true;
   } catch (err) {
     // quota / private mode: in-memory pending still retries; durability is best-effort
@@ -69,7 +76,9 @@ function clearEnvelope() {
 function hasStoredPending(): boolean {
   if (storedPending == null) {
     try {
-      storedPending = typeof localStorage !== "undefined" && localStorage.getItem(PENDING_KEY) != null;
+      storedPending =
+        typeof localStorage !== "undefined" &&
+        localStorage.getItem(PENDING_KEY) != null;
     } catch {
       storedPending = false;
     }
@@ -99,10 +108,12 @@ export function subscribeSync(cb: () => void) {
   listeners.add(cb);
   return () => void listeners.delete(cb);
 }
-export type SyncStatus = "idle" | "pending" | "offline" | "offline-queued" | "snapshot" | "failed";
+export type SyncStatus =
+  "idle" | "pending" | "offline" | "offline-queued" | "snapshot" | "failed";
 export function getSyncStatus(): SyncStatus {
   const queued = pending != null || inFlight || hasStoredPending();
-  if (typeof navigator !== "undefined" && navigator.onLine === false) return queued ? "offline-queued" : "offline";
+  if (typeof navigator !== "undefined" && navigator.onLine === false)
+    return queued ? "offline-queued" : "offline";
   if (queued) return "pending";
   if (snapshot) return "snapshot"; // opened from the SW's offline copy, fresh GET not yet done
   return saveFailed ? "failed" : "idle";
@@ -124,6 +135,7 @@ export function __resetRemoteStorageForTests() {
   loaded = false;
   storedPending = null;
   baseSettings = undefined;
+  getInFlight = null;
   setSnapshot(false);
 }
 
@@ -147,16 +159,22 @@ async function flush() {
       body: JSON.stringify(parsed.state),
     });
     if (!res.ok) {
-      const retryable = res.status < 400 || res.status >= 500 || [401, 403, 408, 429].includes(res.status);
+      const retryable =
+        res.status < 400 ||
+        res.status >= 500 ||
+        [401, 403, 408, 429].includes(res.status);
       if (retryable) throw new Error(`HTTP ${res.status}`);
       // Permanent rejection: retrying the same payload can never succeed. Drop it.
-      console.error(`[remote-storage] PUT rejected (HTTP ${res.status}), dropping payload`);
+      console.error(
+        `[remote-storage] PUT rejected (HTTP ${res.status}), dropping payload`,
+      );
       saveFailed = true;
       failures = 0;
       // keep the rejected payload for manual recovery instead of re-merging it on every load
       try {
         const env = localStorage.getItem(PENDING_KEY);
-        if (env != null && pending == null) localStorage.setItem(REJECTED_KEY, env);
+        if (env != null && pending == null)
+          localStorage.setItem(REJECTED_KEY, env);
       } catch {}
       if (pending == null) clearEnvelope();
       if (pending != null) schedule(0);
@@ -164,8 +182,11 @@ async function flush() {
     }
     failures = 0;
     saveFailed = false;
-    baseSettings = (parsed.state as Partial<PersistedState> | undefined)?.settings;
-    if (pending != null) schedule(0); // newer state arrived mid-flight
+    baseSettings = (parsed.state as Partial<PersistedState> | undefined)
+      ?.settings;
+    if (pending === value) pending = null; // a re-merge produced the very payload we just saved
+    if (pending != null)
+      schedule(0); // newer state arrived mid-flight
     else clearEnvelope();
   } catch (err) {
     console.error("[remote-storage] PUT failed, will retry:", err);
@@ -190,48 +211,63 @@ if (typeof window !== "undefined") {
   document.addEventListener("visibilitychange", kick);
 }
 
-export const remoteStorage: StateStorage = {
-  getItem: async (_name) => {
-    try {
-      const res = await fetch("/api/progress", { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      let state = (await res.json()) as { schemaVersion?: number } & Partial<PersistedState>;
-      const fromSnapshot = res.headers.get("X-Jikari-Offline-Snapshot") === "1";
-      setSnapshot(fromSnapshot);
-      if (!fromSnapshot) loaded = true;
-      loadFailed = false;
-      const env0 = readEnvelope();
-      baseSettings = fromSnapshot && env0?.base ? env0.base : state.settings;
-      // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
-      const queued = pending ?? readEnvelope()?.value ?? null;
-      if (queued != null) {
-        try {
-          const local = (JSON.parse(queued) as { state: PersistedState }).state;
-          if (local && local.learningStates && state.learningStates) {
-            const env = readEnvelope();
-            state = mergeState(state as PersistedState, local, env?.base);
-            pending = JSON.stringify({ state, version: state.schemaVersion ?? 0 });
-            writeEnvelope(pending);
-            if (fromSnapshot) {
-              pending = null; // offline snapshot: queue only, the fresh GET will merge again
-            } else {
-              failures = 0;
-              schedule(0);
-            }
+/** Concurrent triggers (initial hydrate, resync, retry button) share ONE GET→merge→PUT cycle. */
+let getInFlight: Promise<string | null> | null = null;
+function getOnce(): Promise<string | null> {
+  return (getInFlight ??= loadAndMerge().finally(() => {
+    getInFlight = null;
+  }));
+}
+
+async function loadAndMerge(): Promise<string | null> {
+  try {
+    const res = await fetch("/api/progress", { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    let state = (await res.json()) as {
+      schemaVersion?: number;
+    } & Partial<PersistedState>;
+    const fromSnapshot = res.headers.get("X-Jikari-Offline-Snapshot") === "1";
+    setSnapshot(fromSnapshot);
+    if (!fromSnapshot) loaded = true;
+    loadFailed = false;
+    const env0 = readEnvelope();
+    baseSettings = fromSnapshot && env0?.base ? env0.base : state.settings;
+    // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
+    const queued = pending ?? readEnvelope()?.value ?? null;
+    if (queued != null) {
+      try {
+        const local = (JSON.parse(queued) as { state: PersistedState }).state;
+        if (local && local.learningStates && state.learningStates) {
+          const env = readEnvelope();
+          state = mergeState(state as PersistedState, local, env?.base);
+          pending = JSON.stringify({
+            state,
+            version: state.schemaVersion ?? 0,
+          });
+          writeEnvelope(pending);
+          if (fromSnapshot) {
+            pending = null; // offline snapshot: queue only, the fresh GET will merge again
+          } else {
+            failures = 0;
+            schedule(0);
           }
-        } catch (err) {
-          console.error("[remote-storage] could not merge pending copy:", err);
         }
+      } catch (err) {
+        console.error("[remote-storage] could not merge pending copy:", err);
       }
-      emit();
-      return JSON.stringify({ state, version: state.schemaVersion ?? 0 });
-    } catch (err) {
-      console.error("[remote-storage] GET failed:", err);
-      loadFailed = true;
-      emit();
-      return null;
     }
-  },
+    emit();
+    return JSON.stringify({ state, version: state.schemaVersion ?? 0 });
+  } catch (err) {
+    console.error("[remote-storage] GET failed:", err);
+    loadFailed = true;
+    emit();
+    return null;
+  }
+}
+
+export const remoteStorage: StateStorage = {
+  getItem: (_name) => getOnce(),
   setItem: (_name, value) => {
     if (snapshot) {
       writeEnvelope(value); // durable queue; flushed after the next fresh GET + merge
@@ -239,7 +275,9 @@ export const remoteStorage: StateStorage = {
       return;
     }
     if (!loaded) {
-      console.warn("[remote-storage] progress never loaded — not saving over the server copy");
+      console.warn(
+        "[remote-storage] progress never loaded — not saving over the server copy",
+      );
       return;
     }
     pending = value;

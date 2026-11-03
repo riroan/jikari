@@ -42,10 +42,11 @@ test("answers given offline survive a reload and flush merged once online", asyn
   await expect.poll(() => page.evaluate(() => localStorage.getItem("jikari-pending-v1") != null)).toBe(true);
   expect(puts).toHaveLength(0);
 
-  // "close the app" while offline, reopen online
+  // "close the app" while offline (a live old page would flush on 'online' itself), reopen online
+  await page.goto("about:blank");
   up = true;
   await context.setOffline(false);
-  await page.reload();
+  await page.goto("/vocab");
   await expect.poll(() => puts.length, { timeout: 15_000 }).toBe(1);
   const keys = Object.keys(puts[0].learningStates as object);
   expect(keys).toContain("vocab:from-other-device");
