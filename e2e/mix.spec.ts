@@ -12,7 +12,7 @@ test("/mix start screen toggles and a run reaches questions", async ({ page }) =
   await kanji.click();
   await expect(kanji).toHaveAttribute("aria-pressed", "false");
   await kanji.click();
-  await page.getByRole("radio", { name: "10" }).click();
+  await page.getByRole("button", { name: "10", exact: true }).click();
   await page.getByRole("button", { name: "시작" }).click();
   await expect(page.getByText(/^1 \/ 10 · /)).toBeVisible();
   await expect(page.getByText(/^\d+ \/ 10 · (한자|단어|문장|조사|동사활용|형용사|문법|일상표현)/)).toBeVisible();

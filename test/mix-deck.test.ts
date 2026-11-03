@@ -62,3 +62,10 @@ describe("weakWeight", () => {
     expect(weakWeight(st(1, 0, 0))).toBe(weakWeight(undefined));
   });
 });
+
+describe("buildMixDeck duplicate ids", () => {
+  it("never emits the same entry twice", () => {
+    const deck = buildMixDeck({ pools: { kanji: ["a", "a", "b"] }, subjects: ["kanji"], length: 10, seed: 1 });
+    expect(deck.map((d) => d.id).sort()).toEqual(["a", "b"]);
+  });
+});

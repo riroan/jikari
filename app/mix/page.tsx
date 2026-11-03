@@ -62,19 +62,25 @@ function buildEntries(c: Config): MixEntry[] {
   const adjs = cs.vocab.filter((v) => v.adjGroup === "i_adj" || v.adjGroup === "na_adj");
   // 활용/형용사는 형마다 상태가 따로라, 카드 하나의 약함 = 그 카드 상태 중 가장 약한 것.
   const weakest = new Map<string, LearningState>();
+  const seen = new Map<string, number>();
   for (const s of Object.values(states)) {
     if (s.mode !== "conjugation" && s.mode !== "adjective") continue;
     const k = `${s.mode}:${s.cardId.slice(0, s.cardId.lastIndexOf(":"))}`;
+    if (s.lastReviewed > 0) seen.set(k, (seen.get(k) ?? 0) + 1);
     const prev = weakest.get(k);
     if (!prev || weakWeight(s) > weakWeight(prev)) weakest.set(k, s);
   }
   const grammarSub = (id: string) => (cs.grammarById.get(id)?.type === "pattern" ? "pattern" : "particle");
-  const weight = (s: MixSubject, id: string) =>
-    weakWeight(
-      s === "conjugation" || s === "adjective"
-        ? weakest.get(`${s}:${id}`)
-        : states[mixStateKey(s, id, s === "grammar" ? grammarSub(id) : undefined)],
-    );
+  const weight = (s: MixSubject, id: string) => {
+    if (s === "conjugation" || s === "adjective") {
+      const k = `${s}:${id}`;
+      const g = cs.vocabById.get(id)?.adjGroup;
+      const forms = s === "conjugation" ? ALL_CONJUGATION_FORMS.length : g === "i_adj" || g === "na_adj" ? ADJ_FORMS_FOR[g].length : 0;
+      // 안 본 형이 남아 있으면 안 본 것이 가장 약한 것으로 친다.
+      return (seen.get(k) ?? 0) < forms ? weakWeight(undefined) : weakWeight(weakest.get(k));
+    }
+    return weakWeight(states[mixStateKey(s, id, s === "grammar" ? grammarSub(id) : undefined)]);
+  };
 
   const items = buildMixDeck({
     pools: {
@@ -165,13 +171,12 @@ function Start({ initial, onStart }: { initial: Config | null; onStart: (c: Conf
         <h2 id="mix-length" className="text-xs tracking-label font-medium text-[color:var(--fg-faint)] mb-2">
           문제 수
         </h2>
-        <div className="flex gap-2" role="radiogroup" aria-labelledby="mix-length">
+        <div className="flex gap-2" role="group" aria-labelledby="mix-length">
           {MIX_LENGTHS.map((n) => (
             <button
               key={n}
               type="button"
-              role="radio"
-              aria-checked={length === n}
+              aria-pressed={length === n}
               onClick={() => setLength(n)}
               className={`${chip} min-w-[56px] tabular-nums ${length === n ? on : off}`}
             >

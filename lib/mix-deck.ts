@@ -62,9 +62,10 @@ export function buildMixDeck(opts: {
   weight?: (subject: MixSubject, id: string) => number;
 }): MixItem[] {
   const rand = rng(opts.seed);
+  const pools = new Map(opts.subjects.map((s) => [s, [...new Set(opts.pools[s] ?? [])]]));
   const lanes = opts.subjects
-    .filter((s) => (opts.pools[s]?.length ?? 0) > 0)
-    .map((s) => ({ s, cap: opts.pools[s]!.length, take: 0 }));
+    .filter((s) => pools.get(s)!.length > 0)
+    .map((s) => ({ s, cap: pools.get(s)!.length, take: 0 }));
   const total = Math.min(opts.length, lanes.reduce((n, l) => n + l.cap, 0));
   // 한 장씩 돌아가며 몫을 나눈다.
   for (let given = 0; given < total; ) {
@@ -76,7 +77,7 @@ export function buildMixDeck(opts: {
     .map((l) => ({
       s: l.s,
       q: sample(
-        [...opts.pools[l.s]!],
+        pools.get(l.s)!,
         l.take,
         opts.weight ? (id) => opts.weight!(l.s, id) : null,
         rand,
