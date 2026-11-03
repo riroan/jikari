@@ -82,3 +82,18 @@ describe("groupByRecency", () => {
     ]);
   });
 });
+
+describe("missCard", () => {
+  it("resolves present cards (grammar subtype stripped) and drops removed ones", async () => {
+    const { useCardsStore } = await import("@/lib/cards-store");
+    const { missCard } = await import("@/lib/misses");
+    useCardsStore.setState({
+      kanjiById: new Map([["k1", { id: "k1" } as never]]),
+      grammarById: new Map([["g1", { id: "g1" } as never]]),
+    });
+    expect(missCard("kanji:k1")?.ref).toEqual({ mode: "kanji", cardId: "k1" });
+    expect(missCard("grammar:pattern:g1")?.ref).toEqual({ mode: "grammar", cardId: "g1" });
+    expect(missCard("kanji:gone")).toBeNull();
+    expect(missCard("bogus:x")).toBeNull();
+  });
+});

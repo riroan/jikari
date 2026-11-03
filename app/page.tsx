@@ -14,7 +14,7 @@ import { useDueByKey } from "@/lib/use-due-by-key";
 import { SUBJECTS } from "@/lib/subjects";
 import { forecastDue } from "@/lib/forecast";
 import { DailyPhrase } from "@/components/DailyPhrase";
-import { useMisses } from "@/lib/use-misses";
+import { useLiveMisses } from "@/lib/use-misses";
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -48,7 +48,7 @@ export default function Home() {
     [hydrated, learningStates, now],
   );
   const dueByKey = useDueByKey();
-  const missCount = useMisses().length;
+  const missCount = useLiveMisses().length;
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
   const { today: dueToday, backlog } = splitDue(dueCount, DAILY_GOAL);
   // 한 번에 시작할 곳 — 복습이 제일 많이 쌓인 과목. 모드 8개를 하나씩 열어

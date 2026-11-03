@@ -5,27 +5,15 @@ import { ChapterQuizDeck } from "@/components/ChapterQuizDeck";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useCardsStore } from "@/lib/cards-store";
 import { useClientNow } from "@/lib/use-is-client";
-import { getExpression, getGrammar, getKanji, getSentence, getVocab } from "@/lib/data";
-import { groupByRecency, removeMiss, restoreMiss, type Miss } from "@/lib/misses";
+import { groupByRecency, missCard, removeMiss, restoreMiss, type Miss } from "@/lib/misses";
 import { useMisses } from "@/lib/use-misses";
-import type { ChapterMember, ExpressionCard, GrammarCard, KanjiCard, SentenceCard, VocabCard } from "@/lib/types";
+import type { AnyMissCard as AnyCard, ChapterMember } from "@/lib/types";
 
-type AnyCard = KanjiCard | VocabCard | SentenceCard | GrammarCard | ExpressionCard;
 type Resolved = { miss: Miss; member: ChapterMember; card: AnyCard };
 
 function resolve(miss: Miss): Resolved | null {
-  const i = miss.key.indexOf(":");
-  const mode = miss.key.slice(0, i) as ChapterMember["mode"];
-  const rest = miss.key.slice(i + 1);
-  const cardId = mode === "grammar" ? rest.replace(/^(pattern|particle):/, "") : rest;
-  const card: AnyCard | undefined =
-    mode === "kanji" ? getKanji(cardId)
-    : mode === "vocab" ? getVocab(cardId)
-    : mode === "sentence" ? getSentence(cardId)
-    : mode === "grammar" ? getGrammar(cardId)
-    : mode === "expression" ? getExpression(cardId)
-    : undefined;
-  return card ? { miss, member: { chapterId: "mistakes", mode, cardId }, card } : null;
+  const hit = missCard(miss.key);
+  return hit ? { miss, member: { chapterId: "mistakes", ...hit.ref }, card: hit.card } : null;
 }
 
 /** 앞면은 한국어 힌트 없이, 뒷면은 읽기/뜻. */

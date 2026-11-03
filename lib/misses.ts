@@ -3,6 +3,9 @@
  * 키는 cardKey(`mode:cardId`)로 중복 제거, 누적 틀린 횟수와 마지막 시각을 유지.
  * 이어서 CLEAR_AFTER번 연속 맞히면 로그에서 빠진다.
  */
+import { getExpression, getGrammar, getKanji, getSentence, getVocab } from "./data";
+import type { AnyMissCard, ChapterMember } from "./types";
+
 export const MISSES_KEY = "jikari-misses-v1";
 export const MISSES_CAP = 300;
 export const CLEAR_AFTER = 2;
@@ -86,4 +89,20 @@ export function groupByRecency(list: readonly Miss[], now: number): Array<{ labe
     { label: "이전", items: list.filter((m) => m.last < week) },
   ];
   return groups.filter((g) => g.items.length > 0);
+}
+
+/** 로그 키 → 현재 데이터의 카드. 데이터에서 사라진 카드면 null (목록·홈 개수가 같은 기준을 쓴다). */
+export function missCard(key: string): { ref: Pick<ChapterMember, "mode" | "cardId">; card: AnyMissCard } | null {
+  const i = key.indexOf(":");
+  const mode = key.slice(0, i) as ChapterMember["mode"];
+  const rest = key.slice(i + 1);
+  const cardId = mode === "grammar" ? rest.replace(/^(pattern|particle):/, "") : rest;
+  const card =
+    mode === "kanji" ? getKanji(cardId)
+    : mode === "vocab" ? getVocab(cardId)
+    : mode === "sentence" ? getSentence(cardId)
+    : mode === "grammar" ? getGrammar(cardId)
+    : mode === "expression" ? getExpression(cardId)
+    : undefined;
+  return card ? { ref: { mode, cardId }, card } : null;
 }

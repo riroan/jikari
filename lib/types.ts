@@ -392,3 +392,5 @@ export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   typingThresholdBox: 4,
   dailyGoal: 20,
 };
+
+export type AnyMissCard = KanjiCard | VocabCard | SentenceCard | GrammarCard | ExpressionCard;
