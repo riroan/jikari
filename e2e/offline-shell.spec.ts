@@ -42,8 +42,8 @@ test("app opens offline from the SW cache, queues answers, syncs merged when bac
   await expect(page.getByText("오프라인 — 풀이는 저장돼요")).toBeVisible();
   expect(puts.length).toBeLessThanOrEqual(0);
 
-  await page.goto("/settings"); // never visited online: falls back to the cached shell
-  await expect(page.locator("body")).not.toContainText("데이터를 불러올 수 없습니다");
+  await page.goto("/settings"); // never visited online: static offline page, not another route's HTML
+  await expect(page.locator("body")).toContainText("이 화면은 아직 저장되지 않았어요");
 
   // back online: fresh GET -> merge -> one PUT (aborted by the mock), pending kept because the PUT "failed"
   await context.setOffline(false);

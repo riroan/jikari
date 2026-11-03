@@ -31,14 +31,14 @@ Counters are max-merged, not summed: if two devices study on the same day, the h
 Merge never deletes ids. Known limit: a "reset" done offline is resurrected from S.
 
 ## Service worker (app/sw.js/route.ts, production builds only)
-- Cache names carry the build id (`next.config.ts`), old caches are deleted on activate.
-- `/_next/static/*`, icons, manifest, jsdelivr Pretendard: cache-first.
-- Navigations: network-first (4s timeout when a copy exists), fallback to that route's last HTML, else `/`.
+- Cache names carry the build id (`next.config.ts`). On activate the SW keeps exactly the **current + previous** build's caches (`jikari-meta` holds the ordered ids) and deletes older ones. Why: when the 4s network-first navigation times out, the old cached HTML may lazy-load chunks of the previous build; `cacheFirst` falls back to the previous static cache on a 404/network error.
+- `/_next/static/*`, icons, manifest, jsdelivr Pretendard: cache-first. Only `status 200`, non-opaque responses are stored; `Range` requests bypass the cache; every unawaited `cache.put` swallows errors (206 throws).
+- Navigations: network-first (4s timeout when a copy exists), fallback to **that exact path's** last HTML. Never visited -> a small static offline page (200, no-store, link to `/`) instead of another route's HTML (which would hydrate the wrong payload).
 - `GET /api/cards`: stale-while-revalidate (200 bodies only; ETag/304 stays with the browser HTTP cache).
-- `GET /api/progress`: network-first, fallback to the last good copy marked `X-Jikari-Offline-Snapshot: 1`.
+- `GET /api/progress`: network-first, fallback (network error, timeout or 5xx) to the cached copy marked `X-Jikari-Offline-Snapshot: 1`.
   In snapshot mode the store is usable but **never saves over the server**: answers only queue in localStorage;
   when online again the app re-GETs, merges and PUTs once.
-- PUT/POST are never touched. Snapshot may be older than the server (answers PUT after the last GET are not in it); the merge handles that.
+- `PUT /api/progress` is the only non-GET the SW touches; its response is returned untouched and the cached `/api/progress` entry follows it: 2xx -> the REQUEST body + the PUT's ETag (so offline reopen/restore/reset show the new state, not the pre-answer one); 409 -> the returned current state + ETag; other 4xx -> entry deleted. Network failure -> cache untouched. Other POST/PUT are never touched.
 
 ## Reset
 `?nosw=1` on any URL: unregisters the SW, deletes caches, stays off (remembered). `?nosw=0` re-enables.
