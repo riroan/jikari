@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
+import { markReplaceNext } from "@/lib/remote-storage";
 import { parseBackup, summarizeBackup } from "@/lib/import";
 import type { PersistedState } from "@/lib/types";
 import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
@@ -137,6 +138,7 @@ export default function SettingsPage() {
 
   function confirmRestore() {
     if (!pending) return;
+    markReplaceNext(); // explicit restore: saved as-is, never merged back with other data
     replaceAll(pending);
     clearUndo();
     setUndo(null);
@@ -180,6 +182,7 @@ export default function SettingsPage() {
   }
 
   function confirmReset() {
+    markReplaceNext();
     reset();
     clearUndo();
     setUndo(null);

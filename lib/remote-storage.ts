@@ -12,7 +12,7 @@ import type { PersistedState } from "./types";
 const PENDING_KEY = "jikari-pending-v1";
 const REJECTED_KEY = "jikari-pending-rejected-v1";
 type Ratings = PersistedState["ratings"];
-type Envelope = { v: 1; base?: PersistedState["settings"]; baseRatings?: Ratings; value: string };
+type Envelope = { v: 1; base?: PersistedState["settings"]; baseRatings?: Ratings; replace?: true; value: string };
 let storedPending: boolean | null = null; // cached "a pending copy exists in localStorage"
 let baseSettings: PersistedState["settings"] | undefined;
 let baseRatings: Ratings | undefined;
@@ -21,6 +21,18 @@ let baseRatings: Ratings | undefined;
  * the server answers 409 + its current state if someone else saved since. null = unknown/old server -> unconditional.
  */
 let serverTag: string | null = null;
+/**
+ * The pending copy is an explicit user replace (backup restore / reset, already confirmed): it must reach the
+ * server as-is, never merged back with older/newer data. `replaceArmed` = the next store write is that replace.
+ */
+let replace = false;
+let replaceArmed = false;
+let replaceSeq = 0; // bumps on every explicit replace, so an in-flight one finishing can't clear a newer one
+let replaceRetries = 0;
+/** Call right before replaceAll()/reset() from a confirmed destructive action. */
+export function markReplaceNext() {
+  replaceArmed = true;
+}
 /** Consecutive 409 merge-retries in the current flush chain; past the cap we fall back to backoff. */
 let conflicts = 0;
 const MAX_CONFLICTS = 5;
@@ -71,7 +83,7 @@ function writeEnvelope(value: string) {
   try {
     localStorage.setItem(
       PENDING_KEY,
-      JSON.stringify({ v: 1, base: baseSettings, baseRatings, value } satisfies Envelope),
+      JSON.stringify({ v: 1, base: baseSettings, baseRatings, ...(replace ? { replace: true } : {}), value } satisfies Envelope),
     );
     storedPending = true;
   } catch (err) {
@@ -150,6 +162,10 @@ export function __resetRemoteStorageForTests() {
   baseRatings = undefined;
   serverTag = null;
   conflicts = 0;
+  replace = false;
+  replaceArmed = false;
+  replaceSeq = 0;
+  replaceRetries = 0;
   getInFlight = null;
   setSnapshot(false);
 }
@@ -163,6 +179,8 @@ async function flush() {
   timer = null;
   if (inFlight || pending == null) return;
   const value = pending;
+  const wasReplace = replace;
+  const seq = replaceSeq;
   pending = null;
   inFlight = true;
   emit();
@@ -177,7 +195,8 @@ async function flush() {
       body: JSON.stringify(parsed.state),
     });
     if (res.status === 409) {
-      await onConflict(res, value);
+      if (wasReplace) await onReplaceConflict(value);
+      else await onConflict(res, value);
       return;
     }
     if (!res.ok) {
@@ -204,15 +223,18 @@ async function flush() {
     }
     failures = 0;
     conflicts = 0;
+    replaceRetries = 0;
     saveFailed = false;
     serverTag = res.headers.get("ETag");
     const saved = parsed.state as Partial<PersistedState> | undefined;
     baseSettings = saved?.settings;
     baseRatings = saved?.ratings;
     if (pending === value) pending = null; // a re-merge produced the very payload we just saved
-    if (pending != null)
+    if (wasReplace && seq === replaceSeq) replace = false; // the server now holds the replaced state; later writes merge normally
+    if (pending != null) {
+      if (wasReplace) writeEnvelope(pending); // drop/keep the replace flag in the stored copy
       schedule(0); // newer state arrived mid-flight
-    else clearEnvelope();
+    } else clearEnvelope();
   } catch (err) {
     console.error("[remote-storage] PUT failed, will retry:", err);
     if (pending == null) pending = value; // keep the data; a newer value wins
@@ -242,6 +264,24 @@ async function onConflict(res: Response, value: string) {
   if (typeof window !== "undefined") window.dispatchEvent(new Event(MERGED_EVENT));
   if (++conflicts > MAX_CONFLICTS) schedule(backoffMs(++failures));
   else schedule(0);
+}
+
+/**
+ * 409 on an explicit replace: do NOT merge (that would undo the restore). Only refresh the tag and
+ * retry once immediately; after that fall back to backoff (the tag is fresh by then).
+ */
+async function onReplaceConflict(value: string) {
+  const res = await fetch("/api/progress", { cache: "no-store" });
+  const tag = res.headers.get("ETag");
+  if (!res.ok || !tag || res.headers.get("X-Jikari-Offline-Snapshot") === "1")
+    throw new Error("could not refresh version tag");
+  serverTag = tag;
+  if (pending == null) pending = value;
+  if (replaceRetries++ < 1) schedule(0);
+  else {
+    replaceRetries = 0;
+    schedule(backoffMs(++failures));
+  }
 }
 
 /** Retry now (network came back / app foregrounded). */
@@ -287,7 +327,10 @@ async function loadAndMerge(): Promise<string | null> {
         const local = (JSON.parse(queued) as { state: PersistedState }).state;
         if (local && local.learningStates && state.learningStates) {
           const env = readEnvelope();
-          state = mergeState(state as PersistedState, local, env?.base, env?.baseRatings);
+          if (replace || env?.replace) {
+            replace = true;
+            state = local; // explicit restore/reset: send as-is with the fresh tag, no merge
+          } else state = mergeState(state as PersistedState, local, env?.base, env?.baseRatings);
           pending = JSON.stringify({
             state,
             version: state.schemaVersion ?? 0,
@@ -317,6 +360,13 @@ async function loadAndMerge(): Promise<string | null> {
 export const remoteStorage: StateStorage = {
   getItem: (_name) => getOnce(),
   setItem: (_name, value) => {
+    if (replaceArmed) {
+      replaceArmed = false;
+      if (snapshot || loaded) {
+        replace = true;
+        replaceSeq++;
+      }
+    }
     if (snapshot) {
       writeEnvelope(value); // durable queue; flushed after the next fresh GET + merge
       emit();

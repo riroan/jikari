@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { __resetRemoteStorageForTests, MERGED_EVENT, remoteStorage } from "@/lib/remote-storage";
+import { __resetRemoteStorageForTests, markReplaceNext, MERGED_EVENT, remoteStorage } from "@/lib/remote-storage";
 
 const ls = (id: string, lastReviewed: number) => ({
   cardKey: `vocab:${id}`, mode: "vocab", cardId: id, box: 2, nextDue: 1, correctStreak: 1, lastReviewed,
@@ -102,5 +102,78 @@ describe("remoteStorage: optimistic concurrency", () => {
     remoteStorage.setItem("jikari", val(full()));
     await vi.advanceTimersByTimeAsync(60_000);
     expect(puts()).toHaveLength(1);
+  });
+});
+
+describe("remoteStorage: explicit replace (restore / reset)", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+  const puts = () => fetchMock.mock.calls.filter(([, i]) => (i as RequestInit | undefined)?.method === "PUT");
+  const putBody = (n: number) => JSON.parse((puts()[n][1] as RequestInit).body as string);
+  const putHeader = (n: number, h: string) => ((puts()[n][1] as RequestInit).headers as Record<string, string>)[h];
+
+  beforeEach(() => {
+    localStorage.clear();
+    __resetRemoteStorageForTests();
+    vi.useFakeTimers();
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  test("restore of an older backup while a PUT is failing is not merged back into newer data", async () => {
+    const newer = full({ lastActiveAt: 900, learningStates: { "vocab:new": ls("new", 900) } });
+    const backup = full({ lastActiveAt: 10, learningStates: { "vocab:old": ls("old", 10) } });
+    fetchMock.mockResolvedValueOnce(withTag(newer, '"t0"'));
+    await remoteStorage.getItem("jikari");
+    fetchMock.mockRejectedValue(new Error("down"));
+    remoteStorage.setItem("jikari", val(newer)); // newer answers, PUT keeps failing
+    await vi.advanceTimersByTimeAsync(600);
+    markReplaceNext();
+    remoteStorage.setItem("jikari", val(backup)); // user confirms restore of the older backup
+    expect(JSON.parse(localStorage.getItem("jikari-pending-v1")!).replace).toBe(true);
+
+    // app closed and reopened online: fresh GET returns the newer data
+    __resetRemoteStorageForTests();
+    fetchMock.mockReset();
+    fetchMock.mockResolvedValueOnce(withTag(newer, '"t5"')).mockResolvedValue(withTag({ ok: true }, '"t6"'));
+    const out = JSON.parse((await remoteStorage.getItem("jikari"))!);
+    expect(Object.keys(out.state.learningStates)).toEqual(["vocab:old"]);
+    await vi.advanceTimersByTimeAsync(10);
+    expect(Object.keys(putBody(0).learningStates)).toEqual(["vocab:old"]);
+    expect(putHeader(0, "If-Match")).toBe('"t5"'); // freshest tag, no merge
+    expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
+  });
+
+  test("409 on a replace: re-GET the tag only (no merge), retry once with it", async () => {
+    fetchMock.mockResolvedValueOnce(withTag(full(), '"t0"'));
+    await remoteStorage.getItem("jikari");
+    const backup = full({ learningStates: { "vocab:old": ls("old", 10) } });
+    fetchMock
+      .mockResolvedValueOnce(withTag(full({ learningStates: { "vocab:b": ls("b", 5) } }), '"t2"', 409))
+      .mockResolvedValueOnce(withTag(full({ learningStates: { "vocab:b": ls("b", 5) } }), '"t3"')) // tag refresh GET
+      .mockResolvedValue(withTag({ ok: true }, '"t4"'));
+    markReplaceNext();
+    remoteStorage.setItem("jikari", val(backup));
+    await vi.advanceTimersByTimeAsync(700);
+    expect(puts()).toHaveLength(2);
+    expect(putHeader(1, "If-Match")).toBe('"t3"');
+    expect(Object.keys(putBody(1).learningStates)).toEqual(["vocab:old"]);
+  });
+
+  test("after the replace is saved, later writes merge normally again", async () => {
+    fetchMock.mockResolvedValueOnce(withTag(full(), '"t0"'));
+    await remoteStorage.getItem("jikari");
+    fetchMock.mockResolvedValue(withTag({ ok: true }, '"t1"'));
+    markReplaceNext();
+    remoteStorage.setItem("jikari", val(full()));
+    await vi.advanceTimersByTimeAsync(600);
+    remoteStorage.setItem("jikari", val(full({ lastActiveAt: 3 })));
+    expect(JSON.parse(localStorage.getItem("jikari-pending-v1")!).replace).toBeUndefined();
   });
 });
