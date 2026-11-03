@@ -196,7 +196,7 @@ export default function SettingsPage() {
         <h2 className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium">
           백업 / 복원
         </h2>
-        <p className="text-caption text-[color:var(--fg-soft)] leading-relaxed mb-4">
+        <p className="text-caption text-[color:var(--fg-soft)] leading-relaxed break-keep mb-4">
           학습 기록은 서버 DB에 저장됩니다. DB를 옮기거나 초기화하기 전에는
           JSON으로 내보내 두세요.
         </p>
@@ -233,7 +233,7 @@ export default function SettingsPage() {
           const stale = days >= 7;
           return (
             <p
-              className={`mt-3 text-caption tabular-nums leading-relaxed ${
+              className={`mt-3 text-caption tabular-nums leading-relaxed break-keep ${
                 stale
                   ? "text-[color:var(--accent-korean)]"
                   : "text-[color:var(--fg-faint)]"
@@ -245,7 +245,7 @@ export default function SettingsPage() {
           );
         })()}
         {lastBackupMs === null && (
-          <p className="mt-3 text-caption text-[color:var(--fg-faint)] leading-relaxed">
+          <p className="mt-3 text-caption text-[color:var(--fg-faint)] leading-relaxed break-keep">
             아직 이 브라우저에서 백업한 적이 없습니다.
           </p>
         )}
@@ -282,7 +282,7 @@ export default function SettingsPage() {
         <label className="flex justify-between items-center text-small py-2">
           <span className="text-[color:var(--fg-soft)]">
             타이핑 시작 박스
-            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5 break-keep">
               이 박스부터 4지선다 대신 직접 입력
             </span>
           </span>
@@ -294,10 +294,10 @@ export default function SettingsPage() {
               })
             }
             aria-label="타이핑 시작 박스"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            className="shrink-0 bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
             style={{ minHeight: 44, minWidth: 64 }}
           >
-            <option value={0}>사용 안 함 (4지선다만)</option>
+            <option value={0}>사용 안 함</option>
             <option value={2}>2 (공격적)</option>
             <option value={3}>3</option>
             <option value={4}>4 (기본)</option>
@@ -307,7 +307,7 @@ export default function SettingsPage() {
         <label className="flex justify-between items-center text-small py-2">
           <span className="text-[color:var(--fg-soft)]">
             하루 목표
-            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5 break-keep">
               홈의 진행선이 채워지는 복습 수
             </span>
           </span>
@@ -317,7 +317,7 @@ export default function SettingsPage() {
               updateSettings({ dailyGoal: normalizeDailyGoal(Number(e.target.value)) })
             }
             aria-label="하루 목표"
-            className="bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            className="shrink-0 bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
             style={{ minHeight: 44, minWidth: 64 }}
           >
             {DAILY_GOALS.map((n) => (
@@ -330,7 +330,7 @@ export default function SettingsPage() {
         <div id="backlog" className="flex justify-between items-center text-small py-2 gap-4 scroll-mt-4">
           <span className="text-[color:var(--fg-soft)]">
             밀린 복습 정리
-            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5">
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5 break-keep">
               밀린 카드를 며칠에 나눠 배치 (단계·기록은 그대로)
             </span>
           </span>
@@ -471,7 +471,7 @@ const RespaceDialog = forwardRef<
           </button>
         ))}
       </div>
-      <p className="text-caption text-[color:var(--fg-faint)] tabular-nums mb-3">
+      <p className="text-caption text-[color:var(--fg-faint)] tabular-nums mb-3 break-keep">
         하루 약 {Math.max(...plan.perDay.slice(1), 0)}장 · 오늘 {plan.perDay[0]}장
       </p>
       <div className="flex items-center justify-between gap-3 text-caption text-[color:var(--fg-faint)] mb-4">
@@ -544,7 +544,7 @@ function RestoreDialog({
       >
         백업 복원
       </h2>
-      <p className="text-body text-[color:var(--fg-soft)] leading-relaxed mb-4">
+      <p className="text-body text-[color:var(--fg-soft)] leading-relaxed mb-4 break-keep">
         현재 학습 기록이 이 백업으로 덮어써집니다.
       </p>
       <table className="w-full text-body tabular-nums mb-5">
@@ -631,12 +631,12 @@ function ResetDialog({
       </h2>
       <p
         id="reset-dialog-body"
-        className="text-caption text-[color:var(--fg-soft)] leading-relaxed mb-4"
+        className="text-caption text-[color:var(--fg-soft)] leading-relaxed mb-4 break-keep"
       >
         Leitner 박스, 히트맵, 연속 일수, 통계가 모두 사라집니다.
         되돌릴 수 없으니 먼저 JSON으로 내보내 두는 것을 권장합니다.
       </p>
-      <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed mb-2">
+      <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed mb-2 break-keep">
         계속하려면 <code className="text-[color:var(--fg)]">초기화</code>를 입력하세요.
       </p>
       <input
