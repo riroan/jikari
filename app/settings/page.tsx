@@ -453,7 +453,7 @@ const RespaceDialog = forwardRef<
       <h2 id="respace-dialog-title" className="text-body font-semibold mb-2">
         밀린 복습 정리
       </h2>
-      <p className="text-small text-[color:var(--fg-soft)] mb-3">
+      <p className="text-small text-[color:var(--fg-soft)] mb-3 break-keep">
         밀린 카드 {plan.overdue}장 중 오래된 {plan.overdue - moved}장은 오늘 그대로 두고,
         나머지 {moved}장의 복습일만 {days > 1 ? `내일부터 ${fmt(end)}까지` : "오늘"} 고르게 나눕니다.
         단계·기록·연속일은 바뀌지 않습니다.
