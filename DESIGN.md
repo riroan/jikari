@@ -93,6 +93,7 @@ caption       13px    Pretendard 500      letter-spacing: 0.25em (네비 힌트�
   --accent-sage: #7A8F6E;  /* heatmap 활성 */
   --accent-progress-text: #586C4F;  /* 작은 텍스트용 sage (paper 대비 5.0:1, AA). 채움/테두리는 sage, 글자는 이 토큰. 다크는 gold */
   --on-progress: var(--ink);  /* sage 채움 위 글자 (AA). 다크는 --bg */
+  --accent-korean: var(--accent-clay);  /* 의미 토큰: 한국어 악센트, 말하기 마이크 링 */
   --line:        rgba(26, 25, 21, 0.08);  /* 구분선 */
 }
 ```
@@ -250,6 +251,7 @@ xxl  56-80px  메이저 구분
 4. 후리가나 페이드인 힌트
 5. 히트맵 오늘 칸 채워지는 순간 (서브틀 스케일)
 6. 페이지 전환 (App Router 기본 크로스 페이드)
+7. 말하기 탭 마이크 듣는 중 링 (CSS `mic-ring`, 1.2s 반복, `.speak-mic[data-listening="true"]`, reduced-motion에서 정지)
 
 **그 외 모션은 기본 금지.** 추가하려면 "이게 없으면 의미가 안 통하나?"를 먼저 묻는다.
 
@@ -307,4 +309,5 @@ v1에서는 **모바일 고정 설계** 충실히. 데스크톱은 중앙에 pho
 ## 11. 변경 로그
 
 - **2026-04-17** — 초안 작성. jikari SHELVED 상태에서 `/plan-design-review`로 생성.
+- **2026-11-03** — 허용 모션에 말하기 마이크 링 추가, `--accent-korean` 의미 토큰을 `:root` 예시에 추가.
 - 리스타트 시점에 이 문서를 다시 검토하고 그때의 취향 변화를 반영.
