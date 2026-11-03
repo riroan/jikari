@@ -5,7 +5,7 @@ vi.mock("server-only", () => ({}));
 const calls: string[] = [];
 let rows: Record<string, unknown[]> = {};
 const conn = {
-  query: vi.fn(async (sql: string) => {
+  query: vi.fn(async (sql: string, _params?: unknown[]) => {
     calls.push(sql.split(/\s+/).slice(0, 3).join(" "));
     if (sql.includes("GET_LOCK")) return [[{ l: 1 }], []];
     if (sql.includes("FROM learning_states")) return [rows.ls ?? [], []];
@@ -63,9 +63,9 @@ describe("missing app_settings.daily_goal column (migration 0013 not applied)", 
   beforeEach(() => {
     __resetDailyGoalFlagForTests();
     vi.spyOn(console, "warn").mockImplementation(() => {});
-    conn.query.mockImplementation(async (sql: string, ...a: unknown[]) => {
+    conn.query.mockImplementation(async (sql: string, p?: unknown[]) => {
       if (sql.includes("daily_goal")) throw Object.assign(new Error("Unknown column 'daily_goal' in 'field list'"), { errno: 1054 });
-      return impl(sql, ...a);
+      return impl(sql, p);
     });
   });
   afterEach(() => {
