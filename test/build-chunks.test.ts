@@ -2,7 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { isAssembled, MAX_CHUNKS, MIN_CHUNKS, segmentSentence } from "@/lib/build-chunks";
-import { buildItems } from "@/lib/build-deck";
+import { buildItems, pickDistractors } from "@/lib/build-deck";
 
 describe("segmentSentence", () => {
   test("splits after particles and keeps ruby", () => {
@@ -51,6 +51,24 @@ describe("rough-cut rules", () => {
   });
 });
 
+describe("quality rules", () => {
+  const plainOf = (c: string[]) => c.map((x) => x.replace(/\{([^|]+)\|[^}]+\}/g, "$1"));
+  test("time words and quantities are their own chunk", () => {
+    expect(plainOf(segmentSentence("{父|ちち}は{毎朝|まいあさ}{新聞|しんぶん}を{読|よ}む。")!)).toEqual(["父は", "毎朝", "新聞を", "読む。"]);
+    expect(plainOf(segmentSentence("{本屋|ほんや}で{ノート|のーと}を{一冊|いっさつ}{買|か}いました。")!).includes("一冊")).toBe(true);
+  });
+  test("午前十時に stays together", () => {
+    expect(plainOf(segmentSentence("{午前|ごぜん}{十時|じゅうじ}に{学校|がっこう}に{行|い}く。")!)[0]).toBe("午前十時に");
+  });
+  test("での / について are not split", () => {
+    expect(segmentSentence("{日本|にほん}での{生活|せいかつ}は{楽|たの}しい。")).toBeNull();
+    expect(plainOf(segmentSentence("{私|わたし}は{日本|にほん}について{先生|せんせい}と{話|はな}す。")!)).toContain("日本について");
+  });
+  test("ありがとう is never cut", () => {
+    expect(segmentSentence("ありがとう。{助|たす}かったよ。")).toBeNull();
+  });
+});
+
 describe("isAssembled", () => {
   const orig = ["{私|わたし}は", "{水|みず}を", "飲む"];
   test("exact, wrong and equivalent arrangements", () => {
@@ -76,7 +94,21 @@ describe("all tracked seed cards", () => {
       expect(it.chunks.length, it.id).toBeLessThanOrEqual(MAX_CHUNKS);
     }
     console.log(`build-eligible: ${items.length} of ${sentences.length + expressions.length}`);
-    expect(items.length).toBeGreaterThan(50);
+    expect(items.length).toBeGreaterThanOrEqual(122);
+  });
+
+  test("distractors: deterministic, never text-equal or contained in the sentence", () => {
+    const plain = (c: string) => c.replace(/\{([^|]+)\|[^}]+\}/g, "$1");
+    for (const [k, it] of items.entries()) {
+      const d = pickDistractors(it, items, k);
+      expect(d, it.id).toEqual(pickDistractors(it, items, k));
+      expect(d.length, it.id).toBeGreaterThanOrEqual(1);
+      expect(d.length, it.id).toBeLessThanOrEqual(2);
+      for (const x of d) {
+        expect(it.chunks.map(plain), it.id).not.toContain(plain(x));
+        expect(plain(it.markup), it.id).not.toContain(plain(x));
+      }
+    }
   });
 
   test("never throws on any card", () => {

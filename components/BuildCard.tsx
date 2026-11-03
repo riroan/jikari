@@ -18,22 +18,28 @@ const pill =
 export function BuildCard({
   item,
   seed,
+  distractors = [],
   onResolved,
 }: {
   item: BuildItem;
   seed: number;
-  onResolved: (ok: boolean) => void;
+  /** 어려움 모드의 함정 조각 (쓰면 오답). */
+  distractors?: string[];
+  onResolved: (ok: boolean, assisted: boolean) => void;
 }) {
   const n = item.chunks.length;
-  // 은행 슬롯 i에 놓인 청크 = chunks[order[i]]
+  // 은행에 놓일 전체 조각: 정답 청크(0..n-1) + 함정(n..)
+  const all = useMemo(() => [...item.chunks, ...distractors], [item.chunks, distractors]);
+  // 은행 슬롯 i에 놓인 청크 = all[order[i]]
   const order = useMemo(() => {
-    const o = shuffleIds([...Array(n).keys()], seed);
+    const o = shuffleIds([...Array(all.length).keys()], seed);
     return o.every((v, i) => v === i) ? [...o.slice(1), o[0]] : o;
-  }, [n, seed]);
+  }, [all.length, seed]);
+  const [assisted, setAssisted] = useState(false);
   const [placed, setPlaced] = useState<number[]>([]); // 은행 슬롯 번호, 놓은 순서
   const [result, setResult] = useState<boolean | null>(null);
   const done = result !== null;
-  const full = placed.length === n;
+  const full = placed.length >= n;
   const nextRef = useRef<HTMLButtonElement>(null);
   // 확인 버튼이 사라지며 포커스를 잃으므로 다음 버튼으로 옮기고 화면 안으로 가져온다.
   useEffect(() => {
@@ -44,7 +50,13 @@ export function BuildCard({
 
   const check = () => {
     if (!full || done) return;
-    setResult(isAssembled(placed.map((s) => item.chunks[order[s]]), item.chunks));
+    setResult(isAssembled(placed.map((s) => all[order[s]]), item.chunks));
+  };
+  // 첫 조각을 맨 앞에 놓는다 (이미 다른 자리에 놓았으면 옮긴다). 카드당 한 번.
+  const hint = () => {
+    const slot = order.indexOf(0);
+    setPlaced((p) => [slot, ...p.filter((x) => x !== slot)]);
+    setAssisted(true);
   };
 
   return (
@@ -73,10 +85,10 @@ export function BuildCard({
             type="button"
             disabled={done}
             onClick={() => setPlaced((p) => p.filter((x) => x !== s))}
-            aria-label={`빼기 ${item.chunks[order[s]].replace(/\{([^|]+)\|[^}]+\}/g, "$1")}`}
+            aria-label={`빼기 ${all[order[s]].replace(/\{([^|]+)\|[^}]+\}/g, "$1")}`}
             className={`${pill} border-[color:var(--fg)]`}
           >
-            <RubyText text={item.chunks[order[s]]} />
+            <RubyText text={all[order[s]]} />
           </button>
         ))}
       </div>
@@ -89,21 +101,35 @@ export function BuildCard({
       >
         {order.map((c, s) => {
           const used = placed.includes(s);
+          // 풀이 후 남은 함정은 흐리게 + 점선으로 "안 쓰는 조각"임을 알린다.
+          const leftover = done && c >= n && !used;
           return (
             <button
               key={s}
               type="button"
               disabled={used || done}
               onClick={() => setPlaced((p) => [...p, s])}
-              className={`${pill} border-[color:var(--line)] ${
-                used ? "opacity-25" : "hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)]"
+              aria-label={leftover ? `쓰지 않는 조각 ${all[c].replace(/\{([^|]+)\|[^}]+\}/g, "$1")}` : undefined}
+              className={`${pill} ${leftover ? "border-dashed" : ""} border-[color:var(--line)] ${
+                used ? "opacity-25" : leftover ? "opacity-50 text-[color:var(--fg-faint)]" : "hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)]"
               }`}
             >
-              <RubyText text={item.chunks[c]} />
+              <RubyText text={all[c]} />
             </button>
           );
         })}
       </div>
+
+      {!done && (
+        <button
+          type="button"
+          onClick={hint}
+          disabled={assisted}
+          className="self-start min-h-[44px] px-1 text-caption tracking-wide text-[color:var(--fg-faint)] underline underline-offset-4 disabled:no-underline disabled:opacity-50"
+        >
+          첫 조각 보기
+        </button>
+      )}
 
       <div className="flex flex-col gap-3">
         <div role="status">{done && <AnswerFeedback correct={result} />}</div>
@@ -129,7 +155,7 @@ export function BuildCard({
             <SpeakButton text={item.markup} />
             <button
               type="button"
-              onClick={() => onResolved(result)}
+              onClick={() => onResolved(result, assisted)}
               ref={nextRef}
               style={{ minHeight: 56 }}
               className="scroll-mb-[calc(var(--safe-bottom)+1rem)] px-8 text-body font-medium rounded-sm border border-[color:var(--fg)] text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)] transition-colors"

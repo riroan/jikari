@@ -17,6 +17,13 @@ const isKata = (u: string) => /[゠-ヿ]/u.test(u);
 const PARTICLES_AFTER_ANY = "はがをにでともへの";
 const PARTICLES_AFTER_KANA = "はがを";
 // 정형 표현은 내부에서 자르지 않는다.
+const TIME = new Set(["毎朝", "毎日", "毎晩", "毎週", "毎月", "毎年", "今日", "明日", "昨日", "今年", "来年", "去年", "今週", "来週", "先週", "今月", "来月", "先月", "今朝", "今晩", "今夜"]);
+const CLOCK = new Set(["朝", "夜", "午前", "午後"]); // 뒤에 시각이 오면 붙여 둔다 (午前十時に)
+const COUNTED = /^[一二三四五六七八九十百千万何]+[冊匹台回個歳人度枚本杯軒]$/u;
+const NUMERAL = /^[一二三四五六七八九十百千万何]+$/u;
+const rubyBase = (u: string) => (isRuby(u) ? u.slice(1, u.indexOf("|")) : "");
+// 앞 조사와 한 덩어리인 연어: 앞에서 자르지 않고 끝에서 자른다.
+const ATTACH = ["について", "として", "にとって", "によって"].map((w) => [...w]);
 const FIXED = ["ありがとう", "ございます", "よろしく", "すみません", "おはよう", "こんにちは", "こんばんは", "いただきます", "ごちそうさま"].map((w) => [...w]);
 
 /** 마크업 단위(루비 하나 또는 글자 하나) 사이 경계를 골라 청크로 자른다. 못 자르면 null. */
@@ -37,13 +44,21 @@ export function segmentSentence(markup: string): string[] | null {
     else if (u === "て" && i > 0 && (isKanji(units[i + 1]) || isKata(units[i + 1]))) cut[i] = true;
     else if (u && PARTICLES_AFTER_ANY.includes(u)) {
       const afterKana = !!prev && !isKanji(prev) && !isKata(prev);
-      if (!afterKana || PARTICLES_AFTER_KANA.includes(u)) cut[i] = true;
+      const toNo = "にでとへ".includes(u) && next === "の"; // での, への: の까지 한 덩어리
+      if (!toNo && (!afterKana || PARTICLES_AFTER_KANA.includes(u))) cut[i] = true;
     }
     // から/まで/より: 직전 단위가 한자·가타카나일 때만
-    const wordy = i > 0 && (isKanji(prev) || isKata(prev));
+    const wordy = i > 0 && (isKanji(prev) || isKata(prev)) && rubyBase(prev) !== "分"; // 分から(ない)는 동사
     if (wordy && ((u === "か" && next === "ら") || (u === "ま" && next === "で") || (u === "よ" && next === "り"))) {
       // から|の → からの 로 붙이고 の 뒤에서 자른다
       cut[i + 1 < n - 1 && plainAt(i + 2) === "の" ? i + 2 : i + 1] = true;
+    }
+    // 시간어/수량+단위 뒤에 한자 어절이 이어지면 자른다 (毎朝|新聞を, 一冊|買います)
+    const base = rubyBase(units[i]);
+    if (base && isKanji(units[i + 1])) {
+      const atStart = i === 0 || cut[i - 1];
+      const nb = rubyBase(units[i + 1]).replace(/[時分]$/u, "");
+      if (atStart && (TIME.has(base) || (CLOCK.has(base) && !NUMERAL.test(nb))) || COUNTED.test(base)) cut[i] = true;
     }
     // 명사+です/でした 앞
     if (u === "で" && (next === "す" || (next === "し" && plainAt(i + 2) === "た")) && i > 0 && (isKanji(prev) || isKata(prev))) {
@@ -51,13 +66,18 @@ export function segmentSentence(markup: string): string[] | null {
       cut[i] = false;
     }
   }
+  for (const w of ATTACH)
+    for (let s = 1; s + w.length <= n; s++)
+      if (w.every((c, k) => plainAt(s + k) === c)) {
+        for (let k = -1; k < w.length - 1; k++) cut[s + k] = false;
+        cut[s + w.length - 1] = true;
+      }
   cut[n - 1] = false;
   const safe = [...cut];
   for (const w of FIXED)
     for (let s = 0; s + w.length <= n; s++)
       if (w.every((c, k) => units[s + k] === c)) for (let k = 0; k < w.length - 1; k++) safe[s + k] = false;
-  // 보호하면 청크가 모자란 문장은 거친 컷이라도 살린다.
-  if (safe.filter(Boolean).length + 1 >= MIN_CHUNKS) cut.splice(0, n, ...safe);
+  cut.splice(0, n, ...safe);
   // 문장 끝 기호·종조사 앞에서는 자르지 않는다 (뒤에서 앞으로 되돌림).
   for (let i = 0; i < n - 1; i++) {
     if (cut[i] && "。！？!?…ー".includes(plainAt(i + 1)) && plainAt(i + 1) !== "") cut[i] = false;

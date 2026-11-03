@@ -10,6 +10,7 @@ test("/build: assemble a sentence, check, and finish the run summary", async ({ 
       : r.fulfill({ json: { ok: true } }),
   );
   await page.goto("/build");
+  await page.getByRole("button", { name: "시작" }).click();
   const check = page.getByRole("button", { name: "확인", exact: true });
   await expect(check).toBeDisabled();
   for (let q = 0; q < 10; q++) {
@@ -27,6 +28,7 @@ test("/build: assemble a sentence, check, and finish the run summary", async ({ 
 
 test("/build: tapping a placed chunk removes it", async ({ page }) => {
   await page.goto("/build");
+  await page.getByRole("button", { name: "시작" }).click();
   const bank = page.getByLabel("청크").getByRole("button");
   await expect(bank.first()).toBeVisible();
   await bank.first().click();
@@ -34,4 +36,20 @@ test("/build: tapping a placed chunk removes it", async ({ page }) => {
   await expect(line).toHaveCount(1);
   await line.first().click();
   await expect(line).toHaveCount(0);
+});
+
+test("/build: hint places the first chunk once; hard mode adds unused chunks", async ({ page }) => {
+  await page.goto("/build");
+  await page.getByRole("button", { name: /^어려움/ }).click();
+  await page.getByRole("button", { name: "시작" }).click();
+  const bank = page.getByLabel("청크").getByRole("button");
+  await expect(bank.first()).toBeVisible();
+  const hint = page.getByRole("button", { name: "첫 조각 보기" });
+  await hint.click();
+  await expect(page.getByLabel("만든 문장").getByRole("button")).toHaveCount(1);
+  await expect(hint).toBeDisabled();
+  const total = await bank.count();
+  expect(total).toBeGreaterThanOrEqual(4);
+  await page.getByLabel("청크").locator("button:enabled").first().click();
+  await expect(page.getByLabel("만든 문장").getByRole("button")).toHaveCount(2);
 });
