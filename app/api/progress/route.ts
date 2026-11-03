@@ -28,10 +28,14 @@ export async function PUT(request: Request) {
     );
   }
 
-  const result = await putProgress(parsed.data, request.headers.get("if-match"));
+  const result = await putProgress(
+    parsed.data,
+    request.headers.get("if-match"),
+    request.headers.get("x-jikari-replace") === "1",
+  );
   if (!result.ok) {
     // Someone else saved since this client's GET: hand back the current state so it can merge and retry.
     return Response.json(result.current, { status: 409, headers: { ETag: result.tag } });
   }
-  return Response.json({ ok: true }, { headers: { ETag: result.tag } });
+  return Response.json({ ok: true, ...(result.merged ? { merged: result.merged } : {}) }, { headers: { ETag: result.tag } });
 }

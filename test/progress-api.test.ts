@@ -96,6 +96,37 @@ describe("putProgress optimistic concurrency", () => {
   });
 });
 
+describe("putProgress without If-Match", () => {
+  const newer = { card_key: "vocab:b", mode: "vocab", card_id: "b", box: 3, next_due: 9, correct_streak: 2, last_reviewed: 500 };
+  const inserted = () => conn.query.mock.calls.filter(([q]) => String(q).startsWith("INSERT INTO learning_states")).map(([, p]) => (p as unknown[][][])[0]);
+
+  test("merges with the server's newer card instead of erasing it", async () => {
+    rows.ls = [newer];
+    const incoming = { ...(await getProgress(conn as never)), learningStates: {} };
+    conn.query.mockClear();
+    const r = await putProgress(incoming);
+    expect(r.ok).toBe(true);
+    expect(inserted()[0].map((x) => x[0])).toEqual(["vocab:b"]);
+    if (r.ok) expect(r.merged?.learningStates["vocab:b"]).toBeTruthy();
+  });
+
+  test("replace + matching If-Match writes as-is", async () => {
+    rows.ls = [newer];
+    const cur = await getProgress(conn as never);
+    conn.query.mockClear();
+    const r = await putProgress({ ...cur, learningStates: {} }, progressTag(cur), true);
+    expect(r.ok).toBe(true);
+    expect(inserted()).toHaveLength(0);
+  });
+
+  test("replace + stale If-Match -> 409 path (nothing written)", async () => {
+    const cur = await getProgress(conn as never);
+    rows.ls = [newer];
+    const r = await putProgress(cur, progressTag(cur), true);
+    expect(r.ok).toBe(false);
+  });
+});
+
 describe("/api/progress route", () => {
   const valid = {
     schemaVersion: 6, learningStates: {}, heatmap: {}, lastActiveAt: 0, currentStreak: 0,

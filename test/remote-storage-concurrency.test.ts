@@ -147,6 +147,7 @@ describe("remoteStorage: explicit replace (restore / reset)", () => {
     await vi.advanceTimersByTimeAsync(10);
     expect(Object.keys(putBody(0).learningStates)).toEqual(["vocab:old"]);
     expect(putHeader(0, "If-Match")).toBe('"t5"'); // freshest tag, no merge
+    expect(putHeader(0, "X-Jikari-Replace")).toBe("1"); // server must not merge it
     expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
   });
 

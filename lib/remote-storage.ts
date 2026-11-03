@@ -206,6 +206,7 @@ async function flush() {
       headers: {
         "Content-Type": "application/json",
         ...(serverTag ? { "If-Match": serverTag } : {}),
+        ...(wasReplace ? { "X-Jikari-Replace": "1" } : {}),
       },
       body: JSON.stringify(parsed.state),
     });

@@ -2,6 +2,7 @@ import "server-only";
 import type { RowDataPacket } from "mysql2";
 import type { Pool, PoolConnection } from "mysql2/promise";
 import { progressTag, sameTag } from "../progress-tag";
+import { mergeState } from "../merge-state";
 import { getPool } from "./client";
 import { normalizeDailyGoal } from "../daily-goal";
 import type {
@@ -153,7 +154,7 @@ export async function getProgressSnapshot(): Promise<PersistedState> {
 }
 
 export type PutResult =
-  | { ok: true; tag: string }
+  | { ok: true; tag: string; merged?: PersistedState }
   | { ok: false; current: PersistedState; tag: string };
 
 const LOCK = "jikari:progress-put";
@@ -161,9 +162,15 @@ const LOCK = "jikari:progress-put";
 /**
  * Replace the whole state. With `ifMatch`, only if it equals the CURRENT version tag
  * (checked under a named DB lock so concurrent PUTs serialize); otherwise nothing is written
- * and the current state is returned. No `ifMatch` (old clients) -> unconditional.
+ * and the current state is returned. No `ifMatch` and not `replace` (old clients) -> merged into the current state; `replace` -> unconditional.
  */
-export async function putProgress(state: PersistedState, ifMatch?: string | null): Promise<PutResult> {
+export async function putProgress(
+  incoming: PersistedState,
+  ifMatch?: string | null,
+  replace = false,
+): Promise<PutResult> {
+  let state = incoming;
+  let merged: PersistedState | undefined;
   const conn = await getPool().getConnection();
   let locked = false;
   try {
@@ -178,6 +185,10 @@ export async function putProgress(state: PersistedState, ifMatch?: string | null
         await conn.rollback();
         return { ok: false, current, tag };
       }
+    } else if (!replace) {
+      // No If-Match (old client / unknown tag) and not an explicit replace: never erase what another
+      // device saved. Merge into the current server state and write that.
+      state = merged = mergeState(await getProgress(conn), incoming);
     }
 
     await conn.query("DELETE FROM learning_states");
@@ -250,7 +261,7 @@ export async function putProgress(state: PersistedState, ifMatch?: string | null
 
     const tag = progressTag(await getProgress(conn));
     await conn.commit();
-    return { ok: true, tag };
+    return { ok: true, tag, ...(merged ? { merged } : {}) };
   } catch (e) {
     await conn.rollback();
     throw e;
