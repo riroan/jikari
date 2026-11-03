@@ -79,25 +79,37 @@ function readEnvelope(): Envelope | null {
     return null;
   }
 }
+/**
+ * In-memory mirror of the newest envelope we tried to write. If localStorage throws (quota/private mode)
+ * the stored copy is stale; loadAndMerge must prefer this one so a stale envelope never replaces the store.
+ */
+let memEnv: Envelope | null = null;
+/** The last envelope write failed: the queue exists only in memory (lost if the tab closes). */
+let persistFailed = false;
 function writeEnvelope(value: string) {
+  const env: Envelope = {
+    v: 1, base: baseSettings, baseRatings, ...(replace ? { replace: true } : {}), value,
+  };
+  memEnv = env;
   try {
-    localStorage.setItem(
-      PENDING_KEY,
-      JSON.stringify({ v: 1, base: baseSettings, baseRatings, ...(replace ? { replace: true } : {}), value } satisfies Envelope),
-    );
+    localStorage.setItem(PENDING_KEY, JSON.stringify(env));
     storedPending = true;
+    persistFailed = false;
   } catch (err) {
-    // quota / private mode: in-memory pending still retries; durability is best-effort
+    persistFailed = true;
     console.warn("[remote-storage] could not persist pending write:", err);
   }
 }
 function clearEnvelope() {
+  memEnv = null;
+  persistFailed = false;
   try {
     localStorage.removeItem(PENDING_KEY);
   } catch {}
   storedPending = false;
 }
 function hasStoredPending(): boolean {
+  if (memEnv) return true;
   if (storedPending == null) {
     try {
       storedPending =
@@ -133,9 +145,10 @@ export function subscribeSync(cb: () => void) {
   return () => void listeners.delete(cb);
 }
 export type SyncStatus =
-  "idle" | "pending" | "offline" | "offline-queued" | "snapshot" | "failed";
+  "idle" | "pending" | "offline" | "offline-queued" | "snapshot" | "failed" | "no-space";
 export function getSyncStatus(): SyncStatus {
   const queued = pending != null || inFlight || hasStoredPending();
+  if (queued && persistFailed) return "no-space"; // answers are held in memory only
   if (typeof navigator !== "undefined" && navigator.onLine === false)
     return queued ? "offline-queued" : "offline";
   if (queued) return "pending";
@@ -158,6 +171,8 @@ export function __resetRemoteStorageForTests() {
   saveFailed = false;
   loaded = false;
   storedPending = null;
+  memEnv = null;
+  persistFailed = false;
   baseSettings = undefined;
   baseRatings = undefined;
   serverTag = null;
@@ -212,10 +227,13 @@ async function flush() {
       saveFailed = true;
       failures = 0;
       // keep the rejected payload for manual recovery instead of re-merging it on every load
+      // (only the latest one, and PENDING is removed first so the two never coexist at full size)
       try {
-        const env = localStorage.getItem(PENDING_KEY);
-        if (env != null && pending == null)
+        const env = localStorage.getItem(PENDING_KEY) ?? (memEnv ? JSON.stringify(memEnv) : null);
+        if (env != null && pending == null) {
+          localStorage.removeItem(PENDING_KEY);
           localStorage.setItem(REJECTED_KEY, env);
+        }
       } catch {}
       if (pending == null) clearEnvelope();
       if (pending != null) schedule(0);
@@ -317,16 +335,16 @@ async function loadAndMerge(): Promise<string | null> {
     if (!fromSnapshot) loaded = true;
     loadFailed = false;
     serverTag = fromSnapshot ? null : res.headers.get("ETag");
-    const env0 = readEnvelope();
+    const env0 = memEnv ?? readEnvelope();
     baseSettings = fromSnapshot && env0?.base ? env0.base : state.settings;
     baseRatings = fromSnapshot && env0?.baseRatings ? env0.baseRatings : state.ratings;
     // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
-    const queued = pending ?? readEnvelope()?.value ?? null;
+    const queued = pending ?? env0?.value ?? null;
     if (queued != null) {
       try {
         const local = (JSON.parse(queued) as { state: PersistedState }).state;
         if (local && local.learningStates && state.learningStates) {
-          const env = readEnvelope();
+          const env = env0;
           if (replace || env?.replace) {
             replace = true;
             state = local; // explicit restore/reset: send as-is with the fresh tag, no merge

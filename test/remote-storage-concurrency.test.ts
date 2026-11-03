@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { __resetRemoteStorageForTests, markReplaceNext, MERGED_EVENT, remoteStorage } from "@/lib/remote-storage";
+import { __resetRemoteStorageForTests, getSyncStatus, markReplaceNext, MERGED_EVENT, remoteStorage } from "@/lib/remote-storage";
 
 const ls = (id: string, lastReviewed: number) => ({
   cardKey: `vocab:${id}`, mode: "vocab", cardId: id, box: 2, nextDue: 1, correctStreak: 1, lastReviewed,
@@ -175,5 +175,62 @@ describe("remoteStorage: explicit replace (restore / reset)", () => {
     await vi.advanceTimersByTimeAsync(600);
     remoteStorage.setItem("jikari", val(full({ lastActiveAt: 3 })));
     expect(JSON.parse(localStorage.getItem("jikari-pending-v1")!).replace).toBeUndefined();
+  });
+});
+
+describe("remoteStorage: snapshot queue durability", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+  const puts = () => fetchMock.mock.calls.filter(([, i]) => (i as RequestInit | undefined)?.method === "PUT");
+  const putBody = (n: number) => JSON.parse((puts()[n][1] as RequestInit).body as string);
+  const snapshot = (state: object) =>
+    new Response(JSON.stringify(state), { headers: { "X-Jikari-Offline-Snapshot": "1" } });
+
+  beforeEach(() => {
+    localStorage.clear();
+    __resetRemoteStorageForTests();
+    vi.useFakeTimers();
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  test("quota error: the in-memory queue beats the stale stored envelope, and the status is honest", async () => {
+    fetchMock.mockResolvedValueOnce(snapshot(full()));
+    await remoteStorage.getItem("jikari");
+    remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 100) } }))); // persisted
+    const real = Storage.prototype.setItem;
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("full", "QuotaExceededError");
+    });
+    remoteStorage.setItem("jikari", val(full({ learningStates: { "vocab:a": ls("a", 100), "vocab:b": ls("b", 200) } })));
+    expect(getSyncStatus()).toBe("no-space");
+    vi.mocked(Storage.prototype.setItem).mockImplementation(real);
+
+    // stored envelope only has "a"; memory has "a"+"b"
+    fetchMock.mockResolvedValueOnce(withTag(full(), '"t9"')).mockResolvedValue(withTag({ ok: true }, '"t10"'));
+    const out = JSON.parse((await remoteStorage.getItem("jikari"))!);
+    expect(Object.keys(out.state.learningStates).sort()).toEqual(["vocab:a", "vocab:b"]);
+    await vi.advanceTimersByTimeAsync(10);
+    expect(Object.keys(putBody(0).learningStates).sort()).toEqual(["vocab:a", "vocab:b"]);
+    expect(getSyncStatus()).toBe("idle");
+  });
+
+  test("a permanently rejected payload is kept once (latest only) and the pending copy is removed", async () => {
+    fetchMock.mockResolvedValueOnce(withTag(full(), '"t0"'));
+    await remoteStorage.getItem("jikari");
+    fetchMock.mockResolvedValue(new Response("bad", { status: 400 }));
+    remoteStorage.setItem("jikari", val(full({ lastActiveAt: 1 })));
+    await vi.advanceTimersByTimeAsync(600);
+    expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
+    expect(JSON.parse(localStorage.getItem("jikari-pending-rejected-v1")!).value).toContain('"lastActiveAt":1');
+    remoteStorage.setItem("jikari", val(full({ lastActiveAt: 2 })));
+    await vi.advanceTimersByTimeAsync(600);
+    expect(JSON.parse(localStorage.getItem("jikari-pending-rejected-v1")!).value).toContain('"lastActiveAt":2');
   });
 });
