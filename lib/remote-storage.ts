@@ -11,9 +11,11 @@ import type { PersistedState } from "./types";
  */
 const PENDING_KEY = "jikari-pending-v1";
 const REJECTED_KEY = "jikari-pending-rejected-v1";
-type Envelope = { v: 1; base?: PersistedState["settings"]; value: string };
+type Ratings = PersistedState["ratings"];
+type Envelope = { v: 1; base?: PersistedState["settings"]; baseRatings?: Ratings; value: string };
 let storedPending: boolean | null = null; // cached "a pending copy exists in localStorage"
 let baseSettings: PersistedState["settings"] | undefined;
+let baseRatings: Ratings | undefined;
 /**
  * The GET was answered by the service worker from its last-good copy (offline). It is good enough to
  * study from, but NEVER to save over the server: answers only queue in localStorage until a fresh GET succeeds.
@@ -59,7 +61,7 @@ function writeEnvelope(value: string) {
   try {
     localStorage.setItem(
       PENDING_KEY,
-      JSON.stringify({ v: 1, base: baseSettings, value } satisfies Envelope),
+      JSON.stringify({ v: 1, base: baseSettings, baseRatings, value } satisfies Envelope),
     );
     storedPending = true;
   } catch (err) {
@@ -135,6 +137,7 @@ export function __resetRemoteStorageForTests() {
   loaded = false;
   storedPending = null;
   baseSettings = undefined;
+  baseRatings = undefined;
   getInFlight = null;
   setSnapshot(false);
 }
@@ -182,8 +185,9 @@ async function flush() {
     }
     failures = 0;
     saveFailed = false;
-    baseSettings = (parsed.state as Partial<PersistedState> | undefined)
-      ?.settings;
+    const saved = parsed.state as Partial<PersistedState> | undefined;
+    baseSettings = saved?.settings;
+    baseRatings = saved?.ratings;
     if (pending === value) pending = null; // a re-merge produced the very payload we just saved
     if (pending != null)
       schedule(0); // newer state arrived mid-flight
@@ -232,6 +236,7 @@ async function loadAndMerge(): Promise<string | null> {
     loadFailed = false;
     const env0 = readEnvelope();
     baseSettings = fromSnapshot && env0?.base ? env0.base : state.settings;
+    baseRatings = fromSnapshot && env0?.baseRatings ? env0.baseRatings : state.ratings;
     // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
     const queued = pending ?? readEnvelope()?.value ?? null;
     if (queued != null) {
@@ -239,7 +244,7 @@ async function loadAndMerge(): Promise<string | null> {
         const local = (JSON.parse(queued) as { state: PersistedState }).state;
         if (local && local.learningStates && state.learningStates) {
           const env = readEnvelope();
-          state = mergeState(state as PersistedState, local, env?.base);
+          state = mergeState(state as PersistedState, local, env?.base, env?.baseRatings);
           pending = JSON.stringify({
             state,
             version: state.schemaVersion ?? 0,

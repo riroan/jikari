@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { toLocalDateKey } from "@/lib/heatmap";
 import { mergeState } from "@/lib/merge-state";
 import { DEFAULT_SETTINGS, type LearningState, type PersistedState } from "@/lib/types";
 
@@ -25,19 +26,53 @@ describe("mergeState", () => {
     expect(m.heatmap).toEqual({ d1: 5, d2: 1, d3: 7 });
   });
 
-  test("lastActiveAt max; streak follows the more recent side", () => {
-    const a = st({ lastActiveAt: 10, currentStreak: 2 });
-    const b = st({ lastActiveAt: 20, currentStreak: 5 });
-    expect(mergeState(a, b)).toMatchObject({ lastActiveAt: 20, currentStreak: 5 });
-    expect(mergeState(b, a)).toMatchObject({ lastActiveAt: 20, currentStreak: 5 });
+  const DAY = 86_400_000;
+  const key = (t: number) => toLocalDateKey(t);
+  const NOW = new Date(2026, 5, 15, 12).getTime();
+
+  test("streak is recomputed from the merged heatmap, not copied from either side", () => {
+    const server = st({
+      lastActiveAt: NOW,
+      currentStreak: 3,
+      heatmap: { [key(NOW)]: 2, [key(NOW - DAY)]: 1, [key(NOW - 2 * DAY)]: 4 },
+    });
+    // phone: offline 8-day-old snapshot, stale streak 9 and older lastActiveAt
+    const local = st({ lastActiveAt: NOW - 8 * DAY, currentStreak: 9, heatmap: { [key(NOW - 8 * DAY)]: 1 } });
+    const m = mergeState(server, local);
+    expect(m.lastActiveAt).toBe(NOW);
+    expect(m.currentStreak).toBe(3);
+    expect(mergeState(local, server).currentStreak).toBe(3);
   });
 
-  test("quizStats per-field max; ratings by newer side", () => {
+  test("a stale offline snapshot must not reset the server's streak (local streak 0, older)", () => {
+    const server = st({ lastActiveAt: NOW, currentStreak: 5, heatmap: Object.fromEntries([0, 1, 2, 3, 4].map((i) => [key(NOW - i * DAY), 1])) });
+    const local = st({ lastActiveAt: NOW - 8 * DAY, currentStreak: 0 });
+    expect(mergeState(server, local).currentStreak).toBe(5);
+  });
+
+  test("merge adds a local-only day: streak counts it", () => {
+    const server = st({ lastActiveAt: NOW - DAY, heatmap: { [key(NOW - DAY)]: 1 } });
+    const local = st({ lastActiveAt: NOW, heatmap: { [key(NOW)]: 1 } });
+    expect(mergeState(server, local).currentStreak).toBe(2);
+  });
+
+  test("empty states keep streak 0", () => {
+    expect(mergeState(st(), st()).currentStreak).toBe(0);
+  });
+
+  test("quizStats per-field max; ratings: server unless local changed vs base", () => {
     const a = st({ lastActiveAt: 1, quizStats: { k: { correct: 5, wrong: 1 } }, ratings: { vocab: 1000, kanji: 900 } });
-    const b = st({ lastActiveAt: 2, quizStats: { k: { correct: 3, wrong: 4 }, z: { correct: 1, wrong: 0 } }, ratings: { vocab: 1100 } });
-    const m = mergeState(a, b);
+    const b = st({ lastActiveAt: 2, quizStats: { k: { correct: 3, wrong: 4 }, z: { correct: 1, wrong: 0 } }, ratings: { vocab: 1100, kanji: 900 } });
+    const m = mergeState(a, b, undefined, { vocab: 1000, kanji: 900 });
     expect(m.quizStats).toEqual({ k: { correct: 5, wrong: 4 }, z: { correct: 1, wrong: 0 } });
-    expect(m.ratings).toEqual({ vocab: 1100, kanji: 900 });
+    expect(m.ratings).toEqual({ vocab: 1100, kanji: 900 }); // vocab changed locally, kanji did not
+  });
+
+  test("ratings: a stale local copy (unchanged vs base) never overwrites the server; no base -> server", () => {
+    const server = st({ ratings: { vocab: 1300 } });
+    const local = st({ lastActiveAt: 99, ratings: { vocab: 1000, kanji: 800 } });
+    expect(mergeState(server, local, undefined, { vocab: 1000, kanji: 800 }).ratings).toEqual({ vocab: 1300, kanji: 800 });
+    expect(mergeState(server, local).ratings).toEqual({ vocab: 1300, kanji: 800 });
   });
 
   test("settings: 3-way per field against base", () => {

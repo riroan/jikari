@@ -13,9 +13,10 @@ Goal: study on the subway. Answers are never lost; the app opens without a conne
 |---|---|
 | learningStates | union by key; same key: larger `lastReviewed` wins (ties: nextDue, box, streak) |
 | heatmap | union by day, per-day max |
-| lastActiveAt | max; currentStreak from the side with larger lastActiveAt |
+| lastActiveAt | max |
+| currentStreak | recomputed from the merged heatmap as of the merged lastActiveAt (a stale copy's number never wins) |
 | quizStats | union; per-field max (no double count of the shared base; undercounts if both sides answered independently) |
-| ratings | union; same mode: side with larger lastActiveAt |
+| ratings | union; same mode: local wins only if it differs from the server ratings it was based on (`baseRatings` in the envelope), else S. No base -> S. Both devices rating the same mode: the flushing one wins |
 | settings | 3-way per field vs the settings L was based on: locally changed field wins, else S |
 Merge never deletes ids. Known limit: a "reset" done offline is resurrected from S.
 

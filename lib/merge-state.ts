@@ -1,3 +1,4 @@
+import { currentStreak } from "./heatmap";
 import type { LearningState, PersistedState, QuizStat } from "./types";
 
 type Settings = PersistedState["settings"];
@@ -27,10 +28,12 @@ const maxQuizStat = (a: QuizStat, b: QuizStat): QuizStat => ({
  *
  * - learningStates: union by key; same key -> larger lastReviewed wins (never drops a newer review).
  * - heatmap: union by day, per-day max (counts only grow).
- * - lastActiveAt: max. currentStreak: taken from the side with the larger lastActiveAt.
+ * - lastActiveAt: max. currentStreak: recomputed from the merged heatmap as of the merged lastActiveAt
+ *   (a stale copy's streak number can never overwrite the server's).
  * - quizStats: union; per-field max (lifetime counters only grow; max avoids double-counting
  *   the shared base, at the cost of under-counting when both sides answered independently).
- * - ratings: union; same mode -> side with larger lastActiveAt wins.
+ * - ratings: union; same mode -> the local value wins only if it DIFFERS from `baseRatings` (the server ratings
+ *   the local copy was derived from, i.e. it really changed locally); otherwise the server value. No base -> server.
  * - settings: 3-way per field against `base` (server settings when the local copy was last synced):
  *   a field changed locally (local != base) wins, otherwise the server value. No base -> server.
  *
@@ -41,29 +44,28 @@ export function mergeState(
   server: PersistedState,
   local: PersistedState,
   base?: Settings,
+  baseRatings?: Record<string, number>,
 ): PersistedState {
-  const localNewer = local.lastActiveAt > server.lastActiveAt;
-  const tie = local.lastActiveAt === server.lastActiveAt;
+  const lastActiveAt = Math.max(server.lastActiveAt, local.lastActiveAt);
+  const heatmap = mergeRecord(server.heatmap ?? {}, local.heatmap ?? {}, Math.max);
   const settings: Settings = { ...server.settings };
   if (base) {
     for (const k of Object.keys(local.settings) as (keyof Settings)[]) {
       if (local.settings[k] !== base[k]) (settings as Record<string, unknown>)[k] = local.settings[k];
     }
   }
+  const ratings: Record<string, number> = { ...server.ratings };
+  for (const [mode, l] of Object.entries(local.ratings ?? {})) {
+    if (!(mode in ratings) || (baseRatings && l !== baseRatings[mode])) ratings[mode] = l;
+  }
   return {
     schemaVersion: Math.max(server.schemaVersion, local.schemaVersion),
     learningStates: mergeRecord(server.learningStates ?? {}, local.learningStates ?? {}, newerLearning),
-    heatmap: mergeRecord(server.heatmap ?? {}, local.heatmap ?? {}, Math.max),
-    lastActiveAt: Math.max(server.lastActiveAt, local.lastActiveAt),
-    currentStreak: tie
-      ? Math.max(server.currentStreak, local.currentStreak)
-      : localNewer
-        ? local.currentStreak
-        : server.currentStreak,
+    heatmap,
+    lastActiveAt,
+    currentStreak: lastActiveAt > 0 ? currentStreak(heatmap, lastActiveAt) : 0,
     quizStats: mergeRecord(server.quizStats ?? {}, local.quizStats ?? {}, maxQuizStat),
-    ratings: mergeRecord(server.ratings ?? {}, local.ratings ?? {}, (s, l) =>
-      tie ? Math.max(s, l) : localNewer ? l : s,
-    ),
+    ratings,
     settings,
   };
 }
