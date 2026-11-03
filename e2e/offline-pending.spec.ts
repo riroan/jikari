@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
 
+// Prod builds: the SW answers /api/progress itself, so page.route mocks would never fire.
+test.use({ serviceWorkers: "block" });
+
 // /api/progress is fully mocked: never touches the real DB.
 const server = {
   schemaVersion: 6,

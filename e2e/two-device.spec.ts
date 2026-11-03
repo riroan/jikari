@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
 
+// Prod builds: the SW answers /api/progress itself, so page.route mocks would never fire.
+test.use({ serviceWorkers: "block" });
+
 // /api/progress is fully mocked by a tiny server state machine (version tag + If-Match + 409): never touches the DB.
 type State = Record<string, unknown> & { learningStates: Record<string, unknown> };
 const ls = (id: string) => ({

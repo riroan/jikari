@@ -47,6 +47,12 @@ Merge never deletes ids. Known limit: a "reset" done offline is resurrected from
 - **Clock skew** between devices affects which `lastReviewed` wins in the merge.
 - **Deploys:** a page two builds old can hit a 404 on a lazy chunk until it is reloaded.
 
+## Running e2e against a production build
+The SW only exists in production builds, and it answers `/api/progress` itself, so specs that `page.route`-mock it use `test.use({ serviceWorkers: "block" })`; only `e2e/offline-shell.spec.ts` runs with the SW.
+1. Build in a copy: `cp -cR . /tmp/jikari-prod` (copy-on-write, includes `node_modules`), then `bun run build` there.
+2. Start it on a free port: `bun run start -p 3100`.
+3. Point Playwright at it (`baseURL` / `BASE` in the config) and run with `OFFLINE_PROD=1 bunx playwright test`.
+
 ## Reset
 `?nosw=1` on any URL: unregisters the SW, deletes caches, stays off (remembered). `?nosw=0` re-enables.
 iPhone: Settings → Safari → Advanced → Website Data → remove the site.

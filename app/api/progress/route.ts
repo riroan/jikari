@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
   const state = await getProgressSnapshot();
   const res = jsonResponse(req, JSON.stringify(state));
+  // GET never answers 304: the client needs the full body to hydrate and the SW caches the 200 body; ETag is only for PUT If-Match.
   res.headers.set("ETag", progressTag(state)); // version tag: the client echoes it as If-Match on PUT
   return res;
 }

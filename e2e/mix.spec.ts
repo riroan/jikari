@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
 
+// Prod builds: the SW answers /api/progress itself, so page.route mocks would never fire.
+test.use({ serviceWorkers: "block" });
+
 test("/mix start screen toggles and a run reaches questions", async ({ page }) => {
   await page.route("**/api/progress", (r) =>
     r.request().method() === "GET"
