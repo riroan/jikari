@@ -79,6 +79,7 @@ export function ReadingCard({
         <div
           className="text-h2 leading-[2.2] font-medium text-[color:var(--fg)]"
           style={{ fontFamily: "var(--font-jp-serif)" }}
+          lang="ja"
         >
           <RubyText text={item.markup} forceShow />
         </div>
