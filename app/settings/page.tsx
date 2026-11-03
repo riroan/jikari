@@ -1,17 +1,19 @@
 "use client";
 
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { parseBackup, summarizeBackup } from "@/lib/import";
 import type { PersistedState } from "@/lib/types";
 import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
+import { useCardsStore } from "@/lib/cards-store";
 import { useClientNow } from "@/lib/use-is-client";
 import {
   RESPACE_DAYS,
   buildUndo,
   clearUndo,
   loadUndo,
+  mergeUndo,
   planRespace,
   planUndo,
   saveUndo,
@@ -62,6 +64,10 @@ export default function SettingsPage() {
   const setNextDues = useStore((s) => s.setNextDues);
   const learningStates = useStore((s) => s.learningStates);
   const now = useClientNow();
+  const sentenceIds = useCardsStore((s) => s.sentenceIds);
+  const particleIds = useCardsStore((s) => s.particleIds);
+  const vocabSet = useMemo(() => new Set(sentenceIds), [sentenceIds]);
+  const particleSet = useMemo(() => new Set(particleIds), [particleIds]);
   // Lazy init reads localStorage once on first client render. The value is
   // refreshed only when the user clicks export (handleExport sets it directly).
   const [lastBackupMs, setLastBackupMs] = useState<number | null>(() =>
@@ -132,6 +138,8 @@ export default function SettingsPage() {
   function confirmRestore() {
     if (!pending) return;
     replaceAll(pending);
+    clearUndo();
+    setUndo(null);
     setMessage({
       kind: "ok",
       text: `복원 완료 — ${Object.keys(pending.learningStates).length}장.`,
@@ -141,13 +149,13 @@ export default function SettingsPage() {
 
   function confirmRespace() {
     const t = Date.now();
-    const { changes } = planRespace(learningStates, t, respaceDays, settings.dailyGoal);
+    const { changes } = planRespace(learningStates, t, respaceDays, settings.dailyGoal, vocabSet, particleSet);
     const n = Object.keys(changes).length;
     if (n === 0) {
       respaceDialogRef.current?.close();
       return;
     }
-    const snap = buildUndo(learningStates, changes, t);
+    const snap = mergeUndo(undo, buildUndo(learningStates, changes, t));
     const saved = saveUndo(snap);
     setNextDues(changes);
     setUndo(saved ? snap : null);
@@ -173,6 +181,8 @@ export default function SettingsPage() {
 
   function confirmReset() {
     reset();
+    clearUndo();
+    setUndo(null);
     setMessage({ kind: "ok", text: "학습 기록이 초기화되었습니다." });
     resetDialogRef.current?.close();
   }
@@ -329,7 +339,7 @@ export default function SettingsPage() {
             정리
           </button>
         </div>
-        {undo && (
+        {undo && Object.keys(planUndo(learningStates, undo)).length > 0 && (
           <div className="flex justify-between items-center text-caption text-[color:var(--fg-faint)] gap-4">
             <span>
               {new Date(undo.appliedAt).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })}에 {undo.entries.length}장 정리함
@@ -369,6 +379,8 @@ export default function SettingsPage() {
       <RespaceDialog
         ref={respaceDialogRef}
         states={learningStates}
+        vocabIds={vocabSet}
+        particleIds={particleSet}
         goal={settings.dailyGoal}
         days={respaceDays}
         onDays={setRespaceDays}
@@ -408,6 +420,8 @@ const RespaceDialog = forwardRef<
   HTMLDialogElement,
   {
     states: PersistedState["learningStates"];
+    vocabIds: ReadonlySet<string>;
+    particleIds: ReadonlySet<string>;
     goal: number;
     days: number;
     onDays: (n: number) => void;
@@ -416,9 +430,12 @@ const RespaceDialog = forwardRef<
     onConfirm: () => void;
     onCancel: () => void;
   }
->(function RespaceDialog({ states, goal, days, onDays, lastBackupMs, onExport, onConfirm, onCancel }, ref) {
+>(function RespaceDialog({ states, vocabIds, particleIds, goal, days, onDays, lastBackupMs, onExport, onConfirm, onCancel }, ref) {
   const t = useClientNow() ?? 0;
-  const plan = planRespace(states, t, days, goal);
+  const plan = useMemo(
+    () => planRespace(states, t, days, goal, vocabIds, particleIds),
+    [states, t, days, goal, vocabIds, particleIds],
+  );
   const moved = Object.keys(plan.changes).length;
   const end = new Date(t);
   end.setDate(end.getDate() + days - 1);
@@ -438,12 +455,11 @@ const RespaceDialog = forwardRef<
         나머지 {moved}장의 복습일만 {days > 1 ? `내일부터 ${fmt(end)}까지` : "오늘"} 고르게 나눕니다.
         단계·기록·연속일은 바뀌지 않습니다.
       </p>
-      <div className="flex gap-2 mb-3" role="radiogroup" aria-label="기간">
+      <div className="flex gap-2 mb-3" role="group" aria-label="기간">
         {RESPACE_DAYS.map((n) => (
           <button
             key={n}
-            role="radio"
-            aria-checked={days === n}
+            aria-pressed={days === n}
             onClick={() => onDays(n)}
             className={`${btn} flex-1 ${days === n ? "bg-[color:var(--fg)] text-[color:var(--bg)]" : ""}`}
             style={{ minHeight: 44 }}

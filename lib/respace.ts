@@ -1,4 +1,5 @@
 import type { LearningState } from "./types";
+import { hasCard } from "./due";
 
 /** Days the overdue backlog can be spread over (dialog choices). */
 export const RESPACE_DAYS = [7, 14, 30] as const;
@@ -14,7 +15,8 @@ function startOfLocalDay(now: number, plusDays: number): number {
 }
 
 /**
- * Re-space overdue reviewed cards (nextDue <= now) over the next `days` days.
+ * Re-space backlog (reviewed cards with nextDue before today 00:00; cards that
+ * came due today, incl. today's lapses, stay put; orphans ignored like aggregateDueByKey) over the next `days` days.
  * Oldest-due first (tie: lower box, then key) fills day 0 up to `goal`, the rest
  * is split evenly over days 1..days-1. Day-0 cards keep their nextDue (already
  * due today) so nothing moves earlier and a second run is a no-op.
@@ -25,9 +27,17 @@ export function planRespace(
   now: number,
   days: number,
   goal: number,
+  sentenceVocabIds: ReadonlySet<string>,
+  sentenceParticleIds: ReadonlySet<string>,
 ): { changes: NextDueChanges; overdue: number; perDay: number[] } {
+  const today = startOfLocalDay(now, 0);
   const overdue = Object.values(states)
-    .filter((s) => s.lastReviewed > 0 && s.nextDue <= now)
+    .filter(
+      (s) =>
+        s.lastReviewed > 0 &&
+        s.nextDue < today &&
+        hasCard(s, sentenceVocabIds, sentenceParticleIds),
+    )
     .sort(
       (a, b) =>
         a.nextDue - b.nextDue || a.box - b.box || (a.cardKey < b.cardKey ? -1 : 1),
@@ -84,11 +94,20 @@ export function planUndo(
   return out;
 }
 
+/** Merges into an existing snapshot, keeping the EARLIEST prev per key. */
+export function mergeUndo(old: UndoSnapshot | null, snap: UndoSnapshot): UndoSnapshot {
+  if (!old) return snap;
+  const m = new Map(old.entries.map((e) => [e[0], e]));
+  for (const [k, prev, to] of snap.entries) m.set(k, [k, m.get(k)?.[1] ?? prev, to]);
+  return { appliedAt: snap.appliedAt, entries: [...m.values()] };
+}
+
 export function saveUndo(snap: UndoSnapshot): boolean {
   try {
     localStorage.setItem(UNDO_KEY, JSON.stringify(snap));
     return true;
   } catch {
+    clearUndo();
     return false;
   }
 }

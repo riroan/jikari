@@ -12,6 +12,15 @@ import type { LearningState } from "./types";
  */
 export type DueByKey = Record<string, number>;
 
+/** Sentence-mode states whose card is in neither id set are orphans (removed cards). */
+export function hasCard(
+  s: LearningState,
+  sentenceVocabIds: ReadonlySet<string>,
+  sentenceParticleIds: ReadonlySet<string>,
+): boolean {
+  return s.mode !== "sentence" || sentenceVocabIds.has(s.cardId) || sentenceParticleIds.has(s.cardId);
+}
+
 /**
  * Aggregate due-cards per subject key.
  *
