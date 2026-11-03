@@ -2,6 +2,7 @@
 
 import { toKana } from "wanakana";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { buildHint, MAX_HINT_LEVEL } from "@/lib/hint";
 
 /**
  * Typing input for active recall.
@@ -32,6 +33,10 @@ export interface TypingInputProps {
   disabled?: boolean;
   autoFocus?: boolean;
   onSubmit: (value: string) => void;
+  /** Enables the 힌트 button. Typed answer to reveal progressively. */
+  hintAnswer?: string | null;
+  /** Fired on the first hint tap (answer becomes "assisted"). */
+  onHintUsed?: () => void;
 }
 
 export function TypingInput({
@@ -41,8 +46,11 @@ export function TypingInput({
   disabled = false,
   autoFocus = true,
   onSubmit,
+  hintAnswer,
+  onHintUsed,
 }: TypingInputProps) {
   const [value, setValue] = useState("");
+  const [hintLevel, setHintLevel] = useState(0);
   const composingRef = useRef(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const groupRef = useRef<HTMLDivElement | null>(null);
@@ -88,6 +96,7 @@ export function TypingInput({
   useEffect(() => {
     if (prevDisabledRef.current && !disabled) {
       setValue("");
+      setHintLevel(0);
     }
     prevDisabledRef.current = disabled;
   }, [disabled]);
@@ -183,6 +192,32 @@ export function TypingInput({
           確認
         </button>
       </div>
+      {hintAnswer && !disabled && (
+        <div className="mt-2 flex items-center gap-3">
+          <button
+            type="button"
+            // Keep focus (and the iOS keyboard) in the input.
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              if (hintLevel === 0) onHintUsed?.();
+              setHintLevel((l) => Math.min(MAX_HINT_LEVEL, l + 1));
+            }}
+            disabled={hintLevel >= MAX_HINT_LEVEL}
+            className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-faint)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ minHeight: 44 }}
+          >
+            힌트
+          </button>
+          <span
+            aria-live="polite"
+            lang={lang}
+            className="text-h2 text-[color:var(--fg-soft)] tracking-widest"
+            style={{ fontFamily }}
+          >
+            {hintLevel > 0 && buildHint(hintAnswer, hintLevel)}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

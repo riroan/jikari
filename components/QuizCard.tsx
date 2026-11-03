@@ -11,6 +11,7 @@ import {
   normalizeJapanese,
   normalizeKorean,
 } from "@/lib/normalize";
+import { hintAnswer } from "@/lib/hint";
 
 /**
  * Common quiz card for all 3 modes.
@@ -81,17 +82,20 @@ export function QuizCard({
   // Track what the user did this turn (for feedback display + visual highlight).
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [typedUserAnswer, setTypedUserAnswer] = useState<string | null>(null);
+  const [hinted, setHinted] = useState(false);
   const resolvedAtRef = useRef(0);
 
   const advance = useCallback(() => {
     if (result === null) return;
-    onResolved(result === "correct");
+    // Assisted answers never promote the card: report them as a miss.
+    onResolved(result === "correct" && !hinted);
+    setHinted(false);
     setResult(null);
     setDisabled(false);
     setShowingBack(false);
     setSelectedChoice(null);
     setTypedUserAnswer(null);
-  }, [result, onResolved]);
+  }, [result, hinted, onResolved]);
 
   const resolve = useCallback(
     (wasCorrect: boolean) => {
@@ -197,6 +201,8 @@ export function QuizCard({
           onSubmit={handleTypedSubmit}
           userAnswer={typedUserAnswer}
           result={result}
+          hintText={hintAnswer(input.acceptableAnswers, input.lang === "ja" ? speak : undefined)}
+          onHintUsed={() => setHinted(true)}
         />
       )}
 
@@ -211,6 +217,11 @@ export function QuizCard({
                 exit={{ opacity: 0 }}
               >
                 <AnswerFeedback correct={result === "correct"} />
+                {hinted && result === "correct" && (
+                  <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
+                    힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
+                  </p>
+                )}
               </m.div>
             )}
           </AnimatePresence>
@@ -300,12 +311,16 @@ function TypedPanel({
   onSubmit,
   userAnswer,
   result,
+  hintText,
+  onHintUsed,
 }: {
   input: Extract<QuizCardInput, { mode: "typed" }>;
   disabled: boolean;
   onSubmit: (value: string) => void;
   userAnswer: string | null;
   result: "correct" | "wrong" | null;
+  hintText: string | null;
+  onHintUsed: () => void;
 }) {
   const ariaLabel = input.lang === "ja" ? "読み入력" : "뜻 입력";
   const showImeHint =
@@ -325,6 +340,8 @@ function TypedPanel({
         lang={input.lang}
         disabled={disabled}
         onSubmit={onSubmit}
+        hintAnswer={hintText}
+        onHintUsed={onHintUsed}
       />
       {disabled && result === "wrong" && userAnswer !== null && (
         <div className="flex flex-col gap-1 text-caption text-[color:var(--fg-faint)]">

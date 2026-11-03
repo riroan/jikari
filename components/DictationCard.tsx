@@ -22,6 +22,7 @@ export function DictationCard({
 }) {
   const [answer, setAnswer] = useState<{ input: string; res: DictationResult } | null>(null);
   const res = answer?.res;
+  const [hinted, setHinted] = useState(false);
   const nextRef = useRef<HTMLButtonElement>(null);
   // 제출 후 입력창이 disabled 되며 포커스가 body로 빠지므로 다음 버튼으로 옮긴다 (Enter로 진행).
   useEffect(() => {
@@ -35,8 +36,17 @@ export function DictationCard({
         lang="ja"
         disabled={!!answer}
         onSubmit={(input) => setAnswer({ input, res: checkDictation(input, reading) })}
+        hintAnswer={reading}
+        onHintUsed={() => setHinted(true)}
       />
-      <div role="status">{res && <AnswerFeedback correct={res.correct} />}</div>
+      <div role="status">
+        {res && <AnswerFeedback correct={res.correct} />}
+        {res?.correct && hinted && (
+          <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
+            힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
+          </p>
+        )}
+      </div>
       {answer && res && (
         <div className="flex flex-col gap-4 pt-4 border-t border-[color:var(--line)]">
           {!res.correct && (
@@ -88,7 +98,7 @@ export function DictationCard({
             <button
               ref={nextRef}
               type="button"
-              onClick={() => onResolved(res.correct)}
+              onClick={() => onResolved(res.correct && !hinted)}
               aria-label="다음 문제"
               className="px-4 py-2 text-caption tracking-tab text-[color:var(--fg-soft)] border border-[color:var(--line)] rounded-sm hover:bg-[color:var(--bg-deep)] transition-colors"
               style={{ minHeight: 44 }}

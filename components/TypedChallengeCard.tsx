@@ -41,6 +41,7 @@ export function TypedChallengeCard({
   const [result, setResult] = useState<"correct" | "wrong" | null>(null);
   const [disabled, setDisabled] = useState(false);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
+  const [hinted, setHinted] = useState(false);
   const resolvedAtRef = useRef(0);
 
   const handleSubmit = useCallback(
@@ -61,11 +62,13 @@ export function TypedChallengeCard({
 
   const handleNext = useCallback(() => {
     if (result === null) return;
-    onResolved(result === "correct");
+    // Assisted answers never promote the card: report them as a miss.
+    onResolved(result === "correct" && !hinted);
+    setHinted(false);
     setResult(null);
     setDisabled(false);
     setUserAnswer(null);
-  }, [result, onResolved]);
+  }, [result, hinted, onResolved]);
 
   useEffect(() => {
     return () => {
@@ -156,6 +159,8 @@ export function TypedChallengeCard({
         lang="ja"
         disabled={disabled}
         onSubmit={handleSubmit}
+        hintAnswer={kanaAnswers[0] ?? primaryAnswer}
+        onHintUsed={() => setHinted(true)}
       />
 
       <AnimatePresence>
@@ -260,6 +265,12 @@ export function TypedChallengeCard({
                 {primaryAnswer}
               </span>
             </div>
+            <div className="flex flex-col items-end gap-1">
+              {hinted && (
+                <p className="text-caption text-[color:var(--fg-faint)]">
+                  힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
+                </p>
+              )}
             <div className="flex items-center gap-1">
               {speakText && <SpeakButton text={speakText} />}
               <button
@@ -269,6 +280,7 @@ export function TypedChallengeCard({
               >
                 次へ
               </button>
+            </div>
             </div>
           </m.div>
         )}
