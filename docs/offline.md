@@ -11,7 +11,7 @@ Goal: study on the subway. Answers are never lost; the app opens without a conne
 ## Save protocol (optimistic concurrency, no schema change)
 - Version tag = sha1 of the canonical (key-sorted) JSON of what `GET /api/progress` returns, sent as `ETag` on GET and on every successful PUT (lib/progress-tag.ts; GET reads one consistent DB snapshot).
 - The client remembers the last tag it saw (GET or PUT) and sends it as `If-Match` on PUT. No tag (offline snapshot, old server) -> no header.
-- Server (`putProgress`): takes a named DB lock (`GET_LOCK`) so PUTs serialize, re-reads the current state inside the transaction and compares tags. Equal (or no `If-Match`: old clients keep working) -> DELETE+INSERT, answer 200 + new ETag. Different -> nothing written, **409** + current state + its ETag.
+- Server (`putProgress`): takes a named DB lock (`GET_LOCK`) so PUTs serialize, re-reads the current state inside the transaction and compares tags. Equal (no `If-Match` and no `X-Jikari-Replace: 1`, i.e. an old client: the incoming state is merged into the current one and the merge is written; the response carries `merged`) -> DELETE+INSERT, answer 200 + new ETag. Different -> nothing written, **409** + current state + its ETag.
 - Client on 409: merge(server state, our pending value) with the usual rules, adopt the new tag, PUT again immediately (max 5 in a row, then normal backoff), and fire `jikari:merged` so HydrationBoundary re-hydrates the in-memory store from the merge (otherwise the next answer would be built on the stale store and undo the other device's work). The pending copy is deleted only after a 2xx.
 - Other 4xx: payload dropped (kept once in `jikari-pending-rejected-v1`, which replaces the pending copy rather than doubling it).
 - **Replace** (backup restore / reset in Settings, after the user's explicit confirm): `markReplaceNext()` flags the pending envelope `replace: true`. It is sent as-is, never merged — also after a reload (`loadAndMerge` skips the merge and uses the freshest GET tag). On 409 for a replace the client only re-GETs the tag (no merge) and retries once, then backs off. Cleared after the replace is saved; later writes merge normally.
@@ -39,6 +39,13 @@ Merge never deletes ids. Known limit: a "reset" done offline is resurrected from
   In snapshot mode the store is usable but **never saves over the server**: answers only queue in localStorage;
   when online again the app re-GETs, merges and PUTs once.
 - `PUT /api/progress` is the only non-GET the SW touches; its response is returned untouched and the cached `/api/progress` entry follows it: 2xx -> the REQUEST body + the PUT's ETag (so offline reopen/restore/reset show the new state, not the pre-answer one); 409 -> the returned current state + ETag; other 4xx -> entry deleted. Network failure -> cache untouched. Other POST/PUT are never touched.
+
+## Known limits
+- **Stale device after restore/reset (online).** After a restore/reset on one device, reload the other open devices first; their next save otherwise merges pre-restore data back in (merge never deletes). A server-side epoch counter would fix it; deferred (needs a schema change).
+- **Undo of 밀린 복습 정리** can be lost if the undo PUT hits a 409 merge (merge keeps the larger `nextDue`). Best-effort across devices.
+- **Request body size.** An ingress/proxy default of 1 MB starts returning 413 at roughly 5-7k learning states. Set `nginx.ingress.kubernetes.io/proxy-body-size: 5m` on the ingress.
+- **Clock skew** between devices affects which `lastReviewed` wins in the merge.
+- **Deploys:** a page two builds old can hit a 404 on a lazy chunk until it is reloaded.
 
 ## Reset
 `?nosw=1` on any URL: unregisters the SW, deletes caches, stays off (remembered). `?nosw=0` re-enables.
