@@ -101,3 +101,12 @@ test("home has 오늘의 복습 CTA and single-line footer", async ({ page }) =>
   expect(new Set(boxes.map((b) => Math.round(b.top))).size).toBe(1);
   expect(await noOverflow(page)).toBe(true);
 });
+
+test("progress shows BY SUBJECT mastery without overflow", async ({ page }) => {
+  await page.goto("/progress");
+  const sec = page.getByRole("region", { name: "BY SUBJECT" });
+  await expect(sec).toBeVisible();
+  await expect(sec.getByText("단어")).toBeVisible();
+  await expect(sec.getByText(/학습 중 \d+ · 미학습 \d+/).first()).toBeVisible();
+  expect(await noOverflow(page)).toBe(true);
+});

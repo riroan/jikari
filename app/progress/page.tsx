@@ -10,6 +10,7 @@ import { masteryLevel } from "@/lib/srs";
 import { INITIAL_RATING, ratingBand } from "@/lib/rating";
 import { weakCardIds } from "@/lib/weak";
 import { forecastDue } from "@/lib/forecast";
+import { subjectMastery } from "@/lib/subject-mastery";
 import { RubyText } from "@/components/Furigana";
 import Link from "next/link";
 import type { KanjiCard } from "@/lib/types";
@@ -126,6 +127,19 @@ export default function ProgressPage() {
   }, [mounted, states, kanjiCards]);
   const { mastered: masteredCount, learning: learningCount, fresh: freshCount } = counts;
 
+  const subjects = useMemo(() => {
+    if (!mounted) return [];
+    const pools = [
+      { ko: "한자", mode: "kanji", ids: cards.kanjiIds },
+      { ko: "단어", mode: "vocab", ids: cards.vocabIds },
+      { ko: "문장", mode: "sentence", ids: cards.sentenceIds },
+      { ko: "일상표현", mode: "expression", ids: cards.expressionIds },
+    ] as const;
+    return pools
+      .filter((p) => p.ids.length > 0)
+      .map((p) => ({ ko: p.ko, ...subjectMastery(states, p.mode, p.ids) }));
+  }, [mounted, states, cards]);
+
   return (
     <ModePageShell title="進捗" headerMarginPx={40}>
       <section className="mb-8">
@@ -172,6 +186,48 @@ export default function ProgressPage() {
           </div>
         </div>
       </section>
+
+      {subjects.length > 0 && (
+        <section className="mb-8" aria-labelledby="progress-subjects-heading">
+          <div
+            id="progress-subjects-heading"
+            className="text-xs text-[color:var(--fg-faint)] tracking-label mb-1 font-medium"
+          >
+            BY SUBJECT
+          </div>
+          <ul role="list">
+            {subjects.map((s) => (
+              <li
+                key={s.ko}
+                className="py-2.5 border-t border-[color:var(--line)]"
+                style={{ minHeight: 44 }}
+              >
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="text-body text-[color:var(--fg)]">{s.ko}</span>
+                  <span
+                    className="text-body tabular-nums text-[color:var(--accent-progress-text)]"
+                    aria-label={`마스터 ${s.mastered}장, 전체 ${s.total}장`}
+                  >
+                    {s.mastered}
+                    <span className="text-caption text-[color:var(--fg-faint)]"> / {s.total}</span>
+                  </span>
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="mt-1.5 flex h-[3px] overflow-hidden rounded-[1px]"
+                  style={{ background: "color-mix(in oklab, var(--fg) 5%, transparent)" }}
+                >
+                  <span style={{ width: `${(s.mastered / s.total) * 100}%`, background: "color-mix(in oklab, var(--accent-progress) 65%, transparent)" }} />
+                  <span style={{ width: `${(s.learning / s.total) * 100}%`, background: "color-mix(in oklab, var(--accent-progress) 25%, transparent)" }} />
+                </div>
+                <div className="mt-1 text-caption text-[color:var(--fg-faint)] tabular-nums">
+                  학습 중 {s.learning} · 미학습 {s.fresh}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="mb-8" aria-labelledby="progress-forecast-heading">
         <div
