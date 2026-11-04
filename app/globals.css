@@ -220,6 +220,20 @@ html, body {
   font-family: "Pretendard Variable", Pretendard, sans-serif;
 }
 
+/* iOS: long-press on a link/button shouldn't open the link-preview callout. */
+a, button {
+  -webkit-touch-callout: none;
+}
+
+/* Touch has no hover, and most buttons only style :hover — give every tap an
+   instant pressed state. */
+@media (hover: none) {
+  button:not(:disabled):active,
+  a:active {
+    opacity: 0.55;
+  }
+}
+
 /* iOS Safari zooms the page on focus when an input is under 16px. */
 input, textarea, select {
   font-size: max(16px, 1em);

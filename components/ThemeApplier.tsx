@@ -17,6 +17,16 @@ export function ThemeApplier() {
 
   useEffect(() => {
     const root = document.documentElement;
+    // 앱에서 고른 테마가 OS와 다르면 <meta theme-color>(미디어 쿼리 = OS 기준)가
+    // 상단 바를 엉뚱한 색으로 칠한다. 강제 테마일 땐 두 태그를 같은 색으로 맞춘다.
+    const paintBar = () => {
+      const dark = root.dataset.theme
+        ? root.dataset.theme === "dark"
+        : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document
+        .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+        .forEach((m) => (m.content = dark ? "#0E141E" : "#F5EFE4"));
+    };
     const apply = () => {
       if (theme === "light" || theme === "dark") {
         root.dataset.theme = theme;
@@ -32,11 +42,15 @@ export function ThemeApplier() {
     };
 
     apply();
+    paintBar();
 
     if (theme !== "system") return;
 
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => apply();
+    const onChange = () => {
+      apply();
+      paintBar();
+    };
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, [theme]);
