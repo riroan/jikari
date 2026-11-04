@@ -8,6 +8,7 @@ import { SpeakButton } from "@/components/SpeakButton";
 import { useCardsStore } from "@/lib/cards-store";
 import { findExamples, getExampleIndex } from "@/lib/examples";
 import { fitFontSize } from "@/lib/fit-text";
+import { SinoKoreanHint } from "@/components/SinoKoreanHint";
 import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
 import type {
   ChapterMember,
@@ -89,6 +90,7 @@ function Body({ mode, card }: { mode: string; card: AnyCard }) {
             </span>
             {k.koreanMeaning} {k.koreanSound.join("·")}
           </div>
+          <SinoKoreanHint koreanSound={k.koreanSound} onReadings={k.onReadings} />
         </div>
       );
     }
