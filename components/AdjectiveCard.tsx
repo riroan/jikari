@@ -45,6 +45,7 @@ export function AdjectiveCard({ adj, form, onResolved }: AdjectiveCardProps) {
       formLabelKo={ADJ_FORM_LABELS_KO[form]}
       formLabelJp={ADJ_FORM_LABELS_JP[form]}
       hero={adj.ruby ? <RubyText text={adj.ruby} /> : adj.word}
+      heroText={adj.word}
       heroFontSizePx={84}
       groupLabelKo={ADJ_GROUP_LABELS_KO[adj.adjGroup]}
       groupLabelJp={ADJ_GROUP_LABELS_JP[adj.adjGroup]}

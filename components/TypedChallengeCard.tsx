@@ -22,6 +22,11 @@ export interface TypedChallengeCardProps {
   formLabelJp: string;
   hero: React.ReactNode;
   heroFontSizePx: number;
+  /**
+   * Plain text of `hero` (no ruby markup). When given, the hero shrinks so the
+   * whole word fits on one line — 96px × 間違える is wider than a phone.
+   */
+  heroText?: string;
   groupLabelKo: string;
   groupLabelJp: string;
   onResolved: (wasCorrect: boolean) => void;
@@ -34,6 +39,7 @@ export function TypedChallengeCard({
   formLabelJp,
   hero,
   heroFontSizePx,
+  heroText,
   groupLabelKo,
   groupLabelJp,
   onResolved,
@@ -134,12 +140,16 @@ export function TypedChallengeCard({
         {categoryLabel} · {formLabelKo}으로
       </div>
 
-      <div className="text-center">
+      <div className="text-center" style={{ containerType: "inline-size" }}>
         <div
           className="leading-none font-semibold"
           style={{
             fontFamily: "var(--font-jp-serif)",
-            fontSize: `${heroFontSizePx}px`,
+            // 고정 크기면 322px 폭(페이지 확대)에선 変わる부터, 402px에서도 間違える가
+            // 두 줄로 쪼개졌다. 글자당 ~1.02em(자간·후리가나 여유)으로 컨테이너 폭에 맞춘다.
+            fontSize: heroText
+              ? `min(${heroFontSizePx}px, calc(100cqi / ${([...heroText].length * 1.02).toFixed(2)}))`
+              : `${heroFontSizePx}px`,
             letterSpacing: "-0.02em",
             color: "var(--fg)",
           }}
