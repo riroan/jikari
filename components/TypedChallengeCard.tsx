@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TypingInput } from "./TypingInput";
 import { SpeakButton } from "./SpeakButton";
+import { fitFontSize } from "@/lib/fit-text";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
 import { closestAnswer, diffAgainst } from "@/lib/diff";
 import { markAnswered, markShown } from "@/lib/srs";
@@ -145,11 +146,8 @@ export function TypedChallengeCard({
           className="leading-none font-semibold"
           style={{
             fontFamily: "var(--font-jp-serif)",
-            // 고정 크기면 322px 폭(페이지 확대)에선 変わる부터, 402px에서도 間違える가
-            // 두 줄로 쪼개졌다. 글자당 ~1.02em(자간·후리가나 여유)으로 컨테이너 폭에 맞춘다.
-            fontSize: heroText
-              ? `min(${heroFontSizePx}px, calc(100cqi / ${([...heroText].length * 1.02).toFixed(2)}))`
-              : `${heroFontSizePx}px`,
+            // 고정 크기면 322px 폭(페이지 확대)에서 変わる부터 두 줄로 쪼개졌다 (lib/fit-text).
+            fontSize: heroText ? fitFontSize(heroFontSizePx, heroText) : `${heroFontSizePx}px`,
             letterSpacing: "-0.02em",
             color: "var(--fg)",
           }}
