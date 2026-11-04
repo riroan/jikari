@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildReviewDeck } from "@/lib/review-deck";
+import { buildReviewDeck, REVIEW_DUE_KEYS } from "@/lib/review-deck";
 import type { LearningState } from "@/lib/types";
 
 const NOW = 1000;
@@ -14,9 +14,33 @@ describe("buildReviewDeck", () => {
     expect(buildReviewDeck({}, NOW, all)).toEqual([]);
   });
 
-  it("ignores modes outside the four and filtered-out cards", () => {
-    const s = Object.fromEntries([st("conjugation", "c", 0), st("kanji", "gone", 0), st("kanji", "k", 0)]);
+  it("ignores listening/unknown modes and filtered-out cards", () => {
+    const s = Object.fromEntries([st("listening" as LearningState["mode"], "l", 0), st("kanji", "gone", 0), st("kanji", "k", 0)]);
     expect(buildReviewDeck(s, NOW, (_, id) => id !== "gone")).toEqual([{ mode: "kanji", cardId: "k" }]);
+  });
+
+  it("covers all 8 modes, oldest due first, splitting sentence vs particle", () => {
+    const s = Object.fromEntries([
+      st("kanji", "k", 8), st("vocab", "v", 7), st("sentence", "s", 6), st("sentence", "p", 5),
+      st("conjugation", "v1:basic", 4), st("adjective", "a1:kuru", 3),
+      st("grammar", "particle:g", 2), st("expression", "e", 1),
+      st("kanji", "k0", 0),
+    ]);
+    const exists = (m: string, id: string) => (m === "particle" ? id === "p" : m === "sentence" ? id === "s" : true);
+    const deck = buildReviewDeck(s, NOW, exists);
+    expect(deck.map((d) => d.mode)).toEqual([
+      "kanji", "vocab", "sentence", "particle", "conjugation", "adjective", "grammar", "expression", "kanji",
+    ]);
+    expect(deck[0].cardId).toBe("k0");
+    expect(deck.find((d) => d.mode === "grammar")!.cardId).toBe("g");
+    expect(deck.find((d) => d.mode === "conjugation")!.cardId).toBe("v1:basic");
+    expect(buildReviewDeck(s, NOW, exists, 8)).toHaveLength(8);
+  });
+
+  it("REVIEW_DUE_KEYS matches the due keys home counts for every reviewed subject", () => {
+    expect([...REVIEW_DUE_KEYS].sort()).toEqual(
+      ["adjective", "conjugation", "expression", "grammar", "kanji", "sentence_particle", "sentence_vocab", "vocab"],
+    );
   });
 
   it("orders most overdue first within a mode and interleaves modes", () => {

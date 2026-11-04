@@ -44,7 +44,7 @@
 - **What:** 한자 카드 발음 시 어떤 독음을 읽을지 규칙이 없다 (음독/훈독 중 무엇을 기본으로 할지, 단어 맥락 우선 여부).
 - **Trigger:** 한자 발음이 어색하게 들리는 카드가 2개 이상 나올 때.
 
-### /review에 활용·형용사·조사·일상표현 미포함
+### ~~/review에 활용·형용사·조사·일상표현 미포함~~ ✓ DONE (2026-11-04)
 - **What:** `/review`는 kanji/vocab/sentence/grammar만 섞는다. conjugation·adjective·particle·expressions 카드는 각 과목 페이지에서만 복습된다.
 - **Trigger:** 복습 한 번에 전 과목을 보고 싶다고 느낄 때.
 
