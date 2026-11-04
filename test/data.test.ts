@@ -752,3 +752,60 @@ describe("kanji seeds", () => {
     }
   });
 });
+
+// 이미 들어간 DB 행은 A_* 마이그레이션이 고친다. 시드가 그 값을 따라가지 않으면 새 DB를
+// 만들 때 (migrate → add-* 순서) 고치기 전 값이 다시 들어간다. 테이블마다 마지막 수정이
+// 이긴다. DB에만 있는 행(시드 없음)은 건너뛴다.
+describe("seeds follow A_* data migrations", () => {
+  const seedDir = path.join(process.cwd(), "data/seeds");
+  const migDir = path.join(process.cwd(), "lib/db/migrations");
+  const tables: Record<string, { prefixes: string[]; cols: Record<string, string> }> = {
+    sentence_cards: {
+      prefixes: ["sentences-", "particles-"],
+      cols: { sentence: "sentence", sentence_ruby: "sentenceRuby", blank: "blank", blank_ruby: "blankRuby", distractors: "distractors", translation: "translation", jlpt_level: "jlptLevel" },
+    },
+    vocab_cards: {
+      prefixes: ["vocab-"],
+      cols: { word: "word", reading: "reading", meanings: "meanings", korean_meanings: "koreanMeanings", ruby: "ruby", jlpt_level: "jlptLevel", verb_group: "verbGroup", adj_group: "adjGroup" },
+    },
+    expression_cards: {
+      prefixes: ["expressions-"],
+      cols: { situation_ko: "situation_ko", expression_jp: "expression_jp", ruby: "ruby", register: "register", translation_ko: "translation_ko", note_ko: "note_ko" },
+    },
+  };
+  const parseValue = (v: string): unknown =>
+    v.startsWith("JSON_ARRAY")
+      ? [...v.matchAll(/'((?:[^']|'')*)'/g)].map((m) => m[1].replace(/''/g, "'"))
+      : v === "NULL"
+        ? undefined
+        : /^\d+$/.test(v)
+          ? Number(v)
+          : v.slice(1, -1).replace(/''/g, "'");
+
+  test.each(Object.keys(tables))("%s", (table) => {
+    const { prefixes, cols } = tables[table];
+    const seed = new Map<string, Record<string, unknown>>();
+    for (const f of readdirSync(seedDir).filter((x) => prefixes.some((p) => x.startsWith(p)) && x.endsWith(".json"))) {
+      for (const c of JSON.parse(readFileSync(path.join(seedDir, f), "utf8")) as Record<string, unknown>[]) seed.set(String(c.id), c);
+    }
+    const last = new Map<string, { file: string; value: unknown }>();
+    for (const f of readdirSync(migDir).filter((x) => x.startsWith("A_")).sort()) {
+      const sql = readFileSync(path.join(migDir, f), "utf8").replace(/--[^\n]*/g, "");
+      for (const [, t, sets, where] of sql.matchAll(/UPDATE\s+(\w+)\s+SET\s+([\s\S]*?)\s+WHERE\s+([\s\S]*?);/g)) {
+        if (t !== table) continue;
+        const ids = [...where.matchAll(/'([^']+)'/g)].map((m) => m[1]);
+        for (const [, col, v] of sets.matchAll(/(\w+)\s*=\s*(JSON_ARRAY\((?:[^)(]|'[^']*')*\)|'(?:[^']|'')*'|NULL|\d+)/g)) {
+          const field = cols[col];
+          expect(field, `${f}: 매핑 없는 컬럼 ${table}.${col}`).toBeDefined();
+          for (const id of ids) last.set(`${id}\u0000${field}`, { file: f, value: parseValue(v) });
+        }
+      }
+    }
+    for (const [key, { file, value }] of last) {
+      const [id, field] = key.split("\u0000");
+      const card = seed.get(id);
+      if (!card) continue;
+      expect(card[field], `${file}: ${id}.${field}`).toEqual(value);
+    }
+  });
+});
