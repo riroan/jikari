@@ -588,6 +588,12 @@ describe("vocab seeds", () => {
     ["来る", "te", "来て"],
     ["する", "nai", "しない"],
     ["散歩する", "masu", "散歩します"],
+    ["始まる", "te", "始まって"],
+    ["知る", "te", "知って"],
+    ["終わる", "nai", "終わらない"],
+    ["取る", "ta", "取った"],
+    ["着る", "te", "着て"],
+    ["答える", "nai", "答えない"],
   ] as const)("%s의 %s형은 %s", (word, form, expected) => {
     const card = cards.find((c) => c.word === word);
     expect(card, `${word} 시드 없음`).toBeDefined();
