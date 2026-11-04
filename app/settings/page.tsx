@@ -63,6 +63,7 @@ export default function SettingsPage() {
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [pending, setPending] = useState<PersistedState | null>(null);
   const pendingExtras = useRef<BackupExtras | undefined>(undefined);
+  const [pendingHasExtras, setPendingHasExtras] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const resetDialogRef = useRef<HTMLDialogElement>(null);
   const respaceDialogRef = useRef<HTMLDialogElement>(null);
@@ -139,6 +140,8 @@ export default function SettingsPage() {
       }
       setMessage(null);
       pendingExtras.current = result.extras;
+      const x = result.extras;
+      setPendingHasExtras(!!(x && (x.misses || x.memos || x.readingWeak)));
       setPending(result.state);
     } catch {
       setMessage({ kind: "err", text: "가져오기 실패: 파일을 읽을 수 없습니다." });
@@ -423,6 +426,7 @@ export default function SettingsPage() {
       {pending && (
         <RestoreDialog
           incoming={pending}
+          hasExtras={pendingHasExtras}
           current={useStore.getState()}
           onConfirm={confirmRestore}
           onCancel={() => setPending(null)}
@@ -557,11 +561,13 @@ function fmtDate(ms: number) {
 /** Preview + explicit confirm before a backup overwrites current progress. */
 function RestoreDialog({
   incoming,
+  hasExtras,
   current,
   onConfirm,
   onCancel,
 }: {
   incoming: PersistedState;
+  hasExtras: boolean;
   current: PersistedState;
   onConfirm: () => void;
   onCancel: () => void;
@@ -597,6 +603,11 @@ function RestoreDialog({
       <p className="text-body text-[color:var(--fg-soft)] leading-relaxed mb-4 break-keep">
         현재 학습 기록이 이 백업으로 덮어써집니다.
       </p>
+      {hasExtras && (
+        <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed mb-4 -mt-2 break-keep">
+          이 기기의 오답 기록·메모도 백업 내용으로 바뀝니다.
+        </p>
+      )}
       <table className="w-full text-body tabular-nums mb-5">
         <thead>
           <tr className="text-[color:var(--fg-faint)]">
