@@ -23,7 +23,9 @@ export function normalizeJapanese(input: string): string {
  *   - NFC
  *   - trim
  *   - strip surrounding punctuation (., !, ?, 。, ！, ？, , ，)
- *   - collapse inner whitespace runs to single space
+ *   - drop all whitespace — 띄어쓰기는 채점하지 않는다. "한 번"/"한번",
+ *     "보여 주다"/"보여주다"는 맞춤법상 둘 다 쓰이고, 이 퀴즈가 묻는 건 뜻이지
+ *     띄어쓰기가 아니다. 데이터도 같은 말을 카드마다 다르게 띄어 쓴다.
  *
  * 어미 변형(먹는다↔먹다)·동의어는 처리하지 않음.
  */
@@ -32,8 +34,7 @@ export function normalizeKorean(input: string): string {
     .normalize("NFC")
     .trim()
     .replace(/^[.,!?。！？，、]+|[.,!?。！？，、]+$/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+    .replace(/\s+/g, "");
 }
 
 /**

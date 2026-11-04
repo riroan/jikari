@@ -63,9 +63,11 @@ describe("normalizeKorean", () => {
     expect(normalizeKorean("  먹다  ")).toBe("먹다");
   });
 
-  test("collapses inner whitespace", () => {
-    expect(normalizeKorean("날  해")).toBe("날 해");
-    expect(normalizeKorean("날\t\t해")).toBe("날 해");
+  test("ignores inner whitespace (띄어쓰기는 채점하지 않음)", () => {
+    expect(normalizeKorean("날  해")).toBe("날해");
+    expect(normalizeKorean("날\t\t해")).toBe("날해");
+    expect(normalizeKorean("한 번")).toBe(normalizeKorean("한번"));
+    expect(matchesAnyAnswer("보여주다", ["보여 주다"], normalizeKorean)).toBe(true);
   });
 
   test("strips surrounding punctuation", () => {
