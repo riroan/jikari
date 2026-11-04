@@ -188,7 +188,7 @@ xxl  56-80px  메이저 구분
 
 - **앞면:** 문제 (대형 한자 / 단어 / 빈칸 문장)
 - **뒷면:** 정답 + 읽기 + 한국어 힌트 (한자 모드) / 번역 (단어·문장)
-- **Framer Motion 플립:** `rotateY: 0 → 180`, 0.6s ease-out
+- **카드 플립:** `rotateY: 0 → 180`, 0.6s ease-out (CSS 3D transform — framer-motion은 쓰지 않는다)
 - **답 제출 후 0.5s disabled** — 더블탭 방지
 - **정답:** 초록(sage) 체크 + 부드러운 스케일 펄스 (CSS `.anim-pop-in`, ease-out)
 - **오답:** 빨강(clay) X + 흔들림 (CSS `@keyframes shake`, 모바일 iOS 프레임 드랍 회피)
@@ -245,7 +245,7 @@ xxl  56-80px  메이저 구분
 
 ### 허용 모션 목록
 
-1. 카드 플립 (Framer Motion)
+1. 카드 플립 (CSS 3D transform, 미구현)
 2. 정답 스케일 펄스 (CSS `.anim-pop-in`) · 피드백 페이드인 (CSS `.anim-fade-in`)
 3. 오답 shake (CSS)
 4. 후리가나 페이드인 힌트
