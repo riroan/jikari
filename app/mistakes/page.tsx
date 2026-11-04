@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ChapterQuizDeck } from "@/components/ChapterQuizDeck";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useCardsStore } from "@/lib/cards-store";
 import { useClientNow } from "@/lib/use-is-client";
-import { groupByRecency, missCard, removeMiss, restoreMiss, type Miss } from "@/lib/misses";
+import { groupByRecency, missCard, splitLeeches, removeMiss, restoreMiss, type Miss } from "@/lib/misses";
+import { MEMO_MAX, setMemo, useMemos } from "@/lib/memos";
 import { useMisses } from "@/lib/use-misses";
 import type { AnyMissCard as AnyCard, ChapterMember } from "@/lib/types";
 
@@ -39,7 +40,13 @@ export default function MistakesPage() {
   const [run, setRun] = useState<Resolved[] | null>(null);
   const [undo, setUndo] = useState<Miss | null>(null);
 
+  const memos = useMemos();
   const items = ready ? misses.flatMap((m) => resolve(m) ?? []) : [];
+  const { leeches, rest } = splitLeeches(items.map((r) => r.miss));
+  const groups = [
+    ...(leeches.length ? [{ label: "자주 틀림", items: leeches }] : []),
+    ...(now === null ? [] : groupByRecency(rest, now)),
+  ];
 
   return (
     <ModePageShell title="誤答" backLabel={run ? "← 목록" : "← HOME"} backHref={run ? "/mistakes" : "/"}>
@@ -68,7 +75,7 @@ export default function MistakesPage() {
               >
                 틀린 것만 다시
               </button>
-              {groupByRecency(items.map((r) => r.miss), now).map((g) => (
+              {groups.map((g) => (
                 <section key={g.label}>
                   <h2 className="text-xs tracking-label font-medium text-[color:var(--fg-faint)] mb-1">
                     {g.label}
@@ -78,6 +85,7 @@ export default function MistakesPage() {
                       <Row
                         key={m.key}
                         r={items.find((r) => r.miss.key === m.key)!}
+                        memo={memos.get(m.key) ?? ""}
                         onClear={() => {
                           removeMiss(m.key);
                           setUndo(m);
@@ -110,8 +118,10 @@ export default function MistakesPage() {
   );
 }
 
-function Row({ r, onClear }: { r: Resolved; onClear: () => void }) {
+function Row({ r, memo, onClear }: { r: Resolved; memo: string; onClear: () => void }) {
   const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState<string | null>(null);
+  const input = useRef<HTMLInputElement>(null);
   const { front, back, serif } = faceBack(r.card);
   return (
     <li className="border-b border-[color:var(--line)]">
@@ -143,8 +153,34 @@ function Row({ r, onClear }: { r: Resolved; onClear: () => void }) {
           지우기
         </button>
       </div>
+      {memo && !open && (
+        <p lang="ko" className="pb-2 text-tiny leading-relaxed text-[color:var(--fg-faint)] break-words">
+          {memo}
+        </p>
+      )}
       {open && (
-        <p className="pb-3 text-caption leading-relaxed text-[color:var(--accent-progress-text)]">{back}</p>
+        <div className="pb-3 flex flex-col gap-2">
+          <p className="text-caption leading-relaxed text-[color:var(--accent-progress-text)]">{back}</p>
+          <input
+            ref={input}
+            lang="ko"
+            type="text"
+            maxLength={MEMO_MAX}
+            enterKeyHint="done"
+            aria-label="내 메모 (연상)"
+            placeholder="내 메모 (연상)"
+            value={draft ?? memo}
+            onChange={(e) => setDraft(e.target.value)}
+            onFocus={() => setTimeout(() => input.current?.scrollIntoView({ block: "center", behavior: "smooth" }), 300)}
+            onBlur={() => {
+              if (draft !== null) setMemo(r.miss.key, draft);
+              setDraft(null);
+            }}
+            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+            style={{ minHeight: 44, fontSize: 16 }}
+            className="w-full bg-transparent border-b border-[color:var(--line)] focus:border-[color:var(--fg)] outline-none text-[color:var(--fg)] placeholder:text-[color:var(--fg-faint)]"
+          />
+        </div>
       )}
     </li>
   );

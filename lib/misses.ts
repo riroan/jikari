@@ -77,6 +77,17 @@ export function restoreMiss(m: Miss): void {
   saveMisses([...loadMisses().filter((x) => x.key !== m.key), m].sort(byLast).slice(0, MISSES_CAP));
 }
 
+/** 자주 틀림: 누적 오답 LEECH_AT회 이상. */
+export const LEECH_AT = 4;
+
+/** 순수: 자주 틀리는 카드를 많이 틀린 순(동률은 최신순)으로 앞에, 나머지는 그대로. */
+export function splitLeeches(list: readonly Miss[]): { leeches: Miss[]; rest: Miss[] } {
+  return {
+    leeches: list.filter((m) => m.count >= LEECH_AT).sort((a, b) => b.count - a.count || b.last - a.last),
+    rest: list.filter((m) => m.count < LEECH_AT),
+  };
+}
+
 /** 오늘 / 이번 주(최근 7일) / 이전 — 로컬 자정 기준. */
 export function groupByRecency(list: readonly Miss[], now: number): Array<{ label: string; items: Miss[] }> {
   const d = new Date(now);

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
-  applyAnswer, CLEAR_AFTER, groupByRecency, loadMisses, MISSES_CAP, MISSES_KEY, recordMissAnswer,
+  applyAnswer, CLEAR_AFTER, groupByRecency, LEECH_AT, loadMisses, MISSES_CAP, MISSES_KEY, recordMissAnswer, splitLeeches,
 } from "@/lib/misses";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -95,5 +95,14 @@ describe("missCard", () => {
     expect(missCard("grammar:pattern:g1")?.ref).toEqual({ mode: "grammar", cardId: "g1" });
     expect(missCard("kanji:gone")).toBeNull();
     expect(missCard("bogus:x")).toBeNull();
+  });
+});
+
+describe("splitLeeches", () => {
+  it("pulls count >= LEECH_AT forward, most missed first", () => {
+    const m = (key: string, count: number, last: number) => ({ key, count, ok: 0, last });
+    const { leeches, rest } = splitLeeches([m("a", LEECH_AT, 3), m("b", 1, 2), m("c", LEECH_AT + 2, 1)]);
+    expect(leeches.map((x) => x.key)).toEqual(["c", "a"]);
+    expect(rest.map((x) => x.key)).toEqual(["b"]);
   });
 });
