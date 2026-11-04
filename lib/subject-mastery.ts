@@ -18,3 +18,15 @@ export function subjectMastery(
   }
   return m;
 }
+
+/** Sum of per-subject counts — the progress header's all-subject totals. */
+export function sumMastery(list: readonly SubjectMastery[]): SubjectMastery {
+  const sum: SubjectMastery = { total: 0, mastered: 0, learning: 0, fresh: 0 };
+  for (const m of list) {
+    sum.total += m.total;
+    sum.mastered += m.mastered;
+    sum.learning += m.learning;
+    sum.fresh += m.fresh;
+  }
+  return sum;
+}
