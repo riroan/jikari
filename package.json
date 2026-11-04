@@ -13,7 +13,8 @@
     "test:ui": "vitest --ui",
     "e2e": "playwright test",
     "verify": "bun run typecheck && bun run lint && bun run test",
-    "db:migrate": "bun scripts/migrate.ts"
+    "db:migrate": "bun scripts/migrate.ts",
+    "db:import": "bun scripts/import-all.ts"
   },
   "dependencies": {
     "@next/env": "^16.2.4",
