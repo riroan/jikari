@@ -714,3 +714,41 @@ describe("grammar seeds", () => {
     }
   });
 });
+
+describe("kanji seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  type K = { id: string; onReadings: string[]; kunReadings: string[]; koreanMeaning: string };
+  const cards = readdirSync(dir)
+    .filter((f) => f.startsWith("kanji-") && f.endsWith(".json"))
+    .flatMap((f) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as K[]);
+
+  test("읽기는 히라가나뿐이고 같은 읽기가 음독·훈독에 겹치지 않는다", () => {
+    for (const c of cards) {
+      for (const r of [...c.onReadings, ...c.kunReadings]) {
+        expect(r, `${c.id}: ${r}`).toMatch(/^[ぁ-ゖ]+$/);
+      }
+      expect(c.onReadings.filter((r) => c.kunReadings.includes(r)), `${c.id}`).toEqual([]);
+    }
+  });
+
+  // A_* 마이그레이션은 이미 들어간 DB 행을 고친다. 시드가 그 값을 따라가지 않으면 새 DB를
+  // 만들 때 (migrate → add-kanji 순서) 수정 전 값이 다시 들어간다 — 실제로 훈독 103개가
+  // 어간(た・よ…)으로 남아 있었다.
+  test("시드가 A_* 마이그레이션의 kanji_cards 수정과 일치한다", () => {
+    const byId = new Map(cards.map((c) => [c.id, c]));
+    const col = { kun_readings: "kunReadings", on_readings: "onReadings", korean_meaning: "koreanMeaning" } as const;
+    const migDir = path.join(process.cwd(), "lib/db/migrations");
+    for (const f of readdirSync(migDir).filter((x) => x.startsWith("A_")).sort()) {
+      const sql = readFileSync(path.join(migDir, f), "utf8").replace(/--[^\n]*/g, "");
+      for (const [, sets, id] of sql.matchAll(/UPDATE\s+kanji_cards\s+SET\s+([\s\S]*?)\s+WHERE\s+id\s*=\s*'([^']+)'\s*;/g)) {
+        if (!byId.has(id)) continue; // DB에만 있는 행 (시드 없음) — 비교 대상이 아니다.
+        for (const [, c, v] of sets.matchAll(/(\w+)\s*=\s*(JSON_ARRAY\([^)]*\)|'[^']*')/g)) {
+          const field = col[c as keyof typeof col];
+          if (!field) continue;
+          const want = v.startsWith("JSON_ARRAY") ? [...v.matchAll(/'([^']*)'/g)].map((m) => m[1]) : v.slice(1, -1);
+          expect(byId.get(id)?.[field], `${f}: ${id}.${field}`).toEqual(want);
+        }
+      }
+    }
+  });
+});

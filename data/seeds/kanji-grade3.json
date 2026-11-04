@@ -658,10 +658,7 @@
   {
     "id": "州",
     "kanji": "州",
-    "onReadings": [
-      "しゅう",
-      "す"
-    ],
+    "onReadings": ["しゅう"],
     "kunReadings": [
       "す"
     ],
@@ -871,10 +868,7 @@
   {
     "id": "打",
     "kanji": "打",
-    "onReadings": [
-      "だ",
-      "だーす"
-    ],
+    "onReadings": ["だ"],
     "kunReadings": [
       "うつ",
       "ぶつ"
