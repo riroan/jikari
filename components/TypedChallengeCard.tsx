@@ -6,6 +6,7 @@ import { TypingInput } from "./TypingInput";
 import { SpeakButton } from "./SpeakButton";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
 import { closestAnswer, diffAgainst } from "@/lib/diff";
+import { markAnswered, markShown } from "@/lib/srs";
 
 const KEYBOARD_GRACE_MS = 250;
 
@@ -56,6 +57,7 @@ export function TypedChallengeCard({
       setResult(isCorrect ? "correct" : "wrong");
       setDisabled(true);
       resolvedAtRef.current = Date.now();
+      markAnswered("typed");
     },
     [disabled, acceptableAnswers],
   );
@@ -65,10 +67,13 @@ export function TypedChallengeCard({
     // Assisted answers never promote the card: report them as a miss.
     onResolved(result === "correct" && !hinted);
     setHinted(false);
+    markShown();
     setResult(null);
     setDisabled(false);
     setUserAnswer(null);
   }, [result, hinted, onResolved]);
+
+  useEffect(() => markShown(), []);
 
   useEffect(() => {
     return () => {

@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { markShown, markAnswered } from "@/lib/srs";
 import { useStore, exportState } from "@/lib/store";
 import { DEFAULT_SETTINGS, SCHEMA_VERSION } from "@/lib/types";
 import { INITIAL_RATING } from "@/lib/rating";
@@ -49,6 +50,44 @@ describe("store.review", () => {
     expect(s.lastActiveAt).toBeGreaterThan(0);
     expect(Object.keys(s.heatmap)).toHaveLength(1);
     expect(s.currentStreak).toBeGreaterThanOrEqual(1);
+  });
+});
+
+describe("store.review — hesitation", () => {
+  afterEach(() => vi.useRealTimers());
+  const answer = (ms: number) => {
+    vi.useFakeTimers();
+    vi.setSystemTime(1_000_000);
+    markShown();
+    vi.setSystemTime(1_000_000 + ms);
+    markAnswered("choice");
+  };
+
+  it("slow correct holds the box; the next fast one promotes", () => {
+    useStore.getState().review("vocab", "v-1", true);
+    const box = () => useStore.getState().learningStates["vocab:v-1"].box;
+    expect(box()).toBe(2);
+    answer(12_000);
+    useStore.getState().review("vocab", "v-1", true);
+    expect(box()).toBe(2);
+    answer(2_000);
+    useStore.getState().review("vocab", "v-1", true);
+    expect(box()).toBe(3);
+  });
+
+  it("the flag is consumed once: a review without a new answer promotes", () => {
+    useStore.getState().review("vocab", "v-1", true);
+    answer(12_000);
+    useStore.getState().review("vocab", "v-1", true);
+    useStore.getState().review("vocab", "v-1", true);
+    expect(useStore.getState().learningStates["vocab:v-1"].box).toBe(3);
+  });
+
+  it("slow wrong still demotes", () => {
+    useStore.getState().review("vocab", "v-1", true);
+    answer(12_000);
+    useStore.getState().review("vocab", "v-1", false);
+    expect(useStore.getState().learningStates["vocab:v-1"].box).toBe(1);
   });
 });
 

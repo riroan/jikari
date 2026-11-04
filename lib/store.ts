@@ -16,6 +16,7 @@ import {
   cardKey,
   getTodayQueue as srsGetTodayQueue,
   newLearningState,
+  takeSlow,
   type AnswerMode,
   type TodayQueue,
 } from "./srs";
@@ -92,7 +93,7 @@ export const useStore = create<Store>()(
         const states = get().learningStates;
         const existing = states[key];
         const base = existing ?? newLearningState(mode, cardId, now);
-        const next = srsAdvance(base, correct, now, answerMode);
+        const next = srsAdvance(base, correct, now, answerMode, takeSlow());
         const heatmap = incrementToday(get().heatmap, now);
         const ratings = get().ratings;
         set({

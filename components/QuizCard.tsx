@@ -12,6 +12,7 @@ import {
   normalizeKorean,
 } from "@/lib/normalize";
 import { hintAnswer } from "@/lib/hint";
+import { markAnswered, markShown } from "@/lib/srs";
 
 /**
  * Common quiz card for all 3 modes.
@@ -83,6 +84,7 @@ export function QuizCard({
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [typedUserAnswer, setTypedUserAnswer] = useState<string | null>(null);
   const [hinted, setHinted] = useState(false);
+  const [slow, setSlow] = useState(false);
   const resolvedAtRef = useRef(0);
 
   const advance = useCallback(() => {
@@ -90,6 +92,8 @@ export function QuizCard({
     // Assisted answers never promote the card: report them as a miss.
     onResolved(result === "correct" && !hinted);
     setHinted(false);
+    setSlow(false);
+    markShown();
     setResult(null);
     setDisabled(false);
     setShowingBack(false);
@@ -102,11 +106,12 @@ export function QuizCard({
       setResult(wasCorrect ? "correct" : "wrong");
       setDisabled(true);
       resolvedAtRef.current = Date.now();
+      setSlow(markAnswered(input.mode) && wasCorrect);
       if (back) {
         setShowingBack(true);
       }
     },
-    [back],
+    [back, input.mode],
   );
 
   const handleChoice = useCallback(
@@ -133,6 +138,8 @@ export function QuizCard({
     },
     [disabled, input, resolve],
   );
+
+  useEffect(() => markShown(), []);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -220,6 +227,11 @@ export function QuizCard({
                 {hinted && result === "correct" && (
                   <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
                     힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
+                  </p>
+                )}
+                {slow && !hinted && result === "correct" && (
+                  <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
+                    느렸어요 · 한 번 더 볼게요
                   </p>
                 )}
               </m.div>

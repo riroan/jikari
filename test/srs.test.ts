@@ -1,6 +1,12 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   advance,
+  markShown,
+  markAnswered,
+  takeSlow,
+  SLOW_CHOICE_MS,
+  SLOW_TYPED_MS,
+  MAX_THINK_MS,
   cardKey,
   getTodayQueue,
   newLearningState,
@@ -269,5 +275,61 @@ describe("masteryLevel", () => {
       lastReviewed: NOW,
     };
     expect(masteryLevel(s)).toBe("mastered");
+  });
+});
+
+describe("hesitation-aware promotion", () => {
+  const box3 = { ...newLearningState("vocab", "v", 0), box: 3 as const, lastReviewed: NOW - DAY };
+  const timed = (shownMs: number, answeredMs: number, mode: "choice" | "typed" = "choice") => {
+    vi.setSystemTime(shownMs);
+    markShown();
+    vi.setSystemTime(answeredMs);
+    return markAnswered(mode);
+  };
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it("advance: slow correct holds the box at the current interval", () => {
+    const next = advance(box3, true, NOW, "choice", true);
+    expect(next.box).toBe(3);
+    expect(next.nextDue).toBe(NOW + 4 * DAY);
+    expect(next.lastReviewed).toBe(NOW);
+  });
+
+  it("advance: fast correct promotes; slow wrong is still a normal miss", () => {
+    expect(advance(box3, true, NOW, "choice", false).box).toBe(4);
+    expect(advance(box3, false, NOW, "choice", true).box).toBe(1);
+    expect(advance(box3, false, NOW, "typed", true).box).toBe(2);
+  });
+
+  it("thresholds: choice 8s, typed 15s, inclusive of the limit", () => {
+    expect(timed(1000, 1000 + SLOW_CHOICE_MS)).toBe(false);
+    expect(timed(1000, 1001 + SLOW_CHOICE_MS)).toBe(true);
+    expect(timed(1000, 1000 + SLOW_CHOICE_MS + 1, "typed")).toBe(false);
+    expect(timed(1000, 1001 + SLOW_TYPED_MS, "typed")).toBe(true);
+  });
+
+  it("a gap beyond 60s is unknown, not slow", () => {
+    expect(timed(1000, 1000 + MAX_THINK_MS)).toBe(true);
+    expect(timed(1000, 1001 + MAX_THINK_MS)).toBe(false);
+  });
+
+  it("a hidden document during the question is never penalised", () => {
+    vi.setSystemTime(1000);
+    markShown();
+    Object.defineProperty(document, "hidden", { value: true, configurable: true });
+    document.dispatchEvent(new Event("visibilitychange"));
+    Object.defineProperty(document, "hidden", { value: false, configurable: true });
+    vi.setSystemTime(1000 + 20_000);
+    expect(markAnswered("choice")).toBe(false);
+  });
+
+  it("markShown resets a stale flag; takeSlow reads and clears", () => {
+    expect(timed(1000, 12_000)).toBe(true);
+    markShown();
+    expect(takeSlow()).toBe(false);
+    timed(1000, 12_000);
+    expect(takeSlow()).toBe(true);
+    expect(takeSlow()).toBe(false);
   });
 });

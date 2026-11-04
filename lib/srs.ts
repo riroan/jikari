@@ -14,6 +14,8 @@ import type { CardMode, LearningState } from "./types";
  *   - Wrong (answerMode='typed'):  box → max(1, box-1), nextDue = now + 1 day
  *     (typed은 오타·送り仮名·표기 변이로 box 5→1 리셋이 과함. -1 스텝이 공정.)
  *   correctStreak → 0 on any wrong.
+ *   - Slow correct (see {@link markAnswered}): box held, nextDue = now + the
+ *     current box's interval. Never demotes; wrong answers are unaffected.
  */
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -95,12 +97,69 @@ function graduatedIntervalMs(state: LearningState, now: number): number {
   return Math.min(MAX_INTERVAL_DAYS * DAY_MS, Math.max(floor, 2 * survived));
 }
 
+/** A correct answer slower than this holds the box instead of promoting. */
+export const SLOW_CHOICE_MS = 8_000;
+export const SLOW_TYPED_MS = 15_000;
+/** Longer gaps are "unknown" (phone lock, walked away): promote normally. */
+export const MAX_THINK_MS = 60_000;
+
+let shownAt = 0;
+let hiddenSinceShown = false;
+let slowPending = false;
+let visibilityBound = false;
+
+/** Call when a question appears (mount and after each advance). */
+export function markShown(): void {
+  if (typeof document === "undefined") return;
+  if (!visibilityBound) {
+    visibilityBound = true;
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) hiddenSinceShown = true;
+    });
+  }
+  shownAt = Date.now();
+  hiddenSinceShown = document.hidden;
+  slowPending = false;
+}
+
+/**
+ * Call at the moment the answer is given (not when 다음 is pressed — review()
+ * runs later). Returns whether it was slow; review() consumes the same flag.
+ */
+export function markAnswered(mode: AnswerMode): boolean {
+  const ms = Date.now() - shownAt;
+  const limit = mode === "typed" ? SLOW_TYPED_MS : SLOW_CHOICE_MS;
+  slowPending =
+    shownAt > 0 &&
+    !hiddenSinceShown &&
+    !(typeof document !== "undefined" && document.hidden) &&
+    ms > limit &&
+    ms <= MAX_THINK_MS;
+  return slowPending;
+}
+
+/** Read-and-clear, so a flag never leaks onto a later review. */
+export function takeSlow(): boolean {
+  const v = slowPending;
+  slowPending = false;
+  return v;
+}
+
 export function advance(
   state: LearningState,
   correct: boolean,
   now: number,
   answerMode: AnswerMode = "choice",
+  slow = false,
 ): LearningState {
+  if (correct && slow) {
+    return {
+      ...state,
+      nextDue: now + INTERVAL_DAYS[state.box] * DAY_MS,
+      correctStreak: state.correctStreak + 1,
+      lastReviewed: now,
+    };
+  }
   if (correct) {
     const newBox = Math.min(5, state.box + 1) as 1 | 2 | 3 | 4 | 5;
     return {
