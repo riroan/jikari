@@ -25,7 +25,7 @@
     "sentenceRuby": "{子供|こども}が{大|おお}きな{声|こえ}で＿＿＿。",
     "blank": "笑う",
     "blankRuby": "{笑|わら}う",
-    "distractors": ["泳ぐ", "寝る", "売る"],
+    "distractors": ["泳ぐ", "寝る", "待つ"],
     "translation": "아이가 큰 소리로 웃는다.",
     "jlptLevel": 3
   },
@@ -35,7 +35,7 @@
     "sentenceRuby": "{赤|あか}ちゃんが＿＿＿。",
     "blank": "泣く",
     "blankRuby": "{泣|な}く",
-    "distractors": ["歌う", "売る", "歩く"],
+    "distractors": ["歌う", "思う", "歩く"],
     "translation": "아기가 운다.",
     "jlptLevel": 3
   },
@@ -75,7 +75,7 @@
     "sentenceRuby": "{景色|けしき}をカメラで＿＿＿。",
     "blank": "写す",
     "blankRuby": "{写|うつ}す",
-    "distractors": ["売る", "歩く", "閉める"],
+    "distractors": ["感じる", "歩く", "教える"],
     "translation": "풍경을 카메라로 찍는다.",
     "jlptLevel": 3
   },
@@ -85,7 +85,7 @@
     "sentenceRuby": "{春|はる}の{風|かぜ}を＿＿＿。",
     "blank": "感じる",
     "blankRuby": "{感|かん}じる",
-    "distractors": ["売る", "歩く", "閉める"],
+    "distractors": ["止まる", "歩く", "決める"],
     "translation": "봄바람을 느낀다.",
     "jlptLevel": 3
   },
@@ -105,7 +105,7 @@
     "sentenceRuby": "{先生|せんせい}から{日本語|にほんご}を＿＿＿。",
     "blank": "習う",
     "blankRuby": "{習|なら}う",
-    "distractors": ["売る", "泳ぐ", "閉める"],
+    "distractors": ["泣く", "泳ぐ", "閉める"],
     "translation": "선생님에게 일본어를 배운다.",
     "jlptLevel": 3
   },
@@ -135,7 +135,7 @@
     "sentenceRuby": "{好|す}きな{色|いろ}を＿＿＿。",
     "blank": "選ぶ",
     "blankRuby": "{選|えら}ぶ",
-    "distractors": ["売る", "寝る", "歩く"],
+    "distractors": ["走る", "寝る", "歩く"],
     "translation": "좋아하는 색을 고른다.",
     "jlptLevel": 3
   },
@@ -145,7 +145,7 @@
     "sentenceRuby": "{旅行|りょこう}の{予定|よてい}を＿＿＿。",
     "blank": "決める",
     "blankRuby": "{決|き}める",
-    "distractors": ["売る", "寝る", "泳ぐ"],
+    "distractors": ["終わる", "寝る", "泳ぐ"],
     "translation": "여행 일정을 정한다.",
     "jlptLevel": 3
   },
@@ -155,7 +155,7 @@
     "sentenceRuby": "{季節|きせつ}が＿＿＿。",
     "blank": "変わる",
     "blankRuby": "{変|か}わる",
-    "distractors": ["売る", "寝る", "閉める"],
+    "distractors": ["習う", "寝る", "閉める"],
     "translation": "계절이 바뀐다.",
     "jlptLevel": 3
   },
@@ -165,7 +165,7 @@
     "sentenceRuby": "{明日|あした}の{予定|よてい}を＿＿＿。",
     "blank": "変える",
     "blankRuby": "{変|か}える",
-    "distractors": ["売る", "寝る", "泳ぐ"],
+    "distractors": ["起きる", "寝る", "泳ぐ"],
     "translation": "내일 일정을 바꾼다.",
     "jlptLevel": 3
   },
@@ -175,7 +175,7 @@
     "sentenceRuby": "バスが{駅|えき}の{前|まえ}を＿＿＿。",
     "blank": "通る",
     "blankRuby": "{通|とお}る",
-    "distractors": ["売る", "寝る", "泳ぐ"],
+    "distractors": ["洗う", "寝る", "泳ぐ"],
     "translation": "버스가 역 앞을 지나간다.",
     "jlptLevel": 3
   },
@@ -185,7 +185,7 @@
     "sentenceRuby": "{机|つくえ}の{上|うえ}のねこが＿＿＿。",
     "blank": "動く",
     "blankRuby": "{動|うご}く",
-    "distractors": ["売る", "寝る", "閉める"],
+    "distractors": ["通る", "払う", "閉める"],
     "translation": "책상 위 고양이가 움직인다.",
     "jlptLevel": 3
   },
@@ -195,7 +195,7 @@
     "sentenceRuby": "{信号|しんごう}で{車|くるま}が＿＿＿。",
     "blank": "止まる",
     "blankRuby": "{止|と}まる",
-    "distractors": ["売る", "寝る", "閉める"],
+    "distractors": ["遊ぶ", "寝る", "閉める"],
     "translation": "신호에서 차가 멈춘다.",
     "jlptLevel": 3
   }

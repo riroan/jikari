@@ -45,7 +45,7 @@
     "sentenceRuby": "{毎朝|まいあさ}{顔|かお}を＿＿＿。",
     "blank": "洗う",
     "blankRuby": "{洗|あら}う",
-    "distractors": ["書く", "走る", "売る"],
+    "distractors": ["書く", "走る", "起きる"],
     "translation": "매일 아침 얼굴을 씻는다.",
     "jlptLevel": 5
   },
@@ -95,7 +95,7 @@
     "sentenceRuby": "{週末|しゅうまつ}は{家|いえ}で＿＿＿。",
     "blank": "休む",
     "blankRuby": "{休|やす}む",
-    "distractors": ["走る", "泳ぐ", "閉める"],
+    "distractors": ["走る", "泳ぐ", "変わる"],
     "translation": "주말에는 집에서 쉰다.",
     "jlptLevel": 5
   },
@@ -185,7 +185,7 @@
     "sentenceRuby": "バスを＿＿＿。",
     "blank": "待つ",
     "blankRuby": "{待|ま}つ",
-    "distractors": ["食べる", "閉める", "書く"],
+    "distractors": ["食べる", "始まる", "書く"],
     "translation": "버스를 기다린다.",
     "jlptLevel": 5
   },
@@ -205,7 +205,7 @@
     "sentenceRuby": "{父|ちち}は{毎朝|まいあさ}{新聞|しんぶん}を＿＿＿。",
     "blank": "読む",
     "blankRuby": "{読|よ}む",
-    "distractors": ["食べる", "泳ぐ", "閉める"],
+    "distractors": ["食べる", "泳ぐ", "遊ぶ"],
     "translation": "아버지는 매일 아침 신문을 읽는다.",
     "jlptLevel": 5
   },
