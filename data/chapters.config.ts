@@ -203,6 +203,18 @@ export const CHAPTERS: ChapterDef[] = [
     },
   },
 
+  {
+    id: "a13-situations2",
+    name: "상황별 회화 2 (약속·여행·수속·이웃·맞장구·SNS)",
+    intro:
+      "친구와 약속 잡기, 자기소개, 길 묻기, 호텔·우체국·은행·구청, 미용실 요청, 이웃 인사, 가족·취미 이야기, 맞장구와 되묻기, 스마트폰 한마디까지. a12에 이어 *입에 붙이는 상황 묶음*이에요.",
+    sortOrder: 106,
+    match: {
+      expressionIds: Array.from({ length: 20 }, (_, i) => `e0${63 + i}`),
+      sentenceIds: Array.from({ length: 42 }, (_, i) => `s${242 + i}`),
+    },
+  },
+
   // ─── B. 조사 (Particle) ───────────────────────────────────────────────
   {
     id: "b1-wa-ga",

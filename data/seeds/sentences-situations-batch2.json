@@ -1,0 +1,578 @@
+[
+  {
+    "id": "s242",
+    "sentence": "今度の日曜日、いっしょに映画を＿＿＿？",
+    "sentenceRuby": "{今度|こんど}の{日曜日|にちようび}、いっしょに{映画|えいが}を＿＿＿？",
+    "blank": "見ませんか",
+    "blankRuby": "{見|み}ませんか",
+    "distractors": [
+      "洗いませんか",
+      "歌いませんか",
+      "眠りませんか"
+    ],
+    "translation": "이번 일요일에 같이 영화 볼래요?",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s243",
+    "sentence": "ごめん、急な＿＿＿ができて、行けなくなった。",
+    "sentenceRuby": "ごめん、{急|きゅう}な＿＿＿ができて、{行|い}けなくなった。",
+    "blank": "用事",
+    "blankRuby": "{用事|ようじ}",
+    "distractors": [
+      "季節",
+      "景色",
+      "荷物"
+    ],
+    "translation": "미안, 급한 일이 생겨서 못 가게 됐어.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s244",
+    "sentence": "来週の土曜日は＿＿＿ですか。",
+    "sentenceRuby": "{来週|らいしゅう}の{土曜日|どようび}は＿＿＿ですか。",
+    "blank": "暇",
+    "blankRuby": "{暇|ひま}",
+    "distractors": [
+      "細い",
+      "丸い",
+      "甘い"
+    ],
+    "translation": "다음 주 토요일은 한가해요?",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s245",
+    "sentence": "約束の時間に＿＿＿ないように、早めに家を出ます。",
+    "sentenceRuby": "{約束|やくそく}の{時間|じかん}に＿＿＿ないように、{早|はや}めに{家|いえ}を{出|で}ます。",
+    "blank": "遅れ",
+    "blankRuby": "{遅|おく}れ",
+    "distractors": [
+      "洗わ",
+      "歌わ",
+      "払わ"
+    ],
+    "translation": "약속 시간에 늦지 않도록 일찍 집을 나서요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s246",
+    "sentence": "飲み会は来週に＿＿＿ませんか。",
+    "sentenceRuby": "{飲|の}み{会|かい}は{来週|らいしゅう}に＿＿＿ませんか。",
+    "blank": "延ばし",
+    "blankRuby": "{延|の}ばし",
+    "distractors": [
+      "乗り",
+      "売り",
+      "切り"
+    ],
+    "translation": "회식은 다음 주로 미룰까요?",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s247",
+    "sentence": "先に行っててね。すぐ＿＿＿から。",
+    "sentenceRuby": "{先|さき}に{行|い}っててね。すぐ＿＿＿から。",
+    "blank": "追いつく",
+    "blankRuby": "{追|お}いつく",
+    "distractors": [
+      "売る",
+      "歌う",
+      "泳ぐ"
+    ],
+    "translation": "먼저 가 있어. 금방 따라잡을게.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s248",
+    "sentence": "ご出身は＿＿＿ですか。",
+    "sentenceRuby": "ご{出身|しゅっしん}は＿＿＿ですか。",
+    "blank": "どちら",
+    "distractors": [
+      "どなた",
+      "どれ",
+      "いかが"
+    ],
+    "translation": "고향이 어디세요?",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s249",
+    "sentence": "私は韓国から＿＿＿。",
+    "sentenceRuby": "{私|わたし}は{韓国|かんこく}から＿＿＿。",
+    "blank": "来ました",
+    "blankRuby": "{来|き}ました",
+    "distractors": [
+      "洗いました",
+      "歌いました",
+      "眠りました"
+    ],
+    "translation": "저는 한국에서 왔어요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s250",
+    "sentence": "大学で日本語を＿＿＿います。",
+    "sentenceRuby": "{大学|だいがく}で{日本語|にほんご}を＿＿＿います。",
+    "blank": "習って",
+    "blankRuby": "{習|なら}って",
+    "distractors": [
+      "洗って",
+      "履いて",
+      "払って"
+    ],
+    "translation": "대학에서 일본어를 배우고 있어요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s251",
+    "sentence": "この道を五分ほど＿＿＿と、右に銀行があります。",
+    "sentenceRuby": "この{道|みち}を{五分|ごふん}ほど＿＿＿と、{右|みぎ}に{銀行|ぎんこう}があります。",
+    "blank": "行く",
+    "distractors": [
+      "洗う",
+      "歌う",
+      "売る"
+    ],
+    "translation": "이 길을 오 분쯤 가면 오른쪽에 은행이 있어요.",
+    "jlptLevel": 5,
+    "blankRuby": "{行|い}く"
+  },
+  {
+    "id": "s252",
+    "sentence": "ここから駅まで、どのくらい＿＿＿ますか。",
+    "sentenceRuby": "ここから{駅|えき}まで、どのくらい＿＿＿ますか。",
+    "blank": "かかり",
+    "distractors": [
+      "眠り",
+      "乗り",
+      "売り"
+    ],
+    "translation": "여기서 역까지 얼마나 걸려요?",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s253",
+    "sentence": "道に＿＿＿ました。助けてください。",
+    "sentenceRuby": "{道|みち}に＿＿＿ました。{助|たす}けてください。",
+    "blank": "迷い",
+    "blankRuby": "{迷|まよ}い",
+    "distractors": [
+      "歌い",
+      "洗い",
+      "笑い"
+    ],
+    "translation": "길을 잃었어요. 도와주세요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s254",
+    "sentence": "あの信号を＿＿＿と、左に病院があります。",
+    "sentenceRuby": "あの{信号|しんごう}を＿＿＿と、{左|ひだり}に{病院|びょういん}があります。",
+    "blank": "渡る",
+    "blankRuby": "{渡|わた}る",
+    "distractors": [
+      "洗う",
+      "歌う",
+      "履く"
+    ],
+    "translation": "저 신호등을 건너면 왼쪽에 병원이 있어요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s255",
+    "sentence": "今夜、部屋は＿＿＿いますか。",
+    "sentenceRuby": "{今夜|こんや}、{部屋|へや}は＿＿＿いますか。",
+    "blank": "空いて",
+    "blankRuby": "{空|あ}いて",
+    "distractors": [
+      "洗って",
+      "歌って",
+      "履いて"
+    ],
+    "translation": "오늘 밤 방 비어 있나요?",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s256",
+    "sentence": "三時まで荷物を＿＿＿もらえますか。",
+    "sentenceRuby": "{三時|さんじ}まで{荷物|にもつ}を＿＿＿もらえますか。",
+    "blank": "預かって",
+    "blankRuby": "{預|あず}かって",
+    "distractors": [
+      "洗って",
+      "歌って",
+      "履いて"
+    ],
+    "translation": "세 시까지 짐을 맡아 주실 수 있나요?",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s257",
+    "sentence": "朝ごはん＿＿＿のプランをお願いします。",
+    "sentenceRuby": "{朝|あさ}ごはん＿＿＿のプランをお{願|ねが}いします。",
+    "blank": "付き",
+    "blankRuby": "{付|つ}き",
+    "distractors": [
+      "売り",
+      "乗り",
+      "切り"
+    ],
+    "translation": "조식 포함 플랜으로 부탁드려요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s258",
+    "sentence": "部屋の鍵を＿＿＿しまいました。",
+    "sentenceRuby": "{部屋|へや}の{鍵|かぎ}を＿＿＿しまいました。",
+    "blank": "なくして",
+    "distractors": [
+      "泳いで",
+      "眠って",
+      "笑って"
+    ],
+    "translation": "방 열쇠를 잃어버렸어요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s259",
+    "sentence": "荷物が重いので、駅の＿＿＿に預けました。",
+    "sentenceRuby": "{荷物|にもつ}が{重|おも}いので、{駅|えき}の＿＿＿に{預|あず}けました。",
+    "blank": "コインロッカー",
+    "distractors": [
+      "エレベーター",
+      "トイレ",
+      "ベンチ"
+    ],
+    "translation": "짐이 무거워서 역 코인로커에 맡겼어요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s260",
+    "sentence": "この荷物を韓国まで＿＿＿たいんですが。",
+    "sentenceRuby": "この{荷物|にもつ}を{韓国|かんこく}まで＿＿＿たいんですが。",
+    "blank": "送り",
+    "blankRuby": "{送|おく}り",
+    "distractors": [
+      "乗り",
+      "売り",
+      "切り"
+    ],
+    "translation": "이 짐을 한국까지 보내고 싶은데요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s261",
+    "sentence": "銀行で口座を＿＿＿たいです。",
+    "sentenceRuby": "{銀行|ぎんこう}で{口座|こうざ}を＿＿＿たいです。",
+    "blank": "作り",
+    "blankRuby": "{作|つく}り",
+    "distractors": [
+      "泳ぎ",
+      "眠り",
+      "乗り"
+    ],
+    "translation": "은행에서 계좌를 만들고 싶어요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s262",
+    "sentence": "引っ越したので、住所の＿＿＿をします。",
+    "sentenceRuby": "{引|ひ}っ{越|こ}したので、{住所|じゅうしょ}の＿＿＿をします。",
+    "blank": "変更",
+    "blankRuby": "{変更|へんこう}",
+    "distractors": [
+      "練習",
+      "運転",
+      "勉強"
+    ],
+    "translation": "이사했으니 주소 변경을 해요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s263",
+    "sentence": "区役所で住民票を＿＿＿もらいました。",
+    "sentenceRuby": "{区役所|くやくしょ}で{住民票|じゅうみんひょう}を＿＿＿もらいました。",
+    "blank": "取って",
+    "blankRuby": "{取|と}って",
+    "distractors": [
+      "泳いで",
+      "歌って",
+      "笑って"
+    ],
+    "translation": "구청에서 주민등록등본을 떼 달라고 해서 받았어요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s264",
+    "sentence": "ここに名前を書いて、＿＿＿を押してください。",
+    "sentenceRuby": "ここに{名前|なまえ}を{書|か}いて、＿＿＿を{押|お}してください。",
+    "blank": "はんこ",
+    "distractors": [
+      "かばん",
+      "かさ",
+      "ペン"
+    ],
+    "translation": "여기에 이름을 쓰고 도장을 찍어 주세요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s265",
+    "sentence": "手続きには身分証明書が＿＿＿です。",
+    "sentenceRuby": "{手続|てつづ}きには{身分証明書|みぶんしょうめいしょ}が＿＿＿です。",
+    "blank": "必要",
+    "blankRuby": "{必要|ひつよう}",
+    "distractors": [
+      "野菜",
+      "季節",
+      "天気"
+    ],
+    "translation": "절차에는 신분증이 필요해요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s266",
+    "sentence": "前髪を少し＿＿＿ください。",
+    "sentenceRuby": "{前髪|まえがみ}を{少|すこ}し＿＿＿ください。",
+    "blank": "切って",
+    "blankRuby": "{切|き}って",
+    "distractors": [
+      "歌って",
+      "履いて",
+      "泳いで"
+    ],
+    "translation": "앞머리를 조금 잘라 주세요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s267",
+    "sentence": "髪の色を少し＿＿＿したいです。",
+    "sentenceRuby": "{髪|かみ}の{色|いろ}を{少|すこ}し＿＿＿したいです。",
+    "blank": "明るく",
+    "blankRuby": "{明|あか}るく",
+    "distractors": [
+      "悲しく",
+      "眠く",
+      "痛く"
+    ],
+    "translation": "머리 색을 조금 밝게 하고 싶어요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s268",
+    "sentence": "サイズが合わなかったので、これを＿＿＿したいんですが。",
+    "sentenceRuby": "サイズが{合|あ}わなかったので、これを＿＿＿したいんですが。",
+    "blank": "交換",
+    "blankRuby": "{交換|こうかん}",
+    "distractors": [
+      "運転",
+      "練習",
+      "卒業"
+    ],
+    "translation": "사이즈가 안 맞아서 이걸 교환하고 싶은데요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s269",
+    "sentence": "近所の人に会ったら、＿＿＿をします。",
+    "sentenceRuby": "{近所|きんじょ}の{人|ひと}に{会|あ}ったら、＿＿＿をします。",
+    "blank": "挨拶",
+    "blankRuby": "{挨拶|あいさつ}",
+    "distractors": [
+      "運転",
+      "卒業",
+      "勉強"
+    ],
+    "translation": "이웃을 만나면 인사를 해요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s270",
+    "sentence": "ごみは朝八時までに＿＿＿ください。",
+    "sentenceRuby": "ごみは{朝|あさ}{八時|はちじ}までに＿＿＿ください。",
+    "blank": "出して",
+    "blankRuby": "{出|だ}して",
+    "distractors": [
+      "歌って",
+      "履いて",
+      "泳いで"
+    ],
+    "translation": "쓰레기는 아침 여덟 시까지 내놓아 주세요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s271",
+    "sentence": "ご飯、もう＿＿＿よ。早く来て。",
+    "sentenceRuby": "ご{飯|はん}、もう＿＿＿よ。{早|はや}く{来|き}て。",
+    "blank": "できた",
+    "distractors": [
+      "歌った",
+      "洗った",
+      "眠った"
+    ],
+    "translation": "밥 다 됐어. 빨리 와.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s272",
+    "sentence": "いつも「体に気を＿＿＿ね」と言われます。",
+    "sentenceRuby": "いつも「{体|からだ}に{気|き}を＿＿＿ね」と{言|い}われます。",
+    "blank": "つけて",
+    "distractors": [
+      "洗って",
+      "歌って",
+      "履いて"
+    ],
+    "translation": "늘 \"몸조심해\"라는 말을 들어요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s273",
+    "sentence": "休みの日はよく公園を＿＿＿します。",
+    "sentenceRuby": "{休|やす}みの{日|ひ}はよく{公園|こうえん}を＿＿＿します。",
+    "blank": "散歩",
+    "blankRuby": "{散歩|さんぽ}",
+    "distractors": [
+      "勉強",
+      "練習",
+      "運転"
+    ],
+    "translation": "쉬는 날엔 자주 공원을 산책해요.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s274",
+    "sentence": "最近、ヨガに＿＿＿ています。",
+    "sentenceRuby": "{最近|さいきん}、ヨガに＿＿＿ています。",
+    "blank": "はまっ",
+    "distractors": [
+      "笑っ",
+      "洗っ",
+      "歌っ"
+    ],
+    "translation": "요즘 요가에 빠져 있어요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s275",
+    "sentence": "すみません、よく聞こえませんでした。もう一度＿＿＿ください。",
+    "sentenceRuby": "すみません、よく{聞|き}こえませんでした。もう{一度|いちど}＿＿＿ください。",
+    "blank": "言って",
+    "blankRuby": "{言|い}って",
+    "distractors": [
+      "洗って",
+      "歌って",
+      "履いて"
+    ],
+    "translation": "죄송해요, 잘 못 들었어요. 한 번 더 말씀해 주세요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s276",
+    "sentence": "もう少し＿＿＿話してもらえますか。",
+    "sentenceRuby": "もう{少|すこ}し＿＿＿{話|はな}してもらえますか。",
+    "blank": "ゆっくり",
+    "distractors": [
+      "ぜひ",
+      "きっと",
+      "たぶん"
+    ],
+    "translation": "조금 더 천천히 말해 주실 수 있나요?",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s277",
+    "sentence": "それ、どういう＿＿＿ですか。",
+    "blank": "意味",
+    "blankRuby": "{意味|いみ}",
+    "distractors": [
+      "季節",
+      "野菜",
+      "荷物"
+    ],
+    "translation": "그거 무슨 뜻이에요?",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s278",
+    "sentence": "すみません、今、なんて＿＿＿ましたか。",
+    "sentenceRuby": "すみません、{今|いま}、なんて＿＿＿ましたか。",
+    "blank": "言い",
+    "blankRuby": "{言|い}い",
+    "distractors": [
+      "洗い",
+      "歌い",
+      "笑い"
+    ],
+    "translation": "죄송해요, 방금 뭐라고 하셨어요?",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s279",
+    "sentence": "写真をSNSに＿＿＿ました。",
+    "sentenceRuby": "{写真|しゃしん}をSNSに＿＿＿ました。",
+    "blank": "載せ",
+    "blankRuby": "{載|の}せ",
+    "distractors": [
+      "眠り",
+      "乗り",
+      "切り"
+    ],
+    "translation": "사진을 SNS에 올렸어요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s280",
+    "sentence": "スマホを＿＿＿しながら、動画を見ています。",
+    "sentenceRuby": "スマホを＿＿＿しながら、{動画|どうが}を{見|み}ています。",
+    "blank": "充電",
+    "blankRuby": "{充電|じゅうでん}",
+    "distractors": [
+      "卒業",
+      "入学",
+      "結婚"
+    ],
+    "translation": "스마트폰을 충전하면서 동영상을 보고 있어요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s281",
+    "sentence": "画面が＿＿＿しまったので、修理に出します。",
+    "sentenceRuby": "{画面|がめん}が＿＿＿しまったので、{修理|しゅうり}に{出|だ}します。",
+    "blank": "割れて",
+    "blankRuby": "{割|わ}れて",
+    "distractors": [
+      "歌って",
+      "笑って",
+      "泳いで"
+    ],
+    "translation": "화면이 깨져서 수리를 맡길 거예요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s282",
+    "sentence": "あとでLINEで＿＿＿ね。",
+    "blank": "連絡する",
+    "blankRuby": "{連絡|れんらく}する",
+    "distractors": [
+      "洗う",
+      "歌う",
+      "眠る"
+    ],
+    "translation": "나중에 LINE으로 연락할게.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s283",
+    "sentence": "パスワードを＿＿＿しまいました。",
+    "blank": "忘れて",
+    "blankRuby": "{忘|わす}れて",
+    "distractors": [
+      "泳いで",
+      "眠って",
+      "笑って"
+    ],
+    "translation": "비밀번호를 잊어버렸어요.",
+    "jlptLevel": 4
+  }
+]
