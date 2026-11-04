@@ -6,7 +6,8 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { useCardsStore } from "@/lib/cards-store";
 import { useClientNow } from "@/lib/use-is-client";
 import { groupByRecency, missCard, splitLeeches, removeMiss, restoreMiss, type Miss } from "@/lib/misses";
-import { MEMO_MAX, setMemo, useMemos } from "@/lib/memos";
+import { MEMO_MAX, setMemo } from "@/lib/memos";
+import { useMemos } from "@/lib/use-memos";
 import { useMisses } from "@/lib/use-misses";
 import type { AnyMissCard as AnyCard, ChapterMember } from "@/lib/types";
 

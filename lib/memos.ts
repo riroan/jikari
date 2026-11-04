@@ -1,10 +1,9 @@
 /** 내 연상 메모: 기기 로컬(localStorage). cardKey(`mode:cardId`) → 한 줄 메모. */
-import { useSyncExternalStore } from "react";
 
 export const MEMOS_KEY = "jikari-memos-v1";
 export const MEMOS_CAP = 200;
 export const MEMO_MAX = 80;
-const EVENT = "jikari-memos";
+export const MEMOS_EVENT = "jikari-memos";
 
 export interface Memo {
   key: string;
@@ -35,7 +34,7 @@ export function loadMemos(): Memo[] {
 export function saveMemos(list: Memo[]): void {
   try {
     localStorage.setItem(MEMOS_KEY, JSON.stringify(list));
-    window.dispatchEvent(new Event(EVENT));
+    window.dispatchEvent(new Event(MEMOS_EVENT));
   } catch {
     // 저장소 불가: 메모만 남지 않는다.
   }
@@ -52,31 +51,8 @@ export function applyMemo(list: readonly Memo[], key: string, text: string, now:
 export function setMemo(key: string, text: string, now = Date.now()): void {
   try {
     localStorage.setItem(MEMOS_KEY, JSON.stringify(applyMemo(loadMemos(), key, text, now)));
-    window.dispatchEvent(new Event(EVENT));
+    window.dispatchEvent(new Event(MEMOS_EVENT));
   } catch {
     // 저장소 불가: 메모만 남지 않는다.
   }
-}
-
-function snapshot(): string {
-  try {
-    return localStorage.getItem(MEMOS_KEY) ?? "";
-  } catch {
-    return "";
-  }
-}
-
-function subscribe(cb: () => void) {
-  window.addEventListener(EVENT, cb);
-  window.addEventListener("storage", cb);
-  return () => {
-    window.removeEventListener(EVENT, cb);
-    window.removeEventListener("storage", cb);
-  };
-}
-
-/** key → 메모 텍스트. */
-export function useMemos(): Map<string, string> {
-  const raw = useSyncExternalStore(subscribe, snapshot, () => "");
-  return new Map(raw ? loadMemos().map((m) => [m.key, m.text]) : []);
 }
