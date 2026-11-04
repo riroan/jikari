@@ -736,6 +736,20 @@ describe("kanji seeds", () => {
     .filter((f) => f.startsWith("kanji-") && f.endsWith(".json"))
     .flatMap((f) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as K[]);
 
+  test("한국어 음·뜻·자형과 읽기가 빠지지 않는다", () => {
+    type Full = K & { kanji: string; koreanHanja: string; koreanSound: string[]; meanings: string[]; jlptLevel: number };
+    for (const c of cards as Full[]) {
+      expect(c.id, "id는 한자 그 자체").toBe(c.kanji);
+      expect(c.koreanMeaning, `${c.id} 훈`).toBeTruthy();
+      expect(c.koreanHanja, `${c.id} 한국 자형`).toBeTruthy();
+      expect(c.meanings.length, `${c.id} meanings`).toBeGreaterThan(0);
+      expect(c.onReadings.length + c.kunReadings.length, `${c.id} 읽기`).toBeGreaterThan(0);
+      expect([1, 2, 3, 4, 5]).toContain(c.jlptLevel);
+      expect(c.koreanSound.length, `${c.id} 음`).toBeGreaterThan(0);
+      for (const snd of c.koreanSound) expect(snd, `${c.id} 음은 한글 한 음절`).toMatch(/^[가-힣]$/);
+    }
+  });
+
   test("읽기는 히라가나뿐이고 같은 읽기가 음독·훈독에 겹치지 않는다", () => {
     for (const c of cards) {
       for (const r of [...c.onReadings, ...c.kunReadings]) {
