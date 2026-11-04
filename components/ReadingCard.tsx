@@ -68,7 +68,9 @@ export function ReadingCard({
                 type="button"
                 aria-label={`읽기 보기 ${s.base}`}
                 onClick={() => setPeeked((p) => new Set(p).add(i))}
-                className="inline-block min-h-[44px] align-baseline underline decoration-dotted decoration-[color:var(--fg-faint)] underline-offset-[6px]"
+                // 한 글자 단어(服·乾)는 폭이 20px뿐이라 누르기 어렵다. 글자 배치는 그대로 두고
+                // ::before로 터치 영역만 가로 최소 44px까지 넓힌다 (넓으면 min()이 0이 돼 그대로).
+                className="relative inline-block min-h-[44px] align-baseline underline decoration-dotted decoration-[color:var(--fg-faint)] underline-offset-[6px] before:absolute before:inset-y-0 before:left-[min(0px,calc((100%-44px)/2))] before:right-[min(0px,calc((100%-44px)/2))] before:content-['']"
               >
                 {s.base}
               </button>
