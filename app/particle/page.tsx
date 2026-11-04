@@ -15,6 +15,7 @@ import { generateSentenceChoices, getSentence } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
+import { ConfusableNote } from "@/components/ConfusableNote";
 import { PARTICLE_INFO } from "@/lib/particle-info";
 import type { SentenceCard } from "@/lib/types";
 
@@ -244,6 +245,7 @@ function ParticleQuizBack({ card }: { card: SentenceCard }) {
         {card.translation}
       </div>
       {info && <ParticleInfoBlock particle={card.blank} info={info} />}
+      <ConfusableNote kind="particle" refId={card.blank} defaultOpen />
     </div>
   );
 }
@@ -275,6 +277,7 @@ function ParticleStudyBody({ card }: { card: SentenceCard }) {
       <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
         {card.translation}
       </div>
+      <ConfusableNote kind="particle" refId={card.blank} />
     </div>
   );
 }

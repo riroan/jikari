@@ -15,6 +15,7 @@ import {
   generateGrammarQuizChoices,
   getGrammar,
 } from "@/lib/data";
+import { ConfusableNote } from "@/components/ConfusableNote";
 import { PARTICLE_INFO } from "@/lib/particle-info";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
@@ -55,6 +56,8 @@ function GrammarPageInner() {
 
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
+  // Study-mode jump from a ConfusableNote row; cleared on any navigation.
+  const [jumpId, setJumpId] = useState<string | null>(null);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
 
   // Reset index/epoch when tab switches via the React-blessed
@@ -66,6 +69,7 @@ function GrammarPageInner() {
     setTabSnapshot(tab);
     setIndex(0);
     setEpoch(0);
+    setJumpId(null);
   }
 
   const boxPrefix = tab === "pattern" ? "pattern" : "particle";
@@ -92,6 +96,7 @@ function GrammarPageInner() {
   const run = useQuizRun(deck.length);
 
   const advance = () => {
+    setJumpId(null);
     setIndex((i) => {
       const next = i + 1;
       if (next >= deck.length) {
@@ -103,6 +108,7 @@ function GrammarPageInner() {
   };
 
   const retreat = () => {
+    setJumpId(null);
     setIndex((i) => {
       if (i === 0) {
         setEpoch((e) => Math.max(0, e - 1));
@@ -124,7 +130,7 @@ function GrammarPageInner() {
         />
       </Shell>
     );
-  const cardId = run.retryId ?? deck[index % deck.length];
+  const cardId = run.retryId ?? jumpId ?? deck[index % deck.length];
   const card = cardId ? getGrammar(cardId) : undefined;
 
   if (!mounted) {
@@ -143,7 +149,7 @@ function GrammarPageInner() {
     <Shell tab={tab}>
       {mode === "study" ? (
         <StudyCard
-          body={<GrammarStudyBody card={card} />}
+          body={<GrammarStudyBody card={card} onJump={(id) => grammarById.has(id) && setJumpId(id)} />}
           speak={card.examples[0]?.jp}
           position={index + 1}
           total={deck.length}
@@ -259,12 +265,24 @@ function EmptyState() {
   );
 }
 
-function GrammarStudyBody({ card }: { card: GrammarCard }) {
-  if (card.type === "pattern") return <PatternStudyBody card={card} />;
+function GrammarStudyBody({
+  card,
+  onJump,
+}: {
+  card: GrammarCard;
+  onJump?: (id: string) => void;
+}) {
+  if (card.type === "pattern") return <PatternStudyBody card={card} onJump={onJump} />;
   return <ParticleStudyBody card={card} />;
 }
 
-function PatternStudyBody({ card }: { card: GrammarPatternCard }) {
+function PatternStudyBody({
+  card,
+  onJump,
+}: {
+  card: GrammarPatternCard;
+  onJump?: (id: string) => void;
+}) {
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -315,6 +333,8 @@ function PatternStudyBody({ card }: { card: GrammarPatternCard }) {
           </div>
         ))}
       </div>
+
+      <ConfusableNote kind="grammar" refId={card.id} onJump={onJump} />
     </div>
   );
 }
@@ -441,6 +461,9 @@ function GrammarQuiz({
             <div className="mt-2 pt-3 border-t border-[color:var(--line)] text-caption text-[color:var(--accent-korean)]">
               {card.koreanStructure}
             </div>
+          )}
+          {card.type === "pattern" && (
+            <ConfusableNote kind="grammar" refId={card.id} defaultOpen />
           )}
           {card.type === "particle_contrast" && (
             <div className="mt-2 pt-3 border-t border-[color:var(--line)] flex flex-col gap-1.5 text-caption text-[color:var(--accent-korean)]">
