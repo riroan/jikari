@@ -608,6 +608,12 @@ describe("vocab seeds", () => {
     }
   });
 
+  // 그룹이 없으면 시드로 만든 DB에서 활용·형용사 퀴즈에 안 나온다 (백필을 따로 돌려야 했다).
+  test("모든 단어에 verbGroup과 adjGroup이 있다", () => {
+    const missing = cards.filter((c) => !c.verbGroup || !c.adjGroup).map((c) => c.id);
+    expect(missing).toEqual([]);
+  });
+
   test("그룹이 정해진 카드는 한쪽 품사뿐이다", () => {
     for (const c of cards) {
       const isVerb = !!c.verbGroup && c.verbGroup !== "not_verb";
