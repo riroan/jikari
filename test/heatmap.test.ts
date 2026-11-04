@@ -5,6 +5,8 @@ import {
   intensity,
   generateCells,
   currentStreak,
+  daysStudiedInLast,
+  daysSinceLastStudy,
 } from "@/lib/heatmap";
 
 const NOW = new Date(2026, 3, 17, 14, 30, 0).getTime(); // April 17 2026, 2:30 PM local
@@ -117,5 +119,28 @@ describe("currentStreak", () => {
       "2026-04-15": 1,
     };
     expect(currentStreak(heatmap, NOW)).toBe(2);
+  });
+});
+
+describe("daysStudiedInLast / daysSinceLastStudy", () => {
+  const mar2 = new Date(2026, 2, 2, 0, 5).getTime(); // just after local midnight
+  const k = (y: number, m: number, d: number) => toLocalDateKey(new Date(y, m, d, 12).getTime());
+
+  it("counts across a month boundary (window = today + 6 back)", () => {
+    const h = { [k(2026, 2, 2)]: 1, [k(2026, 1, 28)]: 3, [k(2026, 1, 24)]: 2, [k(2026, 1, 23)]: 9 };
+    expect(daysStudiedInLast(h, mar2, 7)).toBe(3); // Feb 24 is 6 days back (in), Feb 23 is 7 (out)
+  });
+  it("counts across a year boundary and ignores zero counts", () => {
+    const jan2 = new Date(2027, 0, 2, 9).getTime();
+    const h = { "2026-12-31": 1, "2027-01-01": 0, "2027-01-02": 2, "2026-12-27": 1, "2026-12-26": 1 };
+    expect(daysStudiedInLast(h, jan2, 7)).toBe(3);
+  });
+  it("is 0 for empty data", () => {
+    expect(daysStudiedInLast({}, NOW, 7)).toBe(0);
+  });
+  it("daysSinceLastStudy: 0 today, gap across month, null when never", () => {
+    expect(daysSinceLastStudy({ [k(2026, 2, 2)]: 1 }, mar2)).toBe(0);
+    expect(daysSinceLastStudy({ [k(2026, 1, 27)]: 1 }, mar2)).toBe(3);
+    expect(daysSinceLastStudy({}, NOW)).toBeNull();
   });
 });

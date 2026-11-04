@@ -7,7 +7,7 @@ import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
 import { HomeHeader } from "@/components/HomeHeader";
 import { ThemeCycleButton } from "@/components/ThemeCycleButton";
-import { currentStreak as computeStreak, toLocalDateKey } from "@/lib/heatmap";
+import { daysSinceLastStudy, daysStudiedInLast, toLocalDateKey } from "@/lib/heatmap";
 import { splitDue, topDueKey, totalDue } from "@/lib/due";
 import { REVIEW_DUE_KEYS } from "@/lib/review-deck";
 import { useDueByKey } from "@/lib/use-due-by-key";
@@ -34,11 +34,8 @@ export default function Home() {
 
   const todayCount = hydrated ? heatmap[toLocalDateKey(now)] ?? 0 : 0;
   const studiedToday = todayCount > 0;
-  // Recompute streak live so the chip stays accurate even if the user
-  // opens the app on a new day without reviewing yet (the persisted
-  // store.currentStreak only updates on review).
-  const currentStreak = useMemo(
-    () => (hydrated ? computeStreak(heatmap, now) : 0),
+  const weekDays = useMemo(
+    () => (hydrated ? daysStudiedInLast(heatmap, now, 7) : 0),
     [hydrated, heatmap, now],
   );
 
@@ -51,6 +48,12 @@ export default function Home() {
   const missCount = useLiveMisses().length;
   const dueCount = useMemo(() => totalDue(dueByKey), [dueByKey]);
   const { today: dueToday, backlog } = splitDue(dueCount, DAILY_GOAL);
+  // 3일 이상 쉬었고 복습할 게 있을 때만 (첫 사용·할 일 없음 제외) 조용한 한 줄.
+  const gap = hydrated ? daysSinceLastStudy(heatmap, now) : null;
+  const welcomeBackCount =
+    gap !== null && gap >= 3 && Object.keys(learningStates).length > 0
+      ? Math.min(10, dueCount)
+      : 0;
   // 한 번에 시작할 곳 — 복습이 제일 많이 쌓인 과목. 모드 8개를 하나씩 열어
   // 보지 않아도 오늘 할 일이 바로 시작된다.
   const nextReview = useMemo(() => {
@@ -71,9 +74,10 @@ export default function Home() {
         <HomeHeader
           hydrated={hydrated}
           studiedToday={studiedToday}
-          currentStreak={currentStreak}
+          weekDays={weekDays}
           todayCount={todayCount}
           dueCount={dueCount}
+          welcomeBackCount={welcomeBackCount}
         />
 
         <div

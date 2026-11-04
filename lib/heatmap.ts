@@ -82,3 +82,22 @@ export function currentStreak(heatmap: HeatmapData, now: number): number {
   }
   return streak;
 }
+
+/** Local-date key for `daysAgo` days before `now` (calendar math, so DST can't skip/repeat a day). */
+function keyDaysAgo(now: number, daysAgo: number): string {
+  const d = new Date(now);
+  return toLocalDateKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - daysAgo, 12).getTime());
+}
+
+/** Days with activity among the last `days` days, today included (rolling window). */
+export function daysStudiedInLast(heatmap: HeatmapData, now: number, days: number): number {
+  let n = 0;
+  for (let i = 0; i < days; i++) if ((heatmap[keyDaysAgo(now, i)] ?? 0) > 0) n++;
+  return n;
+}
+
+/** Whole days since the last studied day (0 = today); null if none in the past year. */
+export function daysSinceLastStudy(heatmap: HeatmapData, now: number): number | null {
+  for (let i = 0; i < 366; i++) if ((heatmap[keyDaysAgo(now, i)] ?? 0) > 0) return i;
+  return null;
+}

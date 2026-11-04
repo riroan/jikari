@@ -1,25 +1,32 @@
 "use client";
 
+import Link from "next/link";
+
 /**
  * Home page header — brand on the left, streak + 復習 chip on the right.
- * Pure presentation: caller derives the four numeric props (hydrated,
- * studiedToday, currentStreak, todayCount, dueCount) from store/heatmap
+ * Pure presentation: caller derives the numeric props (hydrated,
+ * studiedToday, weekDays, todayCount, dueCount, welcomeBackCount) from store/heatmap
  * and we just render the resulting chips.
  */
 export function HomeHeader({
   hydrated,
   studiedToday,
-  currentStreak,
+  weekDays,
   todayCount,
   dueCount,
+  welcomeBackCount = 0,
 }: {
   hydrated: boolean;
   studiedToday: boolean;
-  currentStreak: number;
+  /** Days studied in the last 7 (rolling, today included). */
+  weekDays: number;
   todayCount: number;
   dueCount: number;
+  /** >0 after a 3+ day gap: shows one quiet welcome-back line. */
+  welcomeBackCount?: number;
 }) {
   return (
+    <>
     <header className="flex justify-between items-baseline mb-6">
       <div className="flex items-baseline">
         <h1
@@ -38,12 +45,8 @@ export function HomeHeader({
         aria-label={
           !hydrated
             ? undefined
-            : `${
-                studiedToday
-                  ? `${currentStreak}일 연속 학습, 오늘 ${todayCount}장`
-                  : currentStreak > 0
-                    ? `${currentStreak}일 연속 학습, 오늘 아직 시작 안 함`
-                    : "연속 학습 없음"
+            : `최근 7일 중 ${weekDays}일 학습${
+                studiedToday ? `, 오늘 ${todayCount}장` : ", 오늘 아직 시작 안 함"
               }${dueCount > 0 ? `, 복습 대기 ${dueCount}장` : ""}`
         }
       >
@@ -54,7 +57,7 @@ export function HomeHeader({
               : "text-[color:var(--fg-faint)]"
           }`}
         >
-          連続 {hydrated ? currentStreak : 0}日
+          이번 주 {hydrated ? weekDays : 0}/7
         </span>
         {hydrated && dueCount > 0 && (
           <span
@@ -66,5 +69,14 @@ export function HomeHeader({
         )}
       </div>
     </header>
+    {hydrated && welcomeBackCount > 0 && (
+      <Link
+        href="/review"
+        className="-mt-3 mb-3 flex items-center min-h-11 text-tiny tracking-wide text-[color:var(--fg-faint)]"
+      >
+        오랜만이에요. 오늘은 {welcomeBackCount}장만 해도 충분해요
+      </Link>
+    )}
+    </>
   );
 }

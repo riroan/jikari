@@ -70,6 +70,10 @@ test("vocab quiz shows SessionSummary after 10 answers", async ({ page }) => {
   await expect(summary).toBeVisible();
   await expect(summary.getByText(/10문제 중 \d+개 정답/)).toBeVisible();
   await expect(summary.getByRole("link", { name: "홈으로" })).toBeVisible();
+  await expect(summary.getByText(/오늘 \d+\/\d+ · 내일 예정 \d+장/)).toBeVisible();
+  // Fits one 852px screen unless 6+ rows are missed (each ~52px; the list is the only variable part).
+  if ((await summary.locator("li").count()) <= 5)
+    expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight)).toBe(true);
   // 틀린 것만 다시 appears only when something was missed; otherwise 모두 맞혔어요.
   await expect(summary.getByRole("button", { name: "틀린 것만 다시" }).or(summary.getByText("모두 맞혔어요."))).toBeVisible();
 });
@@ -109,4 +113,61 @@ test("progress shows BY SUBJECT mastery without overflow", async ({ page }) => {
   await expect(sec.getByText("단어")).toBeVisible();
   await expect(sec.getByText(/학습 중 \d+ · 미학습 \d+/).first()).toBeVisible();
   expect(await noOverflow(page)).toBe(true);
+});
+
+// Gentle streak: home chip is "이번 주 N/7"; welcome-back line only after a 3+ day gap.
+test.describe("gentle streak", () => {
+  test.use({ serviceWorkers: "block" });
+  const dayKey = (ago: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() - ago);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+  const seed = async (page: Page, heatmapAgo: number[], withCards: boolean) => {
+    const learningStates = withCards
+      ? Object.fromEntries(
+          Array.from({ length: 14 }, (_, i) => [`vocab:s${i}`, {
+            cardKey: `vocab:s${i}`, mode: "vocab", cardId: `s${i}`, box: 1, nextDue: 1, correctStreak: 0, lastReviewed: 1,
+          }]),
+        )
+      : {};
+    const heatmap = Object.fromEntries(heatmapAgo.map((a) => [dayKey(a), 3]));
+    const state = {
+      schemaVersion: 6, learningStates, heatmap, lastActiveAt: 1, currentStreak: 0, quizStats: {}, ratings: {},
+      settings: { theme: "system", showFurigana: true, typingThresholdBox: 4, dailyGoal: 20 },
+    };
+    await page.route("**/api/progress", (route) =>
+      route.request().method() === "GET"
+        ? route.fulfill({ status: 200, headers: { ETag: '"v1"' }, json: state })
+        : route.fulfill({ status: 200, headers: { ETag: '"v2"' }, json: state }),
+    );
+  };
+
+  for (const width of [393, 320]) {
+    test(`gap of 5 days shows the quiet line, header stays on one row @${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 852 });
+      await seed(page, [5, 6, 9], true);
+      await page.goto("/");
+      await expect(page.getByText("이번 주 2/7")).toBeVisible();
+      const line = page.getByRole("link", { name: "오랜만이에요. 오늘은 10장만 해도 충분해요" });
+      await expect(line).toHaveAttribute("href", "/review");
+      // chip and quiet line each stay on a single line (no wrap)
+      const lh = (loc: ReturnType<Page["locator"]>) => loc.evaluate((el) => el.getBoundingClientRect().height);
+      expect(await lh(page.getByText("이번 주 2/7"))).toBeLessThan(24);
+      expect(await lh(line)).toBeLessThan(48);
+      expect(await noOverflow(page)).toBe(true);
+    });
+  }
+
+  test("no line after a 2-day gap, on first run, or when nothing is due", async ({ page }) => {
+    await seed(page, [2, 3], true);
+    await page.goto("/");
+    await expect(page.getByText("이번 주 2/7")).toBeVisible();
+    await expect(page.getByText(/오랜만이에요/)).toHaveCount(0);
+    await page.unrouteAll();
+    await seed(page, [9], false);
+    await page.goto("/");
+    await expect(page.getByText("이번 주 0/7")).toBeVisible();
+    await expect(page.getByText(/오랜만이에요/)).toHaveCount(0);
+  });
 });
