@@ -324,7 +324,9 @@ ruby rt {
   font-weight: 400;
 }
 
-/* iOS: a modal <dialog> doesn't stop the page behind it from scrolling. */
-body:has(dialog[open]) {
+/* iOS: a modal <dialog> doesn't stop the page behind it from scrolling.
+   html (not body) must carry it: html's overflow-x:hidden above stops body's
+   overflow from propagating to the viewport, so a body rule locked nothing. */
+html:has(dialog[open]) {
   overflow: hidden;
 }

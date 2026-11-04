@@ -645,7 +645,7 @@ function ResetDialog({
       ref={ref}
       aria-labelledby="reset-dialog-title"
       aria-describedby="reset-dialog-body"
-      className="bg-[color:var(--bg)] text-[color:var(--fg)] border border-[color:var(--line)] rounded-sm p-6 max-w-[340px] w-[calc(100%-2rem)] backdrop:bg-black/40"
+      className="bg-[color:var(--bg)] text-[color:var(--fg)] border border-[color:var(--line)] rounded-sm p-6 m-auto max-w-[340px] w-[calc(100%-2rem)] backdrop:bg-black/40"
       onCancel={onCancel}
     >
       <h2
