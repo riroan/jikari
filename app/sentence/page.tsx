@@ -8,6 +8,13 @@ import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
+import {
+  AUDIO_FIRST_KEY,
+  AUDIO_FIRST_MIN_BOX,
+  AudioFirstPrompt,
+  isOnOff,
+} from "@/components/AudioFirstPrompt";
+import { useLocalPref } from "@/lib/use-local-pref";
 import { useStore } from "@/lib/store";
 import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
@@ -42,6 +49,7 @@ function SentencePageInner() {
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   const getBox = useStore((s) => s.getBox);
+  const [audioFirst] = useLocalPref(AUDIO_FIRST_KEY, "off", isOnOff);
   const sentenceIds = useCardsStore((s) => s.sentenceIds);
   const sentenceById = useCardsStore((s) => s.sentenceById);
   const rating = useStore((s) => s.ratings.sentence ?? INITIAL_RATING);
@@ -124,6 +132,9 @@ function SentencePageInner() {
     return <Shell />;
   }
 
+  const useAudio =
+    audioFirst === "on" && getBox("sentence", card.id) >= AUDIO_FIRST_MIN_BOX;
+
   return (
     <Shell>
       {emptyWeak && <WeakEmptyNotice />}
@@ -139,6 +150,9 @@ function SentencePageInner() {
         />
       ) : (
         <SentenceQuiz
+          // Remount per card only when audio-first is active (resets 「문장 보기」); off = untouched.
+          key={useAudio ? `${card.id}:${index}:${epoch}` : undefined}
+          audioFirst={useAudio}
           card={card}
           seed={seed + index + epoch * 977}
           onResolved={(wasCorrect) => {
@@ -181,32 +195,39 @@ function EmptyState() {
 function SentenceQuiz({
   card,
   seed,
+  audioFirst,
   onResolved,
 }: {
+  audioFirst: boolean;
   card: SentenceCard;
   seed: number;
   onResolved: (correct: boolean) => void;
 }) {
   const choices = generateSentenceChoices(card, seed);
+  const sentenceText = (
+    <div
+      className="text-h2 leading-[1.8] font-medium mb-3"
+      style={{
+        fontFamily: "var(--font-jp-serif)",
+        color: "var(--fg)",
+        letterSpacing: "-0.01em",
+      }}
+    >
+      {card.sentenceRuby ? <RubyText text={card.sentenceRuby} /> : card.sentence}
+    </div>
+  );
   return (
     <QuizCard
       speak={card.sentence.replace("＿＿＿", card.blank)}
       question={
         <div>
-          <div
-            className="text-h2 leading-[1.8] font-medium mb-3"
-            style={{
-              fontFamily: "var(--font-jp-serif)",
-              color: "var(--fg)",
-              letterSpacing: "-0.01em",
-            }}
-          >
-            {card.sentenceRuby ? (
-              <RubyText text={card.sentenceRuby} />
-            ) : (
-              card.sentence
-            )}
-          </div>
+          {audioFirst ? (
+            <AudioFirstPrompt speakText={card.sentence.replace("＿＿＿", card.blank)}>
+              {sentenceText}
+            </AudioFirstPrompt>
+          ) : (
+            sentenceText
+          )}
           <div className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
             {card.translation}
           </div>

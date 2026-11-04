@@ -11,6 +11,7 @@ import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
 import { useCardsStore } from "@/lib/cards-store";
 import { useClientNow } from "@/lib/use-is-client";
 import { useLocalPref } from "@/lib/use-local-pref";
+import { AUDIO_FIRST_KEY, isOnOff } from "@/components/AudioFirstPrompt";
 import { SPEED_KEY, SPEED_RATES, isSpeechSpeed, type SpeechSpeed } from "@/lib/tts-speed";
 import { speak } from "@/lib/tts";
 import {
@@ -58,6 +59,7 @@ export default function SettingsPage() {
   const updateSettings = useStore((s) => s.updateSettings);
 
   const [speed, setSpeed] = useLocalPref<SpeechSpeed>(SPEED_KEY, "normal", isSpeechSpeed);
+  const [audioFirst, setAudioFirst] = useLocalPref(AUDIO_FIRST_KEY, "off", isOnOff);
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [pending, setPending] = useState<PersistedState | null>(null);
   const pendingExtras = useRef<BackupExtras | undefined>(undefined);
@@ -355,6 +357,24 @@ export default function SettingsPage() {
           >
             <option value="normal">보통</option>
             <option value="slow">느리게</option>
+          </select>
+        </label>
+        <label className="flex justify-between items-center text-small py-2 gap-4">
+          <span className="text-[color:var(--fg-soft)]">
+            문장 듣기 먼저
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5 break-keep">
+              3단계 이상 문장 카드는 소리부터 (이 기기만)
+            </span>
+          </span>
+          <select
+            value={audioFirst}
+            onChange={(e) => setAudioFirst(e.target.value as "on" | "off")}
+            aria-label="문장 듣기 먼저"
+            className="shrink-0 bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            style={{ minHeight: 44, minWidth: 64 }}
+          >
+            <option value="off">끔</option>
+            <option value="on">켬</option>
           </select>
         </label>
         <div id="backlog" className="flex justify-between items-center text-small py-2 gap-4 scroll-mt-4">
