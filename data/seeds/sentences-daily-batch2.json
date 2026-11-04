@@ -1,0 +1,202 @@
+[
+  {
+    "id": "s284",
+    "sentence": "＿＿＿が痛いので、薬を飲みます。",
+    "sentenceRuby": "＿＿＿が{痛|いた}いので、{薬|くすり}を{飲|の}みます。",
+    "blank": "頭",
+    "blankRuby": "{頭|あたま}",
+    "distractors": ["切符", "漢字", "番号"],
+    "translation": "머리가 아파서 약을 먹습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s285",
+    "sentence": "朝起きて、＿＿＿を洗います。",
+    "sentenceRuby": "{朝|あさ}{起|お}きて、＿＿＿を{洗|あら}います。",
+    "blank": "顔",
+    "blankRuby": "{顔|かお}",
+    "distractors": ["理由", "予定", "意見"],
+    "translation": "아침에 일어나서 얼굴을 씻습니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s286",
+    "sentence": "ご飯の前に＿＿＿を洗いましょう。",
+    "sentenceRuby": "ご{飯|はん}の{前|まえ}に＿＿＿を{洗|あら}いましょう。",
+    "blank": "手",
+    "blankRuby": "{手|て}",
+    "distractors": ["時代", "答え", "将来"],
+    "translation": "밥 먹기 전에 손을 씻읍시다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s287",
+    "sentence": "＿＿＿は会社員です。",
+    "sentenceRuby": "＿＿＿は{会社員|かいしゃいん}です。",
+    "blank": "父",
+    "blankRuby": "{父|ちち}",
+    "distractors": ["雪", "空", "声"],
+    "translation": "아버지는 회사원입니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s288",
+    "sentence": "毎朝八時に＿＿＿へ行きます。",
+    "sentenceRuby": "{毎朝|まいあさ}{八時|はちじ}に＿＿＿へ{行|い}きます。",
+    "blank": "学校",
+    "blankRuby": "{学校|がっこう}",
+    "distractors": ["意味", "返事", "結果"],
+    "translation": "매일 아침 8시에 학교에 갑니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s289",
+    "sentence": "この＿＿＿はとても安いです。",
+    "sentenceRuby": "この＿＿＿はとても{安|やす}いです。",
+    "blank": "店",
+    "blankRuby": "{店|みせ}",
+    "distractors": ["理由", "意見", "約束"],
+    "translation": "이 가게는 아주 쌉니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s290",
+    "sentence": "新しい＿＿＿をはいて出かけます。",
+    "sentenceRuby": "{新|あたら}しい＿＿＿をはいて{出|で}かけます。",
+    "blank": "靴",
+    "blankRuby": "{靴|くつ}",
+    "distractors": ["本", "歌", "漢字"],
+    "translation": "새 신발을 신고 나갑니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s291",
+    "sentence": "駅までの＿＿＿を教えてください。",
+    "sentenceRuby": "{駅|えき}までの＿＿＿を{教|おし}えてください。",
+    "blank": "道",
+    "blankRuby": "{道|みち}",
+    "distractors": ["雪", "魚", "声"],
+    "translation": "역까지 가는 길을 알려 주세요.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s292",
+    "sentence": "毎日遅くまで働くと＿＿＿。",
+    "sentenceRuby": "{毎日|まいにち}{遅|おそ}くまで{働|はたら}くと＿＿＿。",
+    "blank": "疲れる",
+    "blankRuby": "{疲|つか}れる",
+    "distractors": ["泳ぐ", "洗う", "選ぶ"],
+    "translation": "매일 늦게까지 일하면 지칩니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s293",
+    "sentence": "時間がないので＿＿＿。",
+    "sentenceRuby": "{時間|じかん}がないので＿＿＿。",
+    "blank": "急ぐ",
+    "blankRuby": "{急|いそ}ぐ",
+    "distractors": ["貸す", "書く", "選ぶ"],
+    "translation": "시간이 없어서 서두릅니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s294",
+    "sentence": "傘がないと＿＿＿。",
+    "sentenceRuby": "{傘|かさ}がないと＿＿＿。",
+    "blank": "困る",
+    "blankRuby": "{困|こま}る",
+    "distractors": ["貸す", "洗う", "読む"],
+    "translation": "우산이 없으면 곤란합니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s295",
+    "sentence": "電車は十時に駅に＿＿＿。",
+    "sentenceRuby": "{電車|でんしゃ}は{十時|じゅうじ}に{駅|えき}に＿＿＿。",
+    "blank": "着く",
+    "blankRuby": "{着|つ}く",
+    "distractors": ["選ぶ", "習う", "書く"],
+    "translation": "전철은 10시에 역에 도착합니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s296",
+    "sentence": "友達に写真を＿＿＿。",
+    "sentenceRuby": "{友達|ともだち}に{写真|しゃしん}を＿＿＿。",
+    "blank": "送る",
+    "blankRuby": "{送|おく}る",
+    "distractors": ["泳ぐ", "起きる", "歩く"],
+    "translation": "친구에게 사진을 보냅니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s297",
+    "sentence": "母の料理を＿＿＿。",
+    "sentenceRuby": "{母|はは}の{料理|りょうり}を＿＿＿。",
+    "blank": "手伝う",
+    "blankRuby": "{手伝|てつだ}う",
+    "distractors": ["遊ぶ", "起きる", "走る"],
+    "translation": "어머니의 요리를 돕습니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s298",
+    "sentence": "この部屋は＿＿＿ので、三人では住めません。",
+    "sentenceRuby": "この{部屋|へや}は＿＿＿ので、{三人|さんにん}では{住|す}めません。",
+    "blank": "狭い",
+    "blankRuby": "{狭|せま}い",
+    "distractors": ["辛い", "痛い", "悲しい"],
+    "translation": "이 방은 좁아서 세 명은 살 수 없습니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s299",
+    "sentence": "秋の夜は＿＿＿です。",
+    "sentenceRuby": "{秋|あき}の{夜|よる}は＿＿＿です。",
+    "blank": "涼しい",
+    "blankRuby": "{涼|すず}しい",
+    "distractors": ["辛い", "重い", "痛い"],
+    "translation": "가을밤은 선선합니다.",
+    "jlptLevel": 5
+  },
+  {
+    "id": "s300",
+    "sentence": "昨日あまり寝ていないので、＿＿＿です。",
+    "sentenceRuby": "{昨日|きのう}あまり{寝|ね}ていないので、＿＿＿です。",
+    "blank": "眠い",
+    "blankRuby": "{眠|ねむ}い",
+    "distractors": ["安い", "古い", "青い"],
+    "translation": "어제 별로 못 자서 졸립니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s301",
+    "sentence": "大事な言葉は紙に書いて＿＿＿。",
+    "sentenceRuby": "{大事|だいじ}な{言葉|ことば}は{紙|かみ}に{書|か}いて＿＿＿。",
+    "blank": "覚える",
+    "blankRuby": "{覚|おぼ}える",
+    "distractors": ["渡る", "乗る", "起きる"],
+    "translation": "중요한 말은 종이에 써서 외웁니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s302",
+    "sentence": "いらないものは＿＿＿。",
+    "sentenceRuby": "いらないものは＿＿＿。",
+    "blank": "捨てる",
+    "blankRuby": "{捨|す}てる",
+    "distractors": ["泳ぐ", "働く", "歩く"],
+    "translation": "필요 없는 것은 버립니다.",
+    "jlptLevel": 4
+  },
+  {
+    "id": "s303",
+    "sentence": "この公園はとても＿＿＿です。",
+    "sentenceRuby": "この{公園|こうえん}はとても＿＿＿です。",
+    "blank": "広い",
+    "blankRuby": "{広|ひろ}い",
+    "distractors": ["辛い", "痛い", "眠い"],
+    "translation": "이 공원은 아주 넓습니다.",
+    "jlptLevel": 5
+  }
+]
