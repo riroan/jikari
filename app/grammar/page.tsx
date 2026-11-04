@@ -417,6 +417,7 @@ function GrammarQuiz({
 
   return (
     <QuizCard
+      memoKey={`grammar:${card.type === "pattern" ? "pattern" : "particle"}:${card.id}`}
       speak={filledBack}
       question={
         <div>

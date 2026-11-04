@@ -13,6 +13,8 @@ import {
 } from "@/lib/normalize";
 import { hintAnswer } from "@/lib/hint";
 import { markAnswered, markShown } from "@/lib/srs";
+import { useMemos } from "@/lib/use-memos";
+import type { Example } from "@/lib/examples";
 
 /**
  * Common quiz card for all 3 modes.
@@ -57,6 +59,10 @@ export interface QuizCardProps {
   back?: React.ReactNode;
   /** Japanese text to pronounce; the speaker button shows only after answering. */
   speak?: string;
+  /** cardKey (`mode:cardId`, same as the misses log): shows the learner's memo after answering. */
+  memoKey?: string;
+  /** Shown only after a WRONG answer, below the next button (never shifts it). Null/undefined renders nothing. */
+  missExample?: Example | null;
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean) => void;
   /**
@@ -74,9 +80,12 @@ export function QuizCard({
   input,
   back,
   speak,
+  memoKey,
+  missExample,
   onResolved,
   minQuestionHeight = 260,
 }: QuizCardProps) {
+  const memo = useMemos().get(memoKey ?? "");
   const [result, setResult] = useState<"correct" | "wrong" | null>(null);
   const [disabled, setDisabled] = useState(false);
   const [showingBack, setShowingBack] = useState(false);
@@ -257,6 +266,37 @@ export function QuizCard({
           </div>
         )}
       </div>
+
+      {disabled && result !== null && ((result === "wrong" && missExample) || memo) && (
+        // Below the button row, so it can never push the 다음 button. -mt-3: tucked closer than the card gap.
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="-mt-3 flex flex-col gap-2"
+          data-testid="quiz-tail"
+        >
+          {result === "wrong" && missExample && (
+            <div className="flex items-center gap-2 pt-3 border-t border-[color:var(--line)]">
+              <div className="flex-1 min-w-0 flex flex-col gap-1">
+                <span
+                  lang="ja"
+                  className="text-[16px] leading-loose"
+                  style={{ fontFamily: "var(--font-jp-sans)", color: "var(--fg)" }}
+                >
+                  <RubyText text={missExample.ruby} />
+                </span>
+                <span className="text-small text-[color:var(--fg-soft)]">{missExample.ko}</span>
+              </div>
+              <SpeakButton text={missExample.plain} />
+            </div>
+          )}
+          {memo && (
+            <p lang="ko" className="text-caption text-[color:var(--fg-faint)] break-words">
+              {memo}
+            </p>
+          )}
+        </m.div>
+      )}
     </div>
     </MotionConfig>
     </LazyMotion>

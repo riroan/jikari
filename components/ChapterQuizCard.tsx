@@ -11,6 +11,7 @@ import {
 } from "@/lib/data";
 import { chooseDirection } from "@/lib/data";
 import { pickMode } from "@/lib/srs";
+import { useKanjiMissExample, useVocabMissExample } from "@/lib/use-miss-example";
 import { normalizeJapanese } from "@/lib/normalize";
 import type {
   ChapterMember,
@@ -87,6 +88,7 @@ function KanjiSlot({
   onResolved,
 }: Omit<ChapterQuizContext, "card" | "member"> & { card: KanjiCard }) {
   const answerMode = pickMode(box, typingThreshold);
+  const missExample = useKanjiMissExample(card);
   const qType: "on" | "kun" =
     card.onReadings.length > 0 && card.kunReadings.length > 0
       ? seed % 2 === 0
@@ -117,6 +119,8 @@ function KanjiSlot({
 
   return (
     <QuizCard
+      memoKey={`kanji:${card.id}`}
+      missExample={missExample}
       question={
         <div
           className="text-hero leading-none font-semibold"
@@ -145,6 +149,7 @@ function VocabSlot({
   onResolved,
 }: Omit<ChapterQuizContext, "card" | "member"> & { card: VocabCard }) {
   const answerMode = pickMode(box, typingThreshold);
+  const missExample = useVocabMissExample(card);
   const input =
     answerMode === "choice"
       ? (() => {
@@ -164,6 +169,8 @@ function VocabSlot({
 
   return (
     <QuizCard
+      memoKey={`vocab:${card.id}`}
+      missExample={missExample}
       speak={card.reading}
       question={
         <div>
@@ -205,6 +212,7 @@ function SentenceSlot({
   const isParticle = card.category === "particle";
   return (
     <QuizCard
+      memoKey={`sentence:${card.id}`}
       speak={card.sentence.replace("＿＿＿", card.blank)}
       question={
         <div>
@@ -257,6 +265,7 @@ function GrammarSlot({
 
   return (
     <QuizCard
+      memoKey={`grammar:${subtypedId}`}
       speak={sentenceSrc.replace("＿＿＿", `[[${correct}]]`)}
       question={
         <div>

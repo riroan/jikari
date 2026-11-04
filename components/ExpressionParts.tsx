@@ -37,6 +37,7 @@ export function ExpressionQuiz({
 
   return (
     <QuizCard
+      memoKey={`expression:${card.id}`}
       speak={card.ruby ?? card.expression_jp}
       question={
         direction === "recall" ? (

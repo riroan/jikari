@@ -185,6 +185,7 @@ function ParticleQuiz({
   const choices = generateSentenceChoices(card, seed);
   return (
     <QuizCard
+      memoKey={`sentence:${card.id}`}
       speak={card.sentence.replace("＿＿＿", card.blank)}
       question={
         <div>

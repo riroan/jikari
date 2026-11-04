@@ -111,3 +111,58 @@ describe("QuizCard — typed mode", () => {
     expect(onResolved).toHaveBeenCalledWith(true);
   });
 });
+
+describe("QuizCard — miss example + memo tail", () => {
+  const ex = { ruby: "[[本|ほん]]を読む", ko: "책을 읽다", plain: "本を読む" };
+  const choice = {
+    mode: "choice" as const,
+    choices: ["a", "b"],
+    correct: "a",
+  };
+  const ui = (extra: Partial<React.ComponentProps<typeof QuizCard>> = {}) => (
+    <QuizCard question={<div>Q</div>} input={choice} onResolved={() => {}} {...extra} />
+  );
+
+  it("wrong answer shows the example (ko translation + speaker); right answer and no-example show nothing", () => {
+    render(ui({ missExample: ex }));
+    expect(screen.queryByTestId("quiz-tail")).toBeNull();
+    fireEvent.click(screen.getByText("b"));
+    expect(screen.getByText("책을 읽다")).toBeTruthy();
+    cleanup();
+
+    render(ui({ missExample: ex }));
+    fireEvent.click(screen.getByText("a"));
+    expect(screen.queryByText("책을 읽다")).toBeNull();
+    expect(screen.queryByTestId("quiz-tail")).toBeNull();
+    cleanup();
+
+    render(ui({ missExample: null }));
+    fireEvent.click(screen.getByText("b"));
+    expect(screen.queryByTestId("quiz-tail")).toBeNull();
+  });
+
+  it("wrong + example + memo stacks example above memo; memo shows on correct too", () => {
+    localStorage.setItem("jikari-memos-v1", JSON.stringify([{ key: "vocab:v1", text: "책 = 본", at: 1 }]));
+    render(ui({ missExample: ex, memoKey: "vocab:v1" }));
+    expect(screen.queryByText("책 = 본")).toBeNull(); // nothing before answering
+    fireEvent.click(screen.getByText("b"));
+    const tail = screen.getByTestId("quiz-tail");
+    expect(tail.textContent).toMatch(/책을 읽다.*책 = 본/);
+    expect(screen.getByText("책 = 본").getAttribute("lang")).toBe("ko");
+    cleanup();
+
+    render(ui({ missExample: ex, memoKey: "vocab:v1" }));
+    fireEvent.click(screen.getByText("a"));
+    expect(screen.getByText("책 = 본")).toBeTruthy();
+    expect(screen.queryByText("책을 읽다")).toBeNull();
+    localStorage.clear();
+  });
+
+  it("other card's memo is not shown", () => {
+    localStorage.setItem("jikari-memos-v1", JSON.stringify([{ key: "vocab:v2", text: "다른 메모", at: 1 }]));
+    render(ui({ memoKey: "vocab:v1" }));
+    fireEvent.click(screen.getByText("a"));
+    expect(screen.queryByText("다른 메모")).toBeNull();
+    localStorage.clear();
+  });
+});

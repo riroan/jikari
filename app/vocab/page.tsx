@@ -10,6 +10,7 @@ import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { RubyText } from "@/components/Furigana";
 import { SpeakButton } from "@/components/SpeakButton";
 import { findExamples, getExampleIndex } from "@/lib/examples";
+import { useVocabMissExample } from "@/lib/use-miss-example";
 import { useStore } from "@/lib/store";
 import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
@@ -199,6 +200,7 @@ function VocabQuiz({
   direction: QuizDirection;
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
+  const missExample = useVocabMissExample(card);
   const input =
     answerMode === "choice"
       ? (() => {
@@ -228,6 +230,8 @@ function VocabQuiz({
 
   return (
     <QuizCard
+      memoKey={`vocab:${card.id}`}
+      missExample={missExample}
       speak={card.reading}
       question={
         direction === "recall" ? (

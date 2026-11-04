@@ -19,6 +19,7 @@ import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
 import { normalizeJapanese } from "@/lib/normalize";
 import { wordsWithKanji } from "@/lib/kanji-words";
+import { useKanjiMissExample } from "@/lib/use-miss-example";
 import { SpeakButton } from "@/components/SpeakButton";
 import type { KanjiCard } from "@/lib/types";
 
@@ -193,6 +194,7 @@ function KanjiQuiz({
   answerMode: "choice" | "typed";
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
+  const missExample = useKanjiMissExample(card);
   const qType: QType =
     card.onReadings.length > 0 && card.kunReadings.length > 0
       ? seed % 2 === 0
@@ -225,6 +227,8 @@ function KanjiQuiz({
 
   return (
     <QuizCard
+      memoKey={`kanji:${card.id}`}
+      missExample={missExample}
       question={
         <div
           className="text-hero leading-none font-semibold"
