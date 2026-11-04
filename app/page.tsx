@@ -143,108 +143,27 @@ export default function Home() {
           </Link>
         )}
 
-        {/* Units entry — chapter mastery view (uses subject-row visual language) */}
-        <Link
-          href="/chapters"
-          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-2 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
+        {/*
+          보조 진입점. 예전엔 떨어진 테두리 상자 5개라 좁은 폭(≈322px)에서 과목 행이
+          첫 화면 밖으로 밀렸다. DESIGN.md의 EntryRow 어휘대로 과목 목록과 같은
+          "구분선으로 나뉜 행 묶음" 하나로 그린다.
+        */}
+        <nav
+          aria-label="더 공부하기"
+          className="flex flex-col gap-px bg-[color:var(--line)] border border-[color:var(--line)] rounded-sm overflow-hidden mb-8"
         >
-          <span className="flex items-baseline gap-3">
-            <span className="text-body font-medium text-[color:var(--fg)]">
-              단원
-            </span>
-            <span
-              className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
-              style={{ fontFamily: "var(--font-jp-sans)" }}
-            >
-              単元
-            </span>
-          </span>
-          <span className="text-caption text-[color:var(--fg-soft)] tracking-wide">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/mix"
-          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-2 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
-        >
-          <span className="flex items-baseline gap-3">
-            <span className="text-body font-medium text-[color:var(--fg)]">
-              종합 퀴즈
-            </span>
-            <span
-              className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
-              style={{ fontFamily: "var(--font-jp-sans)" }}
-            >
-              混合
-            </span>
-          </span>
-          <span className="text-caption text-[color:var(--fg-soft)] tracking-wide">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/build"
-          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-2 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
-        >
-          <span className="flex items-baseline gap-3">
-            <span className="text-body font-medium text-[color:var(--fg)]">
-              문장 만들기
-            </span>
-            <span
-              className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
-              style={{ fontFamily: "var(--font-jp-sans)" }}
-            >
-              組立
-            </span>
-          </span>
-          <span className="text-caption text-[color:var(--fg-soft)] tracking-wide">
-            →
-          </span>
-        </Link>
-
-        {missCount > 0 && (
-          <Link
-            href="/mistakes"
-            className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-2 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
-          >
-            <span className="flex items-baseline gap-3">
-              <span className="text-body font-medium text-[color:var(--fg)]">
-                오답 노트
-              </span>
-              <span
-                className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
-                style={{ fontFamily: "var(--font-jp-sans)" }}
-              >
-                誤答
-              </span>
-            </span>
-            <span className="text-caption tabular-nums text-[color:var(--fg-soft)] tracking-wide">
-              {missCount}장 →
-            </span>
-          </Link>
-        )}
-
-        <Link
-          href="/reading"
-          className="flex items-center justify-between bg-[color:var(--bg)] border border-[color:var(--line)] rounded-sm px-4 py-3 mb-8 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
-        >
-          <span className="flex items-baseline gap-3">
-            <span className="text-body font-medium text-[color:var(--fg)]">
-              문장 읽기
-            </span>
-            <span
-              className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
-              style={{ fontFamily: "var(--font-jp-sans)" }}
-            >
-              音読
-            </span>
-          </span>
-          <span className="text-caption text-[color:var(--fg-soft)] tracking-wide">
-            →
-          </span>
-        </Link>
+          {[
+            { href: "/chapters", ko: "단원", jp: "単元" },
+            { href: "/mix", ko: "종합 퀴즈", jp: "混合" },
+            { href: "/build", ko: "문장 만들기", jp: "組立" },
+            ...(missCount > 0
+              ? [{ href: "/mistakes", ko: "오답 노트", jp: "誤答", trail: `${missCount}장 →` }]
+              : []),
+            { href: "/reading", ko: "문장 읽기", jp: "音読" },
+          ].map((e) => (
+            <EntryRow key={e.href} {...e} />
+          ))}
+        </nav>
 
         {/* Subject rows — one per subject with 공부 / 퀴즈 actions */}
         <p className="mb-2 text-tiny tracking-wide text-[color:var(--fg-faint)]">
@@ -376,6 +295,38 @@ function ActionLink({
       }`}
     >
       {label}
+    </Link>
+  );
+}
+
+function EntryRow({
+  href,
+  ko,
+  jp,
+  trail = "→",
+}: {
+  href: string;
+  ko: string;
+  jp: string;
+  trail?: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center justify-between bg-[color:var(--bg)] px-4 py-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)] transition-colors"
+    >
+      <span className="flex items-baseline gap-3">
+        <span className="text-body font-medium text-[color:var(--fg)]">{ko}</span>
+        <span
+          className="text-label text-[color:var(--fg-faint)] tracking-[0.08em]"
+          style={{ fontFamily: "var(--font-jp-sans)" }}
+        >
+          {jp}
+        </span>
+      </span>
+      <span className="text-caption tabular-nums text-[color:var(--fg-soft)] tracking-wide">
+        {trail}
+      </span>
     </Link>
   );
 }
