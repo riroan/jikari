@@ -154,7 +154,7 @@ export function ChapterMastery({
             <li key={chapter.id}>
               <Link
                 href={`/chapters/${chapter.id}`}
-                className="bg-[color:var(--bg)] flex items-center px-4 py-2.5 gap-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
+                className="bg-[color:var(--bg)] flex items-center px-4 py-2.5 gap-2 min-[380px]:gap-3 min-h-[44px] hover:bg-[color:var(--bg-deep)] transition-colors"
                 aria-label={`${chapter.name} — ${
                   mastered ? "달성, " : ""
                 }마스터리 ${percent}퍼센트, ${summary.masteredCount} / ${memberCount} 카드${
@@ -184,9 +184,13 @@ export function ChapterMastery({
                   )}
                 </span>
 
-                {/* Mastery bar — fixed width, fills proportionally. */}
+                {/*
+                  Mastery bar — fixed width, fills proportionally. 좁은 폭(Safari 페이지
+                  확대 ≈ 322px)에선 이름 칸이 82px까지 줄어 "자연·날씨·/계절"처럼 쪼개졌다.
+                  막대는 비율만 보여주면 되니 거기서 폭을 내준다.
+                */}
                 <div
-                  className="relative shrink-0 h-1.5 w-20 rounded-full overflow-hidden"
+                  className="relative shrink-0 h-1.5 w-12 min-[380px]:w-20 rounded-full overflow-hidden"
                   style={{ background: intensityBg(0) }}
                   aria-hidden="true"
                 >
