@@ -11,7 +11,7 @@ const grammarIds = new Set<string>(
 // Hand-checked 常用漢字 (no joyo table ships with the repo). Adding a kanji to an
 // example means confirming it is in the 2,136 list and adding it here.
 const allowedKanji = new Set(
-  "日本行金春花時間来駅着電話道近前歯後食薬子買物音楽歩見月国帰友会予定議三思雨田中店人気手伝休写真学校窓九五起入生公園犬天安",
+  "日本行金春花時間来駅着電話道近前歯後食薬子買物音楽歩見月国帰友会予定議三思雨田中店人気手伝休写真学校窓九五起入生公園犬天安事",
 );
 const KANJI = /[一-鿿]/g;
 
