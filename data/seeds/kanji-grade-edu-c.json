@@ -1,0 +1,3903 @@
+[
+  {
+    "id": "異",
+    "kanji": "異",
+    "onReadings": [
+      "い"
+    ],
+    "kunReadings": [
+      "こと",
+      "け"
+    ],
+    "meanings": [
+      "uncommon",
+      "different",
+      "queerness"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "異",
+    "koreanSound": [
+      "이"
+    ],
+    "koreanMeaning": "다를"
+  },
+  {
+    "id": "遺",
+    "kanji": "遺",
+    "onReadings": [
+      "い",
+      "ゆい"
+    ],
+    "kunReadings": [
+      "のこ"
+    ],
+    "meanings": [
+      "bequeath",
+      "leave behind",
+      "reserve"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "遺",
+    "koreanSound": [
+      "유"
+    ],
+    "koreanMeaning": "남길"
+  },
+  {
+    "id": "域",
+    "kanji": "域",
+    "onReadings": [
+      "いき"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "range",
+      "region",
+      "limits"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "域",
+    "koreanSound": [
+      "역"
+    ],
+    "koreanMeaning": "지경"
+  },
+  {
+    "id": "宇",
+    "kanji": "宇",
+    "onReadings": [
+      "う"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "eaves",
+      "roof",
+      "house"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "宇",
+    "koreanSound": [
+      "우"
+    ],
+    "koreanMeaning": "집"
+  },
+  {
+    "id": "延",
+    "kanji": "延",
+    "onReadings": [
+      "えん"
+    ],
+    "kunReadings": [
+      "の"
+    ],
+    "meanings": [
+      "prolong",
+      "stretching"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "延",
+    "koreanSound": [
+      "연"
+    ],
+    "koreanMeaning": "늘일"
+  },
+  {
+    "id": "沿",
+    "kanji": "沿",
+    "onReadings": [
+      "えん"
+    ],
+    "kunReadings": [
+      "そ",
+      "ぞ"
+    ],
+    "meanings": [
+      "run alongside",
+      "follow along",
+      "run along"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "沿",
+    "koreanSound": [
+      "연"
+    ],
+    "koreanMeaning": "따를"
+  },
+  {
+    "id": "恩",
+    "kanji": "恩",
+    "onReadings": [
+      "おん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "grace",
+      "kindness",
+      "goodness"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "恩",
+    "koreanSound": [
+      "은"
+    ],
+    "koreanMeaning": "은혜"
+  },
+  {
+    "id": "我",
+    "kanji": "我",
+    "onReadings": [
+      "が"
+    ],
+    "kunReadings": [
+      "われ",
+      "わ",
+      "わが-"
+    ],
+    "meanings": [
+      "ego",
+      "I",
+      "selfish"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "我",
+    "koreanSound": [
+      "아"
+    ],
+    "koreanMeaning": "나"
+  },
+  {
+    "id": "灰",
+    "kanji": "灰",
+    "onReadings": [
+      "かい"
+    ],
+    "kunReadings": [
+      "はい"
+    ],
+    "meanings": [
+      "ashes",
+      "puckery juice",
+      "cremate"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "灰",
+    "koreanSound": [
+      "회"
+    ],
+    "koreanMeaning": "재"
+  },
+  {
+    "id": "拡",
+    "kanji": "拡",
+    "onReadings": [
+      "かく",
+      "こう"
+    ],
+    "kunReadings": [
+      "ひろ"
+    ],
+    "meanings": [
+      "broaden",
+      "extend",
+      "expand"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "擴",
+    "koreanSound": [
+      "확"
+    ],
+    "koreanMeaning": "넓힐"
+  },
+  {
+    "id": "閣",
+    "kanji": "閣",
+    "onReadings": [
+      "かく"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "tower",
+      "tall building",
+      "palace"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "閣",
+    "koreanSound": [
+      "각"
+    ],
+    "koreanMeaning": "집"
+  },
+  {
+    "id": "革",
+    "kanji": "革",
+    "onReadings": [
+      "かく"
+    ],
+    "kunReadings": [
+      "かわ"
+    ],
+    "meanings": [
+      "leather",
+      "skin",
+      "reform"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "革",
+    "koreanSound": [
+      "혁"
+    ],
+    "koreanMeaning": "가죽"
+  },
+  {
+    "id": "割",
+    "kanji": "割",
+    "onReadings": [
+      "かつ"
+    ],
+    "kunReadings": [
+      "わ",
+      "わり",
+      "さ"
+    ],
+    "meanings": [
+      "proportion",
+      "comparatively",
+      "divide"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "割",
+    "koreanSound": [
+      "할"
+    ],
+    "koreanMeaning": "벨"
+  },
+  {
+    "id": "株",
+    "kanji": "株",
+    "onReadings": [
+      "しゅ"
+    ],
+    "kunReadings": [
+      "かぶ"
+    ],
+    "meanings": [
+      "stocks",
+      "stump",
+      "shares"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "株",
+    "koreanSound": [
+      "주"
+    ],
+    "koreanMeaning": "그루"
+  },
+  {
+    "id": "巻",
+    "kanji": "巻",
+    "onReadings": [
+      "かん",
+      "けん"
+    ],
+    "kunReadings": [
+      "ま",
+      "まき"
+    ],
+    "meanings": [
+      "scroll",
+      "volume",
+      "book"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "卷",
+    "koreanSound": [
+      "권"
+    ],
+    "koreanMeaning": "책"
+  },
+  {
+    "id": "干",
+    "kanji": "干",
+    "onReadings": [
+      "かん"
+    ],
+    "kunReadings": [
+      "ほ",
+      "ぼ",
+      "ひ"
+    ],
+    "meanings": [
+      "dry",
+      "parch",
+      "ebb"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "干",
+    "koreanSound": [
+      "간"
+    ],
+    "koreanMeaning": "방패"
+  },
+  {
+    "id": "看",
+    "kanji": "看",
+    "onReadings": [
+      "かん"
+    ],
+    "kunReadings": [
+      "み"
+    ],
+    "meanings": [
+      "watch over",
+      "see"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "看",
+    "koreanSound": [
+      "간"
+    ],
+    "koreanMeaning": "볼"
+  },
+  {
+    "id": "簡",
+    "kanji": "簡",
+    "onReadings": [
+      "かん",
+      "けん"
+    ],
+    "kunReadings": [
+      "えら",
+      "ふだ"
+    ],
+    "meanings": [
+      "simplicity",
+      "brevity"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "簡",
+    "koreanSound": [
+      "간"
+    ],
+    "koreanMeaning": "대쪽"
+  },
+  {
+    "id": "危",
+    "kanji": "危",
+    "onReadings": [
+      "き"
+    ],
+    "kunReadings": [
+      "あぶ",
+      "あや"
+    ],
+    "meanings": [
+      "dangerous",
+      "fear",
+      "uneasy"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "危",
+    "koreanSound": [
+      "위"
+    ],
+    "koreanMeaning": "위태할"
+  },
+  {
+    "id": "揮",
+    "kanji": "揮",
+    "onReadings": [
+      "き"
+    ],
+    "kunReadings": [
+      "ふる"
+    ],
+    "meanings": [
+      "brandish",
+      "wave",
+      "wag"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "揮",
+    "koreanSound": [
+      "휘"
+    ],
+    "koreanMeaning": "휘두를"
+  },
+  {
+    "id": "机",
+    "kanji": "机",
+    "onReadings": [
+      "き"
+    ],
+    "kunReadings": [
+      "つくえ"
+    ],
+    "meanings": [
+      "desk",
+      "table"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "机",
+    "koreanSound": [
+      "궤"
+    ],
+    "koreanMeaning": "책상"
+  },
+  {
+    "id": "貴",
+    "kanji": "貴",
+    "onReadings": [
+      "き"
+    ],
+    "kunReadings": [
+      "たっと",
+      "とうと"
+    ],
+    "meanings": [
+      "precious",
+      "value",
+      "prize"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "貴",
+    "koreanSound": [
+      "귀"
+    ],
+    "koreanMeaning": "귀할"
+  },
+  {
+    "id": "疑",
+    "kanji": "疑",
+    "onReadings": [
+      "ぎ"
+    ],
+    "kunReadings": [
+      "うたが"
+    ],
+    "meanings": [
+      "doubt",
+      "distrust",
+      "be suspicious"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "疑",
+    "koreanSound": [
+      "의"
+    ],
+    "koreanMeaning": "의심할"
+  },
+  {
+    "id": "吸",
+    "kanji": "吸",
+    "onReadings": [
+      "きゅう"
+    ],
+    "kunReadings": [
+      "す"
+    ],
+    "meanings": [
+      "suck",
+      "imbibe",
+      "inhale"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "吸",
+    "koreanSound": [
+      "흡"
+    ],
+    "koreanMeaning": "마실"
+  },
+  {
+    "id": "供",
+    "kanji": "供",
+    "onReadings": [
+      "きょう",
+      "く",
+      "くう",
+      "ぐ"
+    ],
+    "kunReadings": [
+      "そな",
+      "とも",
+      "ども"
+    ],
+    "meanings": [
+      "submit",
+      "offer",
+      "present"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "供",
+    "koreanSound": [
+      "공"
+    ],
+    "koreanMeaning": "이바지할"
+  },
+  {
+    "id": "胸",
+    "kanji": "胸",
+    "onReadings": [
+      "きょう"
+    ],
+    "kunReadings": [
+      "むね",
+      "むな-"
+    ],
+    "meanings": [
+      "bosom",
+      "breast",
+      "chest"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "胸",
+    "koreanSound": [
+      "흉"
+    ],
+    "koreanMeaning": "가슴"
+  },
+  {
+    "id": "郷",
+    "kanji": "郷",
+    "onReadings": [
+      "きょう",
+      "ごう"
+    ],
+    "kunReadings": [
+      "さと"
+    ],
+    "meanings": [
+      "home town",
+      "village",
+      "native place"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "鄕",
+    "koreanSound": [
+      "향"
+    ],
+    "koreanMeaning": "시골"
+  },
+  {
+    "id": "勤",
+    "kanji": "勤",
+    "onReadings": [
+      "きん",
+      "ごん"
+    ],
+    "kunReadings": [
+      "つと",
+      "づと",
+      "いそ"
+    ],
+    "meanings": [
+      "diligence",
+      "become employed",
+      "serve"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "勤",
+    "koreanSound": [
+      "근"
+    ],
+    "koreanMeaning": "부지런할"
+  },
+  {
+    "id": "筋",
+    "kanji": "筋",
+    "onReadings": [
+      "きん"
+    ],
+    "kunReadings": [
+      "すじ"
+    ],
+    "meanings": [
+      "muscle",
+      "sinew",
+      "tendon"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "筋",
+    "koreanSound": [
+      "근"
+    ],
+    "koreanMeaning": "힘줄"
+  },
+  {
+    "id": "敬",
+    "kanji": "敬",
+    "onReadings": [
+      "けい",
+      "きょう"
+    ],
+    "kunReadings": [
+      "うやま"
+    ],
+    "meanings": [
+      "awe",
+      "respect",
+      "honor"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "敬",
+    "koreanSound": [
+      "경"
+    ],
+    "koreanMeaning": "공경"
+  },
+  {
+    "id": "系",
+    "kanji": "系",
+    "onReadings": [
+      "けい"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "lineage",
+      "system"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "系",
+    "koreanSound": [
+      "계"
+    ],
+    "koreanMeaning": "이어맬"
+  },
+  {
+    "id": "警",
+    "kanji": "警",
+    "onReadings": [
+      "けい"
+    ],
+    "kunReadings": [
+      "いまし"
+    ],
+    "meanings": [
+      "admonish",
+      "commandment"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "警",
+    "koreanSound": [
+      "경"
+    ],
+    "koreanMeaning": "깨우칠"
+  },
+  {
+    "id": "劇",
+    "kanji": "劇",
+    "onReadings": [
+      "げき"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "drama",
+      "play"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "劇",
+    "koreanSound": [
+      "극"
+    ],
+    "koreanMeaning": "심할"
+  },
+  {
+    "id": "激",
+    "kanji": "激",
+    "onReadings": [
+      "げき"
+    ],
+    "kunReadings": [
+      "はげ"
+    ],
+    "meanings": [
+      "violent",
+      "get excited",
+      "enraged"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "激",
+    "koreanSound": [
+      "격"
+    ],
+    "koreanMeaning": "격할"
+  },
+  {
+    "id": "穴",
+    "kanji": "穴",
+    "onReadings": [
+      "けつ"
+    ],
+    "kunReadings": [
+      "あな"
+    ],
+    "meanings": [
+      "hole",
+      "aperture",
+      "slit"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "穴",
+    "koreanSound": [
+      "혈"
+    ],
+    "koreanMeaning": "구멍"
+  },
+  {
+    "id": "券",
+    "kanji": "券",
+    "onReadings": [
+      "けん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "ticket"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "券",
+    "koreanSound": [
+      "권"
+    ],
+    "koreanMeaning": "문서"
+  },
+  {
+    "id": "憲",
+    "kanji": "憲",
+    "onReadings": [
+      "けん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "constitution",
+      "law"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "憲",
+    "koreanSound": [
+      "헌"
+    ],
+    "koreanMeaning": "법"
+  },
+  {
+    "id": "権",
+    "kanji": "権",
+    "onReadings": [
+      "けん",
+      "ごん"
+    ],
+    "kunReadings": [
+      "おもり",
+      "かり",
+      "はか"
+    ],
+    "meanings": [
+      "authority",
+      "power",
+      "rights"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "權",
+    "koreanSound": [
+      "권"
+    ],
+    "koreanMeaning": "권세"
+  },
+  {
+    "id": "絹",
+    "kanji": "絹",
+    "onReadings": [
+      "けん"
+    ],
+    "kunReadings": [
+      "きぬ"
+    ],
+    "meanings": [
+      "silk"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "絹",
+    "koreanSound": [
+      "견"
+    ],
+    "koreanMeaning": "비단"
+  },
+  {
+    "id": "厳",
+    "kanji": "厳",
+    "onReadings": [
+      "げん",
+      "ごん"
+    ],
+    "kunReadings": [
+      "おごそ",
+      "きび",
+      "いか",
+      "いつくし"
+    ],
+    "meanings": [
+      "stern",
+      "strictness",
+      "severity"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "嚴",
+    "koreanSound": [
+      "엄"
+    ],
+    "koreanMeaning": "엄할"
+  },
+  {
+    "id": "源",
+    "kanji": "源",
+    "onReadings": [
+      "げん"
+    ],
+    "kunReadings": [
+      "みなもと"
+    ],
+    "meanings": [
+      "source",
+      "origin"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "源",
+    "koreanSound": [
+      "원"
+    ],
+    "koreanMeaning": "근원"
+  },
+  {
+    "id": "呼",
+    "kanji": "呼",
+    "onReadings": [
+      "こ"
+    ],
+    "kunReadings": [
+      "よ"
+    ],
+    "meanings": [
+      "call",
+      "call out to",
+      "invite"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "呼",
+    "koreanSound": [
+      "호"
+    ],
+    "koreanMeaning": "부를"
+  },
+  {
+    "id": "己",
+    "kanji": "己",
+    "onReadings": [
+      "こ",
+      "き"
+    ],
+    "kunReadings": [
+      "おのれ",
+      "つちのと",
+      "な"
+    ],
+    "meanings": [
+      "self"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "己",
+    "koreanSound": [
+      "기"
+    ],
+    "koreanMeaning": "몸"
+  },
+  {
+    "id": "誤",
+    "kanji": "誤",
+    "onReadings": [
+      "ご"
+    ],
+    "kunReadings": [
+      "あやま"
+    ],
+    "meanings": [
+      "mistake",
+      "err",
+      "do wrong"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "誤",
+    "koreanSound": [
+      "오"
+    ],
+    "koreanMeaning": "그르칠"
+  },
+  {
+    "id": "后",
+    "kanji": "后",
+    "onReadings": [
+      "こう",
+      "ご"
+    ],
+    "kunReadings": [
+      "きさき"
+    ],
+    "meanings": [
+      "empress",
+      "queen",
+      "after"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "后",
+    "koreanSound": [
+      "후"
+    ],
+    "koreanMeaning": "임금"
+  },
+  {
+    "id": "孝",
+    "kanji": "孝",
+    "onReadings": [
+      "こう",
+      "きょう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "filial piety",
+      "child's respect"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "孝",
+    "koreanSound": [
+      "효"
+    ],
+    "koreanMeaning": "효도"
+  },
+  {
+    "id": "皇",
+    "kanji": "皇",
+    "onReadings": [
+      "こう",
+      "おう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "emperor"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "皇",
+    "koreanSound": [
+      "황"
+    ],
+    "koreanMeaning": "임금"
+  },
+  {
+    "id": "紅",
+    "kanji": "紅",
+    "onReadings": [
+      "こう",
+      "く"
+    ],
+    "kunReadings": [
+      "べに",
+      "くれない",
+      "あか"
+    ],
+    "meanings": [
+      "crimson",
+      "deep red"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "紅",
+    "koreanSound": [
+      "홍"
+    ],
+    "koreanMeaning": "붉을"
+  },
+  {
+    "id": "鋼",
+    "kanji": "鋼",
+    "onReadings": [
+      "こう"
+    ],
+    "kunReadings": [
+      "はがね"
+    ],
+    "meanings": [
+      "steel"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "鋼",
+    "koreanSound": [
+      "강"
+    ],
+    "koreanMeaning": "강철"
+  },
+  {
+    "id": "刻",
+    "kanji": "刻",
+    "onReadings": [
+      "こく"
+    ],
+    "kunReadings": [
+      "きざ"
+    ],
+    "meanings": [
+      "engrave",
+      "cut fine",
+      "chop"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "刻",
+    "koreanSound": [
+      "각"
+    ],
+    "koreanMeaning": "새길"
+  },
+  {
+    "id": "穀",
+    "kanji": "穀",
+    "onReadings": [
+      "こく"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "cereals",
+      "grain"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "穀",
+    "koreanSound": [
+      "곡"
+    ],
+    "koreanMeaning": "곡식"
+  },
+  {
+    "id": "骨",
+    "kanji": "骨",
+    "onReadings": [
+      "こつ"
+    ],
+    "kunReadings": [
+      "ほね"
+    ],
+    "meanings": [
+      "skeleton",
+      "bone",
+      "remains"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "骨",
+    "koreanSound": [
+      "골"
+    ],
+    "koreanMeaning": "뼈"
+  },
+  {
+    "id": "困",
+    "kanji": "困",
+    "onReadings": [
+      "こん"
+    ],
+    "kunReadings": [
+      "こま"
+    ],
+    "meanings": [
+      "quandary",
+      "become distressed",
+      "annoyed"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "困",
+    "koreanSound": [
+      "곤"
+    ],
+    "koreanMeaning": "곤할"
+  },
+  {
+    "id": "砂",
+    "kanji": "砂",
+    "onReadings": [
+      "さ",
+      "しゃ"
+    ],
+    "kunReadings": [
+      "すな"
+    ],
+    "meanings": [
+      "sand"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "砂",
+    "koreanSound": [
+      "사"
+    ],
+    "koreanMeaning": "모래"
+  },
+  {
+    "id": "座",
+    "kanji": "座",
+    "onReadings": [
+      "ざ"
+    ],
+    "kunReadings": [
+      "すわ"
+    ],
+    "meanings": [
+      "squat",
+      "seat",
+      "cushion"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "座",
+    "koreanSound": [
+      "좌"
+    ],
+    "koreanMeaning": "자리"
+  },
+  {
+    "id": "済",
+    "kanji": "済",
+    "onReadings": [
+      "さい",
+      "せい"
+    ],
+    "kunReadings": [
+      "す",
+      "ず",
+      "ずみ",
+      "すく",
+      "な",
+      "わたし",
+      "わた"
+    ],
+    "meanings": [
+      "settle (debt, etc.)",
+      "relieve (burden)",
+      "finish"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "濟",
+    "koreanSound": [
+      "제"
+    ],
+    "koreanMeaning": "건널"
+  },
+  {
+    "id": "裁",
+    "kanji": "裁",
+    "onReadings": [
+      "さい"
+    ],
+    "kunReadings": [
+      "た",
+      "さば"
+    ],
+    "meanings": [
+      "tailor",
+      "judge",
+      "decision"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "裁",
+    "koreanSound": [
+      "재"
+    ],
+    "koreanMeaning": "마를"
+  },
+  {
+    "id": "策",
+    "kanji": "策",
+    "onReadings": [
+      "さく"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "scheme",
+      "plan",
+      "policy"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "策",
+    "koreanSound": [
+      "책"
+    ],
+    "koreanMeaning": "꾀"
+  },
+  {
+    "id": "冊",
+    "kanji": "冊",
+    "onReadings": [
+      "さつ",
+      "さく"
+    ],
+    "kunReadings": [
+      "ふみ"
+    ],
+    "meanings": [
+      "tome",
+      "counter for books",
+      "volume"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "冊",
+    "koreanSound": [
+      "책"
+    ],
+    "koreanMeaning": "책"
+  },
+  {
+    "id": "蚕",
+    "kanji": "蚕",
+    "onReadings": [
+      "さん",
+      "てん"
+    ],
+    "kunReadings": [
+      "かいこ",
+      "こ"
+    ],
+    "meanings": [
+      "silkworm"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "蠶",
+    "koreanSound": [
+      "천"
+    ],
+    "koreanMeaning": "누에"
+  },
+  {
+    "id": "姿",
+    "kanji": "姿",
+    "onReadings": [
+      "し"
+    ],
+    "kunReadings": [
+      "すがた"
+    ],
+    "meanings": [
+      "figure",
+      "form",
+      "shape"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "姿",
+    "koreanSound": [
+      "자"
+    ],
+    "koreanMeaning": "맵시"
+  },
+  {
+    "id": "私",
+    "kanji": "私",
+    "onReadings": [
+      "し"
+    ],
+    "kunReadings": [
+      "わたくし",
+      "わたし"
+    ],
+    "meanings": [
+      "private",
+      "I",
+      "me"
+    ],
+    "jlptLevel": 4,
+    "koreanHanja": "私",
+    "koreanSound": [
+      "사"
+    ],
+    "koreanMeaning": "사사"
+  },
+  {
+    "id": "至",
+    "kanji": "至",
+    "onReadings": [
+      "し"
+    ],
+    "kunReadings": [
+      "いた"
+    ],
+    "meanings": [
+      "climax",
+      "arrive",
+      "proceed"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "至",
+    "koreanSound": [
+      "지"
+    ],
+    "koreanMeaning": "이를"
+  },
+  {
+    "id": "視",
+    "kanji": "視",
+    "onReadings": [
+      "し"
+    ],
+    "kunReadings": [
+      "み"
+    ],
+    "meanings": [
+      "inspection",
+      "regard as",
+      "see"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "視",
+    "koreanSound": [
+      "시"
+    ],
+    "koreanMeaning": "볼"
+  },
+  {
+    "id": "詞",
+    "kanji": "詞",
+    "onReadings": [
+      "し"
+    ],
+    "kunReadings": [
+      "ことば"
+    ],
+    "meanings": [
+      "part of speech",
+      "words",
+      "poetry"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "詞",
+    "koreanSound": [
+      "사"
+    ],
+    "koreanMeaning": "말씀"
+  },
+  {
+    "id": "誌",
+    "kanji": "誌",
+    "onReadings": [
+      "し"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "document",
+      "records"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "誌",
+    "koreanSound": [
+      "지"
+    ],
+    "koreanMeaning": "기록할"
+  },
+  {
+    "id": "磁",
+    "kanji": "磁",
+    "onReadings": [
+      "じ"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "magnet",
+      "porcelain"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "磁",
+    "koreanSound": [
+      "자"
+    ],
+    "koreanMeaning": "자석"
+  },
+  {
+    "id": "射",
+    "kanji": "射",
+    "onReadings": [
+      "しゃ"
+    ],
+    "kunReadings": [
+      "い",
+      "さ",
+      "う"
+    ],
+    "meanings": [
+      "shoot",
+      "shine into",
+      "onto"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "射",
+    "koreanSound": [
+      "사"
+    ],
+    "koreanMeaning": "쏠"
+  },
+  {
+    "id": "捨",
+    "kanji": "捨",
+    "onReadings": [
+      "しゃ"
+    ],
+    "kunReadings": [
+      "す"
+    ],
+    "meanings": [
+      "discard",
+      "throw away",
+      "abandon"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "捨",
+    "koreanSound": [
+      "사"
+    ],
+    "koreanMeaning": "버릴"
+  },
+  {
+    "id": "尺",
+    "kanji": "尺",
+    "onReadings": [
+      "しゃく",
+      "せき"
+    ],
+    "kunReadings": [
+      "さし"
+    ],
+    "meanings": [
+      "shaku",
+      "Japanese foot",
+      "measure"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "尺",
+    "koreanSound": [
+      "척"
+    ],
+    "koreanMeaning": "자"
+  },
+  {
+    "id": "若",
+    "kanji": "若",
+    "onReadings": [
+      "じゃく",
+      "にゃく",
+      "にゃ"
+    ],
+    "kunReadings": [
+      "わか",
+      "わか-",
+      "も",
+      "ごと"
+    ],
+    "meanings": [
+      "young",
+      "if",
+      "perhaps"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "若",
+    "koreanSound": [
+      "약"
+    ],
+    "koreanMeaning": "같을"
+  },
+  {
+    "id": "樹",
+    "kanji": "樹",
+    "onReadings": [
+      "じゅ"
+    ],
+    "kunReadings": [
+      "き"
+    ],
+    "meanings": [
+      "timber",
+      "trees",
+      "wood"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "樹",
+    "koreanSound": [
+      "수"
+    ],
+    "koreanMeaning": "나무"
+  },
+  {
+    "id": "収",
+    "kanji": "収",
+    "onReadings": [
+      "しゅう"
+    ],
+    "kunReadings": [
+      "おさ"
+    ],
+    "meanings": [
+      "income",
+      "obtain",
+      "reap"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "收",
+    "koreanSound": [
+      "수"
+    ],
+    "koreanMeaning": "거둘"
+  },
+  {
+    "id": "宗",
+    "kanji": "宗",
+    "onReadings": [
+      "しゅう",
+      "そう"
+    ],
+    "kunReadings": [
+      "むね"
+    ],
+    "meanings": [
+      "religion",
+      "sect",
+      "denomination"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "宗",
+    "koreanSound": [
+      "종"
+    ],
+    "koreanMeaning": "마루"
+  },
+  {
+    "id": "就",
+    "kanji": "就",
+    "onReadings": [
+      "しゅう",
+      "じゅ"
+    ],
+    "kunReadings": [
+      "つ"
+    ],
+    "meanings": [
+      "concerning",
+      "settle",
+      "take position"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "就",
+    "koreanSound": [
+      "취"
+    ],
+    "koreanMeaning": "나아갈"
+  },
+  {
+    "id": "衆",
+    "kanji": "衆",
+    "onReadings": [
+      "しゅう",
+      "しゅ"
+    ],
+    "kunReadings": [
+      "おお"
+    ],
+    "meanings": [
+      "masses",
+      "great numbers",
+      "multitude"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "衆",
+    "koreanSound": [
+      "중"
+    ],
+    "koreanMeaning": "무리"
+  },
+  {
+    "id": "従",
+    "kanji": "従",
+    "onReadings": [
+      "じゅう",
+      "しょう",
+      "じゅ"
+    ],
+    "kunReadings": [
+      "したが",
+      "より"
+    ],
+    "meanings": [
+      "accompany",
+      "obey",
+      "submit to"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "從",
+    "koreanSound": [
+      "종"
+    ],
+    "koreanMeaning": "좇을"
+  },
+  {
+    "id": "縦",
+    "kanji": "縦",
+    "onReadings": [
+      "じゅう"
+    ],
+    "kunReadings": [
+      "たて"
+    ],
+    "meanings": [
+      "vertical",
+      "length",
+      "height"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "縱",
+    "koreanSound": [
+      "종"
+    ],
+    "koreanMeaning": "세로"
+  },
+  {
+    "id": "縮",
+    "kanji": "縮",
+    "onReadings": [
+      "しゅく"
+    ],
+    "kunReadings": [
+      "ちぢ"
+    ],
+    "meanings": [
+      "shrink",
+      "contract",
+      "shrivel"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "縮",
+    "koreanSound": [
+      "축"
+    ],
+    "koreanMeaning": "줄일"
+  },
+  {
+    "id": "熟",
+    "kanji": "熟",
+    "onReadings": [
+      "じゅく"
+    ],
+    "kunReadings": [
+      "う"
+    ],
+    "meanings": [
+      "mellow",
+      "ripen",
+      "mature"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "熟",
+    "koreanSound": [
+      "숙"
+    ],
+    "koreanMeaning": "익을"
+  },
+  {
+    "id": "純",
+    "kanji": "純",
+    "onReadings": [
+      "じゅん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "genuine",
+      "purity",
+      "innocence"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "純",
+    "koreanSound": [
+      "순"
+    ],
+    "koreanMeaning": "순수할"
+  },
+  {
+    "id": "処",
+    "kanji": "処",
+    "onReadings": [
+      "しょ"
+    ],
+    "kunReadings": [
+      "ところ",
+      "こ",
+      "お"
+    ],
+    "meanings": [
+      "dispose",
+      "manage",
+      "deal with"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "處",
+    "koreanSound": [
+      "처"
+    ],
+    "koreanMeaning": "곳"
+  },
+  {
+    "id": "署",
+    "kanji": "署",
+    "onReadings": [
+      "しょ"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "signature",
+      "govt office",
+      "police station"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "署",
+    "koreanSound": [
+      "서"
+    ],
+    "koreanMeaning": "관청"
+  },
+  {
+    "id": "諸",
+    "kanji": "諸",
+    "onReadings": [
+      "しょ"
+    ],
+    "kunReadings": [
+      "もろ"
+    ],
+    "meanings": [
+      "various",
+      "many",
+      "several"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "諸",
+    "koreanSound": [
+      "제"
+    ],
+    "koreanMeaning": "모두"
+  },
+  {
+    "id": "除",
+    "kanji": "除",
+    "onReadings": [
+      "じょ",
+      "じ"
+    ],
+    "kunReadings": [
+      "のぞ",
+      "よ"
+    ],
+    "meanings": [
+      "exclude",
+      "division (x/3)",
+      "remove"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "除",
+    "koreanSound": [
+      "제"
+    ],
+    "koreanMeaning": "덜"
+  },
+  {
+    "id": "傷",
+    "kanji": "傷",
+    "onReadings": [
+      "しょう"
+    ],
+    "kunReadings": [
+      "きず",
+      "いた"
+    ],
+    "meanings": [
+      "wound",
+      "hurt",
+      "injure"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "傷",
+    "koreanSound": [
+      "상"
+    ],
+    "koreanMeaning": "다칠"
+  },
+  {
+    "id": "将",
+    "kanji": "将",
+    "onReadings": [
+      "しょう",
+      "そう"
+    ],
+    "kunReadings": [
+      "まさ",
+      "はた",
+      "ひきい",
+      "もって"
+    ],
+    "meanings": [
+      "leader",
+      "commander",
+      "general"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "將",
+    "koreanSound": [
+      "장"
+    ],
+    "koreanMeaning": "장수"
+  },
+  {
+    "id": "承",
+    "kanji": "承",
+    "onReadings": [
+      "しょう",
+      "じょう"
+    ],
+    "kunReadings": [
+      "うけたまわ",
+      "う"
+    ],
+    "meanings": [
+      "acquiesce",
+      "hear",
+      "listen to"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "承",
+    "koreanSound": [
+      "승"
+    ],
+    "koreanMeaning": "이을"
+  },
+  {
+    "id": "障",
+    "kanji": "障",
+    "onReadings": [
+      "しょう"
+    ],
+    "kunReadings": [
+      "さわ"
+    ],
+    "meanings": [
+      "hinder",
+      "hurt",
+      "harm"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "障",
+    "koreanSound": [
+      "장"
+    ],
+    "koreanMeaning": "막을"
+  },
+  {
+    "id": "蒸",
+    "kanji": "蒸",
+    "onReadings": [
+      "じょう",
+      "せい"
+    ],
+    "kunReadings": [
+      "む"
+    ],
+    "meanings": [
+      "steam",
+      "heat",
+      "sultry"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "蒸",
+    "koreanSound": [
+      "증"
+    ],
+    "koreanMeaning": "찔"
+  },
+  {
+    "id": "針",
+    "kanji": "針",
+    "onReadings": [
+      "しん"
+    ],
+    "kunReadings": [
+      "はり"
+    ],
+    "meanings": [
+      "needle",
+      "pin",
+      "staple"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "針",
+    "koreanSound": [
+      "침"
+    ],
+    "koreanMeaning": "바늘"
+  },
+  {
+    "id": "仁",
+    "kanji": "仁",
+    "onReadings": [
+      "じん",
+      "に",
+      "にん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "humanity",
+      "virtue",
+      "benevolence"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "仁",
+    "koreanSound": [
+      "인"
+    ],
+    "koreanMeaning": "어질"
+  },
+  {
+    "id": "垂",
+    "kanji": "垂",
+    "onReadings": [
+      "すい"
+    ],
+    "kunReadings": [
+      "た",
+      "なんなんと"
+    ],
+    "meanings": [
+      "droop",
+      "suspend",
+      "hang"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "垂",
+    "koreanSound": [
+      "수"
+    ],
+    "koreanMeaning": "드리울"
+  },
+  {
+    "id": "推",
+    "kanji": "推",
+    "onReadings": [
+      "すい"
+    ],
+    "kunReadings": [
+      "お"
+    ],
+    "meanings": [
+      "conjecture",
+      "infer",
+      "guess"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "推",
+    "koreanSound": [
+      "추"
+    ],
+    "koreanMeaning": "밀"
+  },
+  {
+    "id": "寸",
+    "kanji": "寸",
+    "onReadings": [
+      "すん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "measurement",
+      "tenth of a shaku",
+      "a little"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "寸",
+    "koreanSound": [
+      "촌"
+    ],
+    "koreanMeaning": "마디"
+  },
+  {
+    "id": "盛",
+    "kanji": "盛",
+    "onReadings": [
+      "せい",
+      "じょう"
+    ],
+    "kunReadings": [
+      "も",
+      "さか"
+    ],
+    "meanings": [
+      "boom",
+      "prosper",
+      "copulate"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "盛",
+    "koreanSound": [
+      "성"
+    ],
+    "koreanMeaning": "성할"
+  },
+  {
+    "id": "聖",
+    "kanji": "聖",
+    "onReadings": [
+      "せい",
+      "しょう"
+    ],
+    "kunReadings": [
+      "ひじり"
+    ],
+    "meanings": [
+      "holy",
+      "saint",
+      "sage"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "聖",
+    "koreanSound": [
+      "성"
+    ],
+    "koreanMeaning": "성인"
+  },
+  {
+    "id": "誠",
+    "kanji": "誠",
+    "onReadings": [
+      "せい"
+    ],
+    "kunReadings": [
+      "まこと"
+    ],
+    "meanings": [
+      "sincerity",
+      "admonish",
+      "warn"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "誠",
+    "koreanSound": [
+      "성"
+    ],
+    "koreanMeaning": "정성"
+  },
+  {
+    "id": "舌",
+    "kanji": "舌",
+    "onReadings": [
+      "ぜつ"
+    ],
+    "kunReadings": [
+      "した"
+    ],
+    "meanings": [
+      "tongue",
+      "reed",
+      "clapper"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "舌",
+    "koreanSound": [
+      "설"
+    ],
+    "koreanMeaning": "혀"
+  },
+  {
+    "id": "宣",
+    "kanji": "宣",
+    "onReadings": [
+      "せん"
+    ],
+    "kunReadings": [
+      "のたま"
+    ],
+    "meanings": [
+      "proclaim",
+      "say",
+      "announce"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "宣",
+    "koreanSound": [
+      "선"
+    ],
+    "koreanMeaning": "베풀"
+  },
+  {
+    "id": "専",
+    "kanji": "専",
+    "onReadings": [
+      "せん"
+    ],
+    "kunReadings": [
+      "もっぱ"
+    ],
+    "meanings": [
+      "specialty",
+      "exclusive",
+      "mainly"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "專",
+    "koreanSound": [
+      "전"
+    ],
+    "koreanMeaning": "오로지"
+  },
+  {
+    "id": "泉",
+    "kanji": "泉",
+    "onReadings": [
+      "せん"
+    ],
+    "kunReadings": [
+      "いずみ"
+    ],
+    "meanings": [
+      "spring",
+      "fountain"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "泉",
+    "koreanSound": [
+      "천"
+    ],
+    "koreanMeaning": "샘"
+  },
+  {
+    "id": "洗",
+    "kanji": "洗",
+    "onReadings": [
+      "せん"
+    ],
+    "kunReadings": [
+      "あら"
+    ],
+    "meanings": [
+      "wash",
+      "inquire into",
+      "probe"
+    ],
+    "jlptLevel": 4,
+    "koreanHanja": "洗",
+    "koreanSound": [
+      "세"
+    ],
+    "koreanMeaning": "씻을"
+  },
+  {
+    "id": "染",
+    "kanji": "染",
+    "onReadings": [
+      "せん"
+    ],
+    "kunReadings": [
+      "そ",
+      "し"
+    ],
+    "meanings": [
+      "dye",
+      "color",
+      "paint"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "染",
+    "koreanSound": [
+      "염"
+    ],
+    "koreanMeaning": "물들"
+  },
+  {
+    "id": "銭",
+    "kanji": "銭",
+    "onReadings": [
+      "せん",
+      "ぜん"
+    ],
+    "kunReadings": [
+      "ぜに",
+      "すき"
+    ],
+    "meanings": [
+      "coin",
+      ".01 yen",
+      "money"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "錢",
+    "koreanSound": [
+      "전"
+    ],
+    "koreanMeaning": "돈"
+  },
+  {
+    "id": "善",
+    "kanji": "善",
+    "onReadings": [
+      "ぜん"
+    ],
+    "kunReadings": [
+      "よ",
+      "い",
+      "よし"
+    ],
+    "meanings": [
+      "virtuous",
+      "good",
+      "goodness"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "善",
+    "koreanSound": [
+      "선"
+    ],
+    "koreanMeaning": "착할"
+  },
+  {
+    "id": "創",
+    "kanji": "創",
+    "onReadings": [
+      "そう",
+      "しょう"
+    ],
+    "kunReadings": [
+      "つく",
+      "はじ",
+      "きず",
+      "けず"
+    ],
+    "meanings": [
+      "genesis",
+      "wound",
+      "injury"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "創",
+    "koreanSound": [
+      "창"
+    ],
+    "koreanMeaning": "비롯할"
+  },
+  {
+    "id": "奏",
+    "kanji": "奏",
+    "onReadings": [
+      "そう"
+    ],
+    "kunReadings": [
+      "かな"
+    ],
+    "meanings": [
+      "play music",
+      "speak to a ruler",
+      "complete"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "奏",
+    "koreanSound": [
+      "주"
+    ],
+    "koreanMeaning": "아뢸"
+  },
+  {
+    "id": "層",
+    "kanji": "層",
+    "onReadings": [
+      "そう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "stratum",
+      "social class",
+      "layer"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "層",
+    "koreanSound": [
+      "층"
+    ],
+    "koreanMeaning": "층"
+  },
+  {
+    "id": "操",
+    "kanji": "操",
+    "onReadings": [
+      "そう",
+      "さん"
+    ],
+    "kunReadings": [
+      "みさお",
+      "あやつ"
+    ],
+    "meanings": [
+      "maneuver",
+      "manipulate",
+      "operate"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "操",
+    "koreanSound": [
+      "조"
+    ],
+    "koreanMeaning": "잡을"
+  },
+  {
+    "id": "窓",
+    "kanji": "窓",
+    "onReadings": [
+      "そう",
+      "す"
+    ],
+    "kunReadings": [
+      "まど",
+      "てんまど",
+      "けむだし"
+    ],
+    "meanings": [
+      "window",
+      "pane"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "窓",
+    "koreanSound": [
+      "창"
+    ],
+    "koreanMeaning": "창"
+  },
+  {
+    "id": "装",
+    "kanji": "装",
+    "onReadings": [
+      "そう",
+      "しょう"
+    ],
+    "kunReadings": [
+      "よそお"
+    ],
+    "meanings": [
+      "attire",
+      "dress",
+      "pretend"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "裝",
+    "koreanSound": [
+      "장"
+    ],
+    "koreanMeaning": "꾸밀"
+  },
+  {
+    "id": "臓",
+    "kanji": "臓",
+    "onReadings": [
+      "ぞう"
+    ],
+    "kunReadings": [
+      "はらわた"
+    ],
+    "meanings": [
+      "entrails",
+      "viscera",
+      "bowels"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "臟",
+    "koreanSound": [
+      "장"
+    ],
+    "koreanMeaning": "오장"
+  },
+  {
+    "id": "蔵",
+    "kanji": "蔵",
+    "onReadings": [
+      "ぞう",
+      "そう"
+    ],
+    "kunReadings": [
+      "くら",
+      "おさ",
+      "かく"
+    ],
+    "meanings": [
+      "storehouse",
+      "hide",
+      "own"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "藏",
+    "koreanSound": [
+      "장"
+    ],
+    "koreanMeaning": "감출"
+  },
+  {
+    "id": "存",
+    "kanji": "存",
+    "onReadings": [
+      "そん",
+      "ぞん"
+    ],
+    "kunReadings": [
+      "ながら",
+      "あ",
+      "たも",
+      "と"
+    ],
+    "meanings": [
+      "exist",
+      "suppose",
+      "be aware of"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "存",
+    "koreanSound": [
+      "존"
+    ],
+    "koreanMeaning": "있을"
+  },
+  {
+    "id": "尊",
+    "kanji": "尊",
+    "onReadings": [
+      "そん"
+    ],
+    "kunReadings": [
+      "たっと",
+      "とうと"
+    ],
+    "meanings": [
+      "revered",
+      "valuable",
+      "precious"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "尊",
+    "koreanSound": [
+      "존"
+    ],
+    "koreanMeaning": "높을"
+  },
+  {
+    "id": "退",
+    "kanji": "退",
+    "onReadings": [
+      "たい"
+    ],
+    "kunReadings": [
+      "しりぞ",
+      "ひ",
+      "の",
+      "ど"
+    ],
+    "meanings": [
+      "retreat",
+      "withdraw",
+      "retire"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "退",
+    "koreanSound": [
+      "퇴"
+    ],
+    "koreanMeaning": "물러날"
+  },
+  {
+    "id": "宅",
+    "kanji": "宅",
+    "onReadings": [
+      "たく"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "home",
+      "house",
+      "residence"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "宅",
+    "koreanSound": [
+      "택"
+    ],
+    "koreanMeaning": "집"
+  },
+  {
+    "id": "担",
+    "kanji": "担",
+    "onReadings": [
+      "たん"
+    ],
+    "kunReadings": [
+      "かつ",
+      "にな"
+    ],
+    "meanings": [
+      "shouldering",
+      "carry",
+      "raise"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "擔",
+    "koreanSound": [
+      "단"
+    ],
+    "koreanMeaning": "멜"
+  },
+  {
+    "id": "探",
+    "kanji": "探",
+    "onReadings": [
+      "たん"
+    ],
+    "kunReadings": [
+      "さぐ",
+      "さが"
+    ],
+    "meanings": [
+      "grope",
+      "search",
+      "look for"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "探",
+    "koreanSound": [
+      "탐"
+    ],
+    "koreanMeaning": "찾을"
+  },
+  {
+    "id": "誕",
+    "kanji": "誕",
+    "onReadings": [
+      "たん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "nativity",
+      "be born",
+      "declension"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "誕",
+    "koreanSound": [
+      "탄"
+    ],
+    "koreanMeaning": "낳을"
+  },
+  {
+    "id": "暖",
+    "kanji": "暖",
+    "onReadings": [
+      "だん",
+      "のん"
+    ],
+    "kunReadings": [
+      "あたた"
+    ],
+    "meanings": [
+      "warmth"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "暖",
+    "koreanSound": [
+      "난"
+    ],
+    "koreanMeaning": "따뜻할"
+  },
+  {
+    "id": "段",
+    "kanji": "段",
+    "onReadings": [
+      "だん",
+      "たん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "grade",
+      "steps",
+      "stairs"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "段",
+    "koreanSound": [
+      "단"
+    ],
+    "koreanMeaning": "층계"
+  },
+  {
+    "id": "値",
+    "kanji": "値",
+    "onReadings": [
+      "ち"
+    ],
+    "kunReadings": [
+      "ね",
+      "あたい"
+    ],
+    "meanings": [
+      "price",
+      "cost",
+      "value"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "値",
+    "koreanSound": [
+      "치"
+    ],
+    "koreanMeaning": "값"
+  },
+  {
+    "id": "宙",
+    "kanji": "宙",
+    "onReadings": [
+      "ちゅう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "mid-air",
+      "air",
+      "space"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "宙",
+    "koreanSound": [
+      "주"
+    ],
+    "koreanMeaning": "집"
+  },
+  {
+    "id": "忠",
+    "kanji": "忠",
+    "onReadings": [
+      "ちゅう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "loyalty",
+      "fidelity",
+      "faithfulness"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "忠",
+    "koreanSound": [
+      "충"
+    ],
+    "koreanMeaning": "충성"
+  },
+  {
+    "id": "著",
+    "kanji": "著",
+    "onReadings": [
+      "ちょ",
+      "ちゃく"
+    ],
+    "kunReadings": [
+      "あらわ",
+      "いちじる"
+    ],
+    "meanings": [
+      "renowned",
+      "publish",
+      "write"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "著",
+    "koreanSound": [
+      "저"
+    ],
+    "koreanMeaning": "나타날"
+  },
+  {
+    "id": "庁",
+    "kanji": "庁",
+    "onReadings": [
+      "ちょう",
+      "てい"
+    ],
+    "kunReadings": [
+      "やくしょ"
+    ],
+    "meanings": [
+      "government office"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "廳",
+    "koreanSound": [
+      "청"
+    ],
+    "koreanMeaning": "관청"
+  },
+  {
+    "id": "潮",
+    "kanji": "潮",
+    "onReadings": [
+      "ちょう"
+    ],
+    "kunReadings": [
+      "しお",
+      "うしお"
+    ],
+    "meanings": [
+      "tide",
+      "salt water",
+      "opportunity"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "潮",
+    "koreanSound": [
+      "조"
+    ],
+    "koreanMeaning": "밀물"
+  },
+  {
+    "id": "頂",
+    "kanji": "頂",
+    "onReadings": [
+      "ちょう"
+    ],
+    "kunReadings": [
+      "いただ",
+      "いただき"
+    ],
+    "meanings": [
+      "place on the head",
+      "receive",
+      "top of head"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "頂",
+    "koreanSound": [
+      "정"
+    ],
+    "koreanMeaning": "정수리"
+  },
+  {
+    "id": "賃",
+    "kanji": "賃",
+    "onReadings": [
+      "ちん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "fare",
+      "fee",
+      "hire"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "賃",
+    "koreanSound": [
+      "임"
+    ],
+    "koreanMeaning": "품삯"
+  },
+  {
+    "id": "痛",
+    "kanji": "痛",
+    "onReadings": [
+      "つう"
+    ],
+    "kunReadings": [
+      "いた"
+    ],
+    "meanings": [
+      "pain",
+      "hurt",
+      "damage"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "痛",
+    "koreanSound": [
+      "통"
+    ],
+    "koreanMeaning": "아플"
+  },
+  {
+    "id": "敵",
+    "kanji": "敵",
+    "onReadings": [
+      "てき"
+    ],
+    "kunReadings": [
+      "かたき",
+      "あだ",
+      "かな"
+    ],
+    "meanings": [
+      "enemy",
+      "foe",
+      "opponent"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "敵",
+    "koreanSound": [
+      "적"
+    ],
+    "koreanMeaning": "대적할"
+  },
+  {
+    "id": "展",
+    "kanji": "展",
+    "onReadings": [
+      "てん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "unfold",
+      "expand"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "展",
+    "koreanSound": [
+      "전"
+    ],
+    "koreanMeaning": "펼"
+  },
+  {
+    "id": "党",
+    "kanji": "党",
+    "onReadings": [
+      "とう"
+    ],
+    "kunReadings": [
+      "なかま",
+      "むら"
+    ],
+    "meanings": [
+      "party",
+      "faction",
+      "clique"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "黨",
+    "koreanSound": [
+      "당"
+    ],
+    "koreanMeaning": "무리"
+  },
+  {
+    "id": "糖",
+    "kanji": "糖",
+    "onReadings": [
+      "とう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "sugar"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "糖",
+    "koreanSound": [
+      "당"
+    ],
+    "koreanMeaning": "엿"
+  },
+  {
+    "id": "討",
+    "kanji": "討",
+    "onReadings": [
+      "とう"
+    ],
+    "kunReadings": [
+      "う"
+    ],
+    "meanings": [
+      "chastise",
+      "attack",
+      "defeat"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "討",
+    "koreanSound": [
+      "토"
+    ],
+    "koreanMeaning": "칠"
+  },
+  {
+    "id": "届",
+    "kanji": "届",
+    "onReadings": [
+      "かい"
+    ],
+    "kunReadings": [
+      "とど"
+    ],
+    "meanings": [
+      "deliver",
+      "reach",
+      "arrive"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "屆",
+    "koreanSound": [
+      "계"
+    ],
+    "koreanMeaning": "이를"
+  },
+  {
+    "id": "難",
+    "kanji": "難",
+    "onReadings": [
+      "なん"
+    ],
+    "kunReadings": [
+      "かた",
+      "がた",
+      "むずか",
+      "むづか",
+      "むつか",
+      "にく"
+    ],
+    "meanings": [
+      "difficult",
+      "impossible",
+      "trouble"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "難",
+    "koreanSound": [
+      "난"
+    ],
+    "koreanMeaning": "어려울"
+  },
+  {
+    "id": "乳",
+    "kanji": "乳",
+    "onReadings": [
+      "にゅう"
+    ],
+    "kunReadings": [
+      "ちち",
+      "ち"
+    ],
+    "meanings": [
+      "milk",
+      "breasts"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "乳",
+    "koreanSound": [
+      "유"
+    ],
+    "koreanMeaning": "젖"
+  },
+  {
+    "id": "認",
+    "kanji": "認",
+    "onReadings": [
+      "にん"
+    ],
+    "kunReadings": [
+      "みと",
+      "したた"
+    ],
+    "meanings": [
+      "acknowledge",
+      "witness",
+      "discern"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "認",
+    "koreanSound": [
+      "인"
+    ],
+    "koreanMeaning": "알"
+  },
+  {
+    "id": "納",
+    "kanji": "納",
+    "onReadings": [
+      "のう",
+      "なっ",
+      "な",
+      "なん",
+      "とう"
+    ],
+    "kunReadings": [
+      "おさ"
+    ],
+    "meanings": [
+      "settlement",
+      "obtain",
+      "reap"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "納",
+    "koreanSound": [
+      "납"
+    ],
+    "koreanMeaning": "들일"
+  },
+  {
+    "id": "脳",
+    "kanji": "脳",
+    "onReadings": [
+      "のう",
+      "どう"
+    ],
+    "kunReadings": [
+      "のうずる"
+    ],
+    "meanings": [
+      "brain",
+      "memory"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "腦",
+    "koreanSound": [
+      "뇌"
+    ],
+    "koreanMeaning": "뇌"
+  },
+  {
+    "id": "派",
+    "kanji": "派",
+    "onReadings": [
+      "は"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "faction",
+      "group",
+      "party"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "派",
+    "koreanSound": [
+      "파"
+    ],
+    "koreanMeaning": "갈래"
+  },
+  {
+    "id": "俳",
+    "kanji": "俳",
+    "onReadings": [
+      "はい"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "haiku",
+      "actor"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "俳",
+    "koreanSound": [
+      "배"
+    ],
+    "koreanMeaning": "광대"
+  },
+  {
+    "id": "拝",
+    "kanji": "拝",
+    "onReadings": [
+      "はい"
+    ],
+    "kunReadings": [
+      "おが",
+      "おろが"
+    ],
+    "meanings": [
+      "worship",
+      "adore",
+      "pray to"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "拜",
+    "koreanSound": [
+      "배"
+    ],
+    "koreanMeaning": "절"
+  },
+  {
+    "id": "背",
+    "kanji": "背",
+    "onReadings": [
+      "はい"
+    ],
+    "kunReadings": [
+      "せ",
+      "せい",
+      "そむ"
+    ],
+    "meanings": [
+      "stature",
+      "height",
+      "back"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "背",
+    "koreanSound": [
+      "배"
+    ],
+    "koreanMeaning": "등"
+  },
+  {
+    "id": "肺",
+    "kanji": "肺",
+    "onReadings": [
+      "はい"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "lungs"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "肺",
+    "koreanSound": [
+      "폐"
+    ],
+    "koreanMeaning": "허파"
+  },
+  {
+    "id": "班",
+    "kanji": "班",
+    "onReadings": [
+      "はん"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "squad",
+      "corps",
+      "unit"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "班",
+    "koreanSound": [
+      "반"
+    ],
+    "koreanMeaning": "나눌"
+  },
+  {
+    "id": "否",
+    "kanji": "否",
+    "onReadings": [
+      "ひ"
+    ],
+    "kunReadings": [
+      "いな",
+      "いや"
+    ],
+    "meanings": [
+      "negate",
+      "no",
+      "noes"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "否",
+    "koreanSound": [
+      "부"
+    ],
+    "koreanMeaning": "아닐"
+  },
+  {
+    "id": "批",
+    "kanji": "批",
+    "onReadings": [
+      "ひ"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "criticism",
+      "strike"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "批",
+    "koreanSound": [
+      "비"
+    ],
+    "koreanMeaning": "비평할"
+  },
+  {
+    "id": "秘",
+    "kanji": "秘",
+    "onReadings": [
+      "ひ"
+    ],
+    "kunReadings": [
+      "ひ",
+      "ひそ",
+      "かく"
+    ],
+    "meanings": [
+      "secret",
+      "conceal"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "祕",
+    "koreanSound": [
+      "비"
+    ],
+    "koreanMeaning": "숨길"
+  },
+  {
+    "id": "俵",
+    "kanji": "俵",
+    "onReadings": [
+      "ひょう"
+    ],
+    "kunReadings": [
+      "たわら"
+    ],
+    "meanings": [
+      "bag",
+      "bale",
+      "sack"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "俵",
+    "koreanSound": [
+      "표"
+    ],
+    "koreanMeaning": "나누어줄"
+  },
+  {
+    "id": "腹",
+    "kanji": "腹",
+    "onReadings": [
+      "ふく"
+    ],
+    "kunReadings": [
+      "はら"
+    ],
+    "meanings": [
+      "abdomen",
+      "belly",
+      "stomach"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "腹",
+    "koreanSound": [
+      "복"
+    ],
+    "koreanMeaning": "배"
+  },
+  {
+    "id": "奮",
+    "kanji": "奮",
+    "onReadings": [
+      "ふん"
+    ],
+    "kunReadings": [
+      "ふる"
+    ],
+    "meanings": [
+      "stirred up",
+      "be invigorated",
+      "flourish"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "奮",
+    "koreanSound": [
+      "분"
+    ],
+    "koreanMeaning": "떨칠"
+  },
+  {
+    "id": "並",
+    "kanji": "並",
+    "onReadings": [
+      "へい",
+      "ほう"
+    ],
+    "kunReadings": [
+      "な",
+      "なみ",
+      "なら"
+    ],
+    "meanings": [
+      "row",
+      "and",
+      "besides"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "竝",
+    "koreanSound": [
+      "병"
+    ],
+    "koreanMeaning": "아우를"
+  },
+  {
+    "id": "閉",
+    "kanji": "閉",
+    "onReadings": [
+      "へい"
+    ],
+    "kunReadings": [
+      "と",
+      "し",
+      "た"
+    ],
+    "meanings": [
+      "closed",
+      "shut"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "閉",
+    "koreanSound": [
+      "폐"
+    ],
+    "koreanMeaning": "닫을"
+  },
+  {
+    "id": "陛",
+    "kanji": "陛",
+    "onReadings": [
+      "へい"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "highness",
+      "steps (of throne)"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "陛",
+    "koreanSound": [
+      "폐"
+    ],
+    "koreanMeaning": "대궐 섬돌"
+  },
+  {
+    "id": "片",
+    "kanji": "片",
+    "onReadings": [
+      "へん"
+    ],
+    "kunReadings": [
+      "かた-",
+      "かた"
+    ],
+    "meanings": [
+      "one-sided",
+      "leaf",
+      "sheet"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "片",
+    "koreanSound": [
+      "편"
+    ],
+    "koreanMeaning": "조각"
+  },
+  {
+    "id": "補",
+    "kanji": "補",
+    "onReadings": [
+      "ほ"
+    ],
+    "kunReadings": [
+      "おぎな"
+    ],
+    "meanings": [
+      "supplement",
+      "supply",
+      "make good"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "補",
+    "koreanSound": [
+      "보"
+    ],
+    "koreanMeaning": "기울"
+  },
+  {
+    "id": "暮",
+    "kanji": "暮",
+    "onReadings": [
+      "ぼ"
+    ],
+    "kunReadings": [
+      "く"
+    ],
+    "meanings": [
+      "evening",
+      "twilight",
+      "season's end"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "暮",
+    "koreanSound": [
+      "모"
+    ],
+    "koreanMeaning": "저물"
+  },
+  {
+    "id": "宝",
+    "kanji": "宝",
+    "onReadings": [
+      "ほう"
+    ],
+    "kunReadings": [
+      "たから"
+    ],
+    "meanings": [
+      "treasure",
+      "wealth",
+      "valuables"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "寶",
+    "koreanSound": [
+      "보"
+    ],
+    "koreanMeaning": "보배"
+  },
+  {
+    "id": "訪",
+    "kanji": "訪",
+    "onReadings": [
+      "ほう"
+    ],
+    "kunReadings": [
+      "おとず",
+      "たず",
+      "と"
+    ],
+    "meanings": [
+      "call on",
+      "visit",
+      "look up"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "訪",
+    "koreanSound": [
+      "방"
+    ],
+    "koreanMeaning": "찾을"
+  },
+  {
+    "id": "亡",
+    "kanji": "亡",
+    "onReadings": [
+      "ぼう",
+      "もう"
+    ],
+    "kunReadings": [
+      "な",
+      "ほろ"
+    ],
+    "meanings": [
+      "deceased",
+      "the late",
+      "dying"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "亡",
+    "koreanSound": [
+      "망"
+    ],
+    "koreanMeaning": "망할"
+  },
+  {
+    "id": "棒",
+    "kanji": "棒",
+    "onReadings": [
+      "ぼう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "rod",
+      "stick",
+      "cane"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "棒",
+    "koreanSound": [
+      "봉"
+    ],
+    "koreanMeaning": "막대"
+  },
+  {
+    "id": "幕",
+    "kanji": "幕",
+    "onReadings": [
+      "まく",
+      "ばく"
+    ],
+    "kunReadings": [
+      "とばり"
+    ],
+    "meanings": [
+      "curtain",
+      "bunting",
+      "act of play"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "幕",
+    "koreanSound": [
+      "막"
+    ],
+    "koreanMeaning": "장막"
+  },
+  {
+    "id": "密",
+    "kanji": "密",
+    "onReadings": [
+      "みつ"
+    ],
+    "kunReadings": [
+      "ひそ"
+    ],
+    "meanings": [
+      "secrecy",
+      "density (pop)",
+      "minuteness"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "密",
+    "koreanSound": [
+      "밀"
+    ],
+    "koreanMeaning": "빽빽할"
+  },
+  {
+    "id": "盟",
+    "kanji": "盟",
+    "onReadings": [
+      "めい"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "alliance",
+      "oath"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "盟",
+    "koreanSound": [
+      "맹"
+    ],
+    "koreanMeaning": "맹세"
+  },
+  {
+    "id": "模",
+    "kanji": "模",
+    "onReadings": [
+      "も",
+      "ぼ"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "imitation",
+      "copy",
+      "mock"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "模",
+    "koreanSound": [
+      "모"
+    ],
+    "koreanMeaning": "본뜰"
+  },
+  {
+    "id": "訳",
+    "kanji": "訳",
+    "onReadings": [
+      "やく"
+    ],
+    "kunReadings": [
+      "わけ"
+    ],
+    "meanings": [
+      "translate",
+      "reason",
+      "circumstance"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "譯",
+    "koreanSound": [
+      "역"
+    ],
+    "koreanMeaning": "통역할"
+  },
+  {
+    "id": "優",
+    "kanji": "優",
+    "onReadings": [
+      "ゆう",
+      "う"
+    ],
+    "kunReadings": [
+      "やさ",
+      "すぐ",
+      "まさ"
+    ],
+    "meanings": [
+      "tenderness",
+      "excel",
+      "surpass"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "優",
+    "koreanSound": [
+      "우"
+    ],
+    "koreanMeaning": "넉넉할"
+  },
+  {
+    "id": "郵",
+    "kanji": "郵",
+    "onReadings": [
+      "ゆう"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "mail",
+      "stagecoach stop"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "郵",
+    "koreanSound": [
+      "우"
+    ],
+    "koreanMeaning": "우편"
+  },
+  {
+    "id": "預",
+    "kanji": "預",
+    "onReadings": [
+      "よ"
+    ],
+    "kunReadings": [
+      "あず"
+    ],
+    "meanings": [
+      "deposit",
+      "custody",
+      "leave with"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "預",
+    "koreanSound": [
+      "예"
+    ],
+    "koreanMeaning": "맡길"
+  },
+  {
+    "id": "幼",
+    "kanji": "幼",
+    "onReadings": [
+      "よう"
+    ],
+    "kunReadings": [
+      "おさな"
+    ],
+    "meanings": [
+      "infancy",
+      "childhood"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "幼",
+    "koreanSound": [
+      "유"
+    ],
+    "koreanMeaning": "어릴"
+  },
+  {
+    "id": "欲",
+    "kanji": "欲",
+    "onReadings": [
+      "よく"
+    ],
+    "kunReadings": [
+      "ほっ",
+      "ほ"
+    ],
+    "meanings": [
+      "longing",
+      "covetousness",
+      "greed"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "欲",
+    "koreanSound": [
+      "욕"
+    ],
+    "koreanMeaning": "하고자할"
+  },
+  {
+    "id": "翌",
+    "kanji": "翌",
+    "onReadings": [
+      "よく"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "the following",
+      "next"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "翌",
+    "koreanSound": [
+      "익"
+    ],
+    "koreanMeaning": "다음날"
+  },
+  {
+    "id": "乱",
+    "kanji": "乱",
+    "onReadings": [
+      "らん",
+      "ろん"
+    ],
+    "kunReadings": [
+      "みだ",
+      "おさ",
+      "わた"
+    ],
+    "meanings": [
+      "riot",
+      "war",
+      "disorder"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "亂",
+    "koreanSound": [
+      "란"
+    ],
+    "koreanMeaning": "어지러울"
+  },
+  {
+    "id": "卵",
+    "kanji": "卵",
+    "onReadings": [
+      "らん"
+    ],
+    "kunReadings": [
+      "たまご"
+    ],
+    "meanings": [
+      "egg",
+      "ovum",
+      "spawn"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "卵",
+    "koreanSound": [
+      "란"
+    ],
+    "koreanMeaning": "알"
+  },
+  {
+    "id": "覧",
+    "kanji": "覧",
+    "onReadings": [
+      "らん"
+    ],
+    "kunReadings": [
+      "み"
+    ],
+    "meanings": [
+      "perusal",
+      "see"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "覽",
+    "koreanSound": [
+      "람"
+    ],
+    "koreanMeaning": "볼"
+  },
+  {
+    "id": "裏",
+    "kanji": "裏",
+    "onReadings": [
+      "り"
+    ],
+    "kunReadings": [
+      "うら"
+    ],
+    "meanings": [
+      "back",
+      "amidst",
+      "in"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "裏",
+    "koreanSound": [
+      "리"
+    ],
+    "koreanMeaning": "속"
+  },
+  {
+    "id": "律",
+    "kanji": "律",
+    "onReadings": [
+      "りつ",
+      "りち",
+      "れつ"
+    ],
+    "kunReadings": [],
+    "meanings": [
+      "rhythm",
+      "law",
+      "regulation"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "律",
+    "koreanSound": [
+      "률"
+    ],
+    "koreanMeaning": "법칙"
+  },
+  {
+    "id": "臨",
+    "kanji": "臨",
+    "onReadings": [
+      "りん"
+    ],
+    "kunReadings": [
+      "のぞ"
+    ],
+    "meanings": [
+      "look to",
+      "face",
+      "meet"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "臨",
+    "koreanSound": [
+      "림"
+    ],
+    "koreanMeaning": "임할"
+  },
+  {
+    "id": "朗",
+    "kanji": "朗",
+    "onReadings": [
+      "ろう"
+    ],
+    "kunReadings": [
+      "ほが",
+      "あき"
+    ],
+    "meanings": [
+      "melodious",
+      "clear",
+      "bright"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "朗",
+    "koreanSound": [
+      "랑"
+    ],
+    "koreanMeaning": "밝을"
+  },
+  {
+    "id": "論",
+    "kanji": "論",
+    "onReadings": [
+      "ろん"
+    ],
+    "kunReadings": [
+      "あげつら"
+    ],
+    "meanings": [
+      "argument",
+      "discourse"
+    ],
+    "jlptLevel": 3,
+    "koreanHanja": "論",
+    "koreanSound": [
+      "론"
+    ],
+    "koreanMeaning": "논할"
+  }
+]
