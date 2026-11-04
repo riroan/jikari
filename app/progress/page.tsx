@@ -370,7 +370,7 @@ export default function ProgressPage() {
           id="progress-grid-heading"
           className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium"
         >
-          N5 KANJI ({kanjiCards.length})
+          KANJI ({kanjiCards.length})
         </div>
         <ul role="list" className="grid grid-cols-10 gap-1">
           {kanjiCards.map((card) => (
@@ -386,7 +386,7 @@ export default function ProgressPage() {
 
       <section className="mt-8 text-caption text-[color:var(--fg-faint)] leading-relaxed">
         <p>
-          풀 상용한자 2136자 그리드는 v2 확장. 현재는 데이터에 있는 N5 범위({kanjiCards.length}자)만 표시.
+          상용한자 2,136자 중 지금 학습 데이터에 있는 {kanjiCards.length}자를 보여줘요.
         </p>
       </section>
     </ModePageShell>
