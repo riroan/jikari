@@ -7,7 +7,7 @@ afterEach(() => {
 });
 
 describe("HomeHeader — pre-hydration", () => {
-  it("renders 이번 주 0/7 and no aria-label so SR doesn't read stale state", () => {
+  it("renders 7일 중 0일 and no aria-label so SR doesn't read stale state", () => {
     const { container } = render(
       <HomeHeader
         hydrated={false}
@@ -18,7 +18,7 @@ describe("HomeHeader — pre-hydration", () => {
       />,
     );
     // Pre-hydration the streak number inside the chip is forced to 0.
-    expect(screen.getByText(/이번 주\s*0\/7/)).toBeDefined();
+    expect(screen.getByText(/7일 중\s*0일/)).toBeDefined();
     // Due chip is gated on `hydrated` too — should not render.
     expect(screen.queryByText(/復習/)).toBeNull();
     // When `hydrated` is false the aria-label prop is undefined, so no
@@ -38,8 +38,8 @@ describe("HomeHeader — hydrated, studied today", () => {
         dueCount={0}
       />,
     );
-    expect(screen.getByText(/이번 주\s*5\/7/)).toBeDefined();
-    const streakSpan = screen.getByText(/이번 주\s*5\/7/);
+    expect(screen.getByText(/7일 중\s*5일/)).toBeDefined();
+    const streakSpan = screen.getByText(/7일 중\s*5일/);
     expect(streakSpan.className).toContain("accent-korean");
     const labelHost = container.querySelector("[aria-label]");
     expect(labelHost?.getAttribute("aria-label")).toContain("최근 7일 중 5일");
@@ -58,7 +58,7 @@ describe("HomeHeader — hydrated, not studied yet", () => {
         dueCount={0}
       />,
     );
-    const streakSpan = screen.getByText(/이번 주\s*3\/7/);
+    const streakSpan = screen.getByText(/7일 중\s*3일/);
     expect(streakSpan.className).toContain("fg-faint");
     const labelHost = container.querySelector("[aria-label]");
     expect(labelHost?.getAttribute("aria-label")).toContain("아직 시작 안 함");
@@ -123,11 +123,11 @@ describe("HomeHeader — due chip", () => {
 
 describe("HomeHeader — welcome back", () => {
   const base = { hydrated: true, studiedToday: false, weekDays: 0, todayCount: 0, dueCount: 30 };
-  it("shows one quiet link to /review with the capped count", () => {
+  it("shows one quiet link to /review count-free", () => {
     render(<HomeHeader {...base} welcomeBackCount={10} />);
     const link = screen.getByRole("link", { name: /오랜만이에요/ });
     expect(link.getAttribute("href")).toBe("/review");
-    expect(link.textContent).toBe("오랜만이에요. 오늘은 10장만 해도 충분해요");
+    expect(link.textContent).toBe("오랜만이에요. 오늘은 조금만 해도 충분해요");
   });
   it("is absent by default, and before hydration", () => {
     const { rerender } = render(<HomeHeader {...base} />);

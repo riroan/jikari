@@ -57,7 +57,7 @@ export function HomeHeader({
               : "text-[color:var(--fg-faint)]"
           }`}
         >
-          이번 주 {hydrated ? weekDays : 0}/7
+          7일 중 {hydrated ? weekDays : 0}일
         </span>
         {hydrated && dueCount > 0 && (
           <span
@@ -74,7 +74,7 @@ export function HomeHeader({
         href="/review"
         className="-mt-3 mb-3 flex items-center min-h-11 text-tiny tracking-wide text-[color:var(--fg-faint)]"
       >
-        오랜만이에요. 오늘은 {welcomeBackCount}장만 해도 충분해요
+        오랜만이에요. 오늘은 조금만 해도 충분해요
       </Link>
     )}
     </>

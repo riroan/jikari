@@ -115,7 +115,7 @@ test("progress shows BY SUBJECT mastery without overflow", async ({ page }) => {
   expect(await noOverflow(page)).toBe(true);
 });
 
-// Gentle streak: home chip is "이번 주 N/7"; welcome-back line only after a 3+ day gap.
+// Gentle streak: home chip is "7일 중 N일"; welcome-back line only after a 3+ day gap.
 test.describe("gentle streak", () => {
   test.use({ serviceWorkers: "block" });
   const dayKey = (ago: number) => {
@@ -148,12 +148,12 @@ test.describe("gentle streak", () => {
       await page.setViewportSize({ width, height: 852 });
       await seed(page, [5, 6, 9], true);
       await page.goto("/");
-      await expect(page.getByText("이번 주 2/7")).toBeVisible();
-      const line = page.getByRole("link", { name: "오랜만이에요. 오늘은 10장만 해도 충분해요" });
+      await expect(page.getByText("7일 중 2일")).toBeVisible();
+      const line = page.getByRole("link", { name: "오랜만이에요. 오늘은 조금만 해도 충분해요" });
       await expect(line).toHaveAttribute("href", "/review");
       // chip and quiet line each stay on a single line (no wrap)
       const lh = (loc: ReturnType<Page["locator"]>) => loc.evaluate((el) => el.getBoundingClientRect().height);
-      expect(await lh(page.getByText("이번 주 2/7"))).toBeLessThan(24);
+      expect(await lh(page.getByText("7일 중 2일"))).toBeLessThan(24);
       expect(await lh(line)).toBeLessThan(48);
       expect(await noOverflow(page)).toBe(true);
     });
@@ -162,12 +162,12 @@ test.describe("gentle streak", () => {
   test("no line after a 2-day gap, on first run, or when nothing is due", async ({ page }) => {
     await seed(page, [2, 3], true);
     await page.goto("/");
-    await expect(page.getByText("이번 주 2/7")).toBeVisible();
+    await expect(page.getByText("7일 중 2일")).toBeVisible();
     await expect(page.getByText(/오랜만이에요/)).toHaveCount(0);
     await page.unrouteAll();
     await seed(page, [9], false);
     await page.goto("/");
-    await expect(page.getByText("이번 주 0/7")).toBeVisible();
+    await expect(page.getByText("7일 중 0일")).toBeVisible();
     await expect(page.getByText(/오랜만이에요/)).toHaveCount(0);
   });
 });
