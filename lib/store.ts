@@ -24,6 +24,7 @@ import { incrementToday, currentStreak } from "./heatmap";
 import { INITIAL_RATING, updateRating } from "./rating";
 import { remoteStorage } from "./remote-storage";
 import { recordMissAnswer } from "./misses";
+import { collectExtras } from "./extras";
 
 interface StoreActions {
   /**
@@ -209,6 +210,6 @@ export function exportState(): string {
     ratings: state.ratings,
     settings: state.settings,
   };
-  return JSON.stringify(backup, null, 2);
+  return JSON.stringify({ ...backup, extras: collectExtras() }, null, 2);
 }
 

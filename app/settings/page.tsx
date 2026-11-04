@@ -5,6 +5,7 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { markReplaceNext } from "@/lib/remote-storage";
 import { parseBackup, summarizeBackup } from "@/lib/import";
+import { applyExtras, type BackupExtras } from "@/lib/extras";
 import type { PersistedState } from "@/lib/types";
 import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
 import { useCardsStore } from "@/lib/cards-store";
@@ -59,6 +60,7 @@ export default function SettingsPage() {
   const [speed, setSpeed] = useLocalPref<SpeechSpeed>(SPEED_KEY, "normal", isSpeechSpeed);
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [pending, setPending] = useState<PersistedState | null>(null);
+  const pendingExtras = useRef<BackupExtras | undefined>(undefined);
   const fileRef = useRef<HTMLInputElement>(null);
   const resetDialogRef = useRef<HTMLDialogElement>(null);
   const respaceDialogRef = useRef<HTMLDialogElement>(null);
@@ -134,6 +136,7 @@ export default function SettingsPage() {
         return;
       }
       setMessage(null);
+      pendingExtras.current = result.extras;
       setPending(result.state);
     } catch {
       setMessage({ kind: "err", text: "가져오기 실패: 파일을 읽을 수 없습니다." });
@@ -144,6 +147,7 @@ export default function SettingsPage() {
     if (!pending) return;
     markReplaceNext(); // explicit restore: saved as-is, never merged back with other data
     replaceAll(pending);
+    applyExtras(pendingExtras.current); // 오답 노트·메모 등 기기 로컬 데이터(백업에 있을 때만)
     clearUndo();
     setUndo(null);
     setMessage({

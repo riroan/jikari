@@ -12,14 +12,32 @@ export interface Memo {
   at: number;
 }
 
+/** 검증·정규화: localStorage와 백업 가져오기가 같은 규칙을 쓴다. 빈 메모 제거, 80자·CAP 적용. */
+export function normalizeMemos(raw: unknown): Memo[] {
+  return Array.isArray(raw)
+    ? raw
+        .filter((m): m is Memo => !!m && typeof m.key === "string" && typeof m.text === "string" && Number.isFinite(m.at))
+        .map((m) => ({ key: m.key, text: [...m.text.trim()].slice(0, MEMO_MAX).join(""), at: m.at }))
+        .filter((m) => m.text)
+        .sort((a, b) => b.at - a.at)
+        .slice(0, MEMOS_CAP)
+    : [];
+}
+
 export function loadMemos(): Memo[] {
   try {
-    const raw = JSON.parse(localStorage.getItem(MEMOS_KEY) ?? "[]");
-    return Array.isArray(raw)
-      ? raw.filter((m): m is Memo => !!m && typeof m.key === "string" && typeof m.text === "string" && Number.isFinite(m.at))
-      : [];
+    return normalizeMemos(JSON.parse(localStorage.getItem(MEMOS_KEY) ?? "[]"));
   } catch {
     return [];
+  }
+}
+
+export function saveMemos(list: Memo[]): void {
+  try {
+    localStorage.setItem(MEMOS_KEY, JSON.stringify(list));
+    window.dispatchEvent(new Event(EVENT));
+  } catch {
+    // 저장소 불가: 메모만 남지 않는다.
   }
 }
 

@@ -22,15 +22,23 @@ export interface Miss {
 /** 퀴즈 카드로 다시 풀 수 있는 모드만 기록한다. */
 const LOGGED = new Set(["kanji", "vocab", "sentence", "grammar", "expression"]);
 
-export function loadMisses(): Miss[] {
-  try {
-    const raw = JSON.parse(localStorage.getItem(MISSES_KEY) ?? "[]");
-    return Array.isArray(raw)
-      ? raw.filter(
+/** 검증·정규화: localStorage와 백업 가져오기가 같은 규칙을 쓴다. 최신순, CAP까지. */
+export function normalizeMisses(raw: unknown): Miss[] {
+  return Array.isArray(raw)
+    ? raw
+        .filter(
           (m): m is Miss =>
             !!m && typeof m.key === "string" && Number.isFinite(m.count) && Number.isFinite(m.last),
-        ).map((m) => ({ ...m, ok: Number.isFinite(m.ok) ? m.ok : 0 }))
-      : [];
+        )
+        .map((m) => ({ key: m.key, count: m.count, last: m.last, ok: Number.isFinite(m.ok) ? m.ok : 0 }))
+        .sort(byLast)
+        .slice(0, MISSES_CAP)
+    : [];
+}
+
+export function loadMisses(): Miss[] {
+  try {
+    return normalizeMisses(JSON.parse(localStorage.getItem(MISSES_KEY) ?? "[]"));
   } catch {
     return [];
   }

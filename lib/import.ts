@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { PersistedState } from "./types";
 import { SCHEMA_VERSION } from "./types";
+import { parseExtras, type BackupExtras } from "./extras";
 
 /**
  * Zod schema for validating imported JSON backups.
@@ -55,7 +56,7 @@ const persistedStateSchema = z.object({
 export { persistedStateSchema };
 
 export type ImportResult =
-  | { ok: true; state: PersistedState }
+  | { ok: true; state: PersistedState; extras?: BackupExtras }
   | { ok: false; error: string; message: string; details?: unknown };
 
 /**
@@ -94,7 +95,7 @@ export function parseBackup(json: string): ImportResult {
     };
   }
 
-  return { ok: true, state: result.data };
+  return { ok: true, state: result.data, extras: parseExtras((parsed as { extras?: unknown }).extras) };
 }
 
 /** Counts shown in the restore preview so the user sees what will be overwritten. */

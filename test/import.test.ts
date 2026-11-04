@@ -184,3 +184,38 @@ describe("parseBackup", () => {
     });
   });
 });
+
+describe("backup extras (device-local)", () => {
+  const withExtras = (extras: unknown) => JSON.stringify({ ...validState, extras });
+
+  it("old backup without extras imports fine", () => {
+    const r = parseBackup(JSON.stringify(validState));
+    expect(r.ok && r.extras).toBeUndefined();
+  });
+
+  it("malformed extras are ignored, main state still imports", () => {
+    for (const bad of ["x", 5, [], { v: 99 }, { v: 1, misses: "no", memos: {}, readingWeak: 3 }]) {
+      const r = parseBackup(withExtras(bad));
+      expect(r.ok).toBe(true);
+    }
+  });
+
+  it("filters bad entries and applies caps", () => {
+    const misses = [
+      { key: "kanji:日", count: 2, last: 5 },
+      { key: 1, count: 2, last: 5 },
+      ...Array.from({ length: 400 }, (_, i) => ({ key: `vocab:${i}`, count: 1, ok: 0, last: i })),
+    ];
+    const memos = [
+      { key: "a", text: "x".repeat(200), at: 1 },
+      { key: "b", text: "  ", at: 2 },
+      { key: "c", text: 1, at: 3 },
+    ];
+    const r = parseBackup(withExtras({ v: 1, misses, memos, readingWeak: ["s1", 2, "s2"] }));
+    if (!r.ok || !r.extras) throw new Error("expected extras");
+    expect(r.extras.misses).toHaveLength(300);
+    expect(r.extras.misses![0].last).toBe(399);
+    expect(r.extras.memos).toEqual([{ key: "a", text: "x".repeat(80), at: 1 }]);
+    expect(r.extras.readingWeak).toEqual(["s1", "s2"]);
+  });
+});
