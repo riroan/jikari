@@ -6,6 +6,11 @@ import { usePathname } from "next/navigation";
 import { SUBJECTS } from "@/lib/subjects";
 import { topDueKey } from "@/lib/due";
 import { useDueByKey } from "@/lib/use-due-by-key";
+import { useStore } from "@/lib/store";
+import { useClientNow } from "@/lib/use-is-client";
+import { forecastDue } from "@/lib/forecast";
+import { toLocalDateKey } from "@/lib/heatmap";
+import { useLiveMisses } from "@/lib/use-misses";
 import type { RunSummary } from "@/lib/quiz-run";
 
 const font = (s: string) =>
@@ -34,6 +39,16 @@ export function SessionSummary({
   const others = SUBJECTS.filter((s) => !pathname.startsWith(s.base));
   const top = topDueKey(dueByKey, others.map((s) => s.dueKey));
   const nextSubject = top && others.find((s) => s.dueKey === top.key);
+  // 조용한 마무리: 오늘 분량·내일 예정은 저장된 SRS 기록 그대로다.
+  // 재시도/비-SRS 판은 review()를 안 부르므로 숫자가 늘지 않는다.
+  const learningStates = useStore((s) => s.learningStates);
+  const heatmap = useStore((s) => s.heatmap);
+  const goal = useStore((s) => s.settings.dailyGoal);
+  const now = useClientNow();
+  const missCount = useLiveMisses().length;
+  const today = now === null ? 0 : (heatmap[toLocalDateKey(now)] ?? 0);
+  const tomorrow = now === null ? 0 : forecastDue(learningStates, now).tomorrow;
+  const reached = now !== null && today >= goal;
   useEffect(() => ref.current?.focus({ preventScroll: true }), []);
   return (
     <section
@@ -92,11 +107,24 @@ export function SessionSummary({
       )}
 
       <div className="flex flex-col gap-2 pb-[max(0rem,var(--safe-bottom))]">
+        {reached && (
+          <Link
+            href="/"
+            style={{ minHeight: 44 }}
+            className={`${btn} border-[color:var(--fg)] text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)]`}
+          >
+            홈으로
+          </Link>
+        )}
         {nextSubject && top && (
           <Link
             href={nextSubject.base}
             style={{ minHeight: 44 }}
-            className={`${btn} border-[color:var(--fg)] text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)]`}
+            className={`${btn} ${
+              reached
+                ? "border-[color:var(--line)] text-[color:var(--fg-soft)]"
+                : "border-[color:var(--fg)] text-[color:var(--fg)]"
+            } hover:bg-[color:var(--bg-deep)]`}
           >
             다음 복습: {nextSubject.ko} {top.count}장 →
           </Link>
@@ -107,7 +135,7 @@ export function SessionSummary({
             onClick={onRetry}
             style={{ minHeight: 44 }}
             className={`${btn} ${
-              nextSubject
+              nextSubject || reached
                 ? "border-[color:var(--line)] text-[color:var(--fg-soft)]"
                 : "border-[color:var(--fg)] text-[color:var(--fg)]"
             } hover:bg-[color:var(--bg-deep)]`}
@@ -119,17 +147,35 @@ export function SessionSummary({
           type="button"
           onClick={onNext}
           style={{ minHeight: 44 }}
-          className={`${btn} border-[color:var(--line)] text-[color:var(--fg-soft)] hover:bg-[color:var(--bg-deep)]`}
+          className={`${btn} ${
+            reached
+              ? "border-transparent text-[color:var(--fg-faint)] hover:text-[color:var(--fg)]"
+              : "border-[color:var(--line)] text-[color:var(--fg-soft)] hover:bg-[color:var(--bg-deep)]"
+          }`}
         >
-          계속하기
+          {reached ? "더 풀기" : "계속하기"}
         </button>
-        <Link
-          href="/"
-          style={{ minHeight: 44 }}
-          className={`${btn} border-transparent text-[color:var(--fg-faint)] hover:text-[color:var(--fg)]`}
-        >
-          홈으로
-        </Link>
+        {!reached && (
+          <Link
+            href="/"
+            style={{ minHeight: 44 }}
+            className={`${btn} border-transparent text-[color:var(--fg-faint)] hover:text-[color:var(--fg)]`}
+          >
+            홈으로
+          </Link>
+        )}
+        {now !== null && (
+          <p className="mt-1 pt-3 border-t border-[color:var(--line)] flex flex-wrap items-baseline justify-between gap-x-4 text-caption tabular-nums text-[color:var(--fg-faint)]">
+            <span>
+              오늘 {today}/{goal} · 내일 예정 {tomorrow}장
+            </span>
+            {missCount > 0 && (
+              <Link href="/mistakes" className="underline underline-offset-4 hover:text-[color:var(--fg)]">
+                오답 노트 {missCount}
+              </Link>
+            )}
+          </p>
+        )}
       </div>
     </section>
   );
