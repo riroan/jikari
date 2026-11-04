@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { LazyMotion, domAnimation, m, AnimatePresence, MotionConfig } from "framer-motion";
 import { AnswerFeedback } from "./AnswerFeedback";
 import { RubyText } from "./Furigana";
 import { SpeakButton } from "./SpeakButton";
@@ -180,8 +179,6 @@ export function QuizCard({
   }, [disabled, result, advance]);
 
   return (
-    <LazyMotion features={domAnimation}>
-    <MotionConfig reducedMotion="user">
     <div className="flex flex-col gap-6 md:gap-8">
       <div
         className="relative min-h-[var(--qc-min-mobile)] md:min-h-[var(--qc-min)]"
@@ -227,14 +224,8 @@ export function QuizCard({
 
       <div className="flex items-center justify-between gap-3 min-h-[44px]">
         <div role="status">
-          <AnimatePresence>
-            {disabled && result !== null && (
-              <m.div
-                key={result}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
+          {disabled && result !== null && (
+              <div key={result} className="anim-fade-in">
                 <AnswerFeedback correct={result === "correct"} />
                 {hinted && result === "correct" && (
                   <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
@@ -246,9 +237,8 @@ export function QuizCard({
                     느렸어요 · 한 번 더 볼게요
                   </p>
                 )}
-              </m.div>
+              </div>
             )}
-          </AnimatePresence>
         </div>
         {disabled && result !== null && (
           <div className="flex items-center gap-1">
@@ -272,10 +262,8 @@ export function QuizCard({
 
       {disabled && result !== null && ((result === "wrong" && missExample) || memo) && (
         // Below the button row, so it can never push the 다음 button. -mt-3: tucked closer than the card gap.
-        <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="-mt-3 flex flex-col gap-2"
+        <div
+          className="anim-fade-in -mt-3 flex flex-col gap-2"
           data-testid="quiz-tail"
         >
           {result === "wrong" && missExample && (
@@ -298,11 +286,9 @@ export function QuizCard({
               {memo}
             </p>
           )}
-        </m.div>
+        </div>
       )}
     </div>
-    </MotionConfig>
-    </LazyMotion>
   );
 }
 

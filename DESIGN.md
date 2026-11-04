@@ -190,7 +190,7 @@ xxl  56-80px  메이저 구분
 - **뒷면:** 정답 + 읽기 + 한국어 힌트 (한자 모드) / 번역 (단어·문장)
 - **Framer Motion 플립:** `rotateY: 0 → 180`, 0.6s ease-out
 - **답 제출 후 0.5s disabled** — 더블탭 방지
-- **정답:** 초록(sage) 체크 + 부드러운 스케일 펄스 (Framer Motion)
+- **정답:** 초록(sage) 체크 + 부드러운 스케일 펄스 (CSS `.anim-pop-in`, ease-out)
 - **오답:** 빨강(clay) X + 흔들림 (CSS `@keyframes shake`, 모바일 iOS 프레임 드랍 회피)
 
 ### Furigana (후리가나 루비)
@@ -246,7 +246,7 @@ xxl  56-80px  메이저 구분
 ### 허용 모션 목록
 
 1. 카드 플립 (Framer Motion)
-2. 정답 스케일 펄스 (Framer)
+2. 정답 스케일 펄스 (CSS `.anim-pop-in`) · 피드백 페이드인 (CSS `.anim-fade-in`)
 3. 오답 shake (CSS)
 4. 후리가나 페이드인 힌트
 5. 히트맵 오늘 칸 채워지는 순간 (서브틀 스케일)

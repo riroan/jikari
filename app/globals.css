@@ -298,6 +298,22 @@ body::before {
 }
 
 /* Shake animation for wrong answers — CSS (not Framer) per DESIGN.md § 7 */
+/*
+ * 나타남 모션 (DESIGN.md § 7: 정답 스케일 펄스 · 페이드인). framer-motion 대신 CSS —
+ * 퀴즈 화면마다 72KB를 덜 받는다. ease-out만 쓴다 (튀는 이징 금지). reduced-motion은
+ * 위의 전역 규칙이 0.01ms로 끈다.
+ */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(var(--pop-from, 0.8)); }
+  to { opacity: 1; transform: scale(1); }
+}
+.anim-fade-in { animation: fade-in 250ms ease-out both; }
+.anim-pop-in { animation: pop-in 220ms cubic-bezier(0.4, 0, 0.2, 1) both; }
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-6px); }

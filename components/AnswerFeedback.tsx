@@ -1,9 +1,7 @@
 "use client";
 
-import { LazyMotion, domAnimation, m } from "framer-motion";
-
 /**
- * Correct: Framer Motion scale pulse + green check.
+ * Correct: CSS scale pulse (anim-pop-in, ease-out — no spring overshoot) + green check.
  * Wrong:   CSS shake (outside voice catch — avoids Framer+Motion layering
  *          frame drops on older iPhones) + red X.
  * DESIGN.md § 7.
@@ -11,13 +9,7 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 export function AnswerFeedback({ correct }: { correct: boolean }) {
   if (correct) {
     return (
-      <LazyMotion features={domAnimation}>
-      <m.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 400, damping: 15 }}
-        className="inline-flex items-center gap-2 text-[color:var(--accent-progress-text)] font-medium"
-      >
+      <div className="anim-pop-in inline-flex items-center gap-2 text-[color:var(--accent-progress-text)] font-medium">
         <svg
           width="18"
           height="18"
@@ -34,8 +26,7 @@ export function AnswerFeedback({ correct }: { correct: boolean }) {
           />
         </svg>
         <span lang="ja">正解</span>
-      </m.div>
-      </LazyMotion>
+      </div>
     );
   }
   return (
