@@ -4,7 +4,7 @@ import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore, exportState } from "@/lib/store";
 import { markReplaceNext } from "@/lib/remote-storage";
-import { parseBackup, summarizeBackup } from "@/lib/import";
+import { summarizeBackup } from "@/lib/backup-summary";
 import { applyExtras, type BackupExtras } from "@/lib/extras";
 import type { PersistedState } from "@/lib/types";
 import { DAILY_GOALS, normalizeDailyGoal } from "@/lib/daily-goal";
@@ -133,6 +133,8 @@ export default function SettingsPage() {
 
   async function handleImport(file: File) {
     try {
+      // Zod(≈290KB)는 백업 파일을 고른 이 순간에만 필요하다 — 설정 화면 첫 로드에서 뺀다.
+      const { parseBackup } = await import("@/lib/import");
       const result = parseBackup(await file.text());
       if (!result.ok) {
         setMessage({ kind: "err", text: `가져오기 실패: ${result.message}` });
