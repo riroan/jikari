@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { markShown } from "@/lib/srs";
 import { speak, speakSlow } from "@/lib/tts";
 
 /** Opt-in (per device) audio-first sentence prompt for high-box cards. */
@@ -9,6 +10,11 @@ export const AUDIO_FIRST_MIN_BOX = 3;
 export const isOnOff = (raw: string): raw is "on" | "off" => raw === "on" || raw === "off";
 
 const VOICE_WAIT_MS = 1500;
+
+/** Cloze sentence → speakable text with the blank as a short pause (never the answer). */
+export function blankedSpeech(sentence: string): string {
+  return sentence.replace(/＿{3}/g, "、").replace(/、{2,}/g, "、").replace(/^、/, "");
+}
 
 /** "pending" = voices not loaded yet (Chromium loads them async); "none" = fall back to text. */
 type VoiceState = "ja" | "none" | "pending";
@@ -52,12 +58,22 @@ export function AudioFirstPrompt({
 }) {
   const voice = useJaVoice();
   const [revealed, setRevealed] = useState(false);
+  // Hesitation timer counts only thinking time after the first listen/reveal.
+  const engaged = useRef(false);
+  const engage = () => {
+    if (engaged.current) return;
+    engaged.current = true;
+    markShown();
+  };
   if (revealed || voice === "none") return <>{children}</>;
   return (
     <div className="flex flex-col items-center gap-2 py-2" data-testid="audio-first">
       <button
         type="button"
-        onClick={() => speak(speakText)}
+        onClick={() => {
+          engage();
+          speak(speakText);
+        }}
         aria-label="문장 듣기"
         className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--fg)]"
         style={{ width: 72, height: 72 }}
@@ -75,7 +91,10 @@ export function AudioFirstPrompt({
       <div className="flex items-center">
         <button
           type="button"
-          onClick={() => speakSlow(speakText)}
+          onClick={() => {
+            engage();
+            speakSlow(speakText);
+          }}
           aria-label="천천히 듣기"
           className="min-h-[44px] px-3 text-caption text-[color:var(--fg-faint)]"
         >
@@ -83,7 +102,10 @@ export function AudioFirstPrompt({
         </button>
         <button
           type="button"
-          onClick={() => setRevealed(true)}
+          onClick={() => {
+            engage();
+            setRevealed(true);
+          }}
           className="min-h-[44px] px-3 text-caption text-[color:var(--fg-soft)]"
         >
           문장 보기

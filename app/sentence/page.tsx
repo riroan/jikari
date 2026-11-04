@@ -12,6 +12,7 @@ import {
   AUDIO_FIRST_KEY,
   AUDIO_FIRST_MIN_BOX,
   AudioFirstPrompt,
+  blankedSpeech,
   isOnOff,
 } from "@/components/AudioFirstPrompt";
 import { useLocalPref } from "@/lib/use-local-pref";
@@ -222,7 +223,7 @@ function SentenceQuiz({
       question={
         <div>
           {audioFirst ? (
-            <AudioFirstPrompt speakText={card.sentence.replace("＿＿＿", card.blank)}>
+            <AudioFirstPrompt speakText={blankedSpeech(card.sentence)}>
               {sentenceText}
             </AudioFirstPrompt>
           ) : (
