@@ -588,6 +588,12 @@ describe("vocab seeds", () => {
     ["来る", "te", "来て"],
     ["する", "nai", "しない"],
     ["散歩する", "masu", "散歩します"],
+    ["始まる", "te", "始まって"],
+    ["知る", "te", "知って"],
+    ["終わる", "nai", "終わらない"],
+    ["取る", "ta", "取った"],
+    ["着る", "te", "着て"],
+    ["答える", "nai", "答えない"],
   ] as const)("%s의 %s형은 %s", (word, form, expected) => {
     const card = cards.find((c) => c.word === word);
     expect(card, `${word} 시드 없음`).toBeDefined();
@@ -600,6 +606,12 @@ describe("vocab seeds", () => {
     for (const c of cards) {
       for (const m of c.koreanMeanings) expect(m, `${c.id}: ${m}`).not.toMatch(/[()（）]/);
     }
+  });
+
+  // 그룹이 없으면 시드로 만든 DB에서 활용·형용사 퀴즈에 안 나온다 (백필을 따로 돌려야 했다).
+  test("모든 단어에 verbGroup과 adjGroup이 있다", () => {
+    const missing = cards.filter((c) => !c.verbGroup || !c.adjGroup).map((c) => c.id);
+    expect(missing).toEqual([]);
   });
 
   test("그룹이 정해진 카드는 한쪽 품사뿐이다", () => {
@@ -650,6 +662,20 @@ describe("sentence seeds", () => {
 
   // 오래된 배치는 傘·時計·花가 오답을 독점했다 (전 시드의 25%). 새 배치는 오답이
   // 몇 단어로 쏠리면 "저건 정답이 아니다"를 외우게 되므로 한 단어의 몫을 제한한다.
+  // 어디서도 정답이 아닌 단어가 오답으로 자주 나오면 일본어를 몰라도 "저건 정답이
+  // 아니다"로 지운다. 時計·花가 286장 중 43·39장에 나오던 것을 A_0007에서 분산했다.
+  // 정답으로도 쓰이는 단어는 소거 단서가 아니라서 세지 않는다.
+  test("정답으로 쓰이지 않는 오답 단어가 문장 카드의 9%를 넘지 않는다", () => {
+    const cards = files.filter((f) => f.startsWith("sentences-")).flatMap(load);
+    const answers = new Set(cards.map((c) => c.blank));
+    const use = new Map<string, number>();
+    for (const c of cards) for (const d of c.distractors) use.set(d, (use.get(d) ?? 0) + 1);
+    const worst = [...use]
+      .filter(([w]) => !answers.has(w))
+      .sort((a, b) => b[1] - a[1])[0];
+    expect(worst[1] / cards.length, `${worst[0]}가 ${worst[1]}/${cards.length}장`).toBeLessThanOrEqual(0.09);
+  });
+
   test.each(files.filter((f) => f.startsWith("sentences-daily-")))(
     "%s: 한 단어가 오답의 15% 넘는 카드에 쓰이지 않는다",
     (f) => {
@@ -664,7 +690,9 @@ describe("sentence seeds", () => {
 
 describe("grammar seeds", () => {
   const dir = path.join(process.cwd(), "data");
-  const files = readdirSync(dir).filter((f) => /^grammar-(n5|daily)/.test(f) && f.endsWith(".json"));
+  // grammar-seed-sample.json도 실제로 DB에 들어간 데이터다 (단원 b1이 particle-wa-ga를 참조).
+  // 여기서 빼면 다른 파일과 id가 겹쳐도 못 잡는다 — add-grammar는 겹치는 id를 조용히 건너뛴다.
+  const files = readdirSync(dir).filter((f) => f.startsWith("grammar-") && f.endsWith(".json"));
   const load = (f: string) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as unknown;
 
   test.each(files)("%s는 스키마를 통과한다", (f) => {
@@ -697,6 +725,120 @@ describe("grammar seeds", () => {
           expect(new Set(q.distractors).size, `${c.id}: 오답 중복`).toBe(3);
         }
       }
+    }
+  });
+});
+
+describe("kanji seeds", () => {
+  const dir = path.join(process.cwd(), "data/seeds");
+  type K = { id: string; onReadings: string[]; kunReadings: string[]; koreanMeaning: string };
+  const cards = readdirSync(dir)
+    .filter((f) => f.startsWith("kanji-") && f.endsWith(".json"))
+    .flatMap((f) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as K[]);
+
+  test("한국어 음·뜻·자형과 읽기가 빠지지 않는다", () => {
+    type Full = K & { kanji: string; koreanHanja: string; koreanSound: string[]; meanings: string[]; jlptLevel: number };
+    for (const c of cards as Full[]) {
+      expect(c.id, "id는 한자 그 자체").toBe(c.kanji);
+      expect(c.koreanMeaning, `${c.id} 훈`).toBeTruthy();
+      expect(c.koreanHanja, `${c.id} 한국 자형`).toBeTruthy();
+      expect(c.meanings.length, `${c.id} meanings`).toBeGreaterThan(0);
+      expect(c.onReadings.length + c.kunReadings.length, `${c.id} 읽기`).toBeGreaterThan(0);
+      expect([1, 2, 3, 4, 5]).toContain(c.jlptLevel);
+      expect(c.koreanSound.length, `${c.id} 음`).toBeGreaterThan(0);
+      for (const snd of c.koreanSound) expect(snd, `${c.id} 음은 한글 한 음절`).toMatch(/^[가-힣]$/);
+    }
+  });
+
+  test("읽기는 히라가나뿐이고 같은 읽기가 음독·훈독에 겹치지 않는다", () => {
+    for (const c of cards) {
+      for (const r of [...c.onReadings, ...c.kunReadings]) {
+        expect(r, `${c.id}: ${r}`).toMatch(/^[ぁ-ゖ]+$/);
+      }
+      expect(c.onReadings.filter((r) => c.kunReadings.includes(r)), `${c.id}`).toEqual([]);
+    }
+  });
+
+  // A_* 마이그레이션은 이미 들어간 DB 행을 고친다. 시드가 그 값을 따라가지 않으면 새 DB를
+  // 만들 때 (migrate → add-kanji 순서) 수정 전 값이 다시 들어간다 — 실제로 훈독 103개가
+  // 어간(た・よ…)으로 남아 있었다.
+  test("시드가 A_* 마이그레이션의 kanji_cards 수정과 일치한다 (마지막 수정 기준)", () => {
+    const byId = new Map(cards.map((c) => [c.id, c]));
+    const col = { kun_readings: "kunReadings", on_readings: "onReadings", korean_meaning: "koreanMeaning" } as const;
+    const migDir = path.join(process.cwd(), "lib/db/migrations");
+    const last = new Map<string, { file: string; want: unknown }>();
+    for (const f of readdirSync(migDir).filter((x) => x.startsWith("A_")).sort()) {
+      const sql = readFileSync(path.join(migDir, f), "utf8").replace(/--[^\n]*/g, "");
+      for (const [, sets, id] of sql.matchAll(/UPDATE\s+kanji_cards\s+SET\s+([\s\S]*?)\s+WHERE\s+id\s*=\s*'([^']+)'\s*;/g)) {
+        if (!byId.has(id)) continue; // DB에만 있는 행 (시드 없음) — 비교 대상이 아니다.
+        for (const [, c, v] of sets.matchAll(/(\w+)\s*=\s*(JSON_ARRAY\([^)]*\)|'[^']*')/g)) {
+          const field = col[c as keyof typeof col];
+          if (!field) continue;
+          const want = v.startsWith("JSON_ARRAY") ? [...v.matchAll(/'([^']*)'/g)].map((m) => m[1]) : v.slice(1, -1);
+          last.set(`${id}\u0000${field}`, { file: f, want });
+        }
+      }
+    }
+    for (const [key, { file, want }] of last) {
+      const [id, field] = key.split("\u0000") as [string, keyof K];
+      expect(byId.get(id)?.[field], `${file}: ${id}.${field}`).toEqual(want);
+    }
+  });
+});
+
+// 이미 들어간 DB 행은 A_* 마이그레이션이 고친다. 시드가 그 값을 따라가지 않으면 새 DB를
+// 만들 때 (migrate → add-* 순서) 고치기 전 값이 다시 들어간다. 테이블마다 마지막 수정이
+// 이긴다. DB에만 있는 행(시드 없음)은 건너뛴다.
+describe("seeds follow A_* data migrations", () => {
+  const seedDir = path.join(process.cwd(), "data/seeds");
+  const migDir = path.join(process.cwd(), "lib/db/migrations");
+  const tables: Record<string, { prefixes: string[]; cols: Record<string, string> }> = {
+    sentence_cards: {
+      prefixes: ["sentences-", "particles-"],
+      cols: { sentence: "sentence", sentence_ruby: "sentenceRuby", blank: "blank", blank_ruby: "blankRuby", distractors: "distractors", translation: "translation", jlpt_level: "jlptLevel" },
+    },
+    vocab_cards: {
+      prefixes: ["vocab-"],
+      cols: { word: "word", reading: "reading", meanings: "meanings", korean_meanings: "koreanMeanings", ruby: "ruby", jlpt_level: "jlptLevel", verb_group: "verbGroup", adj_group: "adjGroup" },
+    },
+    expression_cards: {
+      prefixes: ["expressions-"],
+      cols: { situation_ko: "situation_ko", expression_jp: "expression_jp", ruby: "ruby", register: "register", translation_ko: "translation_ko", note_ko: "note_ko" },
+    },
+  };
+  const parseValue = (v: string): unknown =>
+    v.startsWith("JSON_ARRAY")
+      ? [...v.matchAll(/'((?:[^']|'')*)'/g)].map((m) => m[1].replace(/''/g, "'"))
+      : v === "NULL"
+        ? undefined
+        : /^\d+$/.test(v)
+          ? Number(v)
+          : v.slice(1, -1).replace(/''/g, "'");
+
+  test.each(Object.keys(tables))("%s", (table) => {
+    const { prefixes, cols } = tables[table];
+    const seed = new Map<string, Record<string, unknown>>();
+    for (const f of readdirSync(seedDir).filter((x) => prefixes.some((p) => x.startsWith(p)) && x.endsWith(".json"))) {
+      for (const c of JSON.parse(readFileSync(path.join(seedDir, f), "utf8")) as Record<string, unknown>[]) seed.set(String(c.id), c);
+    }
+    const last = new Map<string, { file: string; value: unknown }>();
+    for (const f of readdirSync(migDir).filter((x) => x.startsWith("A_")).sort()) {
+      const sql = readFileSync(path.join(migDir, f), "utf8").replace(/--[^\n]*/g, "");
+      for (const [, t, sets, where] of sql.matchAll(/UPDATE\s+(\w+)\s+SET\s+([\s\S]*?)\s+WHERE\s+([\s\S]*?);/g)) {
+        if (t !== table) continue;
+        const ids = [...where.matchAll(/'([^']+)'/g)].map((m) => m[1]);
+        for (const [, col, v] of sets.matchAll(/(\w+)\s*=\s*(JSON_ARRAY\((?:[^)(]|'[^']*')*\)|'(?:[^']|'')*'|NULL|\d+)/g)) {
+          const field = cols[col];
+          expect(field, `${f}: 매핑 없는 컬럼 ${table}.${col}`).toBeDefined();
+          for (const id of ids) last.set(`${id}\u0000${field}`, { file: f, value: parseValue(v) });
+        }
+      }
+    }
+    for (const [key, { file, value }] of last) {
+      const [id, field] = key.split("\u0000");
+      const card = seed.get(id);
+      if (!card) continue;
+      expect(card[field], `${file}: ${id}.${field}`).toEqual(value);
     }
   });
 });

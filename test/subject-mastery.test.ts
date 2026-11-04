@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { subjectMastery } from "@/lib/subject-mastery";
+import { subjectMastery, sumMastery } from "@/lib/subject-mastery";
 import type { LearningState } from "@/lib/types";
 
 const s = (mode: LearningState["mode"], cardId: string, box: LearningState["box"], lastReviewed = 10): [string, LearningState] => [
@@ -23,5 +23,20 @@ describe("subjectMastery", () => {
   });
   it("handles an empty pool", () => {
     expect(subjectMastery({}, "vocab", [])).toEqual({ total: 0, mastered: 0, learning: 0, fresh: 0 });
+  });
+});
+
+describe("sumMastery", () => {
+  it("adds every field across subjects", () => {
+    expect(
+      sumMastery([
+        { total: 10, mastered: 2, learning: 3, fresh: 5 },
+        { total: 4, mastered: 1, learning: 0, fresh: 3 },
+      ]),
+    ).toEqual({ total: 14, mastered: 3, learning: 3, fresh: 8 });
+  });
+
+  it("is all zeros for no subjects (pre-hydration)", () => {
+    expect(sumMastery([])).toEqual({ total: 0, mastered: 0, learning: 0, fresh: 0 });
   });
 });

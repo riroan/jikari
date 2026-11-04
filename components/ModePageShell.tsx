@@ -68,7 +68,7 @@ export function ModePageShell({
     // 390px 박스 안쪽에 두면 박스가 이미 가장자리에서 먼 가로 모드에서 내용 폭만
     // 줄어(342→266px) 제목과 버튼이 줄바꿈된다.
     <main className="flex-1 flex justify-center pl-[var(--safe-left)] pr-[var(--safe-right)]">
-      <div className="w-full max-w-[390px] px-6 flex flex-col pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[max(1.5rem,var(--safe-bottom))] md:pb-[max(2.5rem,var(--safe-bottom))]">
+      <div className="w-full max-w-[390px] px-6 flex flex-col pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[calc(max(1.5rem,var(--safe-bottom))_+_var(--sync-gap))] md:pb-[calc(max(2.5rem,var(--safe-bottom))_+_var(--sync-gap))]">
         <header
           className="flex justify-between items-baseline mb-[var(--header-mb-mobile)] md:mb-[var(--header-mb)]"
           style={
@@ -104,11 +104,14 @@ export function ModePageShell({
         </header>
         {afterHeader}
         {children}
-        {/* 엄지 닿는 하단 홈 — 상단 ← HOME까지 손을 뻗지 않아도 된다. */}
+        {/*
+          엄지 닿는 하단 홈 — 상단 ← HOME까지 손을 뻗지 않아도 된다. 세션 요약에는
+          자체 "홈으로"가 있어서, 요약이 떠 있으면 숨긴다 (한 화면에 홈 링크 셋).
+        */}
         {backHref === "/" && (
           <Link
             href="/"
-            className="mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
+            className="[main:has([data-session-summary])_&]:hidden mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
           >
             홈으로
           </Link>

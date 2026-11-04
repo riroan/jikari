@@ -12,6 +12,7 @@ import { WeakEmptyNotice, WeakKey } from "@/components/WeakKey";
 import { useWeakIds } from "@/lib/use-weak-ids";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
+import { SinoKoreanHint } from "@/components/SinoKoreanHint";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
@@ -364,6 +365,7 @@ function KanjiBack({ card }: { card: KanjiCard }) {
             )}
           </span>
         </div>
+        <SinoKoreanHint koreanSound={card.koreanSound} onReadings={card.onReadings} />
       </div>
     </div>
   );

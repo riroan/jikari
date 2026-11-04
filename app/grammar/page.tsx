@@ -20,6 +20,7 @@ import { PARTICLE_INFO } from "@/lib/particle-info";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
+import { fitFontSize } from "@/lib/fit-text";
 import type {
   GrammarCard,
   GrammarPatternCard,
@@ -285,12 +286,14 @@ function PatternStudyBody({
 }) {
   return (
     <div className="flex flex-col gap-6">
-      <div>
+      <div style={{ containerType: "inline-size" }}>
         <div
-          className={`${card.pattern.length > 10 ? "text-[26px]" : "text-[34px]"} font-semibold leading-[1.3] text-[color:var(--fg)] [overflow-wrap:anywhere]`}
+          className="font-semibold leading-[1.3] text-[color:var(--fg)] [overflow-wrap:anywhere]"
           style={{
             fontFamily: "var(--font-jp-serif)",
             letterSpacing: "-0.01em",
+            // 한 줄에 맞추되 22px 아래로는 줄이지 않는다 — 그보다 길면 줄바꿈.
+            fontSize: fitFontSize(card.pattern.length > 10 ? 26 : 34, card.pattern, 22),
           }}
         >
           <RubyText text={card.pattern} />

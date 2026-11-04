@@ -5,7 +5,7 @@
     "sentenceRuby": "{銀行|ぎんこう}で＿＿＿を{借|か}りる。",
     "blank": "お金",
     "blankRuby": "お{金|かね}",
-    "distractors": ["時計", "手紙", "果物"],
+    "distractors": ["予定", "手紙", "果物"],
     "translation": "은행에서 돈을 빌린다.",
     "jlptLevel": 5
   },
@@ -15,7 +15,7 @@
     "sentenceRuby": "＿＿＿を{毎日|まいにち}{食|た}べる。",
     "blank": "野菜",
     "blankRuby": "{野菜|やさい}",
-    "distractors": ["時計", "車", "手紙"],
+    "distractors": ["仕事", "車", "手紙"],
     "translation": "야채를 매일 먹는다.",
     "jlptLevel": 5
   },
@@ -35,7 +35,7 @@
     "sentenceRuby": "{私|わたし}の＿＿＿は{田中|たなか}です。",
     "blank": "名前",
     "blankRuby": "{名前|なまえ}",
-    "distractors": ["時計", "公園", "果物"],
+    "distractors": ["会議", "公園", "果物"],
     "translation": "제 이름은 다나카입니다.",
     "jlptLevel": 5
   },
@@ -45,7 +45,7 @@
     "sentenceRuby": "{毎朝|まいあさ}{顔|かお}を＿＿＿。",
     "blank": "洗う",
     "blankRuby": "{洗|あら}う",
-    "distractors": ["書く", "走る", "売る"],
+    "distractors": ["書く", "走る", "起きる"],
     "translation": "매일 아침 얼굴을 씻는다.",
     "jlptLevel": 5
   },
@@ -95,7 +95,7 @@
     "sentenceRuby": "{週末|しゅうまつ}は{家|いえ}で＿＿＿。",
     "blank": "休む",
     "blankRuby": "{休|やす}む",
-    "distractors": ["走る", "泳ぐ", "閉める"],
+    "distractors": ["走る", "泳ぐ", "変わる"],
     "translation": "주말에는 집에서 쉰다.",
     "jlptLevel": 5
   },
@@ -105,7 +105,7 @@
     "sentenceRuby": "{妹|いもうと}は＿＿＿が{好|す}きです。",
     "blank": "魚",
     "blankRuby": "{魚|さかな}",
-    "distractors": ["時計", "銀行", "手紙"],
+    "distractors": ["番号", "銀行", "手紙"],
     "translation": "여동생은 생선을 좋아한다.",
     "jlptLevel": 5
   },
@@ -115,7 +115,7 @@
     "sentenceRuby": "{朝|あさ}＿＿＿を{飲|の}む。",
     "blank": "水",
     "blankRuby": "{水|みず}",
-    "distractors": ["本", "時計", "手紙"],
+    "distractors": ["本", "冬", "手紙"],
     "translation": "아침에 물을 마신다.",
     "jlptLevel": 5
   },
@@ -125,7 +125,7 @@
     "sentenceRuby": "＿＿＿で{友達|ともだち}に{会|あ}う。",
     "blank": "駅",
     "blankRuby": "{駅|えき}",
-    "distractors": ["時計", "果物", "魚"],
+    "distractors": ["切符", "果物", "魚"],
     "translation": "역에서 친구를 만난다.",
     "jlptLevel": 5
   },
@@ -145,7 +145,7 @@
     "sentenceRuby": "{母|はは}に＿＿＿を{書|か}く。",
     "blank": "手紙",
     "blankRuby": "{手紙|てがみ}",
-    "distractors": ["時計", "魚", "車"],
+    "distractors": ["動物", "魚", "車"],
     "translation": "어머니께 편지를 쓴다.",
     "jlptLevel": 5
   },
@@ -185,7 +185,7 @@
     "sentenceRuby": "バスを＿＿＿。",
     "blank": "待つ",
     "blankRuby": "{待|ま}つ",
-    "distractors": ["食べる", "閉める", "書く"],
+    "distractors": ["食べる", "始まる", "書く"],
     "translation": "버스를 기다린다.",
     "jlptLevel": 5
   },
@@ -195,7 +195,7 @@
     "sentenceRuby": "＿＿＿が{降|ふ}る。",
     "blank": "雨",
     "blankRuby": "{雨|あめ}",
-    "distractors": ["車", "時計", "手紙"],
+    "distractors": ["車", "台所", "手紙"],
     "translation": "비가 내린다.",
     "jlptLevel": 5
   },
@@ -205,7 +205,7 @@
     "sentenceRuby": "{父|ちち}は{毎朝|まいあさ}{新聞|しんぶん}を＿＿＿。",
     "blank": "読む",
     "blankRuby": "{読|よ}む",
-    "distractors": ["食べる", "泳ぐ", "閉める"],
+    "distractors": ["食べる", "泳ぐ", "遊ぶ"],
     "translation": "아버지는 매일 아침 신문을 읽는다.",
     "jlptLevel": 5
   },

@@ -24,12 +24,18 @@ export function SessionSummary({
   onRetry,
   onNext,
   breakdown,
+  unscheduled = false,
 }: {
   summary: RunSummary;
   onRetry: () => void;
   onNext: () => void;
   /** 과목별 정답 한 줄 (종합 퀴즈). */
   breakdown?: string;
+  /**
+   * 복습 일정(review())을 건드리지 않는 연습 (읽기·듣기·문장 만들기). 10문제를 다
+   * 맞혀도 "오늘 0/20"이 그대로라 기록이 안 된 줄 알기 쉬워, 이유를 한 줄 붙인다.
+   */
+  unscheduled?: boolean;
 }) {
   const { total, correct, accuracy, bestStreak, missed } = summary;
   const ref = useRef<HTMLElement>(null);
@@ -52,6 +58,8 @@ export function SessionSummary({
   useEffect(() => ref.current?.focus({ preventScroll: true }), []);
   return (
     <section
+      // ModePageShell이 이 표식을 보고 하단 "홈으로"를 숨긴다 — 요약에 이미 있다.
+      data-session-summary=""
       ref={ref}
       tabIndex={-1}
       className="flex flex-col gap-6 outline-none"
@@ -167,6 +175,7 @@ export function SessionSummary({
         {now !== null && (
           <p className="mt-1 pt-3 border-t border-[color:var(--line)] flex flex-wrap items-baseline justify-between gap-x-4 text-caption tabular-nums text-[color:var(--fg-faint)]">
             <span>
+              {unscheduled && <span className="block mb-1">복습 기록에는 들어가지 않는 연습이에요</span>}
               오늘 {today}/{goal} · 내일 예정 {tomorrow}장
             </span>
             {missCount > 0 && (

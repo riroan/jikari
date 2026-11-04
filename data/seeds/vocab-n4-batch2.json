@@ -6,7 +6,9 @@
     "meanings": ["lunch"],
     "koreanMeanings": ["점심밥", "점심"],
     "ruby": "{昼|ひる}ご{飯|はん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "晩ご飯",
@@ -15,7 +17,9 @@
     "meanings": ["dinner"],
     "koreanMeanings": ["저녁밥", "저녁"],
     "ruby": "{晩|ばん}ご{飯|はん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "午前",
@@ -24,7 +28,9 @@
     "meanings": ["morning", "AM"],
     "koreanMeanings": ["오전"],
     "ruby": "{午前|ごぜん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "午後",
@@ -33,7 +39,9 @@
     "meanings": ["afternoon", "PM"],
     "koreanMeanings": ["오후"],
     "ruby": "{午後|ごご}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "春",
@@ -42,7 +50,9 @@
     "meanings": ["spring"],
     "koreanMeanings": ["봄"],
     "ruby": "{春|はる}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "夏",
@@ -51,7 +61,9 @@
     "meanings": ["summer"],
     "koreanMeanings": ["여름"],
     "ruby": "{夏|なつ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "秋",
@@ -60,7 +72,9 @@
     "meanings": ["autumn"],
     "koreanMeanings": ["가을"],
     "ruby": "{秋|あき}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "冬",
@@ -69,7 +83,9 @@
     "meanings": ["winter"],
     "koreanMeanings": ["겨울"],
     "ruby": "{冬|ふゆ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "色",
@@ -78,7 +94,9 @@
     "meanings": ["color"],
     "koreanMeanings": ["색", "색깔"],
     "ruby": "{色|いろ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "赤い",
@@ -87,7 +105,9 @@
     "meanings": ["red"],
     "koreanMeanings": ["빨갛다"],
     "ruby": "{赤|あか}い",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "青い",
@@ -96,7 +116,9 @@
     "meanings": ["blue"],
     "koreanMeanings": ["파랗다"],
     "ruby": "{青|あお}い",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "黄色い",
@@ -105,7 +127,9 @@
     "meanings": ["yellow"],
     "koreanMeanings": ["노랗다"],
     "ruby": "{黄色|きいろ}い",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "黒い",
@@ -114,7 +138,9 @@
     "meanings": ["black"],
     "koreanMeanings": ["검다"],
     "ruby": "{黒|くろ}い",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "白い",
@@ -123,7 +149,9 @@
     "meanings": ["white"],
     "koreanMeanings": ["하얗다", "희다"],
     "ruby": "{白|しろ}い",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "花",
@@ -132,7 +160,9 @@
     "meanings": ["flower"],
     "koreanMeanings": ["꽃"],
     "ruby": "{花|はな}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "地下鉄",
@@ -141,7 +171,9 @@
     "meanings": ["subway"],
     "koreanMeanings": ["지하철"],
     "ruby": "{地下鉄|ちかてつ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "空港",
@@ -150,7 +182,9 @@
     "meanings": ["airport"],
     "koreanMeanings": ["공항"],
     "ruby": "{空港|くうこう}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "飛行機",
@@ -159,7 +193,9 @@
     "meanings": ["airplane"],
     "koreanMeanings": ["비행기"],
     "ruby": "{飛行機|ひこうき}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "建物",
@@ -168,7 +204,9 @@
     "meanings": ["building"],
     "koreanMeanings": ["건물"],
     "ruby": "{建物|たてもの}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "動物",
@@ -177,7 +215,9 @@
     "meanings": ["animal"],
     "koreanMeanings": ["동물"],
     "ruby": "{動物|どうぶつ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "旅館",
@@ -186,7 +226,9 @@
     "meanings": ["Japanese inn"],
     "koreanMeanings": ["여관"],
     "ruby": "{旅館|りょかん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "写真",
@@ -195,7 +237,9 @@
     "meanings": ["photograph"],
     "koreanMeanings": ["사진"],
     "ruby": "{写真|しゃしん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "自転車",
@@ -204,7 +248,9 @@
     "meanings": ["bicycle"],
     "koreanMeanings": ["자전거"],
     "ruby": "{自転車|じてんしゃ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "運動",
@@ -213,7 +259,9 @@
     "meanings": ["exercise", "sports"],
     "koreanMeanings": ["운동"],
     "ruby": "{運動|うんどう}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "番号",
@@ -222,6 +270,8 @@
     "meanings": ["number"],
     "koreanMeanings": ["번호"],
     "ruby": "{番号|ばんごう}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   }
 ]

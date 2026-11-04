@@ -45,6 +45,16 @@ bun dev                         # http://localhost:3000
 
 시드는 `data/seeds/`(문법은 `data/`)에 JSON으로 있고, 아래 스크립트로 DB에 넣습니다. **이미 있는 id는 건너뛰므로** 여러 번 실행해도 안전하지만, 이미 들어간 카드의 내용은 바뀌지 않습니다. 기존 카드를 고치려면 `lib/db/migrations/A_*.sql`에 데이터 수정을 추가합니다.
 
+모든 시드를 한 번에 넣으려면 (한자 → 단어 → 문장·조사 → 표현 → 문법 → 단원 동기화 순):
+
+```bash
+bun run db:import                       # 로컬 DB
+JIKARI_DB=remote bun run db:import      # 원격 DB
+bun scripts/import-all.ts --dry-run     # 실행할 명령만 출력
+```
+
+파일 하나만 넣을 때는 각 스크립트를 직접 씁니다.
+
 ```bash
 bun scripts/add-kanji.ts      data/seeds/kanji-n4-batch3.json
 bun scripts/add-vocab.ts      data/seeds/vocab-daily-batch1.json
@@ -75,20 +85,13 @@ bun run e2e         # playwright 스모크 (개발 서버를 3333 포트로 띄�
 `vX.Y.Z` 태그를 push하면 GitHub Actions(`.github/workflows/release-image.yml`)가 arm64 Docker 이미지를 빌드해 `registry.gitlab.com/riroan/riroan/jikari:<태그>`로 올립니다. 저장소 시크릿 `GITLAB_REGISTRY_USERNAME`, `GITLAB_REGISTRY_TOKEN`이 필요합니다. 컨테이너는 `DB_*` 환경 변수를 받습니다.
 
 - 이미지 이름은 워크플로 `IMAGE`(`registry.gitlab.com/riroan/riroan/jikari`)와 배포 매니페스트의 `image`가 같아야 합니다. 매니페스트는 이 저장소 밖에 있으니 직접 확인합니다.
-- `git pull` 후에는 `bun run db:migrate`를 실행합니다. 최근 마이그레이션: `0013_daily_goal`(`app_settings.daily_goal`), `A_0004_kanji_dup_levels`, `A_0005_content_fixes`, `A_0006_content_fixes_2`.
+- `git pull` 후에는 `bun run db:migrate`를 실행합니다. 최근 마이그레이션: `0013_daily_goal`(`app_settings.daily_goal`), `A_0004_kanji_dup_levels`, `A_0005_content_fixes`, `A_0006_content_fixes_2`, `A_0007_sentence_distractor_spread`, `A_0008_sentence_verb_distractor_spread`, `A_0009_kanji_on_reading_fixes`, `A_0010_kanji_non_joyo_readings`, `A_0011_expression_e004`.
 - 새 이미지를 롤아웃한 뒤에는 클러스터에서 마이그레이션을 한 번 실행합니다.
 
   ```bash
   kubectl exec -n jikari deploy/jikari-web -- bun scripts/migrate.ts
   ```
 
-- 콘텐츠 import는 시드가 이미지에 없으므로 노트북에서 원격 DB로 실행합니다. 순서는 add-vocab → add-sentence → add-expression → import-chapters입니다.
-
-  ```bash
-  JIKARI_DB=remote bun scripts/add-vocab.ts      data/seeds/<파일>.json
-  JIKARI_DB=remote bun scripts/add-sentence.ts   data/seeds/<파일>.json
-  JIKARI_DB=remote bun scripts/add-expression.ts data/seeds/<파일>.json
-  JIKARI_DB=remote bun scripts/import-chapters.ts
-  ```
+- 콘텐츠 import는 시드가 이미지에 없으므로 노트북에서 원격 DB로 실행합니다: `JIKARI_DB=remote bun run db:import` (마이그레이션 먼저).
 
 서비스 워커는 프로덕션 빌드에서만 등록됩니다. 캐시가 꼬였으면 아무 URL에 `?nosw=1`을 붙여 여세요. 서비스 워커를 해제하고 캐시를 지운 뒤 꺼진 상태를 기억합니다. `?nosw=0`으로 다시 켭니다.

@@ -6,6 +6,23 @@ import {
 } from "@/lib/normalize";
 
 describe("normalizeJapanese", () => {
+  test("a long vowel typed in hiragana matches the katakana word (らーめん = ラーメン)", () => {
+    expect(matchesAnyAnswer("らーめん", ["ラーメン"], normalizeJapanese)).toBe(true);
+    expect(matchesAnyAnswer("こーひー", ["コーヒー"], normalizeJapanese)).toBe(true);
+    expect(matchesAnyAnswer("ko-hi-", ["コーヒー"], normalizeJapanese)).toBe(true);
+  });
+
+  test("kanji answers still compare as-is", () => {
+    expect(normalizeJapanese("食べる")).toBe("食べる");
+  });
+
+  test("ignores punctuation an IME may add (。、！？「」)", () => {
+    expect(normalizeJapanese("たべる。")).toBe("たべる");
+    expect(normalizeJapanese("「たべる」")).toBe("たべる");
+    expect(normalizeJapanese("taberu.")).toBe("たべる");
+    expect(normalizeJapanese("ありがとう、ございます！")).toBe("ありがとうございます");
+  });
+
   test("hiragana passes through unchanged", () => {
     expect(normalizeJapanese("にち")).toBe("にち");
   });
@@ -63,9 +80,11 @@ describe("normalizeKorean", () => {
     expect(normalizeKorean("  먹다  ")).toBe("먹다");
   });
 
-  test("collapses inner whitespace", () => {
-    expect(normalizeKorean("날  해")).toBe("날 해");
-    expect(normalizeKorean("날\t\t해")).toBe("날 해");
+  test("ignores inner whitespace (띄어쓰기는 채점하지 않음)", () => {
+    expect(normalizeKorean("날  해")).toBe("날해");
+    expect(normalizeKorean("날\t\t해")).toBe("날해");
+    expect(normalizeKorean("한 번")).toBe(normalizeKorean("한번"));
+    expect(matchesAnyAnswer("보여주다", ["보여 주다"], normalizeKorean)).toBe(true);
   });
 
   test("strips surrounding punctuation", () => {

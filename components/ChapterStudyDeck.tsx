@@ -7,6 +7,9 @@ import { ExpressionBack } from "@/components/ExpressionParts";
 import { SpeakButton } from "@/components/SpeakButton";
 import { useCardsStore } from "@/lib/cards-store";
 import { findExamples, getExampleIndex } from "@/lib/examples";
+import { fitFontSize } from "@/lib/fit-text";
+import { SinoKoreanHint } from "@/components/SinoKoreanHint";
+import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
 import type {
   ChapterMember,
   ExpressionCard,
@@ -87,6 +90,7 @@ function Body({ mode, card }: { mode: string; card: AnyCard }) {
             </span>
             {k.koreanMeaning} {k.koreanSound.join("·")}
           </div>
+          <SinoKoreanHint koreanSound={k.koreanSound} onReadings={k.onReadings} />
         </div>
       );
     }
@@ -121,11 +125,16 @@ function Body({ mode, card }: { mode: string; card: AnyCard }) {
       const g = card as GrammarCard;
       const isPattern = g.type === "pattern";
       return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5" style={{ containerType: "inline-size" }}>
           <div
             lang="ja"
-            className="text-[32px] font-semibold leading-[1.3] text-[color:var(--fg)]"
-            style={{ fontFamily: "var(--font-jp-serif)" }}
+            className="font-semibold leading-[1.3] text-[color:var(--fg)]"
+            style={{
+              fontFamily: "var(--font-jp-serif)",
+              fontSize: isPattern
+                ? fitFontSize(32, stripMarkup(parseMarkup(g.pattern)), 22)
+                : "32px",
+            }}
           >
             {isPattern ? <RubyText text={g.pattern} /> : `${g.particles[0]} vs ${g.particles[1]}`}
           </div>

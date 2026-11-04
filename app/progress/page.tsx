@@ -10,7 +10,7 @@ import { masteryLevel } from "@/lib/srs";
 import { INITIAL_RATING, ratingBand } from "@/lib/rating";
 import { weakCardIds } from "@/lib/weak";
 import { forecastDue } from "@/lib/forecast";
-import { subjectMastery } from "@/lib/subject-mastery";
+import { subjectMastery, sumMastery } from "@/lib/subject-mastery";
 import { RubyText } from "@/components/Furigana";
 import Link from "next/link";
 import type { KanjiCard } from "@/lib/types";
@@ -110,22 +110,6 @@ export default function ProgressPage() {
     [now, states],
   );
 
-  const counts = useMemo(() => {
-    if (!mounted) return { mastered: 0, learning: 0, fresh: 0 };
-    let mastered = 0;
-    let learning = 0;
-    for (const c of kanjiCards) {
-      const lvl = masteryLevel(states[`kanji:${c.id}`]);
-      if (lvl === "mastered") mastered++;
-      else if (lvl === "learning") learning++;
-    }
-    return {
-      mastered,
-      learning,
-      fresh: kanjiCards.length - mastered - learning,
-    };
-  }, [mounted, states, kanjiCards]);
-  const { mastered: masteredCount, learning: learningCount, fresh: freshCount } = counts;
 
   const subjects = useMemo(() => {
     if (!mounted) return [];
@@ -139,6 +123,12 @@ export default function ProgressPage() {
       .filter((p) => p.ids.length > 0)
       .map((p) => ({ ko: p.ko, ...subjectMastery(states, p.mode, p.ids) }));
   }, [mounted, states, cards]);
+
+  // 머리 숫자는 전 과목 합계. 예전엔 한자만 셌는데 라벨이 없어 전체 진도로 읽혔고,
+  // 바로 아래 BY SUBJECT의 한자 행과 숫자가 똑같았다. Pre-hydration엔 subjects가
+  // 비어 0/0/0 — NEW 칩이 깜빡이지 않는다.
+  const counts = useMemo(() => sumMastery(subjects), [subjects]);
+  const { mastered: masteredCount, learning: learningCount, fresh: freshCount } = counts;
 
   return (
     <ModePageShell title="進捗" headerMarginPx={40}>
@@ -158,7 +148,7 @@ export default function ProgressPage() {
             >
               {masteredCount}
               <span className="text-lg text-[color:var(--fg-faint)] font-normal ml-1">
-                / {kanjiCards.length}
+                / {counts.total}
               </span>
             </div>
           </div>
@@ -380,7 +370,7 @@ export default function ProgressPage() {
           id="progress-grid-heading"
           className="text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium"
         >
-          N5 KANJI ({kanjiCards.length})
+          KANJI ({kanjiCards.length})
         </div>
         <ul role="list" className="grid grid-cols-10 gap-1">
           {kanjiCards.map((card) => (
@@ -396,7 +386,7 @@ export default function ProgressPage() {
 
       <section className="mt-8 text-caption text-[color:var(--fg-faint)] leading-relaxed">
         <p>
-          풀 상용한자 2136자 그리드는 v2 확장. 현재는 데이터에 있는 N5 범위({kanjiCards.length}자)만 표시.
+          상용한자 2,136자 중 지금 학습 데이터에 있는 {kanjiCards.length}자를 보여줘요.
         </p>
       </section>
     </ModePageShell>

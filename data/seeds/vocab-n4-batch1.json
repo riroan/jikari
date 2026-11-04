@@ -6,7 +6,9 @@
     "meanings": ["doctor"],
     "koreanMeanings": ["의사"],
     "ruby": "{医者|いしゃ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "歌",
@@ -15,7 +17,9 @@
     "meanings": ["song"],
     "koreanMeanings": ["노래"],
     "ruby": "{歌|うた}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "歌う",
@@ -24,7 +28,9 @@
     "meanings": ["sing"],
     "koreanMeanings": ["노래하다"],
     "ruby": "{歌|うた}う",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "映画",
@@ -33,7 +39,9 @@
     "meanings": ["movie"],
     "koreanMeanings": ["영화"],
     "ruby": "{映画|えいが}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "地図",
@@ -42,7 +50,9 @@
     "meanings": ["map"],
     "koreanMeanings": ["지도"],
     "ruby": "{地図|ちず}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "図書館",
@@ -51,7 +61,9 @@
     "meanings": ["library"],
     "koreanMeanings": ["도서관"],
     "ruby": "{図書館|としょかん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "音楽",
@@ -60,7 +72,9 @@
     "meanings": ["music"],
     "koreanMeanings": ["음악"],
     "ruby": "{音楽|おんがく}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "料理",
@@ -69,7 +83,9 @@
     "meanings": ["cooking", "dish"],
     "koreanMeanings": ["요리"],
     "ruby": "{料理|りょうり}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "仕事",
@@ -78,7 +94,9 @@
     "meanings": ["work", "job"],
     "koreanMeanings": ["일", "직업"],
     "ruby": "{仕事|しごと}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "旅行",
@@ -87,7 +105,9 @@
     "meanings": ["travel", "trip"],
     "koreanMeanings": ["여행"],
     "ruby": "{旅行|りょこう}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "台所",
@@ -96,7 +116,9 @@
     "meanings": ["kitchen"],
     "koreanMeanings": ["부엌"],
     "ruby": "{台所|だいどころ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "親",
@@ -105,7 +127,9 @@
     "meanings": ["parent"],
     "koreanMeanings": ["부모"],
     "ruby": "{親|おや}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "切符",
@@ -114,7 +138,9 @@
     "meanings": ["ticket"],
     "koreanMeanings": ["표"],
     "ruby": "{切符|きっぷ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "牛肉",
@@ -123,7 +149,9 @@
     "meanings": ["beef"],
     "koreanMeanings": ["쇠고기"],
     "ruby": "{牛肉|ぎゅうにく}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "自分",
@@ -132,7 +160,9 @@
     "meanings": ["self", "oneself"],
     "koreanMeanings": ["자기", "자신"],
     "ruby": "{自分|じぶん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "世界",
@@ -141,7 +171,9 @@
     "meanings": ["world"],
     "koreanMeanings": ["세계"],
     "ruby": "{世界|せかい}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "漢字",
@@ -150,7 +182,9 @@
     "meanings": ["kanji", "Chinese character"],
     "koreanMeanings": ["한자"],
     "ruby": "{漢字|かんじ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "質問",
@@ -159,7 +193,9 @@
     "meanings": ["question"],
     "koreanMeanings": ["질문"],
     "ruby": "{質問|しつもん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "意味",
@@ -168,7 +204,9 @@
     "meanings": ["meaning"],
     "koreanMeanings": ["의미", "뜻"],
     "ruby": "{意味|いみ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "問題",
@@ -177,7 +215,9 @@
     "meanings": ["problem", "issue"],
     "koreanMeanings": ["문제"],
     "ruby": "{問題|もんだい}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "思う",
@@ -186,7 +226,9 @@
     "meanings": ["think"],
     "koreanMeanings": ["생각하다"],
     "ruby": "{思|おも}う",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "答える",
@@ -195,7 +237,9 @@
     "meanings": ["answer"],
     "koreanMeanings": ["대답하다"],
     "ruby": "{答|こた}える",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "着る",
@@ -204,7 +248,9 @@
     "meanings": ["wear"],
     "koreanMeanings": ["입다"],
     "ruby": "{着|き}る",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "考える",
@@ -213,7 +259,9 @@
     "meanings": ["think over", "consider"],
     "koreanMeanings": ["생각하다", "고려하다"],
     "ruby": "{考|かんが}える",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "始まる",
@@ -222,6 +270,8 @@
     "meanings": ["begin (intransitive)"],
     "koreanMeanings": ["시작되다"],
     "ruby": "{始|はじ}まる",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   }
 ]

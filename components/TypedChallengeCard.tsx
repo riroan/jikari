@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { TypingInput } from "./TypingInput";
 import { SpeakButton } from "./SpeakButton";
+import { fitFontSize } from "@/lib/fit-text";
 import { normalizeJapanese, matchesAnyAnswer } from "@/lib/normalize";
 import { closestAnswer, diffAgainst } from "@/lib/diff";
 import { markAnswered, markShown } from "@/lib/srs";
@@ -23,6 +23,11 @@ export interface TypedChallengeCardProps {
   formLabelJp: string;
   hero: React.ReactNode;
   heroFontSizePx: number;
+  /**
+   * Plain text of `hero` (no ruby markup). When given, the hero shrinks so the
+   * whole word fits on one line — 96px × 間違える is wider than a phone.
+   */
+  heroText?: string;
   groupLabelKo: string;
   groupLabelJp: string;
   onResolved: (wasCorrect: boolean) => void;
@@ -35,6 +40,7 @@ export function TypedChallengeCard({
   formLabelJp,
   hero,
   heroFontSizePx,
+  heroText,
   groupLabelKo,
   groupLabelJp,
   onResolved,
@@ -127,7 +133,6 @@ export function TypedChallengeCard({
   const otherAnswers = acceptableAnswers.filter((x) => x !== primaryAnswer);
 
   return (
-    <LazyMotion features={domAnimation}>
     <div className="flex flex-col gap-8">
       <div
         className="text-label text-[color:var(--fg-faint)] tracking-caption font-medium"
@@ -136,12 +141,13 @@ export function TypedChallengeCard({
         {categoryLabel} · {formLabelKo}으로
       </div>
 
-      <div className="text-center">
+      <div className="text-center" style={{ containerType: "inline-size" }}>
         <div
           className="leading-none font-semibold"
           style={{
             fontFamily: "var(--font-jp-serif)",
-            fontSize: `${heroFontSizePx}px`,
+            // 고정 크기면 322px 폭(페이지 확대)에서 変わる부터 두 줄로 쪼개졌다 (lib/fit-text).
+            fontSize: heroText ? fitFontSize(heroFontSizePx, heroText) : `${heroFontSizePx}px`,
             letterSpacing: "-0.02em",
             color: "var(--fg)",
           }}
@@ -168,15 +174,10 @@ export function TypedChallengeCard({
         onHintUsed={() => setHinted(true)}
       />
 
-      <AnimatePresence>
         {result === "wrong" && (
-          <m.div
+          <div
             key="feedback"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="flex flex-col gap-3 pt-3 border-t border-[color:var(--line)]"
+            className="anim-fade-in flex flex-col gap-3 pt-3 border-t border-[color:var(--line)]"
           >
             {userAnswer !== null && (
               <div
@@ -235,19 +236,14 @@ export function TypedChallengeCard({
               次へ
             </button>
             </div>
-          </m.div>
+          </div>
         )}
-      </AnimatePresence>
 
-      <AnimatePresence>
         {result === "correct" && (
-          <m.div
+          <div
             key="correct"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="flex items-center justify-between gap-3"
+            className="anim-pop-in flex items-center justify-between gap-3"
+            style={{ "--pop-from": 0.9 } as React.CSSProperties}
             aria-live="polite"
           >
             <div className="inline-flex items-center gap-2 text-[color:var(--accent-progress-text)] font-medium">
@@ -287,10 +283,8 @@ export function TypedChallengeCard({
               </button>
             </div>
             </div>
-          </m.div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
-    </LazyMotion>
   );
 }

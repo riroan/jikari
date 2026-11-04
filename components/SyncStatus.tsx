@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { getSyncStatus, subscribeSync } from "@/lib/remote-storage";
 
 const TEXT = {
@@ -15,6 +15,16 @@ const TEXT = {
 /** Quiet one-line save status, pinned to the bottom edge. Renders nothing when everything is saved. */
 export function SyncStatus() {
   const status = useSyncExternalStore(subscribeSync, getSyncStatus, () => "idle" as const);
+  // 고정된 이 줄이 페이지 맨 아래 "홈으로"와 겹치지 않게, 떠 있는 동안 셸이
+  // 아래 여백을 늘리도록 표식을 단다 (globals.css --sync-gap).
+  useEffect(() => {
+    const root = document.documentElement;
+    if (status === "idle") delete root.dataset.sync;
+    else root.dataset.sync = status;
+    return () => {
+      delete root.dataset.sync;
+    };
+  }, [status]);
   return (
     <div
       role="status"

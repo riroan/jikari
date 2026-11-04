@@ -5,7 +5,7 @@
     "sentenceRuby": "{学生|がくせい}が＿＿＿に{入|はい}る。",
     "blank": "教室",
     "blankRuby": "{教室|きょうしつ}",
-    "distractors": ["花", "傘", "時計"],
+    "distractors": ["説明", "雪", "時計"],
     "translation": "학생이 교실에 들어간다.",
     "jlptLevel": 4
   },
@@ -15,7 +15,7 @@
     "sentenceRuby": "{明日|あした}＿＿＿がある。",
     "blank": "試験",
     "blankRuby": "{試験|しけん}",
-    "distractors": ["花", "電話", "傘"],
+    "distractors": ["辞書", "空", "鍵"],
     "translation": "내일 시험이 있다.",
     "jlptLevel": 4
   },
@@ -25,7 +25,7 @@
     "sentenceRuby": "{毎日|まいにち}＿＿＿する。",
     "blank": "勉強",
     "blankRuby": "{勉強|べんきょう}",
-    "distractors": ["傘", "花", "電話"],
+    "distractors": ["名前", "部屋", "雪"],
     "translation": "매일 공부한다.",
     "jlptLevel": 4
   },
@@ -36,7 +36,7 @@
     "blank": "注意",
     "blankRuby": "{注意|ちゅうい}",
     "distractors": ["時計", "魚", "電話"],
-    "translation": "차를 주의한다.",
+    "translation": "차를 조심한다.",
     "jlptLevel": 4
   },
   {
@@ -45,7 +45,7 @@
     "sentenceRuby": "{先生|せんせい}の＿＿＿を{聞|き}く。",
     "blank": "意見",
     "blankRuby": "{意見|いけん}",
-    "distractors": ["時計", "花", "傘"],
+    "distractors": ["時計", "雪", "鍵"],
     "translation": "선생님의 의견을 듣는다.",
     "jlptLevel": 4
   },
@@ -85,7 +85,7 @@
     "sentenceRuby": "{新|あたら}しい＿＿＿が{始|はじ}まる。",
     "blank": "時代",
     "blankRuby": "{時代|じだい}",
-    "distractors": ["傘", "花", "公園"],
+    "distractors": ["飛行機", "お弁当", "公園"],
     "translation": "새 시대가 시작된다.",
     "jlptLevel": 4
   },
@@ -95,7 +95,7 @@
     "sentenceRuby": "{寿司|すし}を＿＿＿{食|た}べたことがある。",
     "blank": "一度",
     "blankRuby": "{一度|いちど}",
-    "distractors": ["色", "花", "傘"],
+    "distractors": ["色", "予定", "仕事"],
     "translation": "초밥을 한 번 먹어 본 적이 있다.",
     "jlptLevel": 4
   },
@@ -105,7 +105,7 @@
     "sentenceRuby": "{事務所|じむしょ}は＿＿＿にある。",
     "blank": "二階",
     "blankRuby": "{二階|にかい}",
-    "distractors": ["花", "傘", "電話"],
+    "distractors": ["会議", "全部", "電話"],
     "translation": "사무실은 2층에 있다.",
     "jlptLevel": 4
   },
@@ -115,7 +115,7 @@
     "sentenceRuby": "{野菜|やさい}を＿＿＿{食|た}べる。",
     "blank": "全部",
     "blankRuby": "{全部|ぜんぶ}",
-    "distractors": ["公園", "手紙", "花"],
+    "distractors": ["公園", "手紙", "写真"],
     "translation": "야채를 전부 먹는다.",
     "jlptLevel": 4
   },
@@ -125,7 +125,7 @@
     "sentenceRuby": "{明日|あした}の＿＿＿を{教|おし}えてください。",
     "blank": "予定",
     "blankRuby": "{予定|よてい}",
-    "distractors": ["傘", "花", "色"],
+    "distractors": ["冬", "切符", "色"],
     "translation": "내일 일정을 알려주세요.",
     "jlptLevel": 4
   },
@@ -135,7 +135,7 @@
     "sentenceRuby": "＿＿＿で{意味|いみ}を{調|しら}べる。",
     "blank": "辞書",
     "blankRuby": "{辞書|じしょ}",
-    "distractors": ["傘", "花", "公園"],
+    "distractors": ["動物", "午前", "公園"],
     "translation": "사전에서 뜻을 찾는다.",
     "jlptLevel": 4
   },
@@ -145,7 +145,7 @@
     "sentenceRuby": "{毎朝|まいあさ}＿＿＿を{読|よ}む。",
     "blank": "新聞",
     "blankRuby": "{新聞|しんぶん}",
-    "distractors": ["花", "傘", "電話"],
+    "distractors": ["午後", "台所", "電話"],
     "translation": "매일 아침 신문을 읽는다.",
     "jlptLevel": 4
   },
@@ -155,7 +155,7 @@
     "sentenceRuby": "{先生|せんせい}が＿＿＿を{書|か}く。",
     "blank": "答え",
     "blankRuby": "{答|こた}え",
-    "distractors": ["傘", "魚", "花"],
+    "distractors": ["雪", "魚", "空"],
     "translation": "선생님이 답을 쓴다.",
     "jlptLevel": 4
   },
@@ -165,7 +165,7 @@
     "sentenceRuby": "{午後|ごご}＿＿＿がある。",
     "blank": "会議",
     "blankRuby": "{会議|かいぎ}",
-    "distractors": ["傘", "魚", "公園"],
+    "distractors": ["図書館", "魚", "公園"],
     "translation": "오후에 회의가 있다.",
     "jlptLevel": 4
   },
@@ -195,7 +195,7 @@
     "sentenceRuby": "＿＿＿を{持|も}って{学校|がっこう}に{行|い}く。",
     "blank": "お弁当",
     "blankRuby": "お{弁当|べんとう}",
-    "distractors": ["花", "傘", "電話"],
+    "distractors": ["声", "夏", "番号"],
     "translation": "도시락을 들고 학교에 간다.",
     "jlptLevel": 4
   }

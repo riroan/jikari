@@ -65,6 +65,21 @@ export const CHAPTERS: ChapterDef[] = [
     },
   },
   {
+    id: "a14-family-body",
+    name: "가족·몸",
+    intro:
+      "내 가족은 父·母·兄·姉(ちち·はは·あに·あね)로 낮춰 말하고, 남의 가족은 お父さん·お母さん처럼 높여요 — 한국어 '아버지/아버님'보다 구분이 엄격해요. 몸은 頭·目·耳·口·手·足처럼 한 글자 훈독이 많고, '머리가 아프다'는 頭が痛い로 그대로 옮겨져요.",
+    sortOrder: 25,
+    match: {
+      vocabWords: [
+        "父", "母", "兄", "姉", "弟", "妹", "家族", "友達", "子供",
+        "頭", "目", "耳", "口", "手", "足", "歯", "体", "顔", "お腹", "痛い", "疲れる", "眠い",
+      ],
+      sentenceIds: ["s284", "s285", "s286", "s287"],
+      kanji: ["父", "母", "兄", "姉", "弟", "妹", "目", "耳", "口", "手", "足", "頭", "顔", "歯", "体", "痛"],
+    },
+  },
+  {
     id: "a4-transport",
     name: "교통·이동",
     intro:
@@ -215,6 +230,16 @@ export const CHAPTERS: ChapterDef[] = [
     },
   },
 
+  {
+    id: "a15-store",
+    name: "가게·식당에서 듣는 말",
+    intro:
+      "편의점·식당 점원의 말은 존경어·겸양어라 교과서 문장과 달라요 (お持ちですか, お召し上がりですか, かしこまりました). 알아듣는 게 먼저예요. 거절할 땐 「大丈夫です」 — 일본어의 '괜찮아요'는 '필요 없어요'라는 뜻이에요.",
+    sortOrder: 107,
+    match: {
+      expressionIds: Array.from({ length: 16 }, (_, i) => `e0${83 + i}`),
+    },
+  },
   // ─── B. 조사 (Particle) ───────────────────────────────────────────────
   {
     id: "b1-wa-ga",
@@ -235,7 +260,7 @@ export const CHAPTERS: ChapterDef[] = [
     sortOrder: 120,
     match: {
       particles: ["に", "で", "へ"],
-      grammarIds: ["particle-ni-de", "particle-he-ni"],
+      grammarIds: ["particle-ni-de", "particle-he-ni", "particle-ni-ga-naru"],
     },
   },
   {
@@ -246,7 +271,7 @@ export const CHAPTERS: ChapterDef[] = [
     sortOrder: 130,
     match: {
       particles: ["を"],
-      grammarIds: ["particle-wo-ga"],
+      grammarIds: ["particle-wo-ga", "particle-ni-wo-meet"],
     },
   },
   {
@@ -279,6 +304,8 @@ export const CHAPTERS: ChapterDef[] = [
         "pattern-te-iru",
         "pattern-to-omou",
         "pattern-nakereba-naranai",
+        "pattern-naide-kudasai",
+        "pattern-hou-ga-ii",
       ],
     },
   },
@@ -297,6 +324,8 @@ export const CHAPTERS: ChapterDef[] = [
         "pattern-ato-de",
         "pattern-aida-ni",
         "pattern-nagara",
+        "pattern-te-kara",
+        "pattern-toki",
       ],
     },
   },
@@ -321,6 +350,12 @@ export const CHAPTERS: ChapterDef[] = [
         "pattern-yori",
         "pattern-kara-reason",
         "pattern-tewa-ikenai",
+        "pattern-koto-ga-aru",
+        "pattern-te-miru",
+        "pattern-te-shimau",
+        "pattern-sugiru",
+        "pattern-kamoshirenai",
+        "pattern-te-oku",
       ],
     },
   },
@@ -404,6 +439,16 @@ export const CHAPTERS: ChapterDef[] = [
         "数", "度", "回", "色", "近", "遠", "多", "少", "強", "弱",
         "明", "暗", "重", "軽", "広", "狭", "深", "浅", "暑", "寒", "正",
       ],
+    },
+  },
+  {
+    id: "e7-n5-numbers-time",
+    name: "N5 한자: 숫자·시간",
+    intro:
+      "一·二·三(いち·に·さん)처럼 숫자 음독은 한국 한자음(일·이·삼)과 거의 같아요. 다만 四·七·九는 よん/し·なな/しち·きゅう/く 두 가지로 읽고, 時·分·年·週·曜는 시간 표현에서 붙어 다니니 함께 외우세요.",
+    sortOrder: 370,
+    match: {
+      kanji: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "万", "日", "月", "年", "時", "分", "今", "毎", "週", "曜", "前", "後", "午", "半"],
     },
   },
 ];

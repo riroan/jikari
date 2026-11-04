@@ -6,7 +6,9 @@
     "meanings": ["research", "study"],
     "koreanMeanings": ["연구"],
     "ruby": "{研究|けんきゅう}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "夫",
@@ -15,7 +17,9 @@
     "meanings": ["husband"],
     "koreanMeanings": ["남편"],
     "ruby": "{夫|おっと}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "妻",
@@ -24,7 +28,9 @@
     "meanings": ["wife"],
     "koreanMeanings": ["아내"],
     "ruby": "{妻|つま}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "教室",
@@ -33,7 +39,9 @@
     "meanings": ["classroom"],
     "koreanMeanings": ["교실"],
     "ruby": "{教室|きょうしつ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "試験",
@@ -42,7 +50,9 @@
     "meanings": ["exam"],
     "koreanMeanings": ["시험"],
     "ruby": "{試験|しけん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "勉強",
@@ -51,7 +61,9 @@
     "meanings": ["study"],
     "koreanMeanings": ["공부"],
     "ruby": "{勉強|べんきょう}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "注意",
@@ -60,7 +72,9 @@
     "meanings": ["attention", "caution"],
     "koreanMeanings": ["주의"],
     "ruby": "{注意|ちゅうい}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "意見",
@@ -69,7 +83,9 @@
     "meanings": ["opinion"],
     "koreanMeanings": ["의견"],
     "ruby": "{意見|いけん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "受ける",
@@ -78,7 +94,9 @@
     "meanings": ["receive", "take (an exam)"],
     "koreanMeanings": ["받다"],
     "ruby": "{受|う}ける",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "取る",
@@ -87,7 +105,9 @@
     "meanings": ["take", "grab"],
     "koreanMeanings": ["잡다", "집다"],
     "ruby": "{取|と}る",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "時代",
@@ -96,16 +116,20 @@
     "meanings": ["era", "age"],
     "koreanMeanings": ["시대"],
     "ruby": "{時代|じだい}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "一度",
     "word": "一度",
     "reading": "いちど",
     "meanings": ["once"],
-    "koreanMeanings": ["한 번"],
+    "koreanMeanings": ["한번"],
     "ruby": "{一度|いちど}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "二階",
@@ -114,7 +138,9 @@
     "meanings": ["second floor"],
     "koreanMeanings": ["2층"],
     "ruby": "{二階|にかい}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "全部",
@@ -123,7 +149,9 @@
     "meanings": ["all", "whole"],
     "koreanMeanings": ["전부"],
     "ruby": "{全部|ぜんぶ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "予定",
@@ -132,7 +160,9 @@
     "meanings": ["plan", "schedule"],
     "koreanMeanings": ["예정"],
     "ruby": "{予定|よてい}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "経験",
@@ -141,7 +171,9 @@
     "meanings": ["experience"],
     "koreanMeanings": ["경험"],
     "ruby": "{経験|けいけん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "辞書",
@@ -150,7 +182,9 @@
     "meanings": ["dictionary"],
     "koreanMeanings": ["사전"],
     "ruby": "{辞書|じしょ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "新聞",
@@ -159,7 +193,9 @@
     "meanings": ["newspaper"],
     "koreanMeanings": ["신문"],
     "ruby": "{新聞|しんぶん}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "答え",
@@ -168,7 +204,9 @@
     "meanings": ["answer"],
     "koreanMeanings": ["답"],
     "ruby": "{答|こた}え",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "会議",
@@ -177,7 +215,9 @@
     "meanings": ["meeting", "conference"],
     "koreanMeanings": ["회의"],
     "ruby": "{会議|かいぎ}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "終わる",
@@ -186,7 +226,9 @@
     "meanings": ["end", "finish"],
     "koreanMeanings": ["끝나다"],
     "ruby": "{終|お}わる",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "始める",
@@ -195,7 +237,9 @@
     "meanings": ["begin (transitive)"],
     "koreanMeanings": ["시작하다"],
     "ruby": "{始|はじ}める",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "使い方",
@@ -204,7 +248,9 @@
     "meanings": ["how to use"],
     "koreanMeanings": ["사용법"],
     "ruby": "{使|つか}い{方|かた}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "お弁当",
@@ -213,7 +259,9 @@
     "meanings": ["boxed lunch"],
     "koreanMeanings": ["도시락"],
     "ruby": "お{弁当|べんとう}",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "お祭り",
@@ -222,6 +270,8 @@
     "meanings": ["festival"],
     "koreanMeanings": ["축제"],
     "ruby": "お{祭|まつ}り",
-    "jlptLevel": 4
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   }
 ]

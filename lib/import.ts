@@ -98,13 +98,6 @@ export function parseBackup(json: string): ImportResult {
   return { ok: true, state: result.data, extras: parseExtras((parsed as { extras?: unknown }).extras) };
 }
 
-/** Counts shown in the restore preview so the user sees what will be overwritten. */
-export function summarizeBackup(s: PersistedState) {
-  return {
-    cards: Object.keys(s.learningStates).length,
-    streak: s.currentStreak,
-    studyDays: Object.keys(s.heatmap).length,
-    lastActiveAt: s.lastActiveAt,
-    dailyGoal: s.settings.dailyGoal,
-  };
-}
+// Zod 없는 모듈로 옮겼다 — 설정 화면이 미리보기 때문에 Zod 전체(≈290KB)를 정적으로
+// 끌어오지 않게. 기존 import 경로는 그대로 쓸 수 있다.
+export { summarizeBackup } from "./backup-summary";

@@ -18,7 +18,7 @@
 
 - Next.js 16.2.4 (App Router, Turbopack, React 19)
 - Tailwind 4 (`@theme inline` 토큰 패턴 사용 — globals.css 참조)
-- TypeScript, Zustand, Framer Motion, Zod
+- TypeScript, Zustand, Zod (모션은 globals.css의 CSS 키프레임 — framer-motion 없음)
 - Vitest + Testing Library + Playwright
 
 ## 프로젝트 컨벤션

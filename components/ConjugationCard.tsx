@@ -49,6 +49,7 @@ export function ConjugationCard({
       formLabelKo={FORM_LABELS_KO[form]}
       formLabelJp={FORM_LABELS_JP[form]}
       hero={verb.ruby ? <RubyText text={verb.ruby} /> : verb.word}
+      heroText={verb.word}
       heroFontSizePx={96}
       groupLabelKo={GROUP_LABELS_KO[verb.verbGroup]}
       groupLabelJp={GROUP_LABELS_JP[verb.verbGroup]}

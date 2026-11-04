@@ -6,7 +6,9 @@
     "meanings": ["rest", "take a day off"],
     "koreanMeanings": ["쉬다"],
     "ruby": "{休|やす}む",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "洗う",
@@ -15,7 +17,9 @@
     "meanings": ["wash"],
     "koreanMeanings": ["씻다"],
     "ruby": "{洗|あら}う",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "電話",
@@ -24,7 +28,9 @@
     "meanings": ["telephone"],
     "koreanMeanings": ["전화"],
     "ruby": "{電話|でんわ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "紙",
@@ -33,7 +39,9 @@
     "meanings": ["paper"],
     "koreanMeanings": ["종이"],
     "ruby": "{紙|かみ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "いす",
@@ -41,7 +49,9 @@
     "reading": "いす",
     "meanings": ["chair"],
     "koreanMeanings": ["의자"],
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "机",
@@ -50,7 +60,9 @@
     "meanings": ["desk"],
     "koreanMeanings": ["책상"],
     "ruby": "{机|つくえ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "窓",
@@ -59,7 +71,9 @@
     "meanings": ["window"],
     "koreanMeanings": ["창문"],
     "ruby": "{窓|まど}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "傘",
@@ -68,7 +82,9 @@
     "meanings": ["umbrella"],
     "koreanMeanings": ["우산"],
     "ruby": "{傘|かさ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "近い",
@@ -77,7 +93,9 @@
     "meanings": ["near", "close"],
     "koreanMeanings": ["가깝다"],
     "ruby": "{近|ちか}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "遠い",
@@ -86,7 +104,9 @@
     "meanings": ["far"],
     "koreanMeanings": ["멀다"],
     "ruby": "{遠|とお}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "早い",
@@ -95,7 +115,9 @@
     "meanings": ["early", "fast"],
     "koreanMeanings": ["이르다", "빠르다"],
     "ruby": "{早|はや}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "遅い",
@@ -104,7 +126,9 @@
     "meanings": ["late", "slow"],
     "koreanMeanings": ["늦다", "느리다"],
     "ruby": "{遅|おそ}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "明るい",
@@ -113,7 +137,9 @@
     "meanings": ["bright"],
     "koreanMeanings": ["밝다"],
     "ruby": "{明|あか}るい",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "暗い",
@@ -122,7 +148,9 @@
     "meanings": ["dark"],
     "koreanMeanings": ["어둡다"],
     "ruby": "{暗|くら}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "強い",
@@ -131,7 +159,9 @@
     "meanings": ["strong"],
     "koreanMeanings": ["강하다", "세다"],
     "ruby": "{強|つよ}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "弱い",
@@ -140,7 +170,9 @@
     "meanings": ["weak"],
     "koreanMeanings": ["약하다"],
     "ruby": "{弱|よわ}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "多い",
@@ -149,7 +181,9 @@
     "meanings": ["many", "much"],
     "koreanMeanings": ["많다"],
     "ruby": "{多|おお}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "少ない",
@@ -158,7 +192,9 @@
     "meanings": ["few", "little"],
     "koreanMeanings": ["적다"],
     "ruby": "{少|すく}ない",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "天気",
@@ -167,7 +203,9 @@
     "meanings": ["weather"],
     "koreanMeanings": ["날씨"],
     "ruby": "{天気|てんき}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "空",
@@ -176,7 +214,9 @@
     "meanings": ["sky"],
     "koreanMeanings": ["하늘"],
     "ruby": "{空|そら}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "雪",
@@ -185,7 +225,9 @@
     "meanings": ["snow"],
     "koreanMeanings": ["눈"],
     "ruby": "{雪|ゆき}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "風",
@@ -194,7 +236,9 @@
     "meanings": ["wind"],
     "koreanMeanings": ["바람"],
     "ruby": "{風|かぜ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "海",
@@ -203,7 +247,9 @@
     "meanings": ["sea", "ocean"],
     "koreanMeanings": ["바다"],
     "ruby": "{海|うみ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "山",
@@ -212,7 +258,9 @@
     "meanings": ["mountain"],
     "koreanMeanings": ["산"],
     "ruby": "{山|やま}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "川",
@@ -221,7 +269,9 @@
     "meanings": ["river"],
     "koreanMeanings": ["강"],
     "ruby": "{川|かわ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "パン",
@@ -229,7 +279,9 @@
     "reading": "パン",
     "meanings": ["bread"],
     "koreanMeanings": ["빵"],
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "牛乳",
@@ -238,7 +290,9 @@
     "meanings": ["milk"],
     "koreanMeanings": ["우유"],
     "ruby": "{牛乳|ぎゅうにゅう}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "卵",
@@ -247,7 +301,9 @@
     "meanings": ["egg"],
     "koreanMeanings": ["달걀"],
     "ruby": "{卵|たまご}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "お酒",
@@ -256,7 +312,9 @@
     "meanings": ["alcohol", "sake"],
     "koreanMeanings": ["술"],
     "ruby": "お{酒|さけ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "元気",
@@ -265,6 +323,8 @@
     "meanings": ["healthy", "energetic"],
     "koreanMeanings": ["건강", "기운"],
     "ruby": "{元気|げんき}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
   }
 ]

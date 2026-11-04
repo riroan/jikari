@@ -40,7 +40,7 @@ export default function ReadingPage() {
   if (deck.length === 0)
     return shell(<EmptyCardsState label="읽을 문장이 아직 없어요." hint="문장 카드 시드 필요" />);
   if (run.summary)
-    return shell(<SessionSummary summary={run.summary} onRetry={run.retryMissed} onNext={run.next} />);
+    return shell(<SessionSummary summary={run.summary} unscheduled onRetry={run.retryMissed} onNext={run.next} />);
 
   const item = byId.get(run.retryId ?? deck[index % deck.length]);
   if (!item) return shell();

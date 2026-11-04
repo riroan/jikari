@@ -6,7 +6,9 @@
     "meanings": ["house", "home"],
     "koreanMeanings": ["집"],
     "ruby": "{家|いえ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "部屋",
@@ -15,7 +17,9 @@
     "meanings": ["room"],
     "koreanMeanings": ["방"],
     "ruby": "{部屋|へや}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "車",
@@ -24,7 +28,9 @@
     "meanings": ["car"],
     "koreanMeanings": ["자동차", "차"],
     "ruby": "{車|くるま}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "電車",
@@ -33,7 +39,9 @@
     "meanings": ["train"],
     "koreanMeanings": ["전철"],
     "ruby": "{電車|でんしゃ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "ご飯",
@@ -42,7 +50,9 @@
     "meanings": ["rice", "meal"],
     "koreanMeanings": ["밥"],
     "ruby": "ご{飯|はん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "肉",
@@ -51,7 +61,9 @@
     "meanings": ["meat"],
     "koreanMeanings": ["고기"],
     "ruby": "{肉|にく}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "魚",
@@ -60,7 +72,9 @@
     "meanings": ["fish"],
     "koreanMeanings": ["생선", "물고기"],
     "ruby": "{魚|さかな}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "野菜",
@@ -69,7 +83,9 @@
     "meanings": ["vegetable"],
     "koreanMeanings": ["야채", "채소"],
     "ruby": "{野菜|やさい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "果物",
@@ -78,7 +94,9 @@
     "meanings": ["fruit"],
     "koreanMeanings": ["과일"],
     "ruby": "{果物|くだもの}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "時計",
@@ -87,7 +105,9 @@
     "meanings": ["clock", "watch"],
     "koreanMeanings": ["시계"],
     "ruby": "{時計|とけい}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "銀行",
@@ -96,7 +116,9 @@
     "meanings": ["bank"],
     "koreanMeanings": ["은행"],
     "ruby": "{銀行|ぎんこう}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "病院",
@@ -105,7 +127,9 @@
     "meanings": ["hospital"],
     "koreanMeanings": ["병원"],
     "ruby": "{病院|びょういん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "公園",
@@ -114,7 +138,9 @@
     "meanings": ["park"],
     "koreanMeanings": ["공원"],
     "ruby": "{公園|こうえん}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "手紙",
@@ -123,7 +149,9 @@
     "meanings": ["letter"],
     "koreanMeanings": ["편지"],
     "ruby": "{手紙|てがみ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "名前",
@@ -132,7 +160,9 @@
     "meanings": ["name"],
     "koreanMeanings": ["이름"],
     "ruby": "{名前|なまえ}",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
   },
   {
     "id": "分かる",
@@ -141,7 +171,9 @@
     "meanings": ["understand"],
     "koreanMeanings": ["알다", "이해하다"],
     "ruby": "{分|わ}かる",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "知る",
@@ -150,7 +182,9 @@
     "meanings": ["know"],
     "koreanMeanings": ["알다"],
     "ruby": "{知|し}る",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "会う",
@@ -159,7 +193,9 @@
     "meanings": ["meet"],
     "koreanMeanings": ["만나다"],
     "ruby": "{会|あ}う",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "持つ",
@@ -168,7 +204,9 @@
     "meanings": ["hold", "have"],
     "koreanMeanings": ["들다", "가지다"],
     "ruby": "{持|も}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "待つ",
@@ -177,7 +215,9 @@
     "meanings": ["wait"],
     "koreanMeanings": ["기다리다"],
     "ruby": "{待|ま}つ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "作る",
@@ -186,7 +226,9 @@
     "meanings": ["make"],
     "koreanMeanings": ["만들다"],
     "ruby": "{作|つく}る",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "乗る",
@@ -195,7 +237,9 @@
     "meanings": ["ride", "get on"],
     "koreanMeanings": ["타다"],
     "ruby": "{乗|の}る",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "遊ぶ",
@@ -204,7 +248,9 @@
     "meanings": ["play"],
     "koreanMeanings": ["놀다"],
     "ruby": "{遊|あそ}ぶ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "泳ぐ",
@@ -213,7 +259,9 @@
     "meanings": ["swim"],
     "koreanMeanings": ["헤엄치다", "수영하다"],
     "ruby": "{泳|およ}ぐ",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "教える",
@@ -222,7 +270,9 @@
     "meanings": ["teach"],
     "koreanMeanings": ["가르치다"],
     "ruby": "{教|おし}える",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
   },
   {
     "id": "好き",
@@ -231,7 +281,9 @@
     "meanings": ["like"],
     "koreanMeanings": ["좋아하다"],
     "ruby": "{好|す}き",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
   },
   {
     "id": "嫌い",
@@ -240,7 +292,9 @@
     "meanings": ["dislike"],
     "koreanMeanings": ["싫어하다"],
     "ruby": "{嫌|きら}い",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
   },
   {
     "id": "おいしい",
@@ -248,7 +302,9 @@
     "reading": "おいしい",
     "meanings": ["delicious"],
     "koreanMeanings": ["맛있다"],
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "難しい",
@@ -257,7 +313,9 @@
     "meanings": ["difficult"],
     "koreanMeanings": ["어렵다"],
     "ruby": "{難|むずか}しい",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   },
   {
     "id": "楽しい",
@@ -266,6 +324,8 @@
     "meanings": ["fun", "enjoyable"],
     "koreanMeanings": ["즐겁다"],
     "ruby": "{楽|たの}しい",
-    "jlptLevel": 5
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
   }
 ]

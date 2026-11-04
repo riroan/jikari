@@ -25,7 +25,7 @@
     "sentenceRuby": "{公園|こうえん}で＿＿＿。",
     "blank": "遊ぶ",
     "blankRuby": "{遊|あそ}ぶ",
-    "distractors": ["売る", "閉める", "開ける"],
+    "distractors": ["払う", "貸す", "開ける"],
     "translation": "공원에서 논다.",
     "jlptLevel": 5
   },
@@ -95,7 +95,7 @@
     "sentenceRuby": "＿＿＿で{寝|ね}る。",
     "blank": "部屋",
     "blankRuby": "{部屋|へや}",
-    "distractors": ["時計", "果物", "手紙"],
+    "distractors": ["お弁当", "果物", "手紙"],
     "translation": "방에서 잔다.",
     "jlptLevel": 5
   },
@@ -125,7 +125,7 @@
     "sentenceRuby": "コーヒーを＿＿＿。",
     "blank": "飲む",
     "blankRuby": "{飲|の}む",
-    "distractors": ["見る", "書く", "閉める"],
+    "distractors": ["見る", "書く", "泣く"],
     "translation": "커피를 마신다.",
     "jlptLevel": 5
   },
@@ -205,7 +205,7 @@
     "sentenceRuby": "{毎日|まいにち}{本|ほん}を＿＿＿。",
     "blank": "読む",
     "blankRuby": "{読|よ}む",
-    "distractors": ["乗る", "走る", "閉める"],
+    "distractors": ["乗る", "走る", "分かる"],
     "translation": "매일 책을 읽는다.",
     "jlptLevel": 5
   },
@@ -215,7 +215,7 @@
     "sentenceRuby": "{日本語|にほんご}を＿＿＿。",
     "blank": "話す",
     "blankRuby": "{話|はな}す",
-    "distractors": ["食べる", "売る", "泳ぐ"],
+    "distractors": ["食べる", "動く", "泳ぐ"],
     "translation": "일본어를 말한다.",
     "jlptLevel": 5
   },
@@ -235,7 +235,7 @@
     "sentenceRuby": "{手紙|てがみ}を＿＿＿。",
     "blank": "書く",
     "blankRuby": "{書|か}く",
-    "distractors": ["飲む", "乗る", "閉める"],
+    "distractors": ["飲む", "乗る", "遊ぶ"],
     "translation": "편지를 쓴다.",
     "jlptLevel": 5
   },
@@ -245,7 +245,7 @@
     "sentenceRuby": "{学校|がっこう}まで＿＿＿。",
     "blank": "歩く",
     "blankRuby": "{歩|ある}く",
-    "distractors": ["食べる", "閉める", "開ける"],
+    "distractors": ["食べる", "受ける", "開ける"],
     "translation": "학교까지 걷는다.",
     "jlptLevel": 5
   }
