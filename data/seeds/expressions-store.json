@@ -1,0 +1,143 @@
+[
+  {
+    "id": "e083",
+    "situation_ko": "편의점에서 도시락을 계산할 때 점원이",
+    "expression_jp": "温めますか。",
+    "ruby": "{温|あたた}めますか。",
+    "register": "polite",
+    "translation_ko": "데워 드릴까요?",
+    "note_ko": "데워 달라면 「はい、お願いします」, 괜찮으면 「大丈夫です」. 일본어의 「大丈夫です」는 '필요 없어요'라는 거절이에요"
+  },
+  {
+    "id": "e084",
+    "situation_ko": "점원이 더 공손하게 데울지 물을 때",
+    "expression_jp": "お温めしますか。",
+    "ruby": "お{温|あたた}めしますか。",
+    "register": "humble",
+    "translation_ko": "데워 드릴까요?",
+    "note_ko": "「お〜します」는 점원이 자기 행동을 낮추는 겸양 표현. 대답은 温めますか와 같아요"
+  },
+  {
+    "id": "e085",
+    "situation_ko": "편의점에서 봉투가 필요한지 물을 때",
+    "expression_jp": "袋はご利用ですか。",
+    "ruby": "{袋|ふくろ}はご{利用|りよう}ですか。",
+    "register": "polite",
+    "translation_ko": "봉투 필요하세요?",
+    "note_ko": "「ご利用」은 상대의 행동을 높인 말. 필요 없으면 「大丈夫です」 또는 「いりません」"
+  },
+  {
+    "id": "e086",
+    "situation_ko": "포인트 카드가 있는지 물을 때",
+    "expression_jp": "ポイントカードはお持ちですか。",
+    "ruby": "ポイントカードはお{持|も}ちですか。",
+    "register": "polite",
+    "translation_ko": "포인트 카드 있으세요?",
+    "note_ko": "없으면 「持っていません」 또는 그냥 「ないです」로 충분해요"
+  },
+  {
+    "id": "e087",
+    "situation_ko": "가게에 들어갔을 때 점원이",
+    "expression_jp": "いらっしゃいませ。",
+    "register": "polite",
+    "translation_ko": "어서 오세요",
+    "note_ko": "손님은 대답하지 않아도 돼요. 가볍게 고개만 끄덕여도 자연스러워요"
+  },
+  {
+    "id": "e088",
+    "situation_ko": "주문을 받은 점원이 알겠다고 할 때",
+    "expression_jp": "かしこまりました。",
+    "register": "humble",
+    "translation_ko": "알겠습니다",
+    "note_ko": "점원·직원이 쓰는 「分かりました」의 겸양 표현. 손님이 쓰면 어색해요"
+  },
+  {
+    "id": "e089",
+    "situation_ko": "패스트푸드점에서 먹고 갈지 물을 때",
+    "expression_jp": "店内でお召し上がりですか。",
+    "ruby": "{店内|てんない}でお{召|め}し{上|あ}がりですか。",
+    "register": "polite",
+    "translation_ko": "드시고 가세요?",
+    "note_ko": "먹고 가면 「はい」 또는 「店内で」, 가져가면 「持ち帰りで」"
+  },
+  {
+    "id": "e090",
+    "situation_ko": "포장할지 물을 때",
+    "expression_jp": "お持ち帰りですか。",
+    "ruby": "お{持|も}ち{帰|かえ}りですか。",
+    "register": "polite",
+    "translation_ko": "포장해 가세요?",
+    "note_ko": "「持ち帰り」가 '테이크아웃'. 대답은 「はい、持ち帰りで」"
+  },
+  {
+    "id": "e091",
+    "situation_ko": "식당에서 주문할 메뉴를 정했는지 물을 때",
+    "expression_jp": "ご注文はお決まりですか。",
+    "ruby": "ご{注文|ちゅうもん}はお{決|き}まりですか。",
+    "register": "polite",
+    "translation_ko": "주문하시겠어요?",
+    "note_ko": "아직이면 「もう少し待ってください」. 정했으면 「これをください」"
+  },
+  {
+    "id": "e092",
+    "situation_ko": "주문을 다 받은 뒤 확인할 때",
+    "expression_jp": "以上でよろしいですか。",
+    "ruby": "{以上|いじょう}でよろしいですか。",
+    "register": "polite",
+    "translation_ko": "이상으로 괜찮으세요?",
+    "note_ko": "더 없으면 「はい」, 더 시킬 게 있으면 「あと、〜もお願いします」"
+  },
+  {
+    "id": "e093",
+    "situation_ko": "젓가락을 넣어 줄지 물을 때",
+    "expression_jp": "お箸はおつけしますか。",
+    "ruby": "お{箸|はし}はおつけしますか。",
+    "register": "humble",
+    "translation_ko": "젓가락 넣어 드릴까요?",
+    "note_ko": "「おつけします」는 겸양 표현. 필요하면 「お願いします」, 아니면 「大丈夫です」"
+  },
+  {
+    "id": "e094",
+    "situation_ko": "식당 입구에서 인원수를 물을 때",
+    "expression_jp": "何名様ですか。",
+    "ruby": "{何名様|なんめいさま}ですか。",
+    "register": "polite",
+    "translation_ko": "몇 분이세요?",
+    "note_ko": "손가락으로 보여 줘도 되고, 「二人です」처럼 대답해요"
+  },
+  {
+    "id": "e095",
+    "situation_ko": "자리로 안내할 때",
+    "expression_jp": "こちらへどうぞ。",
+    "register": "polite",
+    "translation_ko": "이쪽으로 오세요",
+    "note_ko": "대답 없이 따라가면 돼요"
+  },
+  {
+    "id": "e096",
+    "situation_ko": "계산이 끝나고 나갈 때 점원이",
+    "expression_jp": "またお越しくださいませ。",
+    "ruby": "またお{越|こ}しくださいませ。",
+    "register": "polite",
+    "translation_ko": "또 오세요",
+    "note_ko": "「お越しください」는 '오세요'의 높임말. 손님은 「ごちそうさまでした」나 가벼운 목례로 답해요"
+  },
+  {
+    "id": "e097",
+    "situation_ko": "영수증이 필요한지 물을 때",
+    "expression_jp": "レシートはご利用ですか。",
+    "ruby": "レシートはご{利用|りよう}ですか。",
+    "register": "polite",
+    "translation_ko": "영수증 필요하세요?",
+    "note_ko": "필요 없으면 「大丈夫です」. 받고 싶으면 「お願いします」"
+  },
+  {
+    "id": "e098",
+    "situation_ko": "계산할 때 결제 방법을 물을 때",
+    "expression_jp": "お支払いはどうなさいますか。",
+    "ruby": "お{支払|しはら}いはどうなさいますか。",
+    "register": "polite",
+    "translation_ko": "결제는 어떻게 하시겠어요?",
+    "note_ko": "「カードで」「現金で」처럼 짧게 대답해요. 「なさる」는 「する」의 높임말"
+  }
+]

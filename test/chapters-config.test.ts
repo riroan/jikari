@@ -35,7 +35,8 @@ describe("CHAPTERS — schema sanity", () => {
         (rule.kanji?.length ?? 0) +
         (rule.sentenceIds?.length ?? 0) +
         (rule.particles?.length ?? 0) +
-        (rule.grammarIds?.length ?? 0);
+        (rule.grammarIds?.length ?? 0) +
+        (rule.expressionIds?.length ?? 0);
       expect(total, `chapter ${c.id} has no match rules — won't pull cards`).toBeGreaterThan(0);
     }
   });
