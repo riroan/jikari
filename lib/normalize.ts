@@ -1,4 +1,4 @@
-import { toHiragana } from "wanakana";
+import { toHiragana, toKatakana } from "wanakana";
 
 /**
  * Normalize a Japanese reading input for answer comparison.
@@ -19,7 +19,10 @@ import { toHiragana } from "wanakana";
 const JA_PUNCT = /[。、，．！？「」『』・.,!?]/g;
 
 export function normalizeJapanese(input: string): string {
-  return toHiragana(input.normalize("NFC").replace(/\s+/g, "").replace(JA_PUNCT, ""));
+  // 가타카나를 한 번 거친다: wanakana는 가타카나의 장음 ー만 모음으로 펴서
+  // (ラーメン → らあめん) 히라가나로 친 らーめん과 어긋났다. 받아쓰기(lib/dictation)는
+  // 이미 이렇게 하고 있었다.
+  return toHiragana(toKatakana(input.normalize("NFC").replace(/\s+/g, "").replace(JA_PUNCT, "")));
 }
 
 /**
