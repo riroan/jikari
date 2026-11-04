@@ -1,0 +1,449 @@
+[
+  {
+    "id": "s284",
+    "sentence": "電車が＿＿＿ので、会社に遅れた。",
+    "sentenceRuby": "{電車|でんしゃ}が＿＿＿ので、{会社|かいしゃ}に{遅|おく}れた。",
+    "blank": "止まった",
+    "blankRuby": "{止|と}まった",
+    "distractors": [
+      "咲いた",
+      "笑った",
+      "焼けた"
+    ],
+    "translation": "전철이 멈춰서 회사에 늦었다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s285",
+    "sentence": "この問題は難しくて、なかなか＿＿＿。",
+    "sentenceRuby": "この{問題|もんだい}は{難|むずか}しくて、なかなか＿＿＿。",
+    "blank": "解けない",
+    "blankRuby": "{解|と}けない",
+    "distractors": [
+      "洗えない",
+      "運べない",
+      "育てない"
+    ],
+    "translation": "이 문제는 어려워서 좀처럼 풀리지 않는다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s286",
+    "sentence": "彼は約束を＿＿＿人だ。",
+    "sentenceRuby": "{彼|かれ}は{約束|やくそく}を＿＿＿{人|ひと}だ。",
+    "blank": "守る",
+    "blankRuby": "{守|まも}る",
+    "distractors": [
+      "折る",
+      "配る",
+      "包む"
+    ],
+    "translation": "그는 약속을 지키는 사람이다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s287",
+    "sentence": "財布を＿＿＿、家に取りに戻った。",
+    "sentenceRuby": "{財布|さいふ}を＿＿＿、{家|いえ}に{取|と}りに{戻|もど}った。",
+    "blank": "忘れて",
+    "blankRuby": "{忘|わす}れて",
+    "distractors": [
+      "育てて",
+      "眠って",
+      "笑って"
+    ],
+    "translation": "지갑을 잊고 와서 집에 가지러 돌아갔다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s288",
+    "sentence": "雨がやむまで、ここで＿＿＿。",
+    "sentenceRuby": "{雨|あめ}がやむまで、ここで＿＿＿。",
+    "blank": "待とう",
+    "blankRuby": "{待|ま}とう",
+    "distractors": [
+      "泳ごう",
+      "咲こう",
+      "焼こう"
+    ],
+    "translation": "비가 그칠 때까지 여기서 기다리자.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s289",
+    "sentence": "このお菓子は甘すぎて、私には＿＿＿。",
+    "sentenceRuby": "このお{菓子|かし}は{甘|あま}すぎて、{私|わたし}には＿＿＿。",
+    "blank": "合わない",
+    "blankRuby": "{合|あ}わない",
+    "distractors": [
+      "育たない",
+      "眠れない",
+      "沸かない"
+    ],
+    "translation": "이 과자는 너무 달아서 나한테는 맞지 않는다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s290",
+    "sentence": "電気を＿＿＿まま、寝てしまった。",
+    "sentenceRuby": "{電気|でんき}を＿＿＿まま、{寝|ね}てしまった。",
+    "blank": "つけた",
+    "distractors": [
+      "育てた",
+      "決めた",
+      "守った"
+    ],
+    "translation": "불을 켠 채로 잠들어 버렸다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s291",
+    "sentence": "友達に＿＿＿をもらって、うれしかった。",
+    "sentenceRuby": "{友達|ともだち}に＿＿＿をもらって、うれしかった。",
+    "blank": "手紙",
+    "blankRuby": "{手紙|てがみ}",
+    "distractors": [
+      "天気",
+      "予定",
+      "電池"
+    ],
+    "translation": "친구에게 편지를 받아서 기뻤다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s292",
+    "sentence": "来週の＿＿＿を決めておきましょう。",
+    "sentenceRuby": "{来週|らいしゅう}の＿＿＿を{決|き}めておきましょう。",
+    "blank": "予定",
+    "blankRuby": "{予定|よてい}",
+    "distractors": [
+      "地震",
+      "辞書",
+      "番組"
+    ],
+    "translation": "다음 주 일정을 정해 둡시다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s293",
+    "sentence": "引っ越しの＿＿＿が大変だった。",
+    "sentenceRuby": "{引|ひ}っ{越|こ}しの＿＿＿が{大変|たいへん}だった。",
+    "blank": "準備",
+    "blankRuby": "{準備|じゅんび}",
+    "distractors": [
+      "季節",
+      "故障",
+      "遠足"
+    ],
+    "translation": "이사 준비가 힘들었다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s294",
+    "sentence": "この道は＿＿＿が多いので、気をつけて。",
+    "sentenceRuby": "この{道|みち}は＿＿＿が{多|おお}いので、{気|き}をつけて。",
+    "blank": "事故",
+    "blankRuby": "{事故|じこ}",
+    "distractors": [
+      "準備",
+      "辞書",
+      "名刺"
+    ],
+    "translation": "이 길은 사고가 많으니 조심해.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s295",
+    "sentence": "駅の近くに新しい＿＿＿ができた。",
+    "sentenceRuby": "{駅|えき}の{近|ちか}くに{新|あたら}しい＿＿＿ができた。",
+    "blank": "病院",
+    "blankRuby": "{病院|びょういん}",
+    "distractors": [
+      "意見",
+      "経験",
+      "習慣"
+    ],
+    "translation": "역 근처에 새 병원이 생겼다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s296",
+    "sentence": "社長の＿＿＿を聞いて、みんな驚いた。",
+    "sentenceRuby": "{社長|しゃちょう}の＿＿＿を{聞|き}いて、みんな{驚|おどろ}いた。",
+    "blank": "発表",
+    "blankRuby": "{発表|はっぴょう}",
+    "distractors": [
+      "財布",
+      "故障",
+      "砂糖"
+    ],
+    "translation": "사장의 발표를 듣고 모두 놀랐다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s297",
+    "sentence": "日本の＿＿＿には、もう慣れました。",
+    "sentenceRuby": "{日本|にほん}の＿＿＿には、もう{慣|な}れました。",
+    "blank": "生活",
+    "blankRuby": "{生活|せいかつ}",
+    "distractors": [
+      "地震",
+      "電池",
+      "辞書"
+    ],
+    "translation": "일본 생활에는 이제 익숙해졌어요.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s298",
+    "sentence": "今日は＿＿＿が悪いので、早く帰ります。",
+    "sentenceRuby": "{今日|きょう}は＿＿＿が{悪|わる}いので、{早|はや}く{帰|かえ}ります。",
+    "blank": "調子",
+    "blankRuby": "{調子|ちょうし}",
+    "distractors": [
+      "季節",
+      "地図",
+      "砂糖"
+    ],
+    "translation": "오늘은 컨디션이 안 좋아서 일찍 돌아갑니다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s299",
+    "sentence": "そのニュースを聞いて、とても＿＿＿。",
+    "sentenceRuby": "そのニュースを{聞|き}いて、とても＿＿＿。",
+    "blank": "驚いた",
+    "blankRuby": "{驚|おどろ}いた",
+    "distractors": [
+      "焼いた",
+      "育てた",
+      "守った"
+    ],
+    "translation": "그 뉴스를 듣고 매우 놀랐다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s300",
+    "sentence": "彼の話は＿＿＿、よく分からなかった。",
+    "sentenceRuby": "{彼|かれ}の{話|はなし}は＿＿＿、よく{分|わ}からなかった。",
+    "blank": "複雑で",
+    "blankRuby": "{複雑|ふくざつ}で",
+    "distractors": [
+      "親切で",
+      "元気で",
+      "丈夫で"
+    ],
+    "translation": "그의 이야기는 복잡해서 잘 이해가 안 됐다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s301",
+    "sentence": "この部屋は＿＿＿て、昼でも電気が必要だ。",
+    "sentenceRuby": "この{部屋|へや}は＿＿＿て、{昼|ひる}でも{電気|でんき}が{必要|ひつよう}だ。",
+    "blank": "暗く",
+    "blankRuby": "{暗|くら}く",
+    "distractors": [
+      "広く",
+      "甘く",
+      "丸く"
+    ],
+    "translation": "이 방은 어두워서 낮에도 불이 필요하다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s302",
+    "sentence": "テストの結果が＿＿＿て、ほっとした。",
+    "sentenceRuby": "テストの{結果|けっか}が＿＿＿て、ほっとした。",
+    "blank": "良く",
+    "blankRuby": "{良|よ}く",
+    "distractors": [
+      "暗く",
+      "深く",
+      "細く"
+    ],
+    "translation": "시험 결과가 좋아서 안도했다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s303",
+    "sentence": "彼は＿＿＿に、毎朝走っている。",
+    "sentenceRuby": "{彼|かれ}は＿＿＿に、{毎朝|まいあさ}{走|はし}っている。",
+    "blank": "健康のため",
+    "blankRuby": "{健康|けんこう}のため",
+    "distractors": [
+      "天気のため",
+      "辞書のため",
+      "地震のため"
+    ],
+    "translation": "그는 건강을 위해 매일 아침 달리고 있다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s304",
+    "sentence": "部屋を＿＿＿してから、出かけます。",
+    "sentenceRuby": "{部屋|へや}を＿＿＿してから、{出|で}かけます。",
+    "blank": "掃除",
+    "blankRuby": "{掃除|そうじ}",
+    "distractors": [
+      "予約",
+      "練習",
+      "相談"
+    ],
+    "translation": "방을 청소하고 나서 외출합니다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s305",
+    "sentence": "医者に＿＿＿して、薬をもらった。",
+    "sentenceRuby": "{医者|いしゃ}に＿＿＿して、{薬|くすり}をもらった。",
+    "blank": "相談",
+    "blankRuby": "{相談|そうだん}",
+    "distractors": [
+      "掃除",
+      "運転",
+      "散歩"
+    ],
+    "translation": "의사와 상담하고 약을 받았다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s306",
+    "sentence": "あの店はいつも＿＿＿していて、入れない。",
+    "sentenceRuby": "あの{店|みせ}はいつも＿＿＿していて、{入|はい}れない。",
+    "blank": "混雑",
+    "blankRuby": "{混雑|こんざつ}",
+    "distractors": [
+      "練習",
+      "出発",
+      "卒業"
+    ],
+    "translation": "그 가게는 늘 붐벼서 들어갈 수 없다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s307",
+    "sentence": "先生に＿＿＿を書いてもらった。",
+    "sentenceRuby": "{先生|せんせい}に＿＿＿を{書|か}いてもらった。",
+    "blank": "紹介状",
+    "blankRuby": "{紹介状|しょうかいじょう}",
+    "distractors": [
+      "洗濯機",
+      "交差点",
+      "自動車"
+    ],
+    "translation": "선생님께 소개장을 써 받았다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s308",
+    "sentence": "毎日＿＿＿を続けると、体が丈夫になる。",
+    "sentenceRuby": "{毎日|まいにち}＿＿＿を{続|つづ}けると、{体|からだ}が{丈夫|じょうぶ}になる。",
+    "blank": "運動",
+    "blankRuby": "{運動|うんどう}",
+    "distractors": [
+      "事故",
+      "辞書",
+      "地震"
+    ],
+    "translation": "매일 운동을 계속하면 몸이 튼튼해진다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s309",
+    "sentence": "この荷物を二階まで＿＿＿てもらえますか。",
+    "sentenceRuby": "この{荷物|にもつ}を{二階|にかい}まで＿＿＿てもらえますか。",
+    "blank": "運んで",
+    "blankRuby": "{運|はこ}んで",
+    "distractors": [
+      "咲いて",
+      "笑って",
+      "眠って"
+    ],
+    "translation": "이 짐을 이층까지 옮겨 주시겠어요?",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s310",
+    "sentence": "風邪をひいたので、会議を＿＿＿。",
+    "sentenceRuby": "{風邪|かぜ}をひいたので、{会議|かいぎ}を＿＿＿。",
+    "blank": "休んだ",
+    "blankRuby": "{休|やす}んだ",
+    "distractors": [
+      "育てた",
+      "焼いた",
+      "沸かした"
+    ],
+    "translation": "감기에 걸려서 회의를 쉬었다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s311",
+    "sentence": "彼の意見には＿＿＿できない。",
+    "sentenceRuby": "{彼|かれ}の{意見|いけん}には＿＿＿できない。",
+    "blank": "賛成",
+    "blankRuby": "{賛成|さんせい}",
+    "distractors": [
+      "運転",
+      "散歩",
+      "掃除"
+    ],
+    "translation": "그의 의견에는 찬성할 수 없다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s312",
+    "sentence": "道に迷って、おまわりさんに＿＿＿を聞いた。",
+    "sentenceRuby": "{道|みち}に{迷|まよ}って、おまわりさんに＿＿＿を{聞|き}いた。",
+    "blank": "行き方",
+    "blankRuby": "{行|い}き{方|かた}",
+    "distractors": [
+      "考え方",
+      "食べ物",
+      "売り場"
+    ],
+    "translation": "길을 잃어서 경찰관에게 가는 법을 물었다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s313",
+    "sentence": "大切な＿＿＿だから、なくさないでね。",
+    "sentenceRuby": "{大切|たいせつ}な＿＿＿だから、なくさないでね。",
+    "blank": "書類",
+    "blankRuby": "{書類|しょるい}",
+    "distractors": [
+      "天気",
+      "景色",
+      "季節"
+    ],
+    "translation": "중요한 서류니까 잃어버리지 마.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s314",
+    "sentence": "この辺りは夜になると、とても＿＿＿。",
+    "sentenceRuby": "この{辺|あた}りは{夜|よる}になると、とても＿＿＿。",
+    "blank": "静かだ",
+    "blankRuby": "{静|しず}かだ",
+    "distractors": [
+      "丈夫だ",
+      "複雑だ",
+      "新鮮だ"
+    ],
+    "translation": "이 근처는 밤이 되면 매우 조용하다.",
+    "jlptLevel": 3
+  },
+  {
+    "id": "s315",
+    "sentence": "彼女はいつも＿＿＿服を着ている。",
+    "sentenceRuby": "{彼女|かのじょ}はいつも＿＿＿{服|ふく}を{着|き}ている。",
+    "blank": "地味な",
+    "blankRuby": "{地味|じみ}な",
+    "distractors": [
+      "親切な",
+      "丈夫な",
+      "便利な"
+    ],
+    "translation": "그녀는 늘 수수한 옷을 입고 있다.",
+    "jlptLevel": 3
+  }
+]
