@@ -650,6 +650,20 @@ describe("sentence seeds", () => {
 
   // 오래된 배치는 傘·時計·花가 오답을 독점했다 (전 시드의 25%). 새 배치는 오답이
   // 몇 단어로 쏠리면 "저건 정답이 아니다"를 외우게 되므로 한 단어의 몫을 제한한다.
+  // 어디서도 정답이 아닌 단어가 오답으로 자주 나오면 일본어를 몰라도 "저건 정답이
+  // 아니다"로 지운다. 時計·花가 286장 중 43·39장에 나오던 것을 A_0007에서 분산했다.
+  // 정답으로도 쓰이는 단어는 소거 단서가 아니라서 세지 않는다.
+  test("정답으로 쓰이지 않는 오답 단어가 문장 카드의 9%를 넘지 않는다", () => {
+    const cards = files.filter((f) => f.startsWith("sentences-")).flatMap(load);
+    const answers = new Set(cards.map((c) => c.blank));
+    const use = new Map<string, number>();
+    for (const c of cards) for (const d of c.distractors) use.set(d, (use.get(d) ?? 0) + 1);
+    const worst = [...use]
+      .filter(([w]) => !answers.has(w))
+      .sort((a, b) => b[1] - a[1])[0];
+    expect(worst[1] / cards.length, `${worst[0]}가 ${worst[1]}/${cards.length}장`).toBeLessThanOrEqual(0.09);
+  });
+
   test.each(files.filter((f) => f.startsWith("sentences-daily-")))(
     "%s: 한 단어가 오답의 15% 넘는 카드에 쓰이지 않는다",
     (f) => {

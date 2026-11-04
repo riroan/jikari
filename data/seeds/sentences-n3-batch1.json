@@ -5,7 +5,7 @@
     "sentenceRuby": "{大|おお}きな＿＿＿で{話|はな}す。",
     "blank": "声",
     "blankRuby": "{声|こえ}",
-    "distractors": ["花", "傘", "時計"],
+    "distractors": ["問題", "番号", "夏"],
     "translation": "큰 목소리로 말한다.",
     "jlptLevel": 3
   },
@@ -95,7 +95,7 @@
     "sentenceRuby": "{親|おや}を{心|こころ}から＿＿＿する。",
     "blank": "愛",
     "blankRuby": "{愛|あい}",
-    "distractors": ["傘", "時計", "電話"],
+    "distractors": ["声", "宿題", "電話"],
     "translation": "부모를 진심으로 사랑한다.",
     "jlptLevel": 3
   },
@@ -115,7 +115,7 @@
     "sentenceRuby": "{毎日|まいにち}ピアノの＿＿＿をする。",
     "blank": "練習",
     "blankRuby": "{練習|れんしゅう}",
-    "distractors": ["傘", "時計", "花"],
+    "distractors": ["将来", "建物", "意味"],
     "translation": "매일 피아노 연습을 한다.",
     "jlptLevel": 3
   },
@@ -125,7 +125,7 @@
     "sentenceRuby": "{兄|あに}は{来年|らいねん}＿＿＿する。",
     "blank": "結婚",
     "blankRuby": "{結婚|けっこん}",
-    "distractors": ["時計", "花", "電話"],
+    "distractors": ["意見", "愛", "電話"],
     "translation": "형은 내년에 결혼한다.",
     "jlptLevel": 3
   },

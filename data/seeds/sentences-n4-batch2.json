@@ -5,7 +5,7 @@
     "sentenceRuby": "＿＿＿{十時|じゅうじ}に{学校|がっこう}に{行|い}く。",
     "blank": "午前",
     "blankRuby": "{午前|ごぜん}",
-    "distractors": ["色", "花", "傘"],
+    "distractors": ["色", "漢字", "理由"],
     "translation": "오전 10시에 학교에 간다.",
     "jlptLevel": 4
   },
@@ -15,7 +15,7 @@
     "sentenceRuby": "＿＿＿はとても{寒|さむ}い。",
     "blank": "冬",
     "blankRuby": "{冬|ふゆ}",
-    "distractors": ["傘", "公園", "手紙"],
+    "distractors": ["生活", "公園", "手紙"],
     "translation": "겨울은 매우 춥다.",
     "jlptLevel": 4
   },
@@ -25,7 +25,7 @@
     "sentenceRuby": "＿＿＿はとても{暑|あつ}い。",
     "blank": "夏",
     "blankRuby": "{夏|なつ}",
-    "distractors": ["銀行", "時計", "電話"],
+    "distractors": ["銀行", "留学", "電話"],
     "translation": "여름은 매우 덥다.",
     "jlptLevel": 4
   },
@@ -35,7 +35,7 @@
     "sentenceRuby": "＿＿＿に{花|はな}がさく。",
     "blank": "春",
     "blankRuby": "{春|はる}",
-    "distractors": ["時計", "公園", "電話"],
+    "distractors": ["番号", "宿題", "電話"],
     "translation": "봄에 꽃이 핀다.",
     "jlptLevel": 4
   },
@@ -65,7 +65,7 @@
     "sentenceRuby": "＿＿＿で{東京|とうきょう}に{行|い}く。",
     "blank": "飛行機",
     "blankRuby": "{飛行機|ひこうき}",
-    "distractors": ["時計", "手紙", "公園"],
+    "distractors": ["空", "手紙", "公園"],
     "translation": "비행기로 도쿄에 간다.",
     "jlptLevel": 4
   },
@@ -75,7 +75,7 @@
     "sentenceRuby": "{毎朝|まいあさ}＿＿＿で{学校|がっこう}に{行|い}く。",
     "blank": "自転車",
     "blankRuby": "{自転車|じてんしゃ}",
-    "distractors": ["時計", "果物", "花"],
+    "distractors": ["社長", "果物", "空"],
     "translation": "매일 아침 자전거로 학교에 간다.",
     "jlptLevel": 4
   },
@@ -85,7 +85,7 @@
     "sentenceRuby": "{大|おお}きな＿＿＿が{見|み}える。",
     "blank": "建物",
     "blankRuby": "{建物|たてもの}",
-    "distractors": ["時計", "電話", "傘"],
+    "distractors": ["約束", "電話", "答え"],
     "translation": "큰 건물이 보인다.",
     "jlptLevel": 4
   },
@@ -105,7 +105,7 @@
     "sentenceRuby": "{十二時|じゅうにじ}に＿＿＿を{食|た}べる。",
     "blank": "昼ご飯",
     "blankRuby": "{昼|ひる}ご{飯|はん}",
-    "distractors": ["時計", "花", "手紙"],
+    "distractors": ["時計", "約束", "手紙"],
     "translation": "12시에 점심을 먹는다.",
     "jlptLevel": 4
   },
@@ -125,7 +125,7 @@
     "sentenceRuby": "{動物園|どうぶつえん}で＿＿＿を{見|み}る。",
     "blank": "動物",
     "blankRuby": "{動物|どうぶつ}",
-    "distractors": ["時計", "花", "電話"],
+    "distractors": ["答え", "結果", "電話"],
     "translation": "동물원에서 동물을 본다.",
     "jlptLevel": 4
   },
@@ -135,7 +135,7 @@
     "sentenceRuby": "{日本語|にほんご}を{勉強|べんきょう}する＿＿＿が{好|す}きです。",
     "blank": "時間",
     "blankRuby": "{時間|じかん}",
-    "distractors": ["電話", "花", "色"],
+    "distractors": ["電話", "絵", "色"],
     "translation": "일본어를 공부하는 시간을 좋아한다.",
     "jlptLevel": 4
   },
@@ -145,7 +145,7 @@
     "sentenceRuby": "＿＿＿から{雪|ゆき}が{降|ふ}る。",
     "blank": "空",
     "blankRuby": "{空|そら}",
-    "distractors": ["手紙", "色", "花"],
+    "distractors": ["手紙", "色", "自分"],
     "translation": "하늘에서 눈이 내린다.",
     "jlptLevel": 4
   },
@@ -165,7 +165,7 @@
     "sentenceRuby": "{先生|せんせい}の{電話|でんわ}＿＿＿を{聞|き}く。",
     "blank": "番号",
     "blankRuby": "{番号|ばんごう}",
-    "distractors": ["色", "花", "手紙"],
+    "distractors": ["色", "自転車", "手紙"],
     "translation": "선생님의 전화번호를 묻는다.",
     "jlptLevel": 4
   },
@@ -175,7 +175,7 @@
     "sentenceRuby": "{公園|こうえん}で＿＿＿する。",
     "blank": "運動",
     "blankRuby": "{運動|うんどう}",
-    "distractors": ["傘", "時計", "電話"],
+    "distractors": ["鍵", "時計", "名前"],
     "translation": "공원에서 운동한다.",
     "jlptLevel": 4
   },
@@ -195,7 +195,7 @@
     "sentenceRuby": "{犬|いぬ}やねこは＿＿＿です。",
     "blank": "動物",
     "blankRuby": "{動物|どうぶつ}",
-    "distractors": ["傘", "手紙", "果物"],
+    "distractors": ["誕生日", "手紙", "果物"],
     "translation": "개나 고양이는 동물이다.",
     "jlptLevel": 4
   }

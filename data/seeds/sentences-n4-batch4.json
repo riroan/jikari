@@ -5,7 +5,7 @@
     "sentenceRuby": "アメリカに＿＿＿する。",
     "blank": "留学",
     "blankRuby": "{留学|りゅうがく}",
-    "distractors": ["傘", "花", "時計"],
+    "distractors": ["宿題", "将来", "時計"],
     "translation": "미국에 유학한다.",
     "jlptLevel": 4
   },
@@ -15,7 +15,7 @@
     "sentenceRuby": "{日本|にほん}での＿＿＿は{楽|たの}しい。",
     "blank": "生活",
     "blankRuby": "{生活|せいかつ}",
-    "distractors": ["傘", "花", "電話"],
+    "distractors": ["建物", "花", "電話"],
     "translation": "일본에서의 생활은 즐겁다.",
     "jlptLevel": 4
   },

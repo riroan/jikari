@@ -95,7 +95,7 @@
     "sentenceRuby": "＿＿＿で{寝|ね}る。",
     "blank": "部屋",
     "blankRuby": "{部屋|へや}",
-    "distractors": ["時計", "果物", "手紙"],
+    "distractors": ["お弁当", "果物", "手紙"],
     "translation": "방에서 잔다.",
     "jlptLevel": 5
   },
