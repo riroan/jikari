@@ -678,7 +678,9 @@ describe("sentence seeds", () => {
 
 describe("grammar seeds", () => {
   const dir = path.join(process.cwd(), "data");
-  const files = readdirSync(dir).filter((f) => /^grammar-(n5|daily)/.test(f) && f.endsWith(".json"));
+  // grammar-seed-sample.json도 실제로 DB에 들어간 데이터다 (단원 b1이 particle-wa-ga를 참조).
+  // 여기서 빼면 다른 파일과 id가 겹쳐도 못 잡는다 — add-grammar는 겹치는 id를 조용히 건너뛴다.
+  const files = readdirSync(dir).filter((f) => f.startsWith("grammar-") && f.endsWith(".json"));
   const load = (f: string) => JSON.parse(readFileSync(path.join(dir, f), "utf8")) as unknown;
 
   test.each(files)("%s는 스키마를 통과한다", (f) => {

@@ -250,7 +250,7 @@ export const CHAPTERS: ChapterDef[] = [
     sortOrder: 120,
     match: {
       particles: ["に", "で", "へ"],
-      grammarIds: ["particle-ni-de", "particle-he-ni"],
+      grammarIds: ["particle-ni-de", "particle-he-ni", "particle-ni-ga-naru"],
     },
   },
   {
@@ -261,7 +261,7 @@ export const CHAPTERS: ChapterDef[] = [
     sortOrder: 130,
     match: {
       particles: ["を"],
-      grammarIds: ["particle-wo-ga"],
+      grammarIds: ["particle-wo-ga", "particle-ni-wo-meet"],
     },
   },
   {
@@ -294,6 +294,8 @@ export const CHAPTERS: ChapterDef[] = [
         "pattern-te-iru",
         "pattern-to-omou",
         "pattern-nakereba-naranai",
+        "pattern-naide-kudasai",
+        "pattern-hou-ga-ii",
       ],
     },
   },
@@ -312,6 +314,7 @@ export const CHAPTERS: ChapterDef[] = [
         "pattern-ato-de",
         "pattern-aida-ni",
         "pattern-nagara",
+        "pattern-te-kara",
       ],
     },
   },
@@ -336,6 +339,7 @@ export const CHAPTERS: ChapterDef[] = [
         "pattern-yori",
         "pattern-kara-reason",
         "pattern-tewa-ikenai",
+        "pattern-koto-ga-aru",
       ],
     },
   },
