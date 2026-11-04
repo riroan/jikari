@@ -734,10 +734,11 @@ describe("kanji seeds", () => {
   // A_* 마이그레이션은 이미 들어간 DB 행을 고친다. 시드가 그 값을 따라가지 않으면 새 DB를
   // 만들 때 (migrate → add-kanji 순서) 수정 전 값이 다시 들어간다 — 실제로 훈독 103개가
   // 어간(た・よ…)으로 남아 있었다.
-  test("시드가 A_* 마이그레이션의 kanji_cards 수정과 일치한다", () => {
+  test("시드가 A_* 마이그레이션의 kanji_cards 수정과 일치한다 (마지막 수정 기준)", () => {
     const byId = new Map(cards.map((c) => [c.id, c]));
     const col = { kun_readings: "kunReadings", on_readings: "onReadings", korean_meaning: "koreanMeaning" } as const;
     const migDir = path.join(process.cwd(), "lib/db/migrations");
+    const last = new Map<string, { file: string; want: unknown }>();
     for (const f of readdirSync(migDir).filter((x) => x.startsWith("A_")).sort()) {
       const sql = readFileSync(path.join(migDir, f), "utf8").replace(/--[^\n]*/g, "");
       for (const [, sets, id] of sql.matchAll(/UPDATE\s+kanji_cards\s+SET\s+([\s\S]*?)\s+WHERE\s+id\s*=\s*'([^']+)'\s*;/g)) {
@@ -746,9 +747,13 @@ describe("kanji seeds", () => {
           const field = col[c as keyof typeof col];
           if (!field) continue;
           const want = v.startsWith("JSON_ARRAY") ? [...v.matchAll(/'([^']*)'/g)].map((m) => m[1]) : v.slice(1, -1);
-          expect(byId.get(id)?.[field], `${f}: ${id}.${field}`).toEqual(want);
+          last.set(`${id}\u0000${field}`, { file: f, want });
         }
       }
+    }
+    for (const [key, { file, want }] of last) {
+      const [id, field] = key.split("\u0000") as [string, keyof K];
+      expect(byId.get(id)?.[field], `${file}: ${id}.${field}`).toEqual(want);
     }
   });
 });
