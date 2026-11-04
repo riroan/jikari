@@ -7,6 +7,10 @@
  * v1 default: Light. Toggle UI is v1.1.
  */
 
+:root[data-sync] {
+  --sync-gap: 1.75rem;
+}
+
 :root {
   color-scheme: light dark;
 
@@ -19,6 +23,8 @@
   --safe-right:  env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left:   env(safe-area-inset-left, 0px);
+  /* 하단 저장 상태 줄(SyncStatus)이 떠 있는 동안만 셸이 아래 여백을 이만큼 더 둔다. */
+  --sync-gap: 0px;
 
   /* Light — Quiet Paper */
   --paper:       #F5EFE4;
