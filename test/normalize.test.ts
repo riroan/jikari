@@ -6,6 +6,13 @@ import {
 } from "@/lib/normalize";
 
 describe("normalizeJapanese", () => {
+  test("ignores punctuation an IME may add (。、！？「」)", () => {
+    expect(normalizeJapanese("たべる。")).toBe("たべる");
+    expect(normalizeJapanese("「たべる」")).toBe("たべる");
+    expect(normalizeJapanese("taberu.")).toBe("たべる");
+    expect(normalizeJapanese("ありがとう、ございます！")).toBe("ありがとうございます");
+  });
+
   test("hiragana passes through unchanged", () => {
     expect(normalizeJapanese("にち")).toBe("にち");
   });

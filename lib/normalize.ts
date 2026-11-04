@@ -11,9 +11,15 @@ import { toHiragana } from "wanakana";
  *   "ニチ"      → "にち"
  *   " にち "    → "にち"
  *   "き っ て"  → "きって"
+ *   "たべる。"  → "たべる"   (IME가 붙이는 문장부호는 채점하지 않는다)
+ *
+ * 문장부호(。、！？「」・ 및 ASCII .,!?)는 지운다 — 일본어 IME는 확정할 때 。를
+ * 붙이기 쉬운데, 그 한 글자로 정답이 오답이 됐다. 장음 ー는 건드리지 않는다.
  */
+const JA_PUNCT = /[。、，．！？「」『』・.,!?]/g;
+
 export function normalizeJapanese(input: string): string {
-  return toHiragana(input.normalize("NFC").replace(/\s+/g, ""));
+  return toHiragana(input.normalize("NFC").replace(/\s+/g, "").replace(JA_PUNCT, ""));
 }
 
 /**
