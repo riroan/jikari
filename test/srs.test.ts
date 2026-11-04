@@ -296,6 +296,14 @@ describe("hesitation-aware promotion", () => {
     expect(next.lastReviewed).toBe(NOW);
   });
 
+  it("advance: slow correct at box 5 keeps a graduated gap beyond 14 days", () => {
+    const last = NOW - 90 * DAY;
+    const grad = { ...box3, box: 5 as const, lastReviewed: last, nextDue: last + 90 * DAY };
+    expect(advance(grad, true, NOW, "choice", true).nextDue).toBe(NOW + 90 * DAY);
+    const fresh = { ...box3, box: 5 as const, lastReviewed: NOW - 14 * DAY, nextDue: NOW };
+    expect(advance(fresh, true, NOW, "choice", true).nextDue).toBe(NOW + 14 * DAY);
+  });
+
   it("advance: fast correct promotes; slow wrong is still a normal miss", () => {
     expect(advance(box3, true, NOW, "choice", false).box).toBe(4);
     expect(advance(box3, false, NOW, "choice", true).box).toBe(1);

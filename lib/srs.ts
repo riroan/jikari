@@ -15,7 +15,8 @@ import type { CardMode, LearningState } from "./types";
  *     (typed은 오타·送り仮名·표기 변이로 box 5→1 리셋이 과함. -1 스텝이 공정.)
  *   correctStreak → 0 on any wrong.
  *   - Slow correct (see {@link markAnswered}): box held, nextDue = now + the
- *     current box's interval. Never demotes; wrong answers are unaffected.
+ *     current box's interval (box 5: the already-scheduled gap if longer).
+ *     Never demotes; wrong answers are unaffected.
  */
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -153,9 +154,11 @@ export function advance(
   slow = false,
 ): LearningState {
   if (correct && slow) {
+    // Box 5 may already be graduated beyond 14 days: hold that interval, don't shorten it.
+    const prev = state.box === 5 && state.lastReviewed > 0 ? state.nextDue - state.lastReviewed : 0;
     return {
       ...state,
-      nextDue: now + INTERVAL_DAYS[state.box] * DAY_MS,
+      nextDue: now + Math.max(INTERVAL_DAYS[state.box] * DAY_MS, prev),
       correctStreak: state.correctStreak + 1,
       lastReviewed: now,
     };
