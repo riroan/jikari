@@ -63,6 +63,8 @@ export interface QuizCardProps {
   memoKey?: string;
   /** Shown only after a WRONG answer, below the next button (never shifts it). Null/undefined renders nothing. */
   missExample?: Example | null;
+  /** false where the answer is never scheduled (listening): hides the "느렸어요" note. Default true. */
+  scored?: boolean;
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean) => void;
   /**
@@ -82,6 +84,7 @@ export function QuizCard({
   speak,
   memoKey,
   missExample,
+  scored = true,
   onResolved,
   minQuestionHeight = 260,
 }: QuizCardProps) {
@@ -238,7 +241,7 @@ export function QuizCard({
                     힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
                   </p>
                 )}
-                {slow && !hinted && result === "correct" && (
+                {scored && slow && !hinted && result === "correct" && (
                   <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
                     느렸어요 · 한 번 더 볼게요
                   </p>

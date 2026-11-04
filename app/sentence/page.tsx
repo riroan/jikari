@@ -219,6 +219,7 @@ function SentenceQuiz({
   );
   return (
     <QuizCard
+      memoKey={`sentence:${card.id}`}
       speak={card.sentence.replace("＿＿＿", card.blank)}
       question={
         <div>

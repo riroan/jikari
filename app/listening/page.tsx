@@ -93,6 +93,7 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
     return shell(
       <QuizCard
         key={card.id}
+        scored={false}
         question={<ListenPrompt text={full} />}
         minQuestionHeight={0}
         input={{ mode: "choice", choices, correct, choiceFontFamily: "var(--font-kr-sans)" }}
@@ -120,6 +121,7 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
   return shell(
     <QuizCard
       key={card.id}
+      scored={false}
       question={<ListenPrompt text={card.reading} />}
       minQuestionHeight={0}
       input={{
