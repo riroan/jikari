@@ -131,7 +131,9 @@ export default function ProgressPage() {
   const { mastered: masteredCount, learning: learningCount, fresh: freshCount } = counts;
 
   return (
-    <ModePageShell title="進捗" headerMarginPx={40}>
+    <ModePageShell title="進捗" headerMarginPx={40} desktopWidth="wide">
+      {/* 데스크톱(lg)에서는 요약 섹션들을 두 칸으로, 히트맵·한자 격자는 전체 폭으로 */}
+      <div className="lg:grid lg:grid-cols-2 lg:gap-x-16 lg:items-start">
       <section className="mb-8">
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -348,6 +350,8 @@ export default function ProgressPage() {
         </ul>
       </section>
 
+      </div>
+
       <section className="mb-8" aria-labelledby="progress-year-heading">
         <div
           id="progress-year-heading"
@@ -372,7 +376,7 @@ export default function ProgressPage() {
         >
           KANJI ({kanjiCards.length})
         </div>
-        <ul role="list" className="grid grid-cols-10 gap-1">
+        <ul role="list" className="grid grid-cols-10 lg:grid-cols-[repeat(auto-fill,minmax(40px,1fr))] gap-1">
           {kanjiCards.map((card) => (
             <li key={card.id}>
               <KanjiCell
@@ -384,11 +388,6 @@ export default function ProgressPage() {
         </ul>
       </section>
 
-      <section className="mt-8 text-caption text-[color:var(--fg-faint)] leading-relaxed">
-        <p>
-          상용한자 2,136자 중 지금 학습 데이터에 있는 {kanjiCards.length}자를 보여줘요.
-        </p>
-      </section>
     </ModePageShell>
   );
 }

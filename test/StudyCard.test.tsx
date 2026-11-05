@@ -76,3 +76,15 @@ describe("StudyCard", () => {
     expect(next.className).toContain("min-h-[44px]");
   });
 });
+
+describe("StudyCard — keyboard (desktop)", () => {
+  it("← / → 키로 이전·다음 카드", () => {
+    const onPrev = vi.fn();
+    const onNext = vi.fn();
+    render(<StudyCard body={<div>x</div>} position={1} total={3} onPrev={onPrev} onNext={onNext} />);
+    fireEvent.keyDown(window, { key: "ArrowRight" });
+    fireEvent.keyDown(window, { key: "ArrowLeft" });
+    expect(onNext).toHaveBeenCalledTimes(1);
+    expect(onPrev).toHaveBeenCalledTimes(1);
+  });
+});

@@ -42,6 +42,11 @@ export interface ModePageShellProps {
   titleVariant?: "default" | "subdued";
   headerMarginPx?: number;
   afterHeader?: React.ReactNode;
+  /**
+   * 데스크톱(lg ≥1024px) 폭. "default"는 퀴즈·공부용 600px, "wide"는 목록·통계용
+   * 960px. 모바일·태블릿 세로에서는 둘 다 390px 그대로다.
+   */
+  desktopWidth?: "default" | "wide";
   children?: React.ReactNode;
 }
 
@@ -54,6 +59,7 @@ export function ModePageShell({
   titleVariant = "default",
   headerMarginPx = 32,
   afterHeader,
+  desktopWidth = "default",
   children,
 }: ModePageShellProps) {
   const dueByKey = useDueByKey();
@@ -68,7 +74,7 @@ export function ModePageShell({
     // 390px 박스 안쪽에 두면 박스가 이미 가장자리에서 먼 가로 모드에서 내용 폭만
     // 줄어(342→266px) 제목과 버튼이 줄바꿈된다.
     <main className="flex-1 flex justify-center pl-[var(--safe-left)] pr-[var(--safe-right)]">
-      <div className="w-full max-w-[390px] px-6 flex flex-col pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[calc(max(1.5rem,var(--safe-bottom))_+_var(--sync-gap))] md:pb-[calc(max(2.5rem,var(--safe-bottom))_+_var(--sync-gap))]">
+      <div className={`w-full max-w-[390px] ${desktopWidth === "wide" ? "lg:max-w-[960px]" : "lg:max-w-[600px]"} px-6 flex flex-col pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[calc(max(1.5rem,var(--safe-bottom))_+_var(--sync-gap))] md:pb-[calc(max(2.5rem,var(--safe-bottom))_+_var(--sync-gap))]`}>
         <header
           className="flex justify-between items-baseline mb-[var(--header-mb-mobile)] md:mb-[var(--header-mb)]"
           style={

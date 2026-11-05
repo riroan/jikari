@@ -4,9 +4,10 @@
  * Study card — flashcard browsing UI.
  * Shows front and back information simultaneously (no quizzing, no SRS update).
  * Navigation: bottom prev / next (thumb reach) + horizontal swipe, quiet n / N counter on top.
+ * 데스크톱: ← / → 키로 넘긴다.
  */
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { SpeakButton } from "./SpeakButton";
 import { ShadowButton } from "./ShadowButton";
 
@@ -31,6 +32,23 @@ export function StudyCard({
 }) {
   // Horizontal swipe: left = next, right = prev. Vertical scroll stays native (touch-action: pan-y).
   const start = useRef<{ x: number; y: number } | null>(null);
+  // 키 핸들러는 한 번만 달고, 최신 콜백은 ref로 읽는다 (카드마다 리스너를 갈아 끼우지 않게).
+  const nav = useRef({ onPrev, onNext });
+  useEffect(() => {
+    nav.current = { onPrev, onNext };
+  });
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      if ((e.target as HTMLElement | null)?.closest?.("input,textarea,select,[contenteditable]")) return;
+      if (e.key === "ArrowRight") nav.current.onNext();
+      else if (e.key === "ArrowLeft") nav.current.onPrev();
+      else return;
+      e.preventDefault();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
   const btn =
     "flex-1 text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors min-h-[44px] py-4 inline-flex items-center justify-center";
 
