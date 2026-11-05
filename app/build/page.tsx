@@ -12,12 +12,16 @@ import { shuffleIds } from "@/lib/deck";
 import { stripMarkup, parseMarkup } from "@/lib/jp-markup";
 import { useIsClient } from "@/lib/use-is-client";
 import { useQuizRun } from "@/lib/use-quiz-run";
+import { useLocalPref } from "@/lib/use-local-pref";
 
 /*
  * 문장 만들기는 "뜻 → 일본어 산출" 연습이라 SRS(review())와 퀴즈 통계
  * (recordQuizResult)를 일부러 건드리지 않는다. 카드 박스는 "보고 아는가"를
  * 재는 값이라 조립 결과를 섞으면 오염된다. 결과는 세션 요약(run)에만 남긴다.
  */
+const isStyle = (r: string): r is "assemble" | "write" => r === "assemble" || r === "write";
+const isOnOff = (r: string): r is "on" | "off" => r === "on" || r === "off";
+
 export default function BuildPage() {
   const mounted = useIsClient();
   const sentences = useCardsStore((s) => s.sentences);
@@ -25,9 +29,14 @@ export default function BuildPage() {
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
   const [index, setIndex] = useState(0);
   const [started, setStarted] = useState(false);
-  const [hard, setHard] = useState(false);
-  const [style, setStyle] = useState<"assemble" | "write">("assemble");
-  const [split, setSplit] = useState(false); // 조사 분리 (조립 전용)
+  // 마지막으로 고른 방식·옵션을 기기에 기억한다 (매번 다시 고르지 않게).
+  const [hardPref, setHardPref] = useLocalPref("jikari-build-hard", "off", isOnOff);
+  const [splitPref, setSplitPref] = useLocalPref("jikari-build-split", "off", isOnOff);
+  const [style, setStyle] = useLocalPref("jikari-build-style", "assemble", isStyle);
+  const hard = hardPref === "on";
+  const split = splitPref === "on"; // 조사 분리 (조립 전용)
+  const setHard = (v: boolean) => setHardPref(v ? "on" : "off");
+  const setSplit = (v: boolean) => setSplitPref(v ? "on" : "off");
   const [assists, setAssists] = useState(0); // 힌트를 쓴 문제 수 (세션 요약 표시용, SRS 무관)
   // 판마다 한 번만 만든다: 분할 가능한 카드만, 시드 셔플.
   const all = useMemo(() => buildItems(sentences, expressions), [sentences, expressions]);

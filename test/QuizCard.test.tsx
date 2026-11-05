@@ -166,3 +166,35 @@ describe("QuizCard — miss example + memo tail", () => {
     localStorage.clear();
   });
 });
+
+describe("QuizCard — keyboard choice (desktop)", () => {
+  it("숫자 키 1–4로 선지를 고른다", () => {
+    const onResolved = vi.fn();
+    render(
+      <QuizCard
+        question={<div>日</div>}
+        input={{ mode: "choice", choices: ["にち", "ひ", "じつ", "か"], correct: "にち" }}
+        onResolved={onResolved}
+      />,
+    );
+    fireEvent.keyDown(window, { key: "2" });
+    expect(onResolved).not.toHaveBeenCalled();
+    clickNext();
+    expect(onResolved).toHaveBeenCalledWith(false, "ひ");
+  });
+
+  it("입력창에서 숫자를 쳐도 선지가 눌리지 않는다", () => {
+    render(
+      <>
+        <input aria-label="x" />
+        <QuizCard
+          question={<div>日</div>}
+          input={{ mode: "choice", choices: ["にち", "ひ", "じつ", "か"], correct: "にち" }}
+          onResolved={vi.fn()}
+        />
+      </>,
+    );
+    fireEvent.keyDown(screen.getByLabelText("x"), { key: "1" });
+    expect(screen.queryByText("다음 →")).toBeNull();
+  });
+});
