@@ -66,7 +66,7 @@ bun scripts/import-chapters.ts   # 챕터 ↔ 카드 매핑 (data/chapters.confi
 
 콘텐츠 규칙:
 
-- **상용한자(常用漢字) 안에서만** 씁니다. 범위 밖 글자는 가나로 적습니다.
+- **상용한자(常用漢字) 안에서만** 씁니다. 범위 밖 글자는 가나로 적습니다. 한자 카드의 읽기도 상용한자표의 읽기만 씁니다. 둘 다 `data/joyo.json`(常用漢字表, 2010)으로 테스트가 검사합니다.
 - 한자가 있는 항목은 후리가나 마크업 `{漢字|かんじ}`을 함께 씁니다. 테스트가 마크업을 벗기면 원문과 같은지, 후리가나가 가나뿐인지 확인합니다.
 - 문장 빈칸의 오답은 그 문맥에서 **성립하지 않는** 같은 품사 단어로 고르고, 몇 단어에 쏠리지 않게 합니다.
 - 같은 id를 두 시드 파일에 넣지 않습니다. `data/seeds/`의 vocab 파일끼리도 id가 겹치면 안 됩니다(테스트가 막습니다). 먼저 import한 쪽만 남기 때문입니다.
@@ -82,10 +82,10 @@ bun run e2e         # playwright 스모크 (개발 서버를 3333 포트로 띄�
 
 ## 배포
 
-`vX.Y.Z` 태그를 push하면 GitHub Actions(`.github/workflows/release-image.yml`)가 arm64 Docker 이미지를 빌드해 `registry.gitlab.com/riroan/riroan/jikari:<태그>`로 올립니다. 저장소 시크릿 `GITLAB_REGISTRY_USERNAME`, `GITLAB_REGISTRY_TOKEN`이 필요합니다. 컨테이너는 `DB_*` 환경 변수를 받습니다.
+`vX.Y.Z` 태그를 push하면 GitHub Actions(`.github/workflows/release-image.yml`)가 arm64 Docker 이미지를 빌드해 `registry.gitlab.com/riroan/riroan/jikari:<태그>`로 올립니다. 저장소 시크릿 `GITLAB_REGISTRY_USERNAME`, `GITLAB_REGISTRY_TOKEN`이 필요합니다. 이미지 푸시 뒤 `deploy` 잡이 `KUBECONFIG` 시크릿(base64)으로 `jikari` 네임스페이스의 `jikari-web` 디플로이먼트를 새 태그로 롤아웃하고 마이그레이션을 실행합니다(실패하면 `rollout undo`). 컨테이너는 `DB_*` 환경 변수를 받습니다.
 
 - 이미지 이름은 워크플로 `IMAGE`(`registry.gitlab.com/riroan/riroan/jikari`)와 배포 매니페스트의 `image`가 같아야 합니다. 매니페스트는 이 저장소 밖에 있으니 직접 확인합니다.
-- `git pull` 후에는 `bun run db:migrate`를 실행합니다. 최근 마이그레이션: `0013_daily_goal`(`app_settings.daily_goal`), `A_0004_kanji_dup_levels`, `A_0005_content_fixes`, `A_0006_content_fixes_2`, `A_0007_sentence_distractor_spread`, `A_0008_sentence_verb_distractor_spread`, `A_0009_kanji_on_reading_fixes`, `A_0010_kanji_non_joyo_readings`, `A_0011_expression_e004`.
+- `git pull` 후에는 `bun run db:migrate`를 실행합니다. 최근 마이그레이션: `0013_daily_goal`(`app_settings.daily_goal`), `A_0004_kanji_dup_levels`, `A_0005_content_fixes`, `A_0006_content_fixes_2`, `A_0007_sentence_distractor_spread`, `A_0008_sentence_verb_distractor_spread`, `A_0009_kanji_on_reading_fixes`, `A_0010_kanji_non_joyo_readings`, `A_0011_expression_e004`, `A_0012_kanji_joyo_readings`.
 - 새 이미지를 롤아웃한 뒤에는 클러스터에서 마이그레이션을 한 번 실행합니다.
 
   ```bash

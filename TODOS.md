@@ -18,10 +18,6 @@
 - **What:** (1) 카운터(heatmap 일수, quizStats)는 기기 간 max 병합이라 두 기기에서 같은 날 공부하면 과소 집계된다. (2) 오프라인에서 한 초기화는 서버 상태에서 되살아난다. (3) stale 두 번째 기기와 replace(복원/초기화) 충돌 동작을 실기기로 확인하지 않았다. (4) If-Match 태그가 내용 해시(sha1)라 버전 컬럼으로 바꿀지 검토가 필요하다.
 - **Trigger:** 기기를 두 대 이상 같이 쓰면서 집계가 어긋나거나 초기화가 되살아날 때. 해시 방식은 성능이나 충돌 문제가 보일 때.
 
-### vocab 시드 id 중복 (미추적 파일)
-- **What:** `data/seeds/`의 미추적 vocab 파일(vocab-n3-batch2, vocab-n4-batch5~8, vocab-n5-batch3~6)이 기존 시드와 id가 겹친다. 정리 전까지 `test/data.test.ts`의 id 중복 검사가 실패한다.
-- **Trigger:** 미추적 시드를 커밋하거나 import하기 전에.
-
 ### 표현 챕터 멤버 라벨 '겸양' vs 丁重語
 - **What:** 표현 챕터 멤버 UI의 register 라벨은 '겸양'으로 나오지만 register enum은 丁重語(정중어) 기준이라 맞지 않는다. 라벨을 enum에 맞출지 정한다.
 - **Trigger:** 표현 챕터 화면을 다음에 손볼 때.

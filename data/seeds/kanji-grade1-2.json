@@ -264,13 +264,8 @@
   {
     "id": "虫",
     "kanji": "虫",
-    "onReadings": [
-      "ちゅう",
-      "き"
-    ],
-    "kunReadings": [
-      "むし"
-    ],
+    "onReadings": ["ちゅう"],
+    "kunReadings": ["むし"],
     "meanings": [
       "insect",
       "bug",
@@ -286,12 +281,8 @@
   {
     "id": "貝",
     "kanji": "貝",
-    "onReadings": [
-      "ばい"
-    ],
-    "kunReadings": [
-      "かい"
-    ],
+    "onReadings": [],
+    "kunReadings": ["かい"],
     "meanings": [
       "shellfish"
     ],
@@ -372,13 +363,8 @@
   {
     "id": "公",
     "kanji": "公",
-    "onReadings": [
-      "こう",
-      "く"
-    ],
-    "kunReadings": [
-      "おおやけ"
-    ],
+    "onReadings": ["こう"],
+    "kunReadings": ["おおやけ"],
     "meanings": [
       "public",
       "prince",
@@ -394,13 +380,8 @@
   {
     "id": "刀",
     "kanji": "刀",
-    "onReadings": [
-      "とう"
-    ],
-    "kunReadings": [
-      "かたな",
-      "そり"
-    ],
+    "onReadings": ["とう"],
+    "kunReadings": ["かたな"],
     "meanings": [
       "sword",
       "saber",
@@ -437,15 +418,8 @@
   {
     "id": "合",
     "kanji": "合",
-    "onReadings": [
-      "ごう",
-      "がっ"
-    ],
-    "kunReadings": [
-      "あう",
-      "あい",
-      "あわす"
-    ],
+    "onReadings": ["ごう", "がっ"],
+    "kunReadings": ["あう", "あわす"],
     "meanings": [
       "fit",
       "suit",
@@ -588,14 +562,8 @@
   {
     "id": "当",
     "kanji": "当",
-    "onReadings": [
-      "とう"
-    ],
-    "kunReadings": [
-      "あたる",
-      "あたり",
-      "あてる"
-    ],
+    "onReadings": ["とう"],
+    "kunReadings": ["あたる", "あてる"],
     "meanings": [
       "hit",
       "right",
@@ -611,15 +579,8 @@
   {
     "id": "形",
     "kanji": "形",
-    "onReadings": [
-      "けい",
-      "ぎょう"
-    ],
-    "kunReadings": [
-      "かた",
-      "かたち",
-      "なり"
-    ],
+    "onReadings": ["けい", "ぎょう"],
+    "kunReadings": ["かた", "かたち"],
     "meanings": [
       "shape",
       "form",
@@ -654,15 +615,8 @@
   {
     "id": "数",
     "kanji": "数",
-    "onReadings": [
-      "すう",
-      "す"
-    ],
-    "kunReadings": [
-      "かず",
-      "かぞえる",
-      "しばしば"
-    ],
+    "onReadings": ["すう", "す"],
+    "kunReadings": ["かず", "かぞえる"],
     "meanings": [
       "number",
       "strength",
@@ -781,14 +735,8 @@
   {
     "id": "活",
     "kanji": "活",
-    "onReadings": [
-      "かつ"
-    ],
-    "kunReadings": [
-      "いきる",
-      "いかす",
-      "いける"
-    ],
+    "onReadings": ["かつ"],
+    "kunReadings": [],
     "meanings": [
       "lively",
       "resuscitation",
@@ -824,14 +772,8 @@
   {
     "id": "点",
     "kanji": "点",
-    "onReadings": [
-      "てん"
-    ],
-    "kunReadings": [
-      "つける",
-      "つく",
-      "たてる"
-    ],
+    "onReadings": ["てん"],
+    "kunReadings": [],
     "meanings": [
       "spot",
       "point",
@@ -913,13 +855,8 @@
   {
     "id": "知",
     "kanji": "知",
-    "onReadings": [
-      "ち"
-    ],
-    "kunReadings": [
-      "しる",
-      "しらせる"
-    ],
+    "onReadings": ["ち"],
+    "kunReadings": ["しる"],
     "meanings": [
       "know",
       "wisdom"
@@ -953,14 +890,8 @@
   {
     "id": "米",
     "kanji": "米",
-    "onReadings": [
-      "べい",
-      "まい"
-    ],
-    "kunReadings": [
-      "こめ",
-      "よね"
-    ],
+    "onReadings": ["べい", "まい"],
+    "kunReadings": ["こめ"],
     "meanings": [
       "rice",
       "USA",
@@ -1021,12 +952,8 @@
   {
     "id": "線",
     "kanji": "線",
-    "onReadings": [
-      "せん"
-    ],
-    "kunReadings": [
-      "すじ"
-    ],
+    "onReadings": ["せん"],
+    "kunReadings": [],
     "meanings": [
       "line",
       "track"
@@ -1041,14 +968,8 @@
   {
     "id": "羽",
     "kanji": "羽",
-    "onReadings": [
-      "う"
-    ],
-    "kunReadings": [
-      "は",
-      "わ",
-      "はね"
-    ],
+    "onReadings": ["う"],
+    "kunReadings": ["は", "はね"],
     "meanings": [
       "feathers",
       "counter for birds, rabbits"
@@ -1106,13 +1027,8 @@
   {
     "id": "谷",
     "kanji": "谷",
-    "onReadings": [
-      "こく"
-    ],
-    "kunReadings": [
-      "たに",
-      "きわまる"
-    ],
+    "onReadings": ["こく"],
+    "kunReadings": ["たに"],
     "meanings": [
       "valley"
     ],
@@ -1184,15 +1100,8 @@
   {
     "id": "間",
     "kanji": "間",
-    "onReadings": [
-      "かん",
-      "けん"
-    ],
-    "kunReadings": [
-      "あいだ",
-      "ま",
-      "あい"
-    ],
+    "onReadings": ["かん", "けん"],
+    "kunReadings": ["あいだ", "ま"],
     "meanings": [
       "interval",
       "space"
@@ -1227,14 +1136,8 @@
   {
     "id": "馬",
     "kanji": "馬",
-    "onReadings": [
-      "ば",
-      "め"
-    ],
-    "kunReadings": [
-      "うま",
-      "ま"
-    ],
+    "onReadings": ["ば"],
+    "kunReadings": ["うま", "ま"],
     "meanings": [
       "horse"
     ],

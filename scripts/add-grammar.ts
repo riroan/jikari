@@ -4,6 +4,7 @@ import path from "node:path";
 import { parseGrammarCardArray } from "../lib/grammar-schema";
 import type { GrammarCard } from "../lib/types";
 import { loadJikariEnv } from "./_env";
+import { refuseNonJoyo } from "./_joyo-guard";
 
 loadJikariEnv();
 
@@ -39,6 +40,8 @@ async function main() {
   const raw = await readFile(path.resolve(inputPath), "utf-8");
   const parsedJson = JSON.parse(raw);
   const cards = parseGrammarCardArray(parsedJson);
+  // 루비 {漢字|かんじ}의 후리가나는 가나라 그대로 둬도 된다 — 한자만 본다.
+  refuseNonJoyo(cards.map((c) => ({ id: c.id, text: JSON.stringify(c) })));
 
   console.log(`parsed ${cards.length} grammar cards from ${inputPath}`);
   for (const c of cards) {

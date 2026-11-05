@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 import { validate as validateExpression } from "../scripts/add-expression";
 import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
 import { parseGrammarCardArray } from "@/lib/grammar-schema";
+import { joyoReadingProblems, nonJoyoChars } from "@/lib/joyo";
 import { conjugate } from "@/lib/conjugation";
 import { conjugateAdj } from "@/lib/adjective";
 import { ALL_CONJUGATION_FORMS } from "@/lib/types";
@@ -840,5 +841,44 @@ describe("seeds follow A_* data migrations", () => {
       if (!card) continue;
       expect(card[field], `${file}: ${id}.${field}`).toEqual(value);
     }
+  });
+});
+
+// CLAUDE.md의 콘텐츠 규칙: 상용한자(常用漢字表, 2,136자) 범위. 글자도, 한자 카드의 읽기도.
+describe("常用漢字 range", () => {
+  const seedDir = path.join(process.cwd(), "data/seeds");
+  const dataDir = path.join(process.cwd(), "data");
+  const strip = (s: string) => stripMarkup(parseMarkup(s));
+
+  test("모든 콘텐츠의 한자는 상용한자다", () => {
+    const bad: string[] = [];
+    for (const f of readdirSync(seedDir).filter((x) => x.endsWith(".json"))) {
+      for (const c of JSON.parse(readFileSync(path.join(seedDir, f), "utf8")) as Record<string, unknown>[]) {
+        const text = ["word", "sentence", "blank", "expression_jp", "kanji"]
+          .map((k) => c[k])
+          .concat(Array.isArray(c.distractors) ? c.distractors : [])
+          .filter((v): v is string => typeof v === "string")
+          .join("");
+        for (const ch of nonJoyoChars(text)) bad.push(`${f} ${String(c.id)}: ${ch}`);
+      }
+    }
+    for (const f of readdirSync(dataDir).filter((x) => x.startsWith("grammar-") && x.endsWith(".json"))) {
+      const text = strip(readFileSync(path.join(dataDir, f), "utf8"));
+      for (const ch of nonJoyoChars(text)) bad.push(`${f}: ${ch}`);
+    }
+    expect(bad).toEqual([]);
+  });
+
+  // 한자 퀴즈는 등록된 읽기를 그대로 정답·선지로 쓴다 — 表 밖 읽기(争 いかでか)나
+  // 어간(暗 くら)이 섞이면 그대로 가르치게 된다 (A_0012).
+  test("한자 카드의 음독·훈독은 상용한자표의 읽기다", () => {
+    const bad = readdirSync(seedDir)
+      .filter((x) => x.startsWith("kanji-") && x.endsWith(".json"))
+      .flatMap((f) =>
+        (JSON.parse(readFileSync(path.join(seedDir, f), "utf8")) as Parameters<typeof joyoReadingProblems>[0][])
+          .flatMap(joyoReadingProblems)
+          .map((p) => `${f} ${p}`),
+      );
+    expect(bad).toEqual([]);
   });
 });
