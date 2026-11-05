@@ -24,7 +24,7 @@ import {
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
-import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
+import { INITIAL_RATING, expectedScore, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
 import type { VocabCard } from "@/lib/types";
 
@@ -150,6 +150,7 @@ function VocabPageInner() {
           seed={seed + index + epoch * 977}
           answerMode={pickMode(getBox("vocab", card.id), threshold)}
           direction={chooseDirection(getBox("vocab", card.id), card.id, epoch)}
+          expected={expectedScore(ratingTier, jlptDifficulty(card))}
           onResolved={(wasCorrect, answerMode) => {
             if (!run.retrying) {
               review(
@@ -192,19 +193,22 @@ function VocabQuiz({
   seed,
   answerMode,
   direction,
+  expected,
   onResolved,
 }: {
   card: VocabCard;
   seed: number;
   answerMode: "choice" | "typed";
   direction: QuizDirection;
+  /** 이 카드를 맞힐 기대 확률 — 선지의 닮은 정도를 조절한다. */
+  expected: number;
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
   const missExample = useVocabMissExample(card);
   const input =
     answerMode === "choice"
       ? (() => {
-          const choices = generateVocabChoices(card, direction, seed);
+          const choices = generateVocabChoices(card, direction, seed, expected);
           return {
             mode: "choice" as const,
             choices: choices.choices,

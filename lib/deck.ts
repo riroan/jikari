@@ -5,16 +5,10 @@
  * Deterministic given a seed — useful for tests and consistency across renders.
  */
 
+import { seededRandom, seededShuffle } from "./prng";
+
 export function shuffleIds<T>(ids: readonly T[], seed: number): T[] {
-  const copy = ids.slice();
-  let s = seed | 0;
-  for (let i = copy.length - 1; i > 0; i--) {
-    s = (s * 9301 + 49297) % 233280;
-    const r = s / 233280;
-    const j = Math.floor(r * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
+  return seededShuffle(ids, seed);
 }
 
 /**
@@ -124,8 +118,8 @@ export function pickByDifficulty<T>(
 ): T {
   const weights = items.map((item) => difficultyWeight(difficultyOf(item), rating));
   const total = weights.reduce((sum, w) => sum + w, 0);
-  // shuffleIds와 같은 LCG. 시드 하나에서 [0, 1) 하나를 뽑는다.
-  let draw = ((Math.abs(seed) * 9301 + 49297) % 233280) / 233280 * total;
+  // shuffleIds와 같은 PRNG. 시드 하나에서 [0, 1) 하나를 뽑는다.
+  let draw = seededRandom(seed)() * total;
   for (let i = 0; i < items.length; i++) {
     draw -= weights[i];
     if (draw < 0) return items[i];

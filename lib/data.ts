@@ -8,6 +8,7 @@ import type {
   VocabCard,
 } from "./types";
 import { useCardsStore } from "./cards-store";
+import { seededShuffle } from "./prng";
 
 export type QuizDirection = "recall" | "recognition";
 
@@ -159,21 +160,66 @@ function vocabPos(card: VocabCard): string {
   return "other";
 }
 
+/**
+ * 문자열 모양이 얼마나 닮았나 (0–3). 품사/register 점수 위에 얹는 보조 점수다.
+ * 정답만 유난히 길거나 짧고, 정답만 "~하다"로 끝나면 뜻을 몰라도 모양으로
+ * 답이 갈린다. 길이가 비슷하면 +2(가깝게)/+1(조금 멀게), 끝 글자가 같으면 +1.
+ * 하드 필터가 아니라서 점수가 같은 후보들 사이의 동점 해소로만 작동한다.
+ */
+export function shapeScore(correct: string, candidate: string): number {
+  const d = Math.abs(correct.length - candidate.length);
+  let score = 0;
+  if (d <= Math.max(1, Math.round(correct.length * 0.15))) score += 2;
+  else if (d <= Math.max(3, Math.round(correct.length * 0.3))) score += 1;
+  if (correct.at(-1) === candidate.at(-1)) score += 1;
+  return score;
+}
+
+/** 일본어 단어 모양: 한자 유무가 같으면 +1 (가나만인 정답에 한자 선지만 섞이는 것 방지). */
+function hasKanji(text: string): boolean {
+  return /\p{Script=Han}/u.test(text);
+}
+
+/**
+ * 철자가 겹치는 정도 (0–2). 한자를 공유하거나(会社/会議) 첫·끝 글자가 같으면
+ * 눈으로 헷갈리는 오답이다. 철자가 닮은 오답은 단순 무작위보다 학습 효과가
+ * 있다는 보고가 있다 (유사 철자 선지: EDM 2025, Susanti 2018의 철자 유사도 순위).
+ */
+function orthographicScore(a: string, b: string): number {
+  const kanjiA = new Set([...a].filter((c) => /\p{Script=Han}/u.test(c)));
+  const sharesKanji = [...b].some((c) => kanjiA.has(c));
+  let score = sharesKanji ? 1 : 0;
+  if (a[0] === b[0] || a.at(-1) === b.at(-1)) score += 1;
+  return score;
+}
+
+/** 난이도(JLPT 레벨)가 한 단계 안이면 +1. 빈도·난이도 유사도 순위의 근사. */
+function levelScore(a: VocabCard, b: VocabCard): number {
+  return Math.abs(a.jlptLevel - b.jlptLevel) <= 1 ? 1 : 0;
+}
+
 /** 같은 품사 버킷 후보에 가중치를 준 선지 3개. 양방향 単語 퀴즈 공용. */
 function samePosDistractors(
   byLabel: Map<string, VocabCard>,
   pos: string,
   seed: number,
+  shape: (label: string, card: VocabCard) => number,
+  windowMult?: number,
 ): string[] {
-  return sampleScored([...byLabel.keys()], 3, seed, (label) =>
-    vocabPos(byLabel.get(label)!) === pos ? 3 : 0,
+  return sampleScored(
+    [...byLabel.keys()],
+    3,
+    seed,
+    (label) => (vocabPos(byLabel.get(label)!) === pos ? 3 : 0) + shape(label, byLabel.get(label)!),
+    windowMult,
   );
 }
 
 export function generateKanjiChoices(
   card: KanjiCard,
   questionType: "on" | "kun",
-  seed: number = Math.random()
+  seed: number = Math.random(),
+  expected?: number,
 ): { correct: string; choices: string[] } {
   const correctReadings = questionType === "on" ? card.onReadings : card.kunReadings;
   if (correctReadings.length === 0) {
@@ -181,7 +227,7 @@ export function generateKanjiChoices(
     if (fallback.length === 0) {
       return { correct: "?", choices: ["?", "?", "?", "?"] };
     }
-    return generateKanjiChoices(card, questionType === "on" ? "kun" : "on", seed);
+    return generateKanjiChoices(card, questionType === "on" ? "kun" : "on", seed, expected);
   }
   const correct = correctReadings[0];
 
@@ -203,7 +249,13 @@ export function generateKanjiChoices(
   const distractors = pickOffCenter(
     correct,
     (attempt) =>
-      sampleScored(pool, 3, seed + attempt * 101, kanjiReadingScore(correct, questionType)),
+      sampleScored(
+        pool,
+        3,
+        seed + attempt * 101,
+        kanjiReadingScore(correct, questionType),
+        windowForExpected(expected),
+      ),
   );
   const choices = shuffle([correct, ...distractors], seed + 1);
   return { correct, choices };
@@ -257,7 +309,8 @@ export function centerTell(correct: string, distractors: string[]): number {
 export function generateVocabChoices(
   card: VocabCard,
   direction: QuizDirection,
-  seed: number = Math.random()
+  seed: number = Math.random(),
+  expected?: number,
 ): { correct: string; choices: string[] } {
   const all = cards().vocab;
   // 뜻을 하나라도 공유하는 카드는 후보에서 뺀다. "알다"를 묻는데 分かる와
@@ -275,7 +328,17 @@ export function generateVocabChoices(
       const label = v.ruby ?? v.word;
       if (label !== correct && !byLabel.has(label)) byLabel.set(label, v);
     }
-    const distractors = samePosDistractors(byLabel, vocabPos(card), seed);
+    const distractors = samePosDistractors(
+      byLabel,
+      vocabPos(card),
+      seed,
+      (_, other) =>
+        Math.min(2, shapeScore(card.word, other.word)) +
+        (hasKanji(card.word) === hasKanji(other.word) ? 1 : 0) +
+        orthographicScore(card.word, other.word) +
+        levelScore(card, other),
+      windowForExpected(expected),
+    );
     return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
   }
 
@@ -288,7 +351,13 @@ export function generateVocabChoices(
       if (!card.koreanMeanings.includes(m) && !byMeaning.has(m)) byMeaning.set(m, other);
     }
   }
-  const distractors = samePosDistractors(byMeaning, vocabPos(card), seed);
+  const distractors = samePosDistractors(
+    byMeaning,
+    vocabPos(card),
+    seed,
+    (label, other) => shapeScore(correct, label) + levelScore(card, other),
+    windowForExpected(expected),
+  );
   return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }
 
@@ -302,7 +371,10 @@ export function generateChoices(
   distractors: string[],
   seed: number = Math.random(),
 ): { correct: string; choices: string[] } {
-  return { correct, choices: shuffle([correct, ...distractors], seed) };
+  // 방어선: 시드 테스트가 걸러 주지만, 정답과 같거나 서로 같은 오답이 새어
+  // 들어오면 화면에 같은 선지가 두 번 뜨고 정답이 둘로 보인다.
+  const unique = [...new Set(distractors)].filter((d) => d !== correct);
+  return { correct, choices: shuffle([correct, ...unique], seed) };
 }
 
 export function generateSentenceChoices(
@@ -356,6 +428,7 @@ export function generateExpressionChoices(
   card: ExpressionCard,
   direction: QuizDirection,
   seed: number = Math.random(),
+  expected?: number,
 ): { correct: string; choices: string[] } {
   const others = cards().expressions.filter((e) => e.id !== card.id);
   const recall = direction === "recall";
@@ -367,8 +440,13 @@ export function generateExpressionChoices(
     const label = recall ? (e.ruby ?? e.expression_jp) : e.translation_ko;
     if (label !== correct && !byLabel.has(label)) byLabel.set(label, e);
   }
-  const distractors = sampleScored([...byLabel.keys()], 3, seed, (label) =>
-    byLabel.get(label)!.register === card.register ? 3 : 0,
+  const distractors = sampleScored(
+    [...byLabel.keys()],
+    3,
+    seed,
+    (label) =>
+      (byLabel.get(label)!.register === card.register ? 3 : 0) + shapeScore(correct, label),
+    windowForExpected(expected),
   );
   return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }
@@ -390,6 +468,22 @@ export function generateGrammarQuizChoices(
 // Pure helpers (seed-based for test stability)
 // ─────────────────────────────────────────────────────────────
 
+const DEFAULT_WINDOW = 4;
+
+/**
+ * 이 카드를 맞힐 것으로 기대되는 확률(lib/rating.ts expectedScore)에 따른 창 배수.
+ * 잘 아는 카드(기대 정답률 높음)는 상위 점수 후보만 써서 오답을 닮게 하고,
+ * 어려운 카드는 창을 넓혀 덜 닮은 오답도 섞는다 — 못 맞히는 카드에 가장
+ * 헷갈리는 선지까지 얹으면 좌절만 쌓인다. 값을 안 주면 기본 창.
+ */
+export function windowForExpected(expected?: number): number {
+  if (expected === undefined) return DEFAULT_WINDOW;
+  if (expected >= 0.85) return 1.5;
+  if (expected >= 0.7) return 2.5;
+  if (expected >= 0.5) return DEFAULT_WINDOW;
+  return 6;
+}
+
 /**
  * 점수 상위권에서 n개를 시드로 뽑는다.
  *
@@ -403,6 +497,7 @@ function sampleScored<T>(
   n: number,
   seed: number,
   score: (candidate: T) => number,
+  windowMult: number = DEFAULT_WINDOW,
 ): T[] {
   const uniquePool = Array.from(new Set(pool));
   if (uniquePool.length <= n) return uniquePool;
@@ -411,20 +506,9 @@ function sampleScored<T>(
   const ranked = shuffle(uniquePool, seed)
     .map((value) => ({ value, weight: score(value) }))
     .sort((a, b) => b.weight - a.weight)
-    .slice(0, n * 4)
+    .slice(0, Math.max(n, Math.round(n * windowMult)))
     .map((entry) => entry.value);
   return shuffle(ranked, seed + 7).slice(0, n);
 }
 
-function shuffle<T>(arr: T[], seed: number): T[] {
-  const copy = [...arr];
-  let s = seed;
-  for (let i = copy.length - 1; i > 0; i--) {
-    s = (s * 9301 + 49297) % 233280;
-    const r = s / 233280;
-    const j = Math.floor(r * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
-
+const shuffle = seededShuffle;

@@ -52,6 +52,11 @@ describe("generateChoices", () => {
     expect(orders.size).toBeGreaterThan(1);
   });
 
+  test("정답과 같거나 중복된 오답은 걸러낸다", () => {
+    const r = generateChoices("A", ["A", "B", "B", "C"], 3);
+    expect([...r.choices].sort()).toEqual(["A", "B", "C"]);
+  });
+
   test("empty distractors works", () => {
     const r = generateChoices("only", [], 0);
     expect(r.correct).toBe("only");
@@ -880,5 +885,21 @@ describe("常用漢字 range", () => {
           .map((p) => `${f} ${p}`),
       );
     expect(bad).toEqual([]);
+  });
+});
+
+describe("선지 창 (레이팅 연동)", () => {
+  test("기대 정답률이 높을수록 창이 좁고, 낮을수록 넓다", async () => {
+    const { windowForExpected } = await import("@/lib/data");
+    expect(windowForExpected()).toBe(4);
+    expect(windowForExpected(0.95)).toBeLessThan(windowForExpected(0.75));
+    expect(windowForExpected(0.75)).toBeLessThan(windowForExpected(0.55));
+    expect(windowForExpected(0.2)).toBeGreaterThan(windowForExpected(0.55));
+  });
+
+  test("shapeScore: 길이와 끝 글자가 닮을수록 높다", async () => {
+    const { shapeScore } = await import("@/lib/data");
+    expect(shapeScore("먹다", "마시다")).toBeGreaterThan(shapeScore("먹다", "자동차를 운전하다 가다"));
+    expect(shapeScore("먹다", "가다")).toBe(3);
   });
 });
