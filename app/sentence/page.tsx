@@ -7,6 +7,7 @@ import { ModePageShell } from "@/components/ModePageShell";
 import { QuizCard } from "@/components/QuizCard";
 import { StudyCard } from "@/components/StudyCard";
 import { EmptyCardsState } from "@/components/EmptyCardsState";
+import { SentenceFilled } from "@/components/SentenceFilled";
 import { RubyText } from "@/components/Furigana";
 import {
   AUDIO_FIRST_KEY,
@@ -29,7 +30,6 @@ import type { SentenceCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
 
-const BLANK = "＿＿＿";
 
 export default function SentencePage() {
   return (
@@ -141,7 +141,7 @@ function SentencePageInner() {
       {emptyWeak && <WeakEmptyNotice />}
       {mode === "study" ? (
         <StudyCard
-          body={<SentenceStudyBody card={card} />}
+          body={<SentenceFilled card={card} />}
           speak={card.sentence.replace("＿＿＿", card.blank)}
           shadow
           position={index + 1}
@@ -242,39 +242,9 @@ function SentenceQuiz({
         correct: choices.correct,
         choiceFontFamily: "var(--font-jp-sans)",
       }}
+      back={<SentenceFilled card={card} />}
       onResolved={onResolved}
       minQuestionHeight={0}
     />
   );
 }
-
-function SentenceStudyBody({ card }: { card: SentenceCard }) {
-  // Study mode: show the full sentence with the blank already filled in.
-  const hasRuby = Boolean(card.sentenceRuby);
-  const sentenceSrc = card.sentenceRuby ?? card.sentence;
-  const answerSrc = card.blankRuby ?? card.blank;
-  const [before, after] = sentenceSrc.split(BLANK);
-
-  return (
-    <div className="flex flex-col gap-4">
-      <div
-        className="text-h2 leading-[1.8] font-medium"
-        style={{
-          fontFamily: "var(--font-jp-serif)",
-          color: "var(--fg)",
-          letterSpacing: "-0.01em",
-        }}
-      >
-        {hasRuby ? <RubyText text={before ?? ""} /> : before}
-        <span className="text-[color:var(--accent-progress-text)] font-semibold">
-          {hasRuby ? <RubyText text={answerSrc} /> : answerSrc}
-        </span>
-        {after !== undefined && (hasRuby ? <RubyText text={after} /> : after)}
-      </div>
-      <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
-        {card.translation}
-      </div>
-    </div>
-  );
-}
-
