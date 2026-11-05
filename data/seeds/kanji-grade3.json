@@ -2,13 +2,8 @@
   {
     "id": "丁",
     "kanji": "丁",
-    "onReadings": [
-      "ちょう",
-      "てい"
-    ],
-    "kunReadings": [
-      "ひのと"
-    ],
+    "onReadings": ["ちょう", "てい"],
+    "kunReadings": [],
     "meanings": [
       "street",
       "ward",
@@ -24,13 +19,8 @@
   {
     "id": "両",
     "kanji": "両",
-    "onReadings": [
-      "りょう"
-    ],
-    "kunReadings": [
-      "てる",
-      "ふたつ"
-    ],
+    "onReadings": ["りょう"],
+    "kunReadings": [],
     "meanings": [
       "both",
       "old Japanese coin",
@@ -46,13 +36,8 @@
   {
     "id": "予",
     "kanji": "予",
-    "onReadings": [
-      "よ",
-      "しゃ"
-    ],
-    "kunReadings": [
-      "あらかじめ"
-    ],
+    "onReadings": ["よ"],
+    "kunReadings": [],
     "meanings": [
       "beforehand",
       "previous",
@@ -89,14 +74,8 @@
   {
     "id": "係",
     "kanji": "係",
-    "onReadings": [
-      "けい"
-    ],
-    "kunReadings": [
-      "かかる",
-      "かかり",
-      "かかわる"
-    ],
+    "onReadings": ["けい"],
+    "kunReadings": ["かかる", "かかり"],
     "meanings": [
       "person in charge",
       "connection",
@@ -131,13 +110,8 @@
   {
     "id": "具",
     "kanji": "具",
-    "onReadings": [
-      "ぐ"
-    ],
-    "kunReadings": [
-      "そなえる",
-      "つぶさに"
-    ],
+    "onReadings": ["ぐ"],
+    "kunReadings": [],
     "meanings": [
       "tool",
       "utensil",
@@ -172,14 +146,8 @@
   {
     "id": "助",
     "kanji": "助",
-    "onReadings": [
-      "じょ"
-    ],
-    "kunReadings": [
-      "たすける",
-      "たすかる",
-      "すける"
-    ],
+    "onReadings": ["じょ"],
+    "kunReadings": ["たすける", "たすかる"],
     "meanings": [
       "help",
       "rescue",
@@ -195,14 +163,8 @@
   {
     "id": "勝",
     "kanji": "勝",
-    "onReadings": [
-      "しょう"
-    ],
-    "kunReadings": [
-      "かつ",
-      "まさる",
-      "すぐれる"
-    ],
+    "onReadings": ["しょう"],
+    "kunReadings": ["かつ", "まさる"],
     "meanings": [
       "victory",
       "win",
@@ -218,15 +180,8 @@
   {
     "id": "化",
     "kanji": "化",
-    "onReadings": [
-      "か",
-      "け"
-    ],
-    "kunReadings": [
-      "ばける",
-      "ばかす",
-      "ふける"
-    ],
+    "onReadings": ["か", "け"],
+    "kunReadings": ["ばける", "ばかす"],
     "meanings": [
       "change",
       "take the form of",
@@ -264,15 +219,8 @@
   {
     "id": "反",
     "kanji": "反",
-    "onReadings": [
-      "はん",
-      "ほん"
-    ],
-    "kunReadings": [
-      "そる",
-      "そらす",
-      "かえす"
-    ],
+    "onReadings": ["はん", "ほん"],
+    "kunReadings": ["そる", "そらす"],
     "meanings": [
       "anti-"
     ],
@@ -286,14 +234,8 @@
   {
     "id": "向",
     "kanji": "向",
-    "onReadings": [
-      "こう"
-    ],
-    "kunReadings": [
-      "むく",
-      "むい",
-      "むける"
-    ],
+    "onReadings": ["こう"],
+    "kunReadings": ["むく", "むける"],
     "meanings": [
       "yonder",
       "facing",
@@ -457,15 +399,8 @@
   {
     "id": "守",
     "kanji": "守",
-    "onReadings": [
-      "しゅ",
-      "す"
-    ],
-    "kunReadings": [
-      "まもる",
-      "まもり",
-      "もり"
-    ],
+    "onReadings": ["しゅ", "す"],
+    "kunReadings": ["まもる", "もり"],
     "meanings": [
       "guard",
       "protect",
@@ -505,15 +440,8 @@
   {
     "id": "実",
     "kanji": "実",
-    "onReadings": [
-      "じつ",
-      "しつ"
-    ],
-    "kunReadings": [
-      "み",
-      "みのる",
-      "まこと"
-    ],
+    "onReadings": ["じつ"],
+    "kunReadings": ["み", "みのる"],
     "meanings": [
       "reality",
       "truth",
@@ -594,15 +522,8 @@
   {
     "id": "対",
     "kanji": "対",
-    "onReadings": [
-      "たい",
-      "つい"
-    ],
-    "kunReadings": [
-      "あいて",
-      "こたえる",
-      "そろい"
-    ],
+    "onReadings": ["たい", "つい"],
+    "kunReadings": [],
     "meanings": [
       "vis-a-vis",
       "opposite",
@@ -618,12 +539,8 @@
   {
     "id": "局",
     "kanji": "局",
-    "onReadings": [
-      "きょく"
-    ],
-    "kunReadings": [
-      "つぼね"
-    ],
+    "onReadings": ["きょく"],
+    "kunReadings": [],
     "meanings": [
       "bureau",
       "board",
@@ -676,12 +593,8 @@
   {
     "id": "帳",
     "kanji": "帳",
-    "onReadings": [
-      "ちょう"
-    ],
-    "kunReadings": [
-      "とばり"
-    ],
+    "onReadings": ["ちょう"],
+    "kunReadings": [],
     "meanings": [
       "notebook",
       "account book",
@@ -697,15 +610,8 @@
   {
     "id": "平",
     "kanji": "平",
-    "onReadings": [
-      "へい",
-      "びょう"
-    ],
-    "kunReadings": [
-      "たいら",
-      "たいらげる",
-      "ひら"
-    ],
+    "onReadings": ["へい", "びょう"],
+    "kunReadings": ["たいら", "ひら"],
     "meanings": [
       "even",
       "flat",
@@ -744,13 +650,8 @@
   {
     "id": "庫",
     "kanji": "庫",
-    "onReadings": [
-      "こ",
-      "く"
-    ],
-    "kunReadings": [
-      "くら"
-    ],
+    "onReadings": ["こ", "く"],
+    "kunReadings": [],
     "meanings": [
       "warehouse",
       "storehouse"
@@ -846,13 +747,8 @@
   {
     "id": "想",
     "kanji": "想",
-    "onReadings": [
-      "そう",
-      "そ"
-    ],
-    "kunReadings": [
-      "おもう"
-    ],
+    "onReadings": ["そう", "そ"],
+    "kunReadings": [],
     "meanings": [
       "idea",
       "thought",
@@ -869,10 +765,7 @@
     "id": "打",
     "kanji": "打",
     "onReadings": ["だ"],
-    "kunReadings": [
-      "うつ",
-      "ぶつ"
-    ],
+    "kunReadings": ["うつ"],
     "meanings": [
       "strike",
       "hit",
@@ -1038,14 +931,8 @@
   {
     "id": "曲",
     "kanji": "曲",
-    "onReadings": [
-      "きょく"
-    ],
-    "kunReadings": [
-      "まがる",
-      "まげる",
-      "くま"
-    ],
+    "onReadings": ["きょく"],
+    "kunReadings": ["まがる", "まげる"],
     "meanings": [
       "bend",
       "music",
@@ -1145,14 +1032,8 @@
   {
     "id": "様",
     "kanji": "様",
-    "onReadings": [
-      "よう",
-      "しょう"
-    ],
-    "kunReadings": [
-      "さま",
-      "さん"
-    ],
+    "onReadings": ["よう"],
+    "kunReadings": ["さま"],
     "meanings": [
       "Esq.",
       "way",
@@ -1251,14 +1132,8 @@
   {
     "id": "氷",
     "kanji": "氷",
-    "onReadings": [
-      "ひょう"
-    ],
-    "kunReadings": [
-      "こおり",
-      "ひ",
-      "こおる"
-    ],
+    "onReadings": ["ひょう"],
+    "kunReadings": ["こおり", "ひ"],
     "meanings": [
       "icicle",
       "ice",
@@ -1274,13 +1149,8 @@
   {
     "id": "油",
     "kanji": "油",
-    "onReadings": [
-      "ゆ",
-      "ゆう"
-    ],
-    "kunReadings": [
-      "あぶら"
-    ],
+    "onReadings": ["ゆ"],
+    "kunReadings": ["あぶら"],
     "meanings": [
       "oil",
       "fat"
@@ -1335,15 +1205,8 @@
   {
     "id": "流",
     "kanji": "流",
-    "onReadings": [
-      "りゅう",
-      "る"
-    ],
-    "kunReadings": [
-      "ながれる",
-      "ながれ",
-      "ながす"
-    ],
+    "onReadings": ["りゅう", "る"],
+    "kunReadings": ["ながれる", "ながす"],
     "meanings": [
       "current",
       "a sink",
@@ -1524,14 +1387,8 @@
   {
     "id": "由",
     "kanji": "由",
-    "onReadings": [
-      "ゆ",
-      "ゆう"
-    ],
-    "kunReadings": [
-      "よし",
-      "よる"
-    ],
+    "onReadings": ["ゆ", "ゆう"],
+    "kunReadings": ["よし"],
     "meanings": [
       "wherefore",
       "a reason"
@@ -1546,13 +1403,8 @@
   {
     "id": "申",
     "kanji": "申",
-    "onReadings": [
-      "しん"
-    ],
-    "kunReadings": [
-      "もうす",
-      "さる"
-    ],
+    "onReadings": ["しん"],
+    "kunReadings": ["もうす"],
     "meanings": [
       "have the honor to",
       "sign of the monkey",
@@ -1588,14 +1440,8 @@
   {
     "id": "登",
     "kanji": "登",
-    "onReadings": [
-      "とう",
-      "と"
-    ],
-    "kunReadings": [
-      "のぼる",
-      "あがる"
-    ],
+    "onReadings": ["とう", "と"],
+    "kunReadings": ["のぼる"],
     "meanings": [
       "ascend",
       "climb up"
@@ -1631,12 +1477,8 @@
   {
     "id": "皿",
     "kanji": "皿",
-    "onReadings": [
-      "べい"
-    ],
-    "kunReadings": [
-      "さら"
-    ],
+    "onReadings": [],
+    "kunReadings": ["さら"],
     "meanings": [
       "dish",
       "a helping",
@@ -1810,10 +1652,7 @@
   {
     "id": "第",
     "kanji": "第",
-    "onReadings": [
-      "だい",
-      "てい"
-    ],
+    "onReadings": ["だい"],
     "kunReadings": [],
     "meanings": [
       "No.",
@@ -1850,13 +1689,8 @@
   {
     "id": "等",
     "kanji": "等",
-    "onReadings": [
-      "とう"
-    ],
-    "kunReadings": [
-      "ひとしい",
-      "など"
-    ],
+    "onReadings": ["とう"],
+    "kunReadings": ["ひとしい"],
     "meanings": [
       "etc.",
       "and so forth",
@@ -1872,12 +1706,8 @@
   {
     "id": "箱",
     "kanji": "箱",
-    "onReadings": [
-      "そう"
-    ],
-    "kunReadings": [
-      "はこ"
-    ],
+    "onReadings": [],
+    "kunReadings": ["はこ"],
     "meanings": [
       "box",
       "chest",
@@ -1951,13 +1781,8 @@
   {
     "id": "美",
     "kanji": "美",
-    "onReadings": [
-      "び",
-      "み"
-    ],
-    "kunReadings": [
-      "うつくしい"
-    ],
+    "onReadings": ["び"],
+    "kunReadings": ["うつくしい"],
     "meanings": [
       "beauty",
       "beautiful"
@@ -1992,14 +1817,8 @@
   {
     "id": "育",
     "kanji": "育",
-    "onReadings": [
-      "いく"
-    ],
-    "kunReadings": [
-      "そだつ",
-      "そだち",
-      "そだてる"
-    ],
+    "onReadings": ["いく"],
+    "kunReadings": ["そだつ", "そだてる"],
     "meanings": [
       "bring up",
       "grow up",
@@ -2099,12 +1918,8 @@
   {
     "id": "詩",
     "kanji": "詩",
-    "onReadings": [
-      "し"
-    ],
-    "kunReadings": [
-      "うた"
-    ],
+    "onReadings": ["し"],
+    "kunReadings": [],
     "meanings": [
       "poem",
       "poetry"
@@ -2119,14 +1934,8 @@
   {
     "id": "調",
     "kanji": "調",
-    "onReadings": [
-      "ちょう"
-    ],
-    "kunReadings": [
-      "しらべる",
-      "しらべ",
-      "ととのう"
-    ],
+    "onReadings": ["ちょう"],
+    "kunReadings": ["しらべる", "ととのう"],
     "meanings": [
       "tune",
       "tone",
@@ -2205,13 +2014,8 @@
   {
     "id": "路",
     "kanji": "路",
-    "onReadings": [
-      "ろ",
-      "る"
-    ],
-    "kunReadings": [
-      "みち"
-    ],
+    "onReadings": ["ろ"],
+    "kunReadings": [],
     "meanings": [
       "path",
       "route",
@@ -2331,14 +2135,8 @@
   {
     "id": "遊",
     "kanji": "遊",
-    "onReadings": [
-      "ゆう",
-      "ゆ"
-    ],
-    "kunReadings": [
-      "あそぶ",
-      "あそばす"
-    ],
+    "onReadings": ["ゆう", "ゆ"],
+    "kunReadings": ["あそぶ"],
     "meanings": [
       "play"
     ],
@@ -2412,15 +2210,8 @@
   {
     "id": "面",
     "kanji": "面",
-    "onReadings": [
-      "めん",
-      "べん"
-    ],
-    "kunReadings": [
-      "おも",
-      "おもて",
-      "つら"
-    ],
+    "onReadings": ["めん"],
+    "kunReadings": ["おも", "おもて", "つら"],
     "meanings": [
       "mask",
       "face",
