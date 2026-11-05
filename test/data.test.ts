@@ -903,3 +903,19 @@ describe("선지 창 (레이팅 연동)", () => {
     expect(shapeScore("먹다", "가다")).toBe(3);
   });
 });
+
+describe("pickTranslationDistractors", () => {
+  test("정답과 같은 번역은 빼고, 길이가 닮은 것을 우선한다", async () => {
+    const { pickTranslationDistractors } = await import("@/lib/data");
+    const correct = "오늘은 비가 와요";
+    // 후보 창(3 × 4 = 12)보다 닮은 후보가 많아야 먼 후보가 창에 못 든다.
+    const near = Array.from({ length: 12 }, (_, i) => `내일은 눈이 와${"요".repeat(1 + (i % 2))}${i}`);
+    const far = Array.from({ length: 6 }, (_, i) => `안녕하세요 처음 뵙겠습니다 잘 부탁드립니다 저는 학생입니다 ${i}`);
+    for (let seed = 0; seed < 30; seed++) {
+      const got = pickTranslationDistractors(correct, [correct, ...near, ...far], seed);
+      expect(got).toHaveLength(3);
+      expect(got).not.toContain(correct);
+      for (const g of got) expect(near).toContain(g);
+    }
+  });
+});

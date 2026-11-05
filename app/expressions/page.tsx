@@ -18,7 +18,7 @@ import {
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
-import { INITIAL_RATING, quantizeRating, registerDifficulty } from "@/lib/rating";
+import { INITIAL_RATING, expectedScore, quantizeRating, registerDifficulty } from "@/lib/rating";
 import type { ExpressionCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -147,6 +147,7 @@ function ExpressionsPageInner() {
         card={card}
         direction={direction}
         seed={seed + index + epoch * 977}
+        expected={expectedScore(ratingTier, registerDifficulty(card))}
         onResolved={(wasCorrect) => {
           if (!run.retrying) {
             review(

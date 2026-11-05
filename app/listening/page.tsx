@@ -11,7 +11,13 @@ import { SpeakingCard } from "@/components/SpeakingCard";
 import { DictationCard } from "@/components/DictationCard";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useCardsStore } from "@/lib/cards-store";
-import { generateChoices, generateVocabChoices, getSentence, getVocab } from "@/lib/data";
+import {
+  generateChoices,
+  generateVocabChoices,
+  getSentence,
+  getVocab,
+  pickTranslationDistractors,
+} from "@/lib/data";
 import { shuffleIds } from "@/lib/deck";
 import { dictationReading } from "@/lib/dictation";
 import { speak, speakSlow } from "@/lib/tts";
@@ -84,7 +90,7 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
       .filter((id) => id !== card.id)
       .map((id) => getSentence(id)?.translation)
       .filter((t): t is string => !!t && t !== card.translation);
-    const picked = shuffleIds(others, seed + index).slice(0, 3);
+    const picked = pickTranslationDistractors(card.translation, others, seed + index);
     const { choices, correct } = generateChoices(card.translation, picked, seed + index);
     const full = card.sentence.replace("＿＿＿", card.blank);
     const ruby = (card.sentenceRuby ?? card.sentence).replace(

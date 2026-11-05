@@ -485,6 +485,24 @@ export function windowForExpected(expected?: number): number {
 }
 
 /**
+ * 듣기 문장 퀴즈의 번역 오답. 덱의 다른 문장 번역 중 길이·끝 글자가 정답과
+ * 닮은 것을 우선한다 (무작위면 길이만 보고도 지워진다).
+ */
+export function pickTranslationDistractors(
+  correct: string,
+  others: string[],
+  seed: number,
+  n = 3,
+): string[] {
+  return sampleScored(
+    others.filter((t) => t !== correct),
+    n,
+    seed,
+    (t) => shapeScore(correct, t),
+  );
+}
+
+/**
  * 점수 상위권에서 n개를 시드로 뽑는다.
  *
  * 상위 n개를 그대로 쓰지 않고 4배 창(window)을 두는 이유: 에폭이 바뀌어도
