@@ -2,6 +2,7 @@ import mysql from "mysql2/promise";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { ExpressionCard, Register } from "../lib/types";
+import { refuseNonJoyo } from "./_joyo-guard";
 
 const REGISTERS: readonly Register[] = ["casual", "polite", "humble"];
 
@@ -52,6 +53,7 @@ async function main() {
     throw new Error("Expected a JSON array of expression cards");
   }
   const cards: ExpressionCard[] = parsed.map((c, i) => validate(c, i));
+  refuseNonJoyo(cards.map((c) => ({ id: c.id, text: c.expression_jp })));
 
   const conn = await mysql.createConnection({
     host: DB_HOST,

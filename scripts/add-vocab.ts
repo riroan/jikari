@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { VocabCard } from "../lib/types";
 import { loadJikariEnv } from "./_env";
+import { refuseNonJoyo } from "./_joyo-guard";
 
 loadJikariEnv();
 
@@ -68,6 +69,7 @@ async function main() {
     throw new Error("Expected a JSON array of vocab cards");
   }
   const cards: VocabCard[] = parsed.map((c, i) => validate(c, i));
+  refuseNonJoyo(cards.map((c) => ({ id: c.id, text: c.word })));
 
   const conn = await mysql.createConnection({
     host: DB_HOST,
