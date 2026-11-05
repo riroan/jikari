@@ -39,7 +39,6 @@ export function BuildCard({
   const [placed, setPlaced] = useState<number[]>([]); // 은행 슬롯 번호, 놓은 순서
   const [result, setResult] = useState<boolean | null>(null);
   const done = result !== null;
-  const full = placed.length >= n;
   const nextRef = useRef<HTMLButtonElement>(null);
   // 확인 버튼이 사라지며 포커스를 잃으므로 다음 버튼으로 옮기고 화면 안으로 가져온다.
   useEffect(() => {
@@ -49,7 +48,7 @@ export function BuildCard({
   }, [done]);
 
   const check = () => {
-    if (!full || done) return;
+    if (done) return;
     setResult(isAssembled(placed.map((s) => all[order[s]]), item.chunks));
   };
   // 첫 조각을 맨 앞에 놓는다 (이미 다른 자리에 놓았으면 옮긴다). 카드당 한 번.
@@ -137,9 +136,8 @@ export function BuildCard({
         <button
           type="button"
           onClick={check}
-          disabled={!full}
           style={{ minHeight: 56 }}
-          className="inline-flex items-center justify-center rounded-sm border border-[color:var(--fg)] text-body font-medium text-[color:var(--fg)] transition-colors hover:bg-[color:var(--bg-deep)] disabled:border-[color:var(--line)] disabled:text-[color:var(--fg-faint)] disabled:hover:bg-transparent"
+          className="inline-flex items-center justify-center rounded-sm border border-[color:var(--fg)] text-body font-medium text-[color:var(--fg)] transition-colors hover:bg-[color:var(--bg-deep)]"
         >
           확인
         </button>

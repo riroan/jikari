@@ -11,8 +11,9 @@ test("/build: assemble a sentence, check, and finish the run summary", async ({ 
   );
   await page.goto("/build");
   await page.getByRole("button", { name: "시작" }).click();
+  // 확인은 언제나 눌린다 (조각 수와 상관없이 채점).
   const check = page.getByRole("button", { name: "확인", exact: true });
-  await expect(check).toBeDisabled();
+  await expect(check).toBeEnabled();
   for (let q = 0; q < 10; q++) {
     const bank = page.getByLabel("청크").getByRole("button");
     await expect(bank.first()).toBeVisible();
