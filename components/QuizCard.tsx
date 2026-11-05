@@ -136,6 +136,23 @@ export function QuizCard({
     [disabled, input, resolve],
   );
 
+  // 데스크톱: 1–4 키로 선지를 고른다 (답한 뒤에는 Space/Enter가 다음으로 넘긴다).
+  useEffect(() => {
+    if (disabled || input.mode !== "choice") return;
+    const choices = input.choices;
+    const handler = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const n = Number(e.key);
+      if (!Number.isInteger(n) || n < 1 || n > choices.length) return;
+      const t = e.target as HTMLElement | null;
+      if (t?.closest?.("input,textarea,[contenteditable]")) return;
+      e.preventDefault();
+      handleChoice(choices[n - 1]);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [disabled, input, handleChoice]);
+
   const handleTypedSubmit = useCallback(
     (value: string) => {
       if (disabled || input.mode !== "typed") return;
