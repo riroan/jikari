@@ -75,7 +75,6 @@ export default function BuildPage() {
       <SessionSummary
         summary={run.summary}
         breakdown={assists > 0 ? `힌트 ${assists}회` : undefined}
-        unscheduled
         onRetry={run.retryMissed}
         onNext={() => { setAssists(0); run.next(); }}
       />,
