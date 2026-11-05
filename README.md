@@ -82,7 +82,7 @@ bun run e2e         # playwright 스모크 (개발 서버를 3333 포트로 띄�
 
 ## 배포
 
-`vX.Y.Z` 태그를 push하면 GitHub Actions(`.github/workflows/release-image.yml`)가 arm64 Docker 이미지를 빌드해 `registry.gitlab.com/riroan/riroan/jikari:<태그>`로 올립니다. 저장소 시크릿 `GITLAB_REGISTRY_USERNAME`, `GITLAB_REGISTRY_TOKEN`이 필요합니다. 컨테이너는 `DB_*` 환경 변수를 받습니다.
+`vX.Y.Z` 태그를 push하면 GitHub Actions(`.github/workflows/release-image.yml`)가 arm64 Docker 이미지를 빌드해 `registry.gitlab.com/riroan/riroan/jikari:<태그>`로 올립니다. 저장소 시크릿 `GITLAB_REGISTRY_USERNAME`, `GITLAB_REGISTRY_TOKEN`이 필요합니다. 이미지 푸시 뒤 `deploy` 잡이 `KUBECONFIG` 시크릿(base64)으로 `jikari` 네임스페이스의 `jikari-web` 디플로이먼트를 새 태그로 롤아웃하고 마이그레이션을 실행합니다(실패하면 `rollout undo`). 컨테이너는 `DB_*` 환경 변수를 받습니다.
 
 - 이미지 이름은 워크플로 `IMAGE`(`registry.gitlab.com/riroan/riroan/jikari`)와 배포 매니페스트의 `image`가 같아야 합니다. 매니페스트는 이 저장소 밖에 있으니 직접 확인합니다.
 - `git pull` 후에는 `bun run db:migrate`를 실행합니다. 최근 마이그레이션: `0013_daily_goal`(`app_settings.daily_goal`), `A_0004_kanji_dup_levels`, `A_0005_content_fixes`, `A_0006_content_fixes_2`, `A_0007_sentence_distractor_spread`, `A_0008_sentence_verb_distractor_spread`, `A_0009_kanji_on_reading_fixes`, `A_0010_kanji_non_joyo_readings`, `A_0011_expression_e004`, `A_0012_kanji_joyo_readings`.

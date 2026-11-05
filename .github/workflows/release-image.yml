@@ -1,7 +1,8 @@
 name: Release image
 
 # Pushing a vX.Y.Z tag builds the Docker image and pushes it to the GitLab
-# container registry as registry.gitlab.com/riroan/riroan/jikari:vX.Y.Z.
+# container registry as registry.gitlab.com/riroan/riroan/jikari:vX.Y.Z,
+# then rolls the cluster deployment to that tag and runs DB migrations.
 on:
   push:
     tags:
@@ -12,6 +13,8 @@ permissions:
 
 env:
   IMAGE: registry.gitlab.com/riroan/riroan/jikari
+  K8S_NAMESPACE: jikari
+  K8S_DEPLOYMENT: jikari-web
 
 jobs:
   build-and-push:
@@ -43,3 +46,33 @@ jobs:
           tags: ${{ env.IMAGE }}:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # Needs the repository secret KUBECONFIG (base64-encoded kubeconfig file).
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    # Serialize deploys so two quick tags don't race each other.
+    concurrency:
+      group: deploy-jikari
+      cancel-in-progress: false
+    steps:
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p "$HOME/.kube"
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Roll out new image
+        run: |
+          kubectl -n "$K8S_NAMESPACE" set image "deployment/$K8S_DEPLOYMENT" \
+            "*=$IMAGE:${{ github.ref_name }}"
+          kubectl -n "$K8S_NAMESPACE" rollout status "deployment/$K8S_DEPLOYMENT" --timeout=300s
+
+      # Migrations are idempotent; run once against the rolled-out pod.
+      - name: Run DB migrations
+        run: |
+          kubectl -n "$K8S_NAMESPACE" exec "deploy/$K8S_DEPLOYMENT" -- bun scripts/migrate.ts
+
+      - name: Roll back on failure
+        if: failure()
+        run: kubectl -n "$K8S_NAMESPACE" rollout undo "deployment/$K8S_DEPLOYMENT" || true
