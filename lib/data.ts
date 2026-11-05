@@ -195,6 +195,21 @@ function orthographicScore(a: string, b: string): number {
   return score;
 }
 
+/**
+ * 전에 이 카드에서 고른 오답(lib/confusion.ts)은 후보에 있으면 최대 2개까지 선지에
+ * 확정으로 넣는다. 점수에 가산하면 4배 창의 무작위 추첨에 밀려 다시 안 나올 수 있다.
+ * 정답은 호출 쪽이 이미 후보에서 뺀 상태여야 한다.
+ */
+function takePreferred<T>(
+  prefer: readonly T[],
+  candidates: readonly T[],
+): { forced: T[]; rest: T[] } {
+  const set = new Set(candidates);
+  const forced = [...new Set(prefer)].filter((p) => set.has(p)).slice(0, 2);
+  const taken = new Set(forced);
+  return { forced, rest: candidates.filter((c) => !taken.has(c)) };
+}
+
 /** 난이도(JLPT 레벨)가 한 단계 안이면 +1. 빈도·난이도 유사도 순위의 근사. */
 function levelScore(a: VocabCard, b: VocabCard): number {
   return Math.abs(a.jlptLevel - b.jlptLevel) <= 1 ? 1 : 0;
@@ -207,14 +222,19 @@ function samePosDistractors(
   seed: number,
   shape: (label: string, card: VocabCard) => number,
   windowMult?: number,
+  prefer: readonly string[] = [],
 ): string[] {
-  return sampleScored(
-    [...byLabel.keys()],
-    3,
-    seed,
-    (label) => (vocabPos(byLabel.get(label)!) === pos ? 3 : 0) + shape(label, byLabel.get(label)!),
-    windowMult,
-  );
+  const { forced, rest } = takePreferred(prefer, [...byLabel.keys()]);
+  return [
+    ...forced,
+    ...sampleScored(
+      rest,
+      3 - forced.length,
+      seed,
+      (label) => (vocabPos(byLabel.get(label)!) === pos ? 3 : 0) + shape(label, byLabel.get(label)!),
+      windowMult,
+    ),
+  ];
 }
 
 export function generateKanjiChoices(
@@ -222,6 +242,7 @@ export function generateKanjiChoices(
   questionType: "on" | "kun",
   seed: number = Math.random(),
   expected?: number,
+  prefer: readonly string[] = [],
 ): { correct: string; choices: string[] } {
   const correctReadings = questionType === "on" ? card.onReadings : card.kunReadings;
   if (correctReadings.length === 0) {
@@ -229,7 +250,7 @@ export function generateKanjiChoices(
     if (fallback.length === 0) {
       return { correct: "?", choices: ["?", "?", "?", "?"] };
     }
-    return generateKanjiChoices(card, questionType === "on" ? "kun" : "on", seed, expected);
+    return generateKanjiChoices(card, questionType === "on" ? "kun" : "on", seed, expected, prefer);
   }
   const correct = correctReadings[0];
 
@@ -248,17 +269,21 @@ export function generateKanjiChoices(
     }
   }
 
-  const distractors = pickOffCenter(
-    correct,
-    (attempt) =>
-      sampleScored(
-        pool,
-        3,
-        seed + attempt * 101,
-        kanjiReadingScore(correct, questionType),
-        windowForExpected(expected),
-      ),
+  const readingScore = kanjiReadingScore(correct, questionType);
+  const { forced, rest } = takePreferred(
+    prefer,
+    [...new Set(pool)].filter((r) => r !== correct),
   );
+  const distractors = pickOffCenter(correct, (attempt) => [
+    ...forced,
+    ...sampleScored(
+      rest,
+      3 - forced.length,
+      seed + attempt * 101,
+      readingScore,
+      windowForExpected(expected),
+    ),
+  ]);
   const choices = shuffle([correct, ...distractors], seed + 1);
   return { correct, choices };
 }
@@ -342,6 +367,7 @@ export function generateVocabChoices(
   direction: QuizDirection,
   seed: number = Math.random(),
   expected?: number,
+  prefer: readonly string[] = [],
 ): { correct: string; choices: string[] } {
   const all = cards().vocab;
   // 뜻을 하나라도 공유하는 카드는 후보에서 뺀다. "알다"를 묻는데 分かる와
@@ -363,12 +389,13 @@ export function generateVocabChoices(
       byLabel,
       vocabPos(card),
       seed,
-      (_, other) =>
+      (label, other) =>
         Math.min(2, shapeScore(card.word, other.word)) +
         (hasKanji(card.word) === hasKanji(other.word) ? 1 : 0) +
         orthographicScore(card.word, other.word) +
         levelScore(card, other),
       windowForExpected(expected),
+      prefer,
     );
     return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
   }
@@ -388,6 +415,7 @@ export function generateVocabChoices(
     seed,
     (label, other) => shapeScore(correct, label) + levelScore(card, other),
     windowForExpected(expected),
+    prefer,
   );
   return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }

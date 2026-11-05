@@ -65,7 +65,7 @@ export interface QuizCardProps {
   /** false where the answer is never scheduled (listening): hides the "느렸어요" note. Default true. */
   scored?: boolean;
   /** Called after feedback, caller advances to next card */
-  onResolved: (wasCorrect: boolean) => void;
+  onResolved: (wasCorrect: boolean, wrongPick?: string) => void;
   /**
    * Min height (px) reserved for the question block. Default 260.
    * On mobile (<md) the value is capped at 180 so choices stay visible without scrolling.
@@ -101,7 +101,9 @@ export function QuizCard({
   const advance = useCallback(() => {
     if (result === null) return;
     // Assisted answers never promote the card: report them as a miss.
-    onResolved(result === "correct" && !hinted);
+    const ok = result === "correct" && !hinted;
+    if (result === "wrong" && selectedChoice !== null) onResolved(ok, selectedChoice);
+    else onResolved(ok);
     setHinted(false);
     setSlow(false);
     markShown();
@@ -110,7 +112,7 @@ export function QuizCard({
     setShowingBack(false);
     setSelectedChoice(null);
     setTypedUserAnswer(null);
-  }, [result, hinted, onResolved]);
+  }, [result, hinted, selectedChoice, onResolved]);
 
   const resolve = useCallback(
     (wasCorrect: boolean) => {

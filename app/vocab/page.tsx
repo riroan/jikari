@@ -27,6 +27,7 @@ import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { INITIAL_RATING, expectedScore, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
+import { preferredFor, settleConfusion } from "@/lib/confusion";
 import type { VocabCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -206,6 +207,8 @@ function VocabQuiz({
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
   const missExample = useVocabMissExample(card);
+  // 전에 고른 오답을 선지에 다시 올린다 (카드가 바뀔 때만 읽음).
+  const prefer = useMemo(() => preferredFor(`vocab:${card.id}`), [card.id]);
   const input =
     answerMode === "choice"
       ? (() => {
@@ -218,7 +221,7 @@ function VocabQuiz({
               choiceFontFamily: "var(--font-jp-sans)",
             };
           }
-          const choices = generateVocabChoices(card, direction, seed, expected);
+          const choices = generateVocabChoices(card, direction, seed, expected, prefer);
           return {
             mode: "choice" as const,
             choices: choices.choices,
@@ -266,7 +269,10 @@ function VocabQuiz({
         direction === "reading" ? "읽는 법은?" : direction === "recall" ? "어떤 단어?" : "의미는?"
       }
       input={input}
-      onResolved={(correct) => onResolved(correct, answerMode)}
+      onResolved={(correct, wrongPick) => {
+        settleConfusion(`vocab:${card.id}`, correct, wrongPick);
+        onResolved(correct, answerMode);
+      }}
       minQuestionHeight={0}
     />
   );
