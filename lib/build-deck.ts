@@ -94,12 +94,25 @@ export function splitItem(item: BuildItem): BuildItem {
 }
 
 /**
+ * 서로 바꿔 써도 문장이 성립하는 조사들. 정답에 이 중 하나가 있으면 같은 무리의 다른
+ * 조사는 함정으로 주지 않는다 ("先に着いて"에 へ를 주면 "先へ着いて"도 자연스러워
+ * 정답을 가를 수 없다).
+ */
+const INTERCHANGEABLE: readonly (readonly string[])[] = [
+  ["に", "へ"],
+  ["は", "が", "も"],
+];
+
+/**
  * 문장에 한 번도 나오지 않는 조사 조각 n개 (같은 seed면 같은 결과).
- * 문장에 이미 있는 조사는 뽑지 않는다 — 있는 조사를 더 주면 어느 쪽이 맞는지
- * 문장만으로는 가를 수 없는 경우가 생긴다.
+ * 문장에 이미 있는 조사와, 그것과 바꿔 써도 되는 조사는 뽑지 않는다.
  */
 export function pickParticleDistractors(item: BuildItem, seed: number, n = 2): string[] {
   const used = new Set(item.chunks.filter(isParticleTile));
-  const pool = [...SPLIT_PARTICLES].filter((p) => !used.has(p) && p !== "の");
+  const blocked = new Set(used);
+  for (const group of INTERCHANGEABLE) {
+    if (group.some((p) => used.has(p))) for (const p of group) blocked.add(p);
+  }
+  const pool = [...SPLIT_PARTICLES].filter((p) => !blocked.has(p) && p !== "の");
   return shuffleIds(pool, seed).slice(0, n);
 }

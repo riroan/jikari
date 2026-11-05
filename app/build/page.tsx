@@ -150,7 +150,7 @@ function Start({
         <span className="block text-body text-[color:var(--fg)]">{title}</span>
         <span className="block text-caption text-[color:var(--fg-faint)]">{desc}</span>
       </span>
-      <span className={`text-caption tracking-wide ${on ? "text-[color:var(--fg)]" : "text-[color:var(--fg-faint)]"}`}>
+      <span className={`shrink-0 whitespace-nowrap text-caption tracking-wide ${on ? "text-[color:var(--fg)]" : "text-[color:var(--fg-faint)]"}`}>
         {on ? "켜짐" : "꺼짐"}
       </span>
     </button>
@@ -163,8 +163,8 @@ function Start({
       </div>
       {style === "assemble" && (
         <div className="flex flex-col">
-          {toggle(split, onSplit, "조사 분리", "단어와 조사를 따로 놓고, 안 쓰는 조사도 섞여 있어요")}
-          {toggle(hard, onHard, "어려움", "쓰지 않는 조각이 1–2개 섞여 있어요")}
+          {toggle(split, onSplit, "조사 분리", "단어와 조사를 따로 놓아요")}
+          {toggle(hard, onHard, "어려움", "쓰지 않는 조각이 섞여요")}
         </div>
       )}
       <button

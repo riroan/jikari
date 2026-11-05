@@ -32,7 +32,7 @@
 ## 테스트
 
 ```bash
-bun run test        # vitest 단일 실행 (단위 테스트, 842 tests)
+bun run test        # vitest 단일 실행 (단위 테스트, 870 tests)
 bun run test:watch  # vitest watch 모드 (개발 중)
 bun run e2e         # playwright (스모크 E2E)
 ```

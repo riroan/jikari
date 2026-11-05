@@ -47,3 +47,12 @@ describe("minChunks", () => {
     expect(splitItem(items[0]).chunks.length).toBeGreaterThanOrEqual(3);
   });
 });
+
+test("바꿔 써도 되는 조사는 함정으로 주지 않는다 (に↔へ, は↔が↔も)", async () => {
+  const { pickParticleDistractors } = await import("@/lib/build-deck");
+  const item = { id: "x", markup: "", chunks: ["{私|わたし}", "は", "{先|さき}", "に", "{着|つ}いて"], ko: "" };
+  for (let seed = 0; seed < 60; seed++) {
+    const d = pickParticleDistractors(item, seed, 4);
+    for (const bad of ["は", "が", "も", "に", "へ"]) expect(d).not.toContain(bad);
+  }
+});
