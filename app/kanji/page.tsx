@@ -18,6 +18,7 @@ import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { INITIAL_RATING, expectedScore, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
+import { preferredFor, settleConfusion } from "@/lib/confusion";
 import { normalizeJapanese } from "@/lib/normalize";
 import { wordsWithKanji } from "@/lib/kanji-words";
 import { useKanjiMissExample } from "@/lib/use-miss-example";
@@ -200,6 +201,8 @@ function KanjiQuiz({
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
   const missExample = useKanjiMissExample(card);
+  // 전에 고른 오답을 선지에 다시 올린다 (카드가 바뀔 때만 읽음).
+  const prefer = useMemo(() => preferredFor(`kanji:${card.id}`), [card.id]);
   const qType: QType =
     card.onReadings.length > 0 && card.kunReadings.length > 0
       ? seed % 2 === 0
@@ -213,7 +216,7 @@ function KanjiQuiz({
   const input =
     answerMode === "choice"
       ? (() => {
-          const choices = generateKanjiChoices(card, qType, seed, expected);
+          const choices = generateKanjiChoices(card, qType, seed, expected, prefer);
           return {
             mode: "choice" as const,
             choices: choices.choices,
@@ -249,7 +252,10 @@ function KanjiQuiz({
       subtitle={qType === "on" ? "音読み" : "訓読み"}
       input={input}
       back={<KanjiBack card={card} />}
-      onResolved={(correct) => onResolved(correct, answerMode)}
+      onResolved={(correct, wrongPick) => {
+        settleConfusion(`kanji:${card.id}`, correct, wrongPick);
+        onResolved(correct, answerMode);
+      }}
       minQuestionHeight={320}
     />
   );

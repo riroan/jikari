@@ -46,7 +46,7 @@ describe("QuizCard — choice mode regression", () => {
     fireEvent.click(screen.getByText("ひ"));
     expect(onResolved).not.toHaveBeenCalled();
     clickNext();
-    expect(onResolved).toHaveBeenCalledWith(false);
+    expect(onResolved).toHaveBeenCalledWith(false, "ひ");
   });
 });
 

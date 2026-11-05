@@ -17,15 +17,17 @@ import { useWeakIds } from "@/lib/use-weak-ids";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useQuizRun } from "@/lib/use-quiz-run";
 import {
-  chooseDirection,
+  generateVocabReadingChoices,
   generateVocabChoices,
   getVocab,
-  type QuizDirection,
+  pickVocabDirection,
+  type VocabDirection,
 } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
 import { INITIAL_RATING, expectedScore, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
+import { preferredFor, settleConfusion } from "@/lib/confusion";
 import type { VocabCard } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
@@ -149,7 +151,7 @@ function VocabPageInner() {
           card={card}
           seed={seed + index + epoch * 977}
           answerMode={pickMode(getBox("vocab", card.id), threshold)}
-          direction={chooseDirection(getBox("vocab", card.id), card.id, epoch)}
+          direction={pickVocabDirection(card, getBox("vocab", card.id), epoch)}
           expected={expectedScore(ratingTier, jlptDifficulty(card))}
           onResolved={(wasCorrect, answerMode) => {
             if (!run.retrying) {
@@ -199,16 +201,27 @@ function VocabQuiz({
   card: VocabCard;
   seed: number;
   answerMode: "choice" | "typed";
-  direction: QuizDirection;
+  direction: VocabDirection;
   /** 이 카드를 맞힐 기대 확률 — 선지의 닮은 정도를 조절한다. */
   expected: number;
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
   const missExample = useVocabMissExample(card);
+  // 전에 고른 오답을 선지에 다시 올린다 (카드가 바뀔 때만 읽음).
+  const prefer = useMemo(() => preferredFor(`vocab:${card.id}`), [card.id]);
   const input =
     answerMode === "choice"
       ? (() => {
-          const choices = generateVocabChoices(card, direction, seed, expected);
+          if (direction === "reading") {
+            const r = generateVocabReadingChoices(card, seed, expected);
+            return {
+              mode: "choice" as const,
+              choices: r.choices,
+              correct: r.correct,
+              choiceFontFamily: "var(--font-jp-sans)",
+            };
+          }
+          const choices = generateVocabChoices(card, direction, seed, expected, prefer);
           return {
             mode: "choice" as const,
             choices: choices.choices,
@@ -219,6 +232,12 @@ function VocabQuiz({
                 : "var(--font-kr-sans)",
           };
         })()
+      : direction === "reading"
+        ? {
+            mode: "typed" as const,
+            lang: "ja" as const,
+            acceptableAnswers: [card.reading],
+          }
       : direction === "recall"
         ? {
             mode: "typed" as const,
@@ -238,17 +257,41 @@ function VocabQuiz({
       missExample={missExample}
       speak={card.reading}
       question={
-        direction === "recall" ? (
+        direction === "reading" ? (
+          <VocabReadingQuestion card={card} />
+        ) : direction === "recall" ? (
           <VocabRecallQuestion card={card} />
         ) : (
           <VocabRecognitionQuestion card={card} />
         )
       }
-      subtitle={direction === "recall" ? "어떤 단어?" : "의미는?"}
+      subtitle={
+        direction === "reading" ? "읽는 법은?" : direction === "recall" ? "어떤 단어?" : "의미는?"
+      }
       input={input}
-      onResolved={(correct) => onResolved(correct, answerMode)}
+      onResolved={(correct, wrongPick) => {
+        settleConfusion(`vocab:${card.id}`, correct, wrongPick);
+        onResolved(correct, answerMode);
+      }}
       minQuestionHeight={0}
     />
+  );
+}
+
+/** 후리가나 설정과 상관없이 읽기를 가린다 — 읽기가 곧 정답이다. */
+function VocabReadingQuestion({ card }: { card: VocabCard }) {
+  return (
+    <div
+      lang="ja"
+      className="text-[56px] leading-tight font-semibold mb-2"
+      style={{
+        fontFamily: "var(--font-jp-serif)",
+        letterSpacing: "-0.02em",
+        color: "var(--fg)",
+      }}
+    >
+      {card.word}
+    </div>
   );
 }
 

@@ -903,3 +903,94 @@ describe("선지 창 (레이팅 연동)", () => {
     expect(shapeScore("먹다", "가다")).toBe(3);
   });
 });
+
+describe("pickTranslationDistractors", () => {
+  test("정답과 같은 번역은 빼고, 길이가 닮은 것을 우선한다", async () => {
+    const { pickTranslationDistractors } = await import("@/lib/data");
+    const correct = "오늘은 비가 와요";
+    // 후보 창(3 × 4 = 12)보다 닮은 후보가 많아야 먼 후보가 창에 못 든다.
+    const near = Array.from({ length: 12 }, (_, i) => `내일은 눈이 와${"요".repeat(1 + (i % 2))}${i}`);
+    const far = Array.from({ length: 6 }, (_, i) => `안녕하세요 처음 뵙겠습니다 잘 부탁드립니다 저는 학생입니다 ${i}`);
+    for (let seed = 0; seed < 30; seed++) {
+      const got = pickTranslationDistractors(correct, [correct, ...near, ...far], seed);
+      expect(got).toHaveLength(3);
+      expect(got).not.toContain(correct);
+      for (const g of got) expect(near).toContain(g);
+    }
+  });
+});
+
+describe("단어 읽기 문제", () => {
+  const mk = (id: string, word: string, reading: string): VocabCard => ({
+    id,
+    word,
+    reading,
+    meanings: [id],
+    koreanMeanings: [id],
+    jlptLevel: 5,
+    verbGroup: "not_verb",
+    adjGroup: "not_adj",
+  });
+  const deck = [
+    mk("a", "学校", "がっこう"),
+    mk("b", "先生", "せんせい"),
+    mk("c", "会社", "かいしゃ"),
+    mk("d", "電話", "でんわ"),
+    mk("e", "時計", "とけい"),
+    mk("f", "病院", "びょういん"),
+    mk("g", "大学", "だいがく"),
+    mk("h", "ありがとう", "ありがとう"),
+    mk("i", "生", "なま"),
+    mk("j", "生", "せい"),
+  ];
+
+  test("읽기 문제는 한자가 있고 읽기가 표기와 다른 단어만", async () => {
+    const { canAskReading } = await import("@/lib/data");
+    expect(canAskReading(deck[0])).toBe(true);
+    expect(canAskReading(deck[7])).toBe(false);
+  });
+
+  test("정답 포함 4개, 중복 없음, 동음이의(같은 표기)의 다른 읽기는 오답에서 제외", async () => {
+    const { generateVocabReadingChoices } = await import("@/lib/data");
+    useCardsStore.setState({ vocab: deck });
+    for (let seed = 0; seed < 40; seed++) {
+      const { correct, choices } = generateVocabReadingChoices(deck[8], seed);
+      expect(correct).toBe("なま");
+      expect(choices).toHaveLength(4);
+      expect(new Set(choices).size).toBe(4);
+      expect(choices).toContain("なま");
+      expect(choices).not.toContain("せい");
+      expect(choices).not.toContain("ありがとう");
+    }
+  });
+
+  test("방향 선택: 새 카드(box 1)와 가나 단어는 읽기 문제가 아니다", async () => {
+    const { pickVocabDirection } = await import("@/lib/data");
+    for (let epoch = 0; epoch < 60; epoch++) {
+      expect(pickVocabDirection(deck[0], 1, epoch)).not.toBe("reading");
+      expect(pickVocabDirection(deck[7], 3, epoch)).not.toBe("reading");
+    }
+    const share = Array.from({ length: 500 }, (_, e) => pickVocabDirection(deck[0], 3, e)).filter(
+      (d) => d === "reading",
+    ).length;
+    expect(share / 500).toBeGreaterThan(0.1);
+    expect(share / 500).toBeLessThan(0.3);
+  });
+});
+
+describe("영어 뜻이 겹치는 유의어는 선지에서 제외", () => {
+  test("한국어 뜻이 달라도 영어 뜻이 같으면 함께 나오지 않는다", () => {
+    const mk = (id: string, word: string, ko: string, en: string): VocabCard => ({
+      id, word, reading: word, meanings: [en], koreanMeanings: [ko], jlptLevel: 5,
+      verbGroup: "not_verb", adjGroup: "not_adj",
+    });
+    const target = mk("t", "大きい", "크다", "big");
+    const syn = mk("s", "でかい", "커다랗다", "(to) be Big");
+    const rest = Array.from({ length: 12 }, (_, i) => mk(`r${i}`, `語${i}`, `뜻${i}`, `thing${i}`));
+    useCardsStore.setState({ vocab: [target, syn, ...rest] });
+    for (let seed = 0; seed < 40; seed++) {
+      expect(generateVocabChoices(target, "recognition", seed).choices).not.toContain("커다랗다");
+      expect(generateVocabChoices(target, "recall", seed).choices).not.toContain("でかい");
+    }
+  });
+});

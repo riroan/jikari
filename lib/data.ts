@@ -11,6 +11,8 @@ import { useCardsStore } from "./cards-store";
 import { seededShuffle } from "./prng";
 
 export type QuizDirection = "recall" | "recognition";
+/** 단어 퀴즈 전용: 한자만 보고 가나 읽기를 고르는 형식이 하나 더 있다. */
+export type VocabDirection = QuizDirection | "reading";
 
 function cards() {
   return useCardsStore.getState();
@@ -193,6 +195,21 @@ function orthographicScore(a: string, b: string): number {
   return score;
 }
 
+/**
+ * 전에 이 카드에서 고른 오답(lib/confusion.ts)은 후보에 있으면 최대 2개까지 선지에
+ * 확정으로 넣는다. 점수에 가산하면 4배 창의 무작위 추첨에 밀려 다시 안 나올 수 있다.
+ * 정답은 호출 쪽이 이미 후보에서 뺀 상태여야 한다.
+ */
+function takePreferred<T>(
+  prefer: readonly T[],
+  candidates: readonly T[],
+): { forced: T[]; rest: T[] } {
+  const set = new Set(candidates);
+  const forced = [...new Set(prefer)].filter((p) => set.has(p)).slice(0, 2);
+  const taken = new Set(forced);
+  return { forced, rest: candidates.filter((c) => !taken.has(c)) };
+}
+
 /** 난이도(JLPT 레벨)가 한 단계 안이면 +1. 빈도·난이도 유사도 순위의 근사. */
 function levelScore(a: VocabCard, b: VocabCard): number {
   return Math.abs(a.jlptLevel - b.jlptLevel) <= 1 ? 1 : 0;
@@ -205,14 +222,19 @@ function samePosDistractors(
   seed: number,
   shape: (label: string, card: VocabCard) => number,
   windowMult?: number,
+  prefer: readonly string[] = [],
 ): string[] {
-  return sampleScored(
-    [...byLabel.keys()],
-    3,
-    seed,
-    (label) => (vocabPos(byLabel.get(label)!) === pos ? 3 : 0) + shape(label, byLabel.get(label)!),
-    windowMult,
-  );
+  const { forced, rest } = takePreferred(prefer, [...byLabel.keys()]);
+  return [
+    ...forced,
+    ...sampleScored(
+      rest,
+      3 - forced.length,
+      seed,
+      (label) => (vocabPos(byLabel.get(label)!) === pos ? 3 : 0) + shape(label, byLabel.get(label)!),
+      windowMult,
+    ),
+  ];
 }
 
 export function generateKanjiChoices(
@@ -220,6 +242,7 @@ export function generateKanjiChoices(
   questionType: "on" | "kun",
   seed: number = Math.random(),
   expected?: number,
+  prefer: readonly string[] = [],
 ): { correct: string; choices: string[] } {
   const correctReadings = questionType === "on" ? card.onReadings : card.kunReadings;
   if (correctReadings.length === 0) {
@@ -227,7 +250,7 @@ export function generateKanjiChoices(
     if (fallback.length === 0) {
       return { correct: "?", choices: ["?", "?", "?", "?"] };
     }
-    return generateKanjiChoices(card, questionType === "on" ? "kun" : "on", seed, expected);
+    return generateKanjiChoices(card, questionType === "on" ? "kun" : "on", seed, expected, prefer);
   }
   const correct = correctReadings[0];
 
@@ -246,17 +269,21 @@ export function generateKanjiChoices(
     }
   }
 
-  const distractors = pickOffCenter(
-    correct,
-    (attempt) =>
-      sampleScored(
-        pool,
-        3,
-        seed + attempt * 101,
-        kanjiReadingScore(correct, questionType),
-        windowForExpected(expected),
-      ),
+  const readingScore = kanjiReadingScore(correct, questionType);
+  const { forced, rest } = takePreferred(
+    prefer,
+    [...new Set(pool)].filter((r) => r !== correct),
   );
+  const distractors = pickOffCenter(correct, (attempt) => [
+    ...forced,
+    ...sampleScored(
+      rest,
+      3 - forced.length,
+      seed + attempt * 101,
+      readingScore,
+      windowForExpected(expected),
+    ),
+  ]);
   const choices = shuffle([correct, ...distractors], seed + 1);
   return { correct, choices };
 }
@@ -301,6 +328,48 @@ export function centerTell(correct: string, distractors: string[]): number {
   return 1 / sums.filter((s) => s === min).length;
 }
 
+/** 영어 뜻의 비교용 키: 소문자, 괄호 설명 제거, 너무 짧은 것은 제외. */
+function englishKeys(card: VocabCard): string[] {
+  return (card.meanings ?? [])
+    .map((m) =>
+      m
+        .toLowerCase()
+        .replace(/\([^)]*\)/g, "")
+        .trim()
+        .replace(/^(to\s+)?(be\s+)?/, ""),
+    )
+    .filter((m) => m.length >= 3);
+}
+
+/** 읽기 문제가 성립하는 단어: 한자가 있고 읽기가 표기와 다르다. */
+export function canAskReading(card: VocabCard): boolean {
+  return hasKanji(card.word) && card.reading !== card.word;
+}
+
+/**
+ * 한자 단어 → 가나 읽기 4지선다. 오답은 다른 한자 단어의 읽기 중 모라 수·
+ * 편집거리·첫 글자가 닮은 것 (한자 읽기 선지와 같은 점수). 같은 표기를 공유하는
+ * 단어(동음이의)의 읽기는 정답이 둘이 될 수 있어 뺀다.
+ */
+export function generateVocabReadingChoices(
+  card: VocabCard,
+  seed: number = Math.random(),
+  expected?: number,
+): { correct: string; choices: string[] } {
+  const correct = card.reading;
+  const sameWord = new Set(
+    cards().vocab.filter((v) => v.word === card.word).map((v) => v.reading),
+  );
+  const pool = cards()
+    .vocab.filter((v) => v.id !== card.id && canAskReading(v) && !sameWord.has(v.reading))
+    .map((v) => v.reading);
+  const score = kanjiReadingScore(correct, "kun");
+  const distractors = pickOffCenter(correct, (attempt) =>
+    sampleScored(pool, 3, seed + attempt * 101, score, windowForExpected(expected)),
+  );
+  return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
+}
+
 /**
  * 4-choice builder for 単語.
  *   recognition → question = JP word, choices = 한국어 뜻
@@ -311,13 +380,20 @@ export function generateVocabChoices(
   direction: QuizDirection,
   seed: number = Math.random(),
   expected?: number,
+  prefer: readonly string[] = [],
 ): { correct: string; choices: string[] } {
   const all = cards().vocab;
   // 뜻을 하나라도 공유하는 카드는 후보에서 뺀다. "알다"를 묻는데 分かる와
   // 知る가 함께 뜨면 정답이 둘이 된다.
   const meanings = new Set(card.koreanMeanings);
+  // 한국어 표기가 달라도 영어 뜻이 겹치면 유의어다 ("알다"/"이해하다" 대신
+  // understand/know처럼). 한국어 필터가 못 잡는 쌍을 영어 뜻으로 한 번 더 거른다.
+  const english = new Set(englishKeys(card));
   const others = all.filter(
-    (v) => v.id !== card.id && !v.koreanMeanings.some((m) => meanings.has(m)),
+    (v) =>
+      v.id !== card.id &&
+      !v.koreanMeanings.some((m) => meanings.has(m)) &&
+      !englishKeys(v).some((k) => english.has(k)),
   );
 
   if (direction === "recall") {
@@ -332,12 +408,13 @@ export function generateVocabChoices(
       byLabel,
       vocabPos(card),
       seed,
-      (_, other) =>
+      (label, other) =>
         Math.min(2, shapeScore(card.word, other.word)) +
         (hasKanji(card.word) === hasKanji(other.word) ? 1 : 0) +
         orthographicScore(card.word, other.word) +
         levelScore(card, other),
       windowForExpected(expected),
+      prefer,
     );
     return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
   }
@@ -357,6 +434,7 @@ export function generateVocabChoices(
     seed,
     (label, other) => shapeScore(correct, label) + levelScore(card, other),
     windowForExpected(expected),
+    prefer,
   );
   return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
 }
@@ -413,6 +491,19 @@ export function chooseDirection(
 ): QuizDirection {
   if (box <= 1) return "recognition";
   return hashSeed(id, epoch) % 10 < 8 ? "recall" : "recognition";
+}
+
+/**
+ * 한자 단어는 box 2부터 약 1/5을 읽기 문제로 낸다 (뜻·표기 문제와 번갈아).
+ * 나머지는 기존 recall-first 규칙 그대로.
+ */
+export function pickVocabDirection(
+  card: VocabCard,
+  box: 1 | 2 | 3 | 4 | 5,
+  epoch: number,
+): VocabDirection {
+  if (box >= 2 && canAskReading(card) && hashSeed(card.id, epoch + 31) % 5 === 0) return "reading";
+  return chooseDirection(box, card.id, epoch);
 }
 
 /**
@@ -482,6 +573,24 @@ export function windowForExpected(expected?: number): number {
   if (expected >= 0.7) return 2.5;
   if (expected >= 0.5) return DEFAULT_WINDOW;
   return 6;
+}
+
+/**
+ * 듣기 문장 퀴즈의 번역 오답. 덱의 다른 문장 번역 중 길이·끝 글자가 정답과
+ * 닮은 것을 우선한다 (무작위면 길이만 보고도 지워진다).
+ */
+export function pickTranslationDistractors(
+  correct: string,
+  others: string[],
+  seed: number,
+  n = 3,
+): string[] {
+  return sampleScored(
+    others.filter((t) => t !== correct),
+    n,
+    seed,
+    (t) => shapeScore(correct, t),
+  );
 }
 
 /**

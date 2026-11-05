@@ -26,14 +26,17 @@ export function ExpressionQuiz({
   card,
   direction,
   seed,
+  expected,
   onResolved,
 }: {
   card: ExpressionCard;
   direction: QuizDirection;
   seed: number;
+  /** 이 카드를 맞힐 기대 확률 (rating). 선지의 닮은 정도를 조절한다. */
+  expected?: number;
   onResolved: (correct: boolean) => void;
 }) {
-  const choices = generateExpressionChoices(card, direction, seed);
+  const choices = generateExpressionChoices(card, direction, seed, expected);
 
   return (
     <QuizCard
