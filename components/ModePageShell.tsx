@@ -42,6 +42,11 @@ export interface ModePageShellProps {
   titleVariant?: "default" | "subdued";
   headerMarginPx?: number;
   afterHeader?: React.ReactNode;
+  /**
+   * 데스크톱(lg ≥1024px) 폭. "default"는 퀴즈·공부용 600px, "wide"는 목록·통계용
+   * 960px. 모바일·태블릿 세로에서는 둘 다 390px 그대로다.
+   */
+  desktopWidth?: "default" | "wide";
   children?: React.ReactNode;
 }
 
@@ -54,6 +59,7 @@ export function ModePageShell({
   titleVariant = "default",
   headerMarginPx = 32,
   afterHeader,
+  desktopWidth = "default",
   children,
 }: ModePageShellProps) {
   const dueByKey = useDueByKey();
@@ -68,7 +74,7 @@ export function ModePageShell({
     // 390px 박스 안쪽에 두면 박스가 이미 가장자리에서 먼 가로 모드에서 내용 폭만
     // 줄어(342→266px) 제목과 버튼이 줄바꿈된다.
     <main className="flex-1 flex justify-center pl-[var(--safe-left)] pr-[var(--safe-right)]">
-      <div className="w-full max-w-[390px] px-6 flex flex-col pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[calc(max(1.5rem,var(--safe-bottom))_+_var(--sync-gap))] md:pb-[calc(max(2.5rem,var(--safe-bottom))_+_var(--sync-gap))]">
+      <div className={`w-full max-w-[390px] ${desktopWidth === "wide" ? "lg:max-w-[960px]" : "lg:max-w-[600px]"} px-6 flex flex-col pt-[calc(var(--safe-top)+1rem)] md:pt-[calc(var(--safe-top)+2rem)] pb-[calc(max(1.5rem,var(--safe-bottom))_+_var(--sync-gap))] md:pb-[calc(max(2.5rem,var(--safe-bottom))_+_var(--sync-gap))]`}>
         <header
           className="flex justify-between items-baseline mb-[var(--header-mb-mobile)] md:mb-[var(--header-mb)]"
           style={
@@ -80,11 +86,12 @@ export function ModePageShell({
         >
           <Link
             href={backHref}
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
+            className="shrink-0 whitespace-nowrap inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
           >
             {backLabel}
           </Link>
-          <div className="flex items-baseline gap-2">
+          {/* 좁은 폭(Safari 확대 ≈322px)에서는 통계와 復習이 두 줄로 나뉘되, 각 항목은 쪼개지지 않는다. */}
+          <div className="min-w-0 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-0.5 whitespace-nowrap">
             {statKey && <QuizStats statKey={statKey} />}
             {dueCount > 0 && (
               <span
@@ -96,7 +103,7 @@ export function ModePageShell({
             )}
           </div>
           <h1
-            className={titleClass}
+            className={`${titleClass} shrink-0 whitespace-nowrap`}
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             {title}
@@ -111,7 +118,7 @@ export function ModePageShell({
         {backHref === "/" && (
           <Link
             href="/"
-            className="[main:has([data-session-summary])_&]:hidden mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
+            className="[main:has([data-session-summary])_&]:hidden [main:has([data-study-nav])_&]:hidden mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
           >
             홈으로
           </Link>

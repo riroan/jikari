@@ -70,7 +70,12 @@ export default function Home() {
 
   return (
     <main className="flex-1 flex justify-center pl-[var(--safe-left)] pr-[var(--safe-right)]">
-      <div className="w-full max-w-[390px] px-6 pt-[calc(var(--safe-top)+2rem)] pb-[calc(max(2.5rem,var(--safe-bottom))_+_var(--sync-gap))]">
+      {/*
+        데스크톱(lg)에서는 두 칸: 왼쪽 = 오늘 할 일·진입점·한마디·히트맵, 오른쪽 = 과목 목록.
+        모바일 순서는 그대로 (grid는 lg에서만 켜진다).
+      */}
+      <div className="w-full max-w-[390px] lg:max-w-[960px] lg:grid lg:grid-cols-2 lg:gap-x-16 lg:items-start px-6 pt-[calc(var(--safe-top)+2rem)] lg:pt-[calc(var(--safe-top)+3.5rem)] pb-[calc(max(2.5rem,var(--safe-bottom))_+_var(--sync-gap))]">
+        <div className="lg:col-start-1">
         <HomeHeader
           hydrated={hydrated}
           studiedToday={studiedToday}
@@ -164,9 +169,10 @@ export default function Home() {
             <EntryRow key={e.href} {...e} />
           ))}
         </nav>
+        </div>
 
         {/* Subject rows — one per subject with 공부 / 퀴즈 actions */}
-        <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-12">
+        <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-12 lg:col-start-2 lg:row-start-1 lg:row-span-2">
           {SUBJECTS.map((s) => (
             <SubjectRow
               key={s.base}
@@ -176,6 +182,7 @@ export default function Home() {
           ))}
         </section>
 
+        <div className="lg:col-start-1">
         {hydrated && <DailyPhrase dateKey={toLocalDateKey(now)} />}
 
         {/* Heatmap */}
@@ -192,9 +199,10 @@ export default function Home() {
             </div>
           ) : <div style={{ height: "14px" }} />}
         </section>
+        </div>
 
         {/* Footer nav */}
-        <nav className="-mx-5 flex justify-between items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-[0.01em] min-[360px]:tracking-[0.06em] font-medium">
+        <nav className="-mx-5 lg:mx-0 lg:col-span-2 lg:justify-start lg:gap-8 lg:pt-6 lg:border-t lg:border-[color:var(--line)] flex justify-between items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-[0.01em] min-[360px]:tracking-[0.06em] font-medium">
           <Link
             href="/"
             aria-current="page"

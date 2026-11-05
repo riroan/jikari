@@ -323,10 +323,15 @@ function ChoicePanel({
   onChoice: (choice: string) => void;
 }) {
   const { choices, correct, choiceFontFamily = "var(--font-jp-sans)" } = input;
+  // 데스크톱에서 선지가 모두 짧으면 2×2로 놓아 시선 이동을 줄인다 (긴 문장 선지는 한 줄씩).
+  const short = choices.every((c) => c.replace(/\{([^|}]+)\|[^}]+\}/g, "$1").length <= 14);
 
   return (
-    <div className="flex flex-col gap-2" style={{ fontFamily: choiceFontFamily }}>
-      {choices.map((choice) => {
+    <div
+      className={`flex flex-col gap-2 ${short ? "lg:grid lg:grid-cols-2 lg:gap-3" : ""}`}
+      style={{ fontFamily: choiceFontFamily }}
+    >
+      {choices.map((choice, i) => {
         const isSelected = selected === choice;
         const isCorrectChoice = choice === correct;
         let stateClass =
@@ -346,9 +351,19 @@ function ChoicePanel({
             key={choice}
             onClick={() => onChoice(choice)}
             disabled={disabled}
-            className={`text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
+            className={`flex items-baseline gap-3 text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
           >
-            <RubyText text={choice} />
+            {/* 숫자 키 단축키 표시 — 키보드가 있는 데스크톱에서만 */}
+            <span
+              aria-hidden
+              className="hidden lg:inline text-tiny tabular-nums text-[color:var(--fg-faint)]"
+              style={{ fontFamily: "var(--font-kr-sans)" }}
+            >
+              {i + 1}
+            </span>
+            <span className="min-w-0">
+              <RubyText text={choice} />
+            </span>
           </button>
         );
       })}
