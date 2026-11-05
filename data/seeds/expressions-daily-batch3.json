@@ -1,0 +1,254 @@
+[
+  {
+    "id": "e101",
+    "situation_ko": "친구가 힘든 일을 털어놓을 때 위로하며",
+    "expression_jp": "大変だったね。",
+    "register": "casual",
+    "translation_ko": "힘들었겠다.",
+    "note_ko": "「大変だったね」는 상대의 고생을 알아주는 가장 자연스러운 위로예요",
+    "ruby": "{大変|たいへん}だったね。"
+  },
+  {
+    "id": "e102",
+    "situation_ko": "상대의 말에 공감하며 맞장구칠 때",
+    "expression_jp": "わかる、わかる。",
+    "register": "casual",
+    "translation_ko": "알아, 알아. (공감해)",
+    "note_ko": "「わかる」를 두 번 겹치면 진심으로 공감한다는 느낌이 강해져요",
+    "ruby": "わかる、わかる。"
+  },
+  {
+    "id": "e103",
+    "situation_ko": "상대의 의견에 동의할 때",
+    "expression_jp": "私もそう思います。",
+    "register": "polite",
+    "translation_ko": "저도 그렇게 생각해요.",
+    "note_ko": "「そう思います」는 동의를 부드럽게 표현해요. 반말은 「私もそう思う」",
+    "ruby": "{私|わたし}もそう{思|おも}います。"
+  },
+  {
+    "id": "e104",
+    "situation_ko": "부탁을 받고 흔쾌히 승낙할 때",
+    "expression_jp": "いいですよ、大丈夫です。",
+    "register": "polite",
+    "translation_ko": "좋아요, 괜찮아요.",
+    "note_ko": "「いいですよ」의 「よ」가 흔쾌함을 전해요",
+    "ruby": "いいですよ、{大丈夫|だいじょうぶ}です。"
+  },
+  {
+    "id": "e105",
+    "situation_ko": "초대나 제안을 정중하게 거절할 때",
+    "expression_jp": "ごめんなさい、その日は用事があって。",
+    "register": "polite",
+    "translation_ko": "미안해요, 그날은 일이 있어서요.",
+    "note_ko": "이유를 말끝 「て」로 흐리면 단호하지 않게 거절하는 느낌이 돼요",
+    "ruby": "ごめんなさい、その{日|ひ}は{用事|ようじ}があって。"
+  },
+  {
+    "id": "e106",
+    "situation_ko": "상대의 칭찬에 겸손하게 답할 때",
+    "expression_jp": "いえいえ、まだまだです。",
+    "register": "polite",
+    "translation_ko": "아니에요, 아직 멀었어요.",
+    "note_ko": "칭찬에 「ありがとう」만 하지 않고 겸손을 더하는 말이에요",
+    "ruby": "いえいえ、まだまだです。"
+  },
+  {
+    "id": "e107",
+    "situation_ko": "상대의 일본어 실력을 칭찬받았을 때",
+    "expression_jp": "ありがとうございます。がんばります。",
+    "register": "polite",
+    "translation_ko": "감사합니다. 열심히 할게요.",
+    "note_ko": "칭찬을 받았을 때 가장 무난한 답이에요",
+    "ruby": "ありがとうございます。がんばります。"
+  },
+  {
+    "id": "e108",
+    "situation_ko": "식당에서 메뉴를 고르지 못했을 때",
+    "expression_jp": "どれもおいしそうですね。",
+    "register": "polite",
+    "translation_ko": "다 맛있어 보이네요.",
+    "note_ko": "메뉴 앞에서 고민하는 마음을 자연스럽게 드러내요",
+    "ruby": "どれもおいしそうですね。"
+  },
+  {
+    "id": "e109",
+    "situation_ko": "같은 것을 주문하고 싶을 때",
+    "expression_jp": "同じものをお願いします。",
+    "register": "polite",
+    "translation_ko": "같은 것으로 부탁해요.",
+    "note_ko": "「同じもの」는 일행이 시킨 것과 같은 걸 고를 때 편해요",
+    "ruby": "{同|おな}じものをお願いします。"
+  },
+  {
+    "id": "e110",
+    "situation_ko": "음식이 맛있을 때 점원이나 친구에게",
+    "expression_jp": "これ、すごくおいしい！",
+    "register": "casual",
+    "translation_ko": "이거, 엄청 맛있어!",
+    "note_ko": "「すごく」가 감탄을 담아요. 정중하게는 「すごくおいしいです」",
+    "ruby": "これ、すごくおいしい！"
+  },
+  {
+    "id": "e111",
+    "situation_ko": "약국에서 증상을 설명할 때",
+    "expression_jp": "のどが痛くて、せきも出ます。",
+    "register": "polite",
+    "translation_ko": "목이 아프고 기침도 나요.",
+    "note_ko": "「痛くて」처럼 증상을 이어 말하면 한 문장으로 설명돼요",
+    "ruby": "のどが{痛|いた}くて、せきも{出|で}ます。"
+  },
+  {
+    "id": "e112",
+    "situation_ko": "병원에서 언제부터 아팠는지 말할 때",
+    "expression_jp": "昨日の夜から調子が悪いです。",
+    "register": "polite",
+    "translation_ko": "어젯밤부터 몸 상태가 안 좋아요.",
+    "note_ko": "「調子が悪い」는 어디가 콕 집어 아프지 않을 때도 쓰는 말이에요",
+    "ruby": "{昨日|きのう}の{夜|よる}から{調子|ちょうし}が{悪|わる}いです。"
+  },
+  {
+    "id": "e113",
+    "situation_ko": "택배를 받을 때 확인하며",
+    "expression_jp": "サインをお願いします。",
+    "register": "polite",
+    "translation_ko": "사인 부탁드립니다.",
+    "note_ko": "택배 기사님이 자주 하는 말이에요. 도장 대신 사인을 하는 경우가 많아요",
+    "ruby": "サインをお願いします。"
+  },
+  {
+    "id": "e114",
+    "situation_ko": "택배를 못 받았을 때 재배달을 부탁하며",
+    "expression_jp": "再配達をお願いしたいんですが。",
+    "register": "polite",
+    "translation_ko": "재배달을 부탁하고 싶은데요.",
+    "note_ko": "「～したいんですが」로 말끝을 흐리면 부탁이 부드러워져요",
+    "ruby": "{再配達|さいはいたつ}をお{願|ねが}いしたいんですが。"
+  },
+  {
+    "id": "e115",
+    "situation_ko": "전화를 받았는데 잘 안 들릴 때",
+    "expression_jp": "すみません、よく聞こえません。",
+    "register": "polite",
+    "translation_ko": "죄송해요, 잘 안 들려요.",
+    "note_ko": "전화에서 가장 먼저 쓰게 되는 말이에요",
+    "ruby": "すみません、よく{聞|き}こえません。"
+  },
+  {
+    "id": "e116",
+    "situation_ko": "전화를 끊기 전에 마무리할 때",
+    "expression_jp": "それでは、失礼します。",
+    "register": "polite",
+    "translation_ko": "그럼, 실례하겠습니다.",
+    "note_ko": "전화를 끊을 때 쓰는 정중한 끝인사예요",
+    "ruby": "それでは、{失礼|しつれい}します。"
+  },
+  {
+    "id": "e117",
+    "situation_ko": "길을 묻고 감사 인사를 할 때",
+    "expression_jp": "ご親切にありがとうございます。",
+    "register": "polite",
+    "translation_ko": "친절하게 알려 주셔서 감사합니다.",
+    "note_ko": "도움을 받았을 때 감사의 정도를 한 단계 높이는 말이에요",
+    "ruby": "ご{親切|しんせつ}にありがとうございます。"
+  },
+  {
+    "id": "e118",
+    "situation_ko": "약속 시간을 바꾸고 싶을 때",
+    "expression_jp": "時間を変えてもいいですか。",
+    "register": "polite",
+    "translation_ko": "시간을 바꿔도 될까요?",
+    "note_ko": "「～てもいいですか」는 허락을 구하는 기본형이에요",
+    "ruby": "{時間|じかん}を{変|か}えてもいいですか。"
+  },
+  {
+    "id": "e119",
+    "situation_ko": "실수를 하고 사과할 때",
+    "expression_jp": "すみません、私の間違いでした。",
+    "register": "polite",
+    "translation_ko": "죄송해요, 제 실수였어요.",
+    "note_ko": "「間違い」는 실수나 착오를 가리켜요. 책임을 인정하는 말이에요",
+    "ruby": "すみません、{私|わたし}の{間違|まちが}いでした。"
+  },
+  {
+    "id": "e120",
+    "situation_ko": "친구에게 가볍게 사과할 때",
+    "expression_jp": "ごめんね、忘れてた。",
+    "register": "casual",
+    "translation_ko": "미안, 깜빡했어.",
+    "note_ko": "「忘れてた」는 「忘れていた」의 줄임이에요",
+    "ruby": "ごめんね、{忘|わす}れてた。"
+  },
+  {
+    "id": "e121",
+    "situation_ko": "상대가 하는 말을 잘 이해하지 못했을 때",
+    "expression_jp": "どういう意味ですか。",
+    "register": "polite",
+    "translation_ko": "무슨 뜻이에요?",
+    "note_ko": "모르는 말을 들었을 때 바로 물어볼 수 있는 기본 질문이에요",
+    "ruby": "どういう{意味|いみ}ですか。"
+  },
+  {
+    "id": "e122",
+    "situation_ko": "일본어 표현이 맞는지 확인할 때",
+    "expression_jp": "この言い方で合っていますか。",
+    "register": "polite",
+    "translation_ko": "이렇게 말하는 게 맞아요?",
+    "note_ko": "표현이 자연스러운지 확인할 때 쓰는 말이에요",
+    "ruby": "この{言|い}い{方|かた}で{合|あ}っていますか。"
+  },
+  {
+    "id": "e123",
+    "situation_ko": "약속 장소에 먼저 도착해 기다릴 때",
+    "expression_jp": "先に着いて待ってるね。",
+    "register": "casual",
+    "translation_ko": "먼저 도착해서 기다릴게.",
+    "note_ko": "「待ってるね」의 「ね」가 부드럽게 알려 주는 느낌을 줘요",
+    "ruby": "{先|さき}に{着|つ}いて{待|ま}ってるね。"
+  },
+  {
+    "id": "e124",
+    "situation_ko": "헤어질 때 다음 만남을 기대하며",
+    "expression_jp": "また会えるのを楽しみにしてるね。",
+    "register": "casual",
+    "translation_ko": "또 만날 수 있기를 기대하고 있을게.",
+    "note_ko": "「楽しみにしてる」는 기대를 전하는 따뜻한 마무리예요",
+    "ruby": "また{会|あ}えるのを{楽|たの}しみにしてるね。"
+  },
+  {
+    "id": "e125",
+    "situation_ko": "친구가 시험이나 면접을 앞두고 있을 때",
+    "expression_jp": "きっと大丈夫だよ。",
+    "register": "casual",
+    "translation_ko": "분명 괜찮을 거야.",
+    "note_ko": "「きっと」는 확신을 담아 응원하는 말이에요",
+    "ruby": "きっと{大丈夫|だいじょうぶ}だよ。"
+  },
+  {
+    "id": "e126",
+    "situation_ko": "어떻게 생각하는지 의견을 물을 때",
+    "expression_jp": "どう思いますか。",
+    "register": "polite",
+    "translation_ko": "어떻게 생각하세요?",
+    "note_ko": "의견을 묻는 가장 기본적인 표현이에요",
+    "ruby": "どう{思|おも}いますか。"
+  },
+  {
+    "id": "e127",
+    "situation_ko": "컨디션이 안 좋은 사람에게",
+    "expression_jp": "顔色が悪いけど、大丈夫？",
+    "register": "casual",
+    "translation_ko": "안색이 안 좋은데, 괜찮아?",
+    "note_ko": "「顔色が悪い」는 건강이 안 좋아 보일 때 쓰는 관용 표현이에요",
+    "ruby": "{顔色|かおいろ}が{悪|わる}いけど、{大丈夫|だいじょうぶ}？"
+  },
+  {
+    "id": "e128",
+    "situation_ko": "식사를 권하며",
+    "expression_jp": "遠慮しないで食べてね。",
+    "register": "casual",
+    "translation_ko": "사양하지 말고 먹어.",
+    "note_ko": "손님에게 음식을 권할 때 자주 쓰는 말이에요",
+    "ruby": "{遠慮|えんりょ}しないで{食|た}べてね。"
+  }
+]
