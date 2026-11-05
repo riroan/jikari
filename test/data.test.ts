@@ -977,3 +977,20 @@ describe("단어 읽기 문제", () => {
     expect(share / 500).toBeLessThan(0.3);
   });
 });
+
+describe("영어 뜻이 겹치는 유의어는 선지에서 제외", () => {
+  test("한국어 뜻이 달라도 영어 뜻이 같으면 함께 나오지 않는다", () => {
+    const mk = (id: string, word: string, ko: string, en: string): VocabCard => ({
+      id, word, reading: word, meanings: [en], koreanMeanings: [ko], jlptLevel: 5,
+      verbGroup: "not_verb", adjGroup: "not_adj",
+    });
+    const target = mk("t", "大きい", "크다", "big");
+    const syn = mk("s", "でかい", "커다랗다", "(to) be Big");
+    const rest = Array.from({ length: 12 }, (_, i) => mk(`r${i}`, `語${i}`, `뜻${i}`, `thing${i}`));
+    useCardsStore.setState({ vocab: [target, syn, ...rest] });
+    for (let seed = 0; seed < 40; seed++) {
+      expect(generateVocabChoices(target, "recognition", seed).choices).not.toContain("커다랗다");
+      expect(generateVocabChoices(target, "recall", seed).choices).not.toContain("でかい");
+    }
+  });
+});

@@ -328,6 +328,19 @@ export function centerTell(correct: string, distractors: string[]): number {
   return 1 / sums.filter((s) => s === min).length;
 }
 
+/** 영어 뜻의 비교용 키: 소문자, 괄호 설명 제거, 너무 짧은 것은 제외. */
+function englishKeys(card: VocabCard): string[] {
+  return (card.meanings ?? [])
+    .map((m) =>
+      m
+        .toLowerCase()
+        .replace(/\([^)]*\)/g, "")
+        .trim()
+        .replace(/^(to\s+)?(be\s+)?/, ""),
+    )
+    .filter((m) => m.length >= 3);
+}
+
 /** 읽기 문제가 성립하는 단어: 한자가 있고 읽기가 표기와 다르다. */
 export function canAskReading(card: VocabCard): boolean {
   return hasKanji(card.word) && card.reading !== card.word;
@@ -373,8 +386,14 @@ export function generateVocabChoices(
   // 뜻을 하나라도 공유하는 카드는 후보에서 뺀다. "알다"를 묻는데 分かる와
   // 知る가 함께 뜨면 정답이 둘이 된다.
   const meanings = new Set(card.koreanMeanings);
+  // 한국어 표기가 달라도 영어 뜻이 겹치면 유의어다 ("알다"/"이해하다" 대신
+  // understand/know처럼). 한국어 필터가 못 잡는 쌍을 영어 뜻으로 한 번 더 거른다.
+  const english = new Set(englishKeys(card));
   const others = all.filter(
-    (v) => v.id !== card.id && !v.koreanMeanings.some((m) => meanings.has(m)),
+    (v) =>
+      v.id !== card.id &&
+      !v.koreanMeanings.some((m) => meanings.has(m)) &&
+      !englishKeys(v).some((k) => english.has(k)),
   );
 
   if (direction === "recall") {
