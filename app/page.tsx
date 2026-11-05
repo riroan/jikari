@@ -166,9 +166,6 @@ export default function Home() {
         </nav>
 
         {/* Subject rows — one per subject with 공부 / 퀴즈 actions */}
-        <p className="mb-2 text-tiny tracking-wide text-[color:var(--fg-faint)]">
-          공부 = 카드 훑어보기 · 퀴즈 = 문제 풀기
-        </p>
         <section className="flex flex-col gap-px bg-[color:var(--line)] rounded-sm overflow-hidden mb-12">
           {SUBJECTS.map((s) => (
             <SubjectRow

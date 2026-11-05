@@ -75,9 +75,6 @@ export default function BuildPage() {
 function Start({ hard, onHard, onStart }: { hard: boolean; onHard: (h: boolean) => void; onStart: () => void }) {
   return (
     <div className="flex flex-col gap-8">
-      <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
-        뜻을 보고 조각을 탭해 일본어 문장을 만들어요. 복습 일정에는 영향이 없어요.
-      </p>
       <button
         type="button"
         aria-pressed={hard}

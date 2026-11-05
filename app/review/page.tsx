@@ -89,7 +89,6 @@ function buildEntries(): MixEntry[] {
 
 function Session() {
   const router = useRouter();
-  const cap = useStore((s) => s.settings.dailyGoal);
   // "계속하기"를 누르면 남은 due로 새 덱을 뽑는다.
   const [round, setRound] = useState(0);
   const [entries, setEntries] = useState(buildEntries);
@@ -103,9 +102,6 @@ function Session() {
   }
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-caption text-[color:var(--fg-faint)] tracking-wide">
-        전 과목 섞어서 · 최대 {cap}장
-      </p>
       <MixRun
         key={round}
         entries={entries}
