@@ -31,19 +31,23 @@ export default function BuildPage() {
   const [assists, setAssists] = useState(0); // 힌트를 쓴 문제 수 (세션 요약 표시용, SRS 무관)
   // 판마다 한 번만 만든다: 분할 가능한 카드만, 시드 셔플.
   const all = useMemo(() => buildItems(sentences, expressions), [sentences, expressions]);
-  // 작문은 직접 치는 길이라 너무 긴 문장은 뺀다.
-  const deck = useMemo(
+  // 작문은 조각으로 자를 필요가 없어 짧은 문장·표현도 쓴다 (너무 길면 직접 치기 힘들어 뺀다).
+  const writeAll = useMemo(
     () =>
-      shuffleIds(
-        style === "write"
-          ? all.filter((i) => {
-              const n = stripMarkup(parseMarkup(i.markup)).length;
-              return n >= 5 && n <= 28;
-            })
-          : all,
-        seed,
-      ),
-    [all, style, seed],
+      buildItems(sentences, expressions, 1).filter((i) => {
+        const n = stripMarkup(parseMarkup(i.markup)).length;
+        return n >= 5 && n <= 28;
+      }),
+    [sentences, expressions],
+  );
+  // 조사 분리는 단어/조사로 풀면 3조각 이상이 되는 두 덩어리 문장도 쓴다.
+  const splitAll = useMemo(
+    () => buildItems(sentences, expressions, 2).filter((i) => splitItem(i).chunks.length >= 3),
+    [sentences, expressions],
+  );
+  const deck = useMemo(
+    () => shuffleIds(style === "write" ? writeAll : split ? splitAll : all, seed),
+    [all, splitAll, writeAll, style, split, seed],
   );
   const run = useQuizRun(deck.length);
 

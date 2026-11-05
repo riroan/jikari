@@ -36,3 +36,14 @@ describe("조사 분리", () => {
     }
   });
 });
+
+describe("minChunks", () => {
+  test("두 덩어리 문장은 기본으로는 빠지고, minChunks=2면 들어오며 조사 분리 후 3조각 이상", async () => {
+    const { buildItems, splitItem } = await import("@/lib/build-deck");
+    const ex = [{ id: "e", situation_ko: "", expression_jp: "傘を貸してもらえませんか。", register: "polite" as const, translation_ko: "우산을 빌려 줄 수 있나요?", ruby: "{傘|かさ}を{貸|か}してもらえませんか。" }];
+    expect(buildItems([], ex)).toHaveLength(0);
+    const items = buildItems([], ex, 2);
+    expect(items).toHaveLength(1);
+    expect(splitItem(items[0]).chunks.length).toBeGreaterThanOrEqual(3);
+  });
+});

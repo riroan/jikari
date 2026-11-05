@@ -12,14 +12,15 @@ export interface BuildItem {
   ko: string;
 }
 
-/** 빈칸을 정답으로 채운 문장 + 표현 카드 중 3–7청크로 쪼개지는 것만. */
+/** 빈칸을 정답으로 채운 문장 + 표현 카드 중 3–7청크로 쪼개지는 것만 (조사 분리 모드는 minChunks=2로 받아 조각 수를 다시 센다). */
 export function buildItems(
   sentences: readonly SentenceCard[],
   expressions: readonly ExpressionCard[],
+  minChunks?: number,
 ): BuildItem[] {
   const out: BuildItem[] = [];
   const add = (id: string, markup: string, ko: string) => {
-    const chunks = segmentSentence(markup);
+    const chunks = segmentSentence(markup, minChunks);
     if (chunks) out.push({ id, markup, chunks, ko });
   };
   for (const c of sentences) {
