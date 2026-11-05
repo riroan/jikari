@@ -63,3 +63,42 @@ export function pickDistractors(item: BuildItem, all: readonly BuildItem[], seed
   take(() => true);
   return out;
 }
+
+// ─────────────────────────────────────────────────────────────
+// 조사 분리 모드: 단어 조각과 조사 조각을 따로 놓고, 쓰지 않는 조사 조각을 섞는다.
+// ─────────────────────────────────────────────────────────────
+
+const SPLIT_PARTICLES = "はがをにでともへの";
+/** 앞이 가나일 때는 단어 내부(ので, だけど…) 오탐을 피해 이 셋만 자른다 (segmentSentence와 같은 규칙). */
+const SPLIT_AFTER_KANA = "はがを";
+const UNIT = /\{[^|{}]+\|[^|{}]+\}|[\s\S]/gu;
+
+/** 한 글자 조사 하나로 끝나는 청크를 [단어, 조사]로 가른다. 못 가르면 그대로. */
+export function splitParticle(chunk: string): string[] {
+  const units = chunk.match(UNIT) ?? [];
+  if (units.length < 2) return [chunk];
+  const last = units[units.length - 1];
+  const prev = units[units.length - 2];
+  if (last.length !== 1 || !SPLIT_PARTICLES.includes(last)) return [chunk];
+  const prevIsKana = !prev.startsWith("{") && !/[一-鿿々゠-ヿ]/u.test(prev);
+  if (prevIsKana && !SPLIT_AFTER_KANA.includes(last)) return [chunk];
+  return [units.slice(0, -1).join(""), last];
+}
+
+export const isParticleTile = (tile: string) => tile.length === 1 && SPLIT_PARTICLES.includes(tile);
+
+/** 문장 전체를 단어/조사 조각으로 풀어 낸다. 이어 붙이면 원문과 같다. */
+export function splitItem(item: BuildItem): BuildItem {
+  return { ...item, chunks: item.chunks.flatMap(splitParticle) };
+}
+
+/**
+ * 문장에 한 번도 나오지 않는 조사 조각 n개 (같은 seed면 같은 결과).
+ * 문장에 이미 있는 조사는 뽑지 않는다 — 있는 조사를 더 주면 어느 쪽이 맞는지
+ * 문장만으로는 가를 수 없는 경우가 생긴다.
+ */
+export function pickParticleDistractors(item: BuildItem, seed: number, n = 2): string[] {
+  const used = new Set(item.chunks.filter(isParticleTile));
+  const pool = [...SPLIT_PARTICLES].filter((p) => !used.has(p) && p !== "の");
+  return shuffleIds(pool, seed).slice(0, n);
+}

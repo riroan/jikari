@@ -6,7 +6,7 @@ import { RubyText } from "@/components/Furigana";
 import { SpeakButton } from "@/components/SpeakButton";
 import { shuffleIds } from "@/lib/deck";
 import { isAssembled } from "@/lib/build-chunks";
-import type { BuildItem } from "@/lib/build-deck";
+import { isParticleTile, type BuildItem } from "@/lib/build-deck";
 
 const pill =
   "inline-flex items-center justify-center min-h-[44px] px-3 border rounded-sm text-body text-[color:var(--fg)] transition-colors disabled:cursor-default";
@@ -86,7 +86,7 @@ export function BuildCard({
             disabled={done}
             onClick={() => setPlaced((p) => p.filter((x) => x !== s))}
             aria-label={`빼기 ${all[order[s]].replace(/\{([^|]+)\|[^}]+\}/g, "$1")}`}
-            className={`${pill} border-[color:var(--fg)]`}
+            className={`${pill} border-[color:var(--fg)] ${isParticleTile(all[order[s]]) ? "bg-[color:var(--bg-deep)] min-w-[44px]" : ""}`}
           >
             <RubyText text={all[order[s]]} />
           </button>
@@ -110,7 +110,7 @@ export function BuildCard({
               disabled={used || done}
               onClick={() => setPlaced((p) => [...p, s])}
               aria-label={leftover ? `쓰지 않는 조각 ${all[c].replace(/\{([^|]+)\|[^}]+\}/g, "$1")}` : undefined}
-              className={`${pill} ${leftover ? "border-dashed" : ""} border-[color:var(--line)] ${
+              className={`${pill} ${leftover ? "border-dashed" : ""} ${isParticleTile(all[c]) ? "bg-[color:var(--bg-deep)] min-w-[44px]" : ""} border-[color:var(--line)] ${
                 used ? "opacity-25" : leftover ? "opacity-50 text-[color:var(--fg-faint)]" : "hover:bg-[color:var(--bg-deep)] active:bg-[color:var(--bg-deep)]"
               }`}
             >
