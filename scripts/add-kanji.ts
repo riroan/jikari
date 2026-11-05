@@ -2,6 +2,7 @@ import mysql from "mysql2/promise";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { KanjiCard } from "../lib/types";
+import { joyoReadingProblems } from "../lib/joyo";
 import { loadJikariEnv } from "./_env";
 
 loadJikariEnv();
@@ -47,6 +48,14 @@ async function main() {
     throw new Error("Expected a JSON array of kanji cards");
   }
   const cards: KanjiCard[] = parsed.map((c, i) => validate(c, i));
+
+  // 상용한자표 밖 읽기는 퀴즈가 그대로 가르친다 (A_0012가 정리한 문제). 일부러 넣을 때만 --allow-non-joyo.
+  const problems = cards.flatMap(joyoReadingProblems);
+  if (problems.length > 0 && !process.argv.includes("--allow-non-joyo")) {
+    console.error(`상용한자표에 없는 읽기 ${problems.length}개 — import하지 않습니다:\n  ${problems.slice(0, 30).join("\n  ")}`);
+    console.error("오쿠리가나를 붙인 사전형(くら → くらい)인지, 상용한자표 읽기인지 확인하세요. 의도한 것이면 --allow-non-joyo.");
+    process.exit(1);
+  }
 
   const conn = await mysql.createConnection({
     host: DB_HOST,

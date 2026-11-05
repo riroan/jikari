@@ -4,7 +4,7 @@ import { describe, expect, test } from "vitest";
 import { validate as validateExpression } from "../scripts/add-expression";
 import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
 import { parseGrammarCardArray } from "@/lib/grammar-schema";
-import { joyoReadings, nonJoyoChars } from "@/lib/joyo";
+import { joyoReadingProblems, nonJoyoChars } from "@/lib/joyo";
 import { conjugate } from "@/lib/conjugation";
 import { conjugateAdj } from "@/lib/adjective";
 import { ALL_CONJUGATION_FORMS } from "@/lib/types";
@@ -872,22 +872,13 @@ describe("常用漢字 range", () => {
   // 한자 퀴즈는 등록된 읽기를 그대로 정답·선지로 쓴다 — 表 밖 읽기(争 いかでか)나
   // 어간(暗 くら)이 섞이면 그대로 가르치게 된다 (A_0012).
   test("한자 카드의 음독·훈독은 상용한자표의 읽기다", () => {
-    const bad: string[] = [];
-    for (const f of readdirSync(seedDir).filter((x) => x.startsWith("kanji-") && x.endsWith(".json"))) {
-      for (const c of JSON.parse(readFileSync(path.join(seedDir, f), "utf8")) as {
-        id: string;
-        onReadings: string[];
-        kunReadings: string[];
-      }[]) {
-        const j = joyoReadings(c.id);
-        if (!j) {
-          bad.push(`${f} ${c.id}: 상용한자가 아님`);
-          continue;
-        }
-        for (const r of c.onReadings) if (!j.on.has(r)) bad.push(`${f} ${c.id} 音 ${r}`);
-        for (const r of c.kunReadings) if (!j.kun.has(r)) bad.push(`${f} ${c.id} 訓 ${r}`);
-      }
-    }
+    const bad = readdirSync(seedDir)
+      .filter((x) => x.startsWith("kanji-") && x.endsWith(".json"))
+      .flatMap((f) =>
+        (JSON.parse(readFileSync(path.join(seedDir, f), "utf8")) as Parameters<typeof joyoReadingProblems>[0][])
+          .flatMap(joyoReadingProblems)
+          .map((p) => `${f} ${p}`),
+      );
     expect(bad).toEqual([]);
   });
 });
