@@ -52,6 +52,11 @@ describe("generateChoices", () => {
     expect(orders.size).toBeGreaterThan(1);
   });
 
+  test("정답과 같거나 중복된 오답은 걸러낸다", () => {
+    const r = generateChoices("A", ["A", "B", "B", "C"], 3);
+    expect([...r.choices].sort()).toEqual(["A", "B", "C"]);
+  });
+
   test("empty distractors works", () => {
     const r = generateChoices("only", [], 0);
     expect(r.correct).toBe("only");

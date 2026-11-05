@@ -8,6 +8,7 @@ import type {
   VocabCard,
 } from "./types";
 import { useCardsStore } from "./cards-store";
+import { seededShuffle } from "./prng";
 
 export type QuizDirection = "recall" | "recognition";
 
@@ -302,7 +303,10 @@ export function generateChoices(
   distractors: string[],
   seed: number = Math.random(),
 ): { correct: string; choices: string[] } {
-  return { correct, choices: shuffle([correct, ...distractors], seed) };
+  // 방어선: 시드 테스트가 걸러 주지만, 정답과 같거나 서로 같은 오답이 새어
+  // 들어오면 화면에 같은 선지가 두 번 뜨고 정답이 둘로 보인다.
+  const unique = [...new Set(distractors)].filter((d) => d !== correct);
+  return { correct, choices: shuffle([correct, ...unique], seed) };
 }
 
 export function generateSentenceChoices(
@@ -416,15 +420,4 @@ function sampleScored<T>(
   return shuffle(ranked, seed + 7).slice(0, n);
 }
 
-function shuffle<T>(arr: T[], seed: number): T[] {
-  const copy = [...arr];
-  let s = seed;
-  for (let i = copy.length - 1; i > 0; i--) {
-    s = (s * 9301 + 49297) % 233280;
-    const r = s / 233280;
-    const j = Math.floor(r * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
-
+const shuffle = seededShuffle;
