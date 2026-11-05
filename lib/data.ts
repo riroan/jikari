@@ -11,6 +11,8 @@ import { useCardsStore } from "./cards-store";
 import { seededShuffle } from "./prng";
 
 export type QuizDirection = "recall" | "recognition";
+/** 단어 퀴즈 전용: 한자만 보고 가나 읽기를 고르는 형식이 하나 더 있다. */
+export type VocabDirection = QuizDirection | "reading";
 
 function cards() {
   return useCardsStore.getState();
@@ -301,6 +303,35 @@ export function centerTell(correct: string, distractors: string[]): number {
   return 1 / sums.filter((s) => s === min).length;
 }
 
+/** 읽기 문제가 성립하는 단어: 한자가 있고 읽기가 표기와 다르다. */
+export function canAskReading(card: VocabCard): boolean {
+  return hasKanji(card.word) && card.reading !== card.word;
+}
+
+/**
+ * 한자 단어 → 가나 읽기 4지선다. 오답은 다른 한자 단어의 읽기 중 모라 수·
+ * 편집거리·첫 글자가 닮은 것 (한자 읽기 선지와 같은 점수). 같은 표기를 공유하는
+ * 단어(동음이의)의 읽기는 정답이 둘이 될 수 있어 뺀다.
+ */
+export function generateVocabReadingChoices(
+  card: VocabCard,
+  seed: number = Math.random(),
+  expected?: number,
+): { correct: string; choices: string[] } {
+  const correct = card.reading;
+  const sameWord = new Set(
+    cards().vocab.filter((v) => v.word === card.word).map((v) => v.reading),
+  );
+  const pool = cards()
+    .vocab.filter((v) => v.id !== card.id && canAskReading(v) && !sameWord.has(v.reading))
+    .map((v) => v.reading);
+  const score = kanjiReadingScore(correct, "kun");
+  const distractors = pickOffCenter(correct, (attempt) =>
+    sampleScored(pool, 3, seed + attempt * 101, score, windowForExpected(expected)),
+  );
+  return { correct, choices: shuffle([correct, ...distractors], seed + 1) };
+}
+
 /**
  * 4-choice builder for 単語.
  *   recognition → question = JP word, choices = 한국어 뜻
@@ -413,6 +444,19 @@ export function chooseDirection(
 ): QuizDirection {
   if (box <= 1) return "recognition";
   return hashSeed(id, epoch) % 10 < 8 ? "recall" : "recognition";
+}
+
+/**
+ * 한자 단어는 box 2부터 약 1/5을 읽기 문제로 낸다 (뜻·표기 문제와 번갈아).
+ * 나머지는 기존 recall-first 규칙 그대로.
+ */
+export function pickVocabDirection(
+  card: VocabCard,
+  box: 1 | 2 | 3 | 4 | 5,
+  epoch: number,
+): VocabDirection {
+  if (box >= 2 && canAskReading(card) && hashSeed(card.id, epoch + 31) % 5 === 0) return "reading";
+  return chooseDirection(box, card.id, epoch);
 }
 
 /**

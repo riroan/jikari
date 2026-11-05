@@ -919,3 +919,61 @@ describe("pickTranslationDistractors", () => {
     }
   });
 });
+
+describe("단어 읽기 문제", () => {
+  const mk = (id: string, word: string, reading: string): VocabCard => ({
+    id,
+    word,
+    reading,
+    meanings: [id],
+    koreanMeanings: [id],
+    jlptLevel: 5,
+    verbGroup: "not_verb",
+    adjGroup: "not_adj",
+  });
+  const deck = [
+    mk("a", "学校", "がっこう"),
+    mk("b", "先生", "せんせい"),
+    mk("c", "会社", "かいしゃ"),
+    mk("d", "電話", "でんわ"),
+    mk("e", "時計", "とけい"),
+    mk("f", "病院", "びょういん"),
+    mk("g", "大学", "だいがく"),
+    mk("h", "ありがとう", "ありがとう"),
+    mk("i", "生", "なま"),
+    mk("j", "生", "せい"),
+  ];
+
+  test("읽기 문제는 한자가 있고 읽기가 표기와 다른 단어만", async () => {
+    const { canAskReading } = await import("@/lib/data");
+    expect(canAskReading(deck[0])).toBe(true);
+    expect(canAskReading(deck[7])).toBe(false);
+  });
+
+  test("정답 포함 4개, 중복 없음, 동음이의(같은 표기)의 다른 읽기는 오답에서 제외", async () => {
+    const { generateVocabReadingChoices } = await import("@/lib/data");
+    useCardsStore.setState({ vocab: deck });
+    for (let seed = 0; seed < 40; seed++) {
+      const { correct, choices } = generateVocabReadingChoices(deck[8], seed);
+      expect(correct).toBe("なま");
+      expect(choices).toHaveLength(4);
+      expect(new Set(choices).size).toBe(4);
+      expect(choices).toContain("なま");
+      expect(choices).not.toContain("せい");
+      expect(choices).not.toContain("ありがとう");
+    }
+  });
+
+  test("방향 선택: 새 카드(box 1)와 가나 단어는 읽기 문제가 아니다", async () => {
+    const { pickVocabDirection } = await import("@/lib/data");
+    for (let epoch = 0; epoch < 60; epoch++) {
+      expect(pickVocabDirection(deck[0], 1, epoch)).not.toBe("reading");
+      expect(pickVocabDirection(deck[7], 3, epoch)).not.toBe("reading");
+    }
+    const share = Array.from({ length: 500 }, (_, e) => pickVocabDirection(deck[0], 3, e)).filter(
+      (d) => d === "reading",
+    ).length;
+    expect(share / 500).toBeGreaterThan(0.1);
+    expect(share / 500).toBeLessThan(0.3);
+  });
+});
