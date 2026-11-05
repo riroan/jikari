@@ -1,0 +1,344 @@
+[
+  {
+    "id": "e129",
+    "situation_ko": "친구에게 오늘 아침에 한 일을 말할 때",
+    "expression_jp": "今朝、駅で友達に会いました。",
+    "register": "polite",
+    "translation_ko": "오늘 아침 역에서 친구를 만났어요.",
+    "note_ko": "「で」는 행동이 일어난 장소, 「に会う」는 만나는 상대를 나타내요",
+    "ruby": "{今朝|けさ}、{駅|えき}で{友達|ともだち}に{会|あ}いました。"
+  },
+  {
+    "id": "e130",
+    "situation_ko": "회사에서 자료를 보내겠다고 할 때",
+    "expression_jp": "資料をメールで送ります。",
+    "register": "polite",
+    "translation_ko": "자료를 메일로 보낼게요.",
+    "note_ko": "수단을 나타내는 「で」와 대상을 나타내는 「を」가 함께 쓰여요",
+    "ruby": "{資料|しりょう}をメールで{送|おく}ります。"
+  },
+  {
+    "id": "e131",
+    "situation_ko": "비 오는 날 우산을 빌릴 때",
+    "expression_jp": "傘を貸してもらえませんか。",
+    "register": "polite",
+    "translation_ko": "우산을 빌려 줄 수 있나요?",
+    "note_ko": "「〜てもらえませんか」는 부탁을 부드럽게 만드는 표현이에요",
+    "ruby": "{傘|かさ}を{貸|か}してもらえませんか。"
+  },
+  {
+    "id": "e132",
+    "situation_ko": "지갑을 잃어버렸을 때 역무원에게",
+    "expression_jp": "電車に財布を忘れました。",
+    "register": "polite",
+    "translation_ko": "전철에 지갑을 두고 내렸어요.",
+    "note_ko": "「忘れる」는 물건을 두고 왔다는 뜻도 돼요. 장소 뒤에는 「に」를 써요",
+    "ruby": "{電車|でんしゃ}に{財布|さいふ}を{忘|わす}れました。"
+  },
+  {
+    "id": "e133",
+    "situation_ko": "분실물을 찾고 있을 때",
+    "expression_jp": "落とし物を探しているんですが。",
+    "register": "polite",
+    "translation_ko": "분실물을 찾고 있는데요.",
+    "note_ko": "「〜んですが」로 용건을 꺼내면 자연스러워요",
+    "ruby": "{落|お}とし{物|もの}を{探|さが}しているんですが。"
+  },
+  {
+    "id": "e134",
+    "situation_ko": "약국에서 약을 사고 싶을 때",
+    "expression_jp": "風邪に効く薬はありますか。",
+    "register": "polite",
+    "translation_ko": "감기에 듣는 약 있어요?",
+    "note_ko": "「に効く」는 ~에 효과가 있다는 뜻이에요",
+    "ruby": "{風邪|かぜ}に{効|き}く{薬|くすり}はありますか。"
+  },
+  {
+    "id": "e135",
+    "situation_ko": "몸이 좋지 않아 일찍 퇴근할 때",
+    "expression_jp": "熱があるので、今日は早く帰ります。",
+    "register": "polite",
+    "translation_ko": "열이 있어서 오늘은 일찍 갈게요.",
+    "note_ko": "이유를 「ので」로 말하면 부드럽게 들려요",
+    "ruby": "{熱|ねつ}があるので、{今日|きょう}は{早|はや}く{帰|かえ}ります。"
+  },
+  {
+    "id": "e136",
+    "situation_ko": "가게에서 사이즈를 바꾸고 싶을 때",
+    "expression_jp": "もう少し大きいサイズはありますか。",
+    "register": "polite",
+    "translation_ko": "조금 더 큰 사이즈 있나요?",
+    "note_ko": "「もう少し」는 조금만 더라는 뜻이에요",
+    "ruby": "もう{少|すこ}し{大|おお}きいサイズはありますか。"
+  },
+  {
+    "id": "e137",
+    "situation_ko": "영수증이 필요할 때",
+    "expression_jp": "領収書をお願いします。",
+    "register": "polite",
+    "translation_ko": "영수증 부탁합니다.",
+    "note_ko": "회사 경비 처리용으로 쓸 때 「領収書」를 말해요",
+    "ruby": "{領収書|りょうしゅうしょ}をお{願|ねが}いします。"
+  },
+  {
+    "id": "e138",
+    "situation_ko": "식당에서 자리를 부탁할 때",
+    "expression_jp": "窓の近くの席がいいです。",
+    "register": "polite",
+    "translation_ko": "창가 근처 자리가 좋아요.",
+    "note_ko": "「〜がいいです」는 선호를 말하는 기본 표현이에요",
+    "ruby": "{窓|まど}の{近|ちか}くの{席|せき}がいいです。"
+  },
+  {
+    "id": "e139",
+    "situation_ko": "금연석을 부탁할 때",
+    "expression_jp": "禁煙席をお願いします。",
+    "register": "polite",
+    "translation_ko": "금연석으로 부탁합니다.",
+    "note_ko": "식당 입구에서 인원 다음으로 자주 듣고 말하는 표현이에요",
+    "ruby": "{禁煙席|きんえんせき}をお{願|ねが}いします。"
+  },
+  {
+    "id": "e140",
+    "situation_ko": "친구에게 주말 계획을 물을 때",
+    "expression_jp": "週末は何をする予定？",
+    "register": "casual",
+    "translation_ko": "주말에는 뭐 할 예정이야?",
+    "note_ko": "「予定」는 정해진 계획이에요",
+    "ruby": "{週末|しゅうまつ}は{何|なに}をする{予定|よてい}？"
+  },
+  {
+    "id": "e141",
+    "situation_ko": "친구를 영화에 초대할 때",
+    "expression_jp": "一緒に映画を見に行かない？",
+    "register": "casual",
+    "translation_ko": "같이 영화 보러 가지 않을래?",
+    "note_ko": "「〜ない？」는 가볍게 권하는 말투예요",
+    "ruby": "{一緒|いっしょ}に{映画|えいが}を{見|み}に{行|い}かない？"
+  },
+  {
+    "id": "e142",
+    "situation_ko": "친구의 초대에 일정이 안 될 때",
+    "expression_jp": "残念だけど、その日は行けない。",
+    "register": "casual",
+    "translation_ko": "아쉽지만 그날은 못 가.",
+    "note_ko": "거절할 때 「残念だけど」로 시작하면 부드러워요",
+    "ruby": "{残念|ざんねん}だけど、その{日|ひ}は{行|い}けない。"
+  },
+  {
+    "id": "e143",
+    "situation_ko": "약속 시간에 늦을 것 같을 때",
+    "expression_jp": "電車が遅れて、少し遅れそうです。",
+    "register": "polite",
+    "translation_ko": "전철이 늦어져서 조금 늦을 것 같아요.",
+    "note_ko": "「〜そうです」는 눈앞의 상황으로 짐작할 때 써요",
+    "ruby": "{電車|でんしゃ}が{遅|おく}れて、{少|すこ}し{遅|おく}れそうです。"
+  },
+  {
+    "id": "e144",
+    "situation_ko": "회의에서 의견을 말하기 전에",
+    "expression_jp": "私の意見を言ってもいいですか。",
+    "register": "polite",
+    "translation_ko": "제 의견을 말해도 될까요?",
+    "note_ko": "「〜てもいいですか」는 허락을 구하는 기본형이에요",
+    "ruby": "{私|わたし}の{意見|いけん}を{言|い}ってもいいですか。"
+  },
+  {
+    "id": "e145",
+    "situation_ko": "회의 자료를 확인했는지 물을 때",
+    "expression_jp": "資料は見ましたか。",
+    "register": "polite",
+    "translation_ko": "자료는 보셨어요?",
+    "note_ko": "업무에서 자주 쓰는 확인 질문이에요",
+    "ruby": "{資料|しりょう}は{見|み}ましたか。"
+  },
+  {
+    "id": "e146",
+    "situation_ko": "야근을 하게 되었다고 알릴 때",
+    "expression_jp": "今日は残業になりそうです。",
+    "register": "polite",
+    "translation_ko": "오늘은 야근이 될 것 같아요.",
+    "note_ko": "「〜になる」는 결과로 그렇게 된다는 뜻이에요",
+    "ruby": "{今日|きょう}は{残業|ざんぎょう}になりそうです。"
+  },
+  {
+    "id": "e147",
+    "situation_ko": "집안일을 하면서 말할 때",
+    "expression_jp": "部屋の掃除をしてから、洗濯をします。",
+    "register": "polite",
+    "translation_ko": "방 청소를 하고 나서 빨래를 해요.",
+    "note_ko": "「〜てから」는 순서를 나타내요",
+    "ruby": "{部屋|へや}の{掃除|そうじ}をしてから、{洗濯|せんたく}をします。"
+  },
+  {
+    "id": "e148",
+    "situation_ko": "방에서 창문을 열어도 되는지 물을 때",
+    "expression_jp": "窓を開けてもいいですか。",
+    "register": "polite",
+    "translation_ko": "창문을 열어도 될까요?",
+    "note_ko": "「開ける」는 사람이 여는 것, 「開く」는 저절로 열리는 것이에요",
+    "ruby": "{窓|まど}を{開|あ}けてもいいですか。"
+  },
+  {
+    "id": "e149",
+    "situation_ko": "물건을 건네줄 때",
+    "expression_jp": "これ、どうぞ。使ってください。",
+    "register": "polite",
+    "translation_ko": "이거 쓰세요. 사용하세요.",
+    "note_ko": "「どうぞ」와 함께 건네면 친절한 인상을 줘요",
+    "ruby": "これ、どうぞ。{使|つか}ってください。"
+  },
+  {
+    "id": "e150",
+    "situation_ko": "친구에게 책을 빌려주며",
+    "expression_jp": "この本、面白いから貸してあげる。",
+    "register": "casual",
+    "translation_ko": "이 책 재밌으니까 빌려 줄게.",
+    "note_ko": "「〜てあげる」는 해 준다는 뜻이에요",
+    "ruby": "この{本|ほん}、{面白|おもしろ}いから{貸|か}してあげる。"
+  },
+  {
+    "id": "e151",
+    "situation_ko": "잠이 올 때 친구에게",
+    "expression_jp": "昨日、あまり眠れなかったんだ。",
+    "register": "casual",
+    "translation_ko": "어제 잠을 잘 못 잤어.",
+    "note_ko": "「〜なかったんだ」는 이유를 설명하는 말투예요",
+    "ruby": "{昨日|きのう}、あまり{眠|ねむ}れなかったんだ。"
+  },
+  {
+    "id": "e152",
+    "situation_ko": "시험을 앞두고 있을 때",
+    "expression_jp": "来週試験があるから、練習しないと。",
+    "register": "casual",
+    "translation_ko": "다음 주에 시험이 있어서 연습해야 해.",
+    "note_ko": "「〜ないと」는 「〜ないといけない」의 줄임이에요",
+    "ruby": "{来週|らいしゅう}{試験|しけん}があるから、{練習|れんしゅう}しないと。"
+  },
+  {
+    "id": "e153",
+    "situation_ko": "숙제를 잊어버렸을 때",
+    "expression_jp": "宿題を家に忘れてしまいました。",
+    "register": "polite",
+    "translation_ko": "숙제를 집에 두고 와 버렸어요.",
+    "note_ko": "「〜てしまう」는 아쉬움이나 실수의 느낌을 더해요",
+    "ruby": "{宿題|しゅくだい}を{家|いえ}に{忘|わす}れてしまいました。"
+  },
+  {
+    "id": "e154",
+    "situation_ko": "지각했을 때 사과하며",
+    "expression_jp": "寝坊して、遅刻してしまいました。",
+    "register": "polite",
+    "translation_ko": "늦잠을 자서 지각해 버렸어요.",
+    "note_ko": "이유를 먼저 말하고 사과하면 자연스러워요",
+    "ruby": "{寝坊|ねぼう}して、{遅刻|ちこく}してしまいました。"
+  },
+  {
+    "id": "e155",
+    "situation_ko": "친구에게 날씨를 말하며",
+    "expression_jp": "今日は風が強くて、寒いね。",
+    "register": "casual",
+    "translation_ko": "오늘은 바람이 세고 추워.",
+    "note_ko": "「〜くて」는 형용사를 이어 줘요",
+    "ruby": "{今日|きょう}は{風|かぜ}が{強|つよ}くて、{寒|さむ}いね。"
+  },
+  {
+    "id": "e156",
+    "situation_ko": "공원에서 산책 약속을 할 때",
+    "expression_jp": "天気がよければ、公園を散歩しましょう。",
+    "register": "polite",
+    "translation_ko": "날씨가 좋으면 공원을 산책해요.",
+    "note_ko": "「〜ば」는 조건을 나타내요",
+    "ruby": "{天気|てんき}がよければ、{公園|こうえん}を{散歩|さんぽ}しましょう。"
+  },
+  {
+    "id": "e157",
+    "situation_ko": "연락을 기다리고 있을 때",
+    "expression_jp": "連絡を待っています。",
+    "register": "polite",
+    "translation_ko": "연락 기다리고 있어요.",
+    "note_ko": "「待っています」는 지금도 기다리는 중이라는 뜻이에요",
+    "ruby": "{連絡|れんらく}を{待|ま}っています。"
+  },
+  {
+    "id": "e158",
+    "situation_ko": "메시지에 답하지 못했을 때",
+    "expression_jp": "返事が遅くなって、すみません。",
+    "register": "polite",
+    "translation_ko": "답장이 늦어져서 죄송해요.",
+    "note_ko": "「遅くなる」는 늦어졌다는 뜻이에요",
+    "ruby": "{返事|へんじ}が{遅|おそ}くなって、すみません。"
+  },
+  {
+    "id": "e159",
+    "situation_ko": "파일을 보냈다고 알릴 때",
+    "expression_jp": "資料を添付しましたので、ご確認ください。",
+    "register": "polite",
+    "translation_ko": "자료를 첨부했으니 확인해 주세요.",
+    "note_ko": "메일에서 자주 쓰는 정중한 표현이에요",
+    "ruby": "{資料|しりょう}を{添付|てんぷ}しましたので、ご{確認|かくにん}ください。"
+  },
+  {
+    "id": "e160",
+    "situation_ko": "복사를 부탁할 때",
+    "expression_jp": "これを十枚印刷してください。",
+    "register": "polite",
+    "translation_ko": "이걸 열 장 인쇄해 주세요.",
+    "note_ko": "수량을 말할 때는 「十枚」처럼 붙여요",
+    "ruby": "これを{十|じゅう}{枚|まい}{印刷|いんさつ}してください。"
+  },
+  {
+    "id": "e161",
+    "situation_ko": "길을 잃은 아이를 도울 때",
+    "expression_jp": "迷子になったんですか。",
+    "register": "polite",
+    "translation_ko": "길을 잃었어요?",
+    "note_ko": "「迷子」는 아이가 길을 잃은 상황을 가리켜요",
+    "ruby": "{迷子|まいご}になったんですか。"
+  },
+  {
+    "id": "e162",
+    "situation_ko": "우체국에서 소포를 보낼 때",
+    "expression_jp": "この荷物を郵便局から送りたいです。",
+    "register": "polite",
+    "translation_ko": "이 짐을 우체국에서 보내고 싶어요.",
+    "note_ko": "「から」는 출발점이나 보내는 곳을 나타내요",
+    "ruby": "この{荷物|にもつ}を{郵便局|ゆうびんきょく}から{送|おく}りたいです。"
+  },
+  {
+    "id": "e163",
+    "situation_ko": "전철 개찰구에서 문제가 생겼을 때",
+    "expression_jp": "切符をなくしてしまいました。",
+    "register": "polite",
+    "translation_ko": "표를 잃어버렸어요.",
+    "note_ko": "「なくす」는 잃어버렸다는 뜻이에요",
+    "ruby": "{切符|きっぷ}をなくしてしまいました。"
+  },
+  {
+    "id": "e164",
+    "situation_ko": "친구에게 길을 설명할 때",
+    "expression_jp": "駅を出て、右に曲がってください。",
+    "register": "polite",
+    "translation_ko": "역을 나와서 오른쪽으로 돌아 주세요.",
+    "note_ko": "「を出る」는 장소를 떠난다는 뜻이에요",
+    "ruby": "{駅|えき}を{出|で}て、{右|みぎ}に{曲|ま}がってください。"
+  },
+  {
+    "id": "e165",
+    "situation_ko": "전화로 예약을 바꿀 때",
+    "expression_jp": "予約の時間を変えたいんですが。",
+    "register": "polite",
+    "translation_ko": "예약 시간을 바꾸고 싶은데요.",
+    "note_ko": "「〜たいんですが」는 용건을 부드럽게 꺼내요",
+    "ruby": "{予約|よやく}の{時間|じかん}を{変|か}えたいんですが。"
+  },
+  {
+    "id": "e166",
+    "situation_ko": "휴대폰을 충전하고 싶을 때",
+    "expression_jp": "携帯を充電してもいいですか。",
+    "register": "polite",
+    "translation_ko": "휴대폰을 충전해도 될까요?",
+    "note_ko": "「携帯」는 휴대폰을 줄여 부르는 말이에요",
+    "ruby": "{携帯|けいたい}を{充電|じゅうでん}してもいいですか。"
+  }
+]

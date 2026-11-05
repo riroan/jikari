@@ -3,6 +3,7 @@
 import { QuizCard } from "@/components/QuizCard";
 import { ExpressionQuiz } from "@/components/ExpressionParts";
 import { RubyText } from "@/components/Furigana";
+import { SentenceFilled } from "@/components/SentenceFilled";
 import {
   generateGrammarQuizChoices,
   generateKanjiChoices,
@@ -242,6 +243,7 @@ function SentenceSlot({
         correct: choices.correct,
         choiceFontFamily: "var(--font-jp-sans)",
       }}
+      back={<SentenceFilled card={card} />}
       onResolved={(correct) =>
         onResolved("sentence", card.id, correct, "choice")
       }

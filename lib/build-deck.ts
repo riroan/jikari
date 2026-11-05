@@ -12,14 +12,15 @@ export interface BuildItem {
   ko: string;
 }
 
-/** 빈칸을 정답으로 채운 문장 + 표현 카드 중 3–7청크로 쪼개지는 것만. */
+/** 빈칸을 정답으로 채운 문장 + 표현 카드 중 3–7청크로 쪼개지는 것만 (조사 분리 모드는 minChunks=2로 받아 조각 수를 다시 센다). */
 export function buildItems(
   sentences: readonly SentenceCard[],
   expressions: readonly ExpressionCard[],
+  minChunks?: number,
 ): BuildItem[] {
   const out: BuildItem[] = [];
   const add = (id: string, markup: string, ko: string) => {
-    const chunks = segmentSentence(markup);
+    const chunks = segmentSentence(markup, minChunks);
     if (chunks) out.push({ id, markup, chunks, ko });
   };
   for (const c of sentences) {
@@ -62,4 +63,56 @@ export function pickDistractors(item: BuildItem, all: readonly BuildItem[], seed
   take((c) => !!endParticle(c));
   take(() => true);
   return out;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 조사 분리 모드: 단어 조각과 조사 조각을 따로 놓고, 쓰지 않는 조사 조각을 섞는다.
+// ─────────────────────────────────────────────────────────────
+
+const SPLIT_PARTICLES = "はがをにでともへの";
+/** 앞이 가나일 때는 단어 내부(ので, だけど…) 오탐을 피해 이 셋만 자른다 (segmentSentence와 같은 규칙). */
+const SPLIT_AFTER_KANA = "はがを";
+const UNIT = /\{[^|{}]+\|[^|{}]+\}|[\s\S]/gu;
+
+/** 한 글자 조사 하나로 끝나는 청크를 [단어, 조사]로 가른다. 못 가르면 그대로. */
+export function splitParticle(chunk: string): string[] {
+  const units = chunk.match(UNIT) ?? [];
+  if (units.length < 2) return [chunk];
+  const last = units[units.length - 1];
+  const prev = units[units.length - 2];
+  if (last.length !== 1 || !SPLIT_PARTICLES.includes(last)) return [chunk];
+  const prevIsKana = !prev.startsWith("{") && !/[一-鿿々゠-ヿ]/u.test(prev);
+  if (prevIsKana && !SPLIT_AFTER_KANA.includes(last)) return [chunk];
+  return [units.slice(0, -1).join(""), last];
+}
+
+export const isParticleTile = (tile: string) => tile.length === 1 && SPLIT_PARTICLES.includes(tile);
+
+/** 문장 전체를 단어/조사 조각으로 풀어 낸다. 이어 붙이면 원문과 같다. */
+export function splitItem(item: BuildItem): BuildItem {
+  return { ...item, chunks: item.chunks.flatMap(splitParticle) };
+}
+
+/**
+ * 서로 바꿔 써도 문장이 성립하는 조사들. 정답에 이 중 하나가 있으면 같은 무리의 다른
+ * 조사는 함정으로 주지 않는다 ("先に着いて"에 へ를 주면 "先へ着いて"도 자연스러워
+ * 정답을 가를 수 없다).
+ */
+const INTERCHANGEABLE: readonly (readonly string[])[] = [
+  ["に", "へ"],
+  ["は", "が", "も"],
+];
+
+/**
+ * 문장에 한 번도 나오지 않는 조사 조각 n개 (같은 seed면 같은 결과).
+ * 문장에 이미 있는 조사와, 그것과 바꿔 써도 되는 조사는 뽑지 않는다.
+ */
+export function pickParticleDistractors(item: BuildItem, seed: number, n = 2): string[] {
+  const used = new Set(item.chunks.filter(isParticleTile));
+  const blocked = new Set(used);
+  for (const group of INTERCHANGEABLE) {
+    if (group.some((p) => used.has(p))) for (const p of group) blocked.add(p);
+  }
+  const pool = [...SPLIT_PARTICLES].filter((p) => !blocked.has(p) && p !== "の");
+  return shuffleIds(pool, seed).slice(0, n);
 }

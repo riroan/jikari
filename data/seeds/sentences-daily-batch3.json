@@ -1,0 +1,296 @@
+[
+ {
+  "id": "s336",
+  "sentence": "毎朝、＿＿＿を読んでから会社に行きます。",
+  "sentenceRuby": "{毎朝|まいあさ}、＿＿＿を{読|よ}んでから{会社|かいしゃ}に{行|い}きます。",
+  "blank": "新聞",
+  "distractors": [
+   "電話",
+   "写真",
+   "階段"
+  ],
+  "translation": "매일 아침 신문을 읽고 나서 회사에 갑니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{新聞|しんぶん}"
+ },
+ {
+  "id": "s337",
+  "sentence": "駅で＿＿＿を買って、電車に乗ります。",
+  "sentenceRuby": "{駅|えき}で＿＿＿を{買|か}って、{電車|でんしゃ}に{乗|の}ります。",
+  "blank": "切符",
+  "distractors": [
+   "天気",
+   "背中",
+   "屋根"
+  ],
+  "translation": "역에서 표를 사서 전철을 탑니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{切符|きっぷ}"
+ },
+ {
+  "id": "s338",
+  "sentence": "＿＿＿が降っているので、傘を持って行きます。",
+  "sentenceRuby": "＿＿＿が{降|ふ}っているので、{傘|かさ}を{持|も}って{行|い}きます。",
+  "blank": "雨",
+  "distractors": [
+   "道",
+   "朝",
+   "地図"
+  ],
+  "translation": "비가 내리고 있어서 우산을 가지고 갑니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{雨|あめ}"
+ },
+ {
+  "id": "s339",
+  "sentence": "冷蔵庫に＿＿＿が入っています。",
+  "sentenceRuby": "{冷蔵庫|れいぞうこ}に＿＿＿が{入|はい}っています。",
+  "blank": "牛乳",
+  "distractors": [
+   "天気",
+   "時間",
+   "学校"
+  ],
+  "translation": "냉장고에 우유가 들어 있어요.",
+  "jlptLevel": 5,
+  "blankRuby": "{牛乳|ぎゅうにゅう}"
+ },
+ {
+  "id": "s340",
+  "sentence": "日曜日は友達と＿＿＿に行きました。",
+  "sentenceRuby": "{日曜日|にちようび}は{友達|ともだち}と＿＿＿に{行|い}きました。",
+  "blank": "映画",
+  "distractors": [
+   "宿題",
+   "病気",
+   "料理"
+  ],
+  "translation": "일요일에는 친구와 영화를 보러 갔어요.",
+  "jlptLevel": 5,
+  "blankRuby": "{映画|えいが}"
+ },
+ {
+  "id": "s341",
+  "sentence": "部屋が＿＿＿ので、窓を開けます。",
+  "sentenceRuby": "{部屋|へや}が＿＿＿ので、{窓|まど}を{開|あ}けます。",
+  "blank": "暑い",
+  "distractors": [
+   "重い",
+   "若い",
+   "安い"
+  ],
+  "translation": "방이 더워서 창문을 엽니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{暑|あつ}い"
+ },
+ {
+  "id": "s342",
+  "sentence": "＿＿＿に入る前に、手を洗います。",
+  "sentenceRuby": "＿＿＿に{入|はい}る{前|まえ}に、{手|て}を{洗|あら}います。",
+  "blank": "店",
+  "distractors": [
+   "空",
+   "歌",
+   "夢"
+  ],
+  "translation": "가게에 들어가기 전에 손을 씻어요.",
+  "jlptLevel": 5,
+  "blankRuby": "{店|みせ}"
+ },
+ {
+  "id": "s343",
+  "sentence": "図書館で本を＿＿＿。",
+  "sentenceRuby": "{図書館|としょかん}で{本|ほん}を＿＿＿。",
+  "blank": "借ります",
+  "distractors": [
+   "洗います",
+   "走ります",
+   "泳ぎます"
+  ],
+  "translation": "도서관에서 책을 빌립니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{借|か}ります"
+ },
+ {
+  "id": "s344",
+  "sentence": "＿＿＿を聞きながら、掃除をします。",
+  "sentenceRuby": "＿＿＿を{聞|き}きながら、{掃除|そうじ}をします。",
+  "blank": "音楽",
+  "distractors": [
+   "地図",
+   "野菜",
+   "眼鏡"
+  ],
+  "translation": "음악을 들으면서 청소를 해요.",
+  "jlptLevel": 5,
+  "blankRuby": "{音楽|おんがく}"
+ },
+ {
+  "id": "s345",
+  "sentence": "駅まで＿＿＿で行きます。",
+  "sentenceRuby": "{駅|えき}まで＿＿＿で{行|い}きます。",
+  "blank": "自転車",
+  "distractors": [
+   "帽子",
+   "果物",
+   "辞書"
+  ],
+  "translation": "역까지 자전거로 갑니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{自転車|じてんしゃ}"
+ },
+ {
+  "id": "s346",
+  "sentence": "駅の＿＿＿に大きな時計があります。",
+  "sentenceRuby": "{駅|えき}の＿＿＿に{大|おお}きな{時計|とけい}があります。",
+  "blank": "前",
+  "distractors": [
+   "薬",
+   "秋",
+   "味"
+  ],
+  "translation": "역 앞에 큰 시계가 있어요.",
+  "jlptLevel": 5,
+  "blankRuby": "{前|まえ}"
+ },
+ {
+  "id": "s347",
+  "sentence": "友達に＿＿＿を送りました。",
+  "sentenceRuby": "{友達|ともだち}に＿＿＿を{送|おく}りました。",
+  "blank": "手紙",
+  "distractors": [
+   "階段",
+   "天気",
+   "季節"
+  ],
+  "translation": "친구에게 편지를 보냈어요.",
+  "jlptLevel": 5,
+  "blankRuby": "{手紙|てがみ}"
+ },
+ {
+  "id": "s348",
+  "sentence": "＿＿＿を引いたので、学校を休みました。",
+  "sentenceRuby": "＿＿＿を{引|ひ}いたので、{学校|がっこう}を{休|やす}みました。",
+  "blank": "風邪",
+  "distractors": [
+   "宿題",
+   "財布",
+   "予約"
+  ],
+  "translation": "감기에 걸려서 학교를 쉬었어요.",
+  "jlptLevel": 5,
+  "blankRuby": "{風邪|かぜ}"
+ },
+ {
+  "id": "s349",
+  "sentence": "毎晩、おふろに＿＿＿前に歯を磨きます。",
+  "sentenceRuby": "{毎晩|まいばん}、おふろに＿＿＿{前|まえ}に{歯|は}を{磨|みが}きます。",
+  "blank": "入る",
+  "distractors": [
+   "走る",
+   "持つ",
+   "通る"
+  ],
+  "translation": "매일 밤 목욕하기 전에 이를 닦아요.",
+  "jlptLevel": 4,
+  "blankRuby": "{入|はい}る"
+ },
+ {
+  "id": "s350",
+  "sentence": "旅行の＿＿＿をスーツケースに入れます。",
+  "sentenceRuby": "{旅行|りょこう}の＿＿＿をスーツケースに{入|い}れます。",
+  "blank": "荷物",
+  "distractors": [
+   "季節",
+   "意味",
+   "最近"
+  ],
+  "translation": "여행 짐을 여행 가방에 넣어요.",
+  "jlptLevel": 4,
+  "blankRuby": "{荷物|にもつ}"
+ },
+ {
+  "id": "s351",
+  "sentence": "＿＿＿が鳴っているので、電話に出ました。",
+  "sentenceRuby": "＿＿＿が{鳴|な}っているので、{電話|でんわ}に{出|で}ました。",
+  "blank": "携帯",
+  "distractors": [
+   "机",
+   "階段",
+   "地図"
+  ],
+  "translation": "휴대폰이 울려서 전화를 받았어요.",
+  "jlptLevel": 4,
+  "blankRuby": "{携帯|けいたい}"
+ },
+ {
+  "id": "s352",
+  "sentence": "昨日は＿＿＿を見ながら夕飯を食べました。",
+  "sentenceRuby": "{昨日|きのう}は＿＿＿を{見|み}ながら{夕飯|ゆうはん}を{食|た}べました。",
+  "blank": "野球",
+  "distractors": [
+   "空気",
+   "意味",
+   "季節"
+  ],
+  "translation": "어제는 야구를 보면서 저녁을 먹었어요.",
+  "jlptLevel": 4,
+  "blankRuby": "{野球|やきゅう}"
+ },
+ {
+  "id": "s353",
+  "sentence": "寒いので、＿＿＿を着て出かけます。",
+  "sentenceRuby": "{寒|さむ}いので、＿＿＿を{着|き}て{出|で}かけます。",
+  "blank": "上着",
+  "distractors": [
+   "帽子",
+   "靴",
+   "鍵"
+  ],
+  "translation": "추워서 겉옷을 입고 나갑니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{上着|うわぎ}"
+ },
+ {
+  "id": "s354",
+  "sentence": "電気を＿＿＿寝ます。",
+  "sentenceRuby": "{電気|でんき}を＿＿＿{寝|ね}ます。",
+  "blank": "消して",
+  "distractors": [
+   "開けて",
+   "洗って",
+   "貸して"
+  ],
+  "translation": "불을 끄고 잡니다.",
+  "jlptLevel": 5,
+  "blankRuby": "{消|け}して"
+ },
+ {
+  "id": "s355",
+  "sentence": "窓を＿＿＿、空気を入れ替えます。",
+  "sentenceRuby": "{窓|まど}を＿＿＿、{空気|くうき}を{入|い}れ{替|か}えます。",
+  "blank": "開けて",
+  "distractors": [
+   "閉めて",
+   "切って",
+   "折って"
+  ],
+  "translation": "창문을 열어서 공기를 환기해요.",
+  "jlptLevel": 4,
+  "blankRuby": "{開|あ}けて"
+ },
+ {
+  "id": "s356",
+  "sentence": "＿＿＿が好きなので、毎週泳ぎに行きます。",
+  "sentenceRuby": "＿＿＿が{好|す}きなので、{毎週|まいしゅう}{泳|およ}ぎに{行|い}きます。",
+  "blank": "海",
+  "distractors": [
+   "名前",
+   "辞書",
+   "番号"
+  ],
+  "translation": "바다를 좋아해서 매주 수영하러 가요.",
+  "jlptLevel": 5,
+  "blankRuby": "{海|うみ}"
+ }
+]

@@ -144,10 +144,6 @@ function Start({ initial, onStart }: { initial: Config | null; onStart: (c: Conf
 
   return (
     <div className="flex flex-col gap-8">
-      <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
-        복습 일정과 상관없이 여러 과목을 번갈아 풀어요.
-      </p>
-
       <section aria-labelledby="mix-subjects">
         <h2 id="mix-subjects" className="text-xs tracking-label font-medium text-[color:var(--fg-faint)] mb-2">
           과목

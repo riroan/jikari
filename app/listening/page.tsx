@@ -76,7 +76,6 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
     return shell(
       <SessionSummary
         summary={run.summary}
-        unscheduled
         onRetry={run.retryMissed}
         onNext={run.next}
       />,
@@ -209,7 +208,7 @@ function Dictation() {
   if (deck.length === 0)
     return shell(<EmptyCardsState label="받아쓰기할 표현이 아직 없어요." hint="표현 카드 시드 필요" />);
   if (run.summary)
-    return shell(<SessionSummary summary={run.summary} unscheduled onRetry={run.retryMissed} onNext={run.next} />);
+    return shell(<SessionSummary summary={run.summary} onRetry={run.retryMissed} onNext={run.next} />);
 
   const card = expressionById.get(run.retryId ?? deck[index % deck.length]);
   const markup = card && (card.ruby ?? card.expression_jp);
@@ -242,7 +241,7 @@ function Speaking() {
   if (deck.length === 0)
     return shell(<EmptyCardsState label="말하기 할 표현이 아직 없어요." hint="표현 카드 시드 필요" />);
   if (run.summary)
-    return shell(<SessionSummary summary={run.summary} unscheduled onRetry={run.retryMissed} onNext={run.next} />);
+    return shell(<SessionSummary summary={run.summary} onRetry={run.retryMissed} onNext={run.next} />);
   const card = expressionById.get(run.retryId ?? deck[index % deck.length]);
   const markup = card && (card.ruby ?? card.expression_jp);
   const reading = markup ? dictationReading(markup) : null;
@@ -292,11 +291,6 @@ function ListenPrompt({ text, label = "들리는 말의 뜻은?" }: { text: stri
           </button>
         )}
       </div>
-      {!played && (
-        <p className="text-tiny text-[color:var(--fg-faint)]">
-          듣기 버튼을 누르면 소리가 나와요
-        </p>
-      )}
     </div>
   );
 }

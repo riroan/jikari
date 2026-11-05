@@ -63,9 +63,6 @@ export default function SearchPage() {
       />
       {!trimmed && (
         <div className="pt-3">
-          <p className="text-caption text-[color:var(--fg-faint)] leading-relaxed">
-            일본어(가나·한자·로마자)나 한국어로 검색해요
-          </p>
           <div className="flex flex-wrap gap-x-5">
             {["たべる", "taberu", "먹다"].map((ex) => (
               <button

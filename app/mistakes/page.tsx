@@ -66,7 +66,7 @@ export default function MistakesPage() {
           ) : (
             <>
               <p className="text-caption text-[color:var(--fg-faint)] tracking-wide">
-                {items.length}장 · 연속 2번 맞히면 빠져요
+                {items.length}장
               </p>
               <button
                 type="button"

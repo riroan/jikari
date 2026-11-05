@@ -27,7 +27,7 @@ const ATTACH = ["について", "として", "にとって", "によって"].map
 const FIXED = ["ありがとう", "ございます", "よろしく", "すみません", "おはよう", "こんにちは", "こんばんは", "いただきます", "ごちそうさま"].map((w) => [...w]);
 
 /** 마크업 단위(루비 하나 또는 글자 하나) 사이 경계를 골라 청크로 자른다. 못 자르면 null. */
-export function segmentSentence(markup: string): string[] | null {
+export function segmentSentence(markup: string, minChunks: number = MIN_CHUNKS): string[] | null {
   const units = markup.match(UNIT) ?? [];
   // 루비 외의 마크업 잔여물(하이라이트, 짝 없는 괄호)은 자르지 않는다.
   if (units.some((u) => !isRuby(u) && "{}|[]".includes(u))) return null;
@@ -97,7 +97,7 @@ export function segmentSentence(markup: string): string[] | null {
     }
     chunks = [...chunks.slice(0, best), chunks[best] + chunks[best + 1], ...chunks.slice(best + 2)];
   }
-  if (chunks.length < MIN_CHUNKS) return null;
+  if (chunks.length < minChunks) return null;
   return chunks;
 }
 
