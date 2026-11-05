@@ -53,7 +53,7 @@ export function StudyCard({
     "flex-1 text-small text-[color:var(--fg-soft)] tracking-wider hover:text-[color:var(--fg)] transition-colors min-h-[44px] py-4 inline-flex items-center justify-center";
 
   return (
-    <div className="flex flex-col gap-6 min-h-[520px]">
+    <div className="flex flex-col gap-6">
       <div className="flex justify-center">
         <span
           className="text-label text-[color:var(--fg-faint)] tracking-label tabular-nums font-medium"
@@ -91,13 +91,25 @@ export function StudyCard({
         </div>
       )}
 
-      <div className="flex items-center mt-auto">
-        <button onClick={onPrev} className={btn} aria-label="이전 카드">
-          ← 이전
-        </button>
-        <button onClick={onNext} className={btn} aria-label="다음 카드">
-          다음 →
-        </button>
+      {/*
+        이전/다음은 화면 하단에 고정한다. 내용 바로 아래에 두면 예시가 많은 카드에서
+        버튼이 아래로 밀려 넘길 때마다 엄지 위치가 바뀌었다. body의 overflow-x:hidden
+        때문에 sticky가 듣지 않아 fixed + 아래 여백(spacer)으로 둔다.
+        ModePageShell의 하단 "홈으로"는 이 줄이 있으면 숨긴다 (data-study-nav).
+      */}
+      <div aria-hidden className="h-[calc(4rem+var(--sync-gap))]" />
+      <div
+        data-study-nav
+        className="fixed inset-x-0 bottom-0 z-30 bg-[color:var(--bg)] border-t border-[color:var(--line)] pl-[var(--safe-left)] pr-[var(--safe-right)] pb-[calc(var(--safe-bottom)+var(--sync-gap))]"
+      >
+        <div className="mx-auto w-full max-w-[390px] lg:max-w-[600px] px-6 flex items-center">
+          <button onClick={onPrev} className={btn} aria-label="이전 카드">
+            ← 이전
+          </button>
+          <button onClick={onNext} className={btn} aria-label="다음 카드">
+            다음 →
+          </button>
+        </div>
       </div>
     </div>
   );

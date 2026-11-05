@@ -86,11 +86,12 @@ export function ModePageShell({
         >
           <Link
             href={backHref}
-            className="inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
+            className="shrink-0 whitespace-nowrap inline-flex items-center min-h-[44px] -ml-2 px-2 text-caption text-[color:var(--fg-faint)] tracking-wider hover:text-[color:var(--fg)]"
           >
             {backLabel}
           </Link>
-          <div className="flex items-baseline gap-2">
+          {/* 좁은 폭(Safari 확대 ≈322px)에서는 통계와 復習이 두 줄로 나뉘되, 각 항목은 쪼개지지 않는다. */}
+          <div className="min-w-0 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-0.5 whitespace-nowrap">
             {statKey && <QuizStats statKey={statKey} />}
             {dueCount > 0 && (
               <span
@@ -102,7 +103,7 @@ export function ModePageShell({
             )}
           </div>
           <h1
-            className={titleClass}
+            className={`${titleClass} shrink-0 whitespace-nowrap`}
             style={{ fontFamily: "var(--font-jp-serif)" }}
           >
             {title}
@@ -117,7 +118,7 @@ export function ModePageShell({
         {backHref === "/" && (
           <Link
             href="/"
-            className="[main:has([data-session-summary])_&]:hidden mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
+            className="[main:has([data-session-summary])_&]:hidden [main:has([data-study-nav])_&]:hidden mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
           >
             홈으로
           </Link>
