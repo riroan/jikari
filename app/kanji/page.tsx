@@ -16,7 +16,7 @@ import { SinoKoreanHint } from "@/components/SinoKoreanHint";
 import { generateKanjiChoices, getKanji } from "@/lib/data";
 import { useCardsStore } from "@/lib/cards-store";
 import { shuffleIds, weightedShuffleIds } from "@/lib/deck";
-import { INITIAL_RATING, jlptDifficulty, quantizeRating } from "@/lib/rating";
+import { INITIAL_RATING, expectedScore, jlptDifficulty, quantizeRating } from "@/lib/rating";
 import { pickMode } from "@/lib/srs";
 import { normalizeJapanese } from "@/lib/normalize";
 import { wordsWithKanji } from "@/lib/kanji-words";
@@ -147,6 +147,7 @@ function KanjiPageInner() {
           card={card}
           seed={seed + index + epoch * 977}
           answerMode={pickMode(getBox("kanji", card.id), threshold)}
+          expected={expectedScore(ratingTier, jlptDifficulty(card))}
           onResolved={(wasCorrect, answerMode) => {
             if (!run.retrying) {
               review(
@@ -188,11 +189,14 @@ function KanjiQuiz({
   card,
   seed,
   answerMode,
+  expected,
   onResolved,
 }: {
   card: KanjiCard;
   seed: number;
   answerMode: "choice" | "typed";
+  /** 이 카드를 맞힐 기대 확률 — 선지의 닮은 정도를 조절한다. */
+  expected: number;
   onResolved: (correct: boolean, mode: "choice" | "typed") => void;
 }) {
   const missExample = useKanjiMissExample(card);
@@ -209,7 +213,7 @@ function KanjiQuiz({
   const input =
     answerMode === "choice"
       ? (() => {
-          const choices = generateKanjiChoices(card, qType, seed);
+          const choices = generateKanjiChoices(card, qType, seed, expected);
           return {
             mode: "choice" as const,
             choices: choices.choices,
