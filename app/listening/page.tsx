@@ -142,7 +142,6 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
     return shell(
       <QuizCard
         key={card.id}
-        scored={false}
         question={<ListenPrompt text={full} />}
         minQuestionHeight={0}
         input={{ mode: "choice", choices, correct, choiceFontFamily: "var(--font-kr-sans)" }}
@@ -172,7 +171,6 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
   return shell(
     <QuizCard
       key={card.id}
-      scored={false}
       question={<ListenPrompt text={card.reading} />}
       minQuestionHeight={0}
       input={{
@@ -239,7 +237,6 @@ function Pairs() {
   return shell(
     <QuizCard
       key={`${pair.id}:${index}`}
-      scored={false}
       question={<ListenPrompt text={target.kana} label={`들린 말은? · ${PAIR_KIND_KO[pair.kind]}`} />}
       minQuestionHeight={0}
       input={{ mode: "choice", choices, correct, choiceFontFamily: "var(--font-jp-sans)" }}
@@ -334,7 +331,6 @@ function Numbers() {
   return shell(
     <QuizCard
       key={id}
-      scored={false}
       question={<ListenPrompt text={q.reading} label={NUM_PROMPT[kind]} />}
       minQuestionHeight={0}
       input={{ mode: "choice", choices, correct, choiceFontFamily: "var(--font-jp-sans)" }}

@@ -62,8 +62,6 @@ export interface QuizCardProps {
   memoKey?: string;
   /** Shown only after a WRONG answer, below the next button (never shifts it). Null/undefined renders nothing. */
   missExample?: Example | null;
-  /** false where the answer is never scheduled (listening): hides the "느렸어요" note. Default true. */
-  scored?: boolean;
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean, wrongPick?: string) => void;
   /**
@@ -83,7 +81,6 @@ export function QuizCard({
   speak,
   memoKey,
   missExample,
-  scored = true,
   onResolved,
   minQuestionHeight = 260,
 }: QuizCardProps) {
@@ -95,7 +92,6 @@ export function QuizCard({
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [typedUserAnswer, setTypedUserAnswer] = useState<string | null>(null);
   const [hinted, setHinted] = useState(false);
-  const [slow, setSlow] = useState(false);
   const resolvedAtRef = useRef(0);
 
   const advance = useCallback(() => {
@@ -105,7 +101,6 @@ export function QuizCard({
     if (result === "wrong" && selectedChoice !== null) onResolved(ok, selectedChoice);
     else onResolved(ok);
     setHinted(false);
-    setSlow(false);
     markShown();
     setResult(null);
     setDisabled(false);
@@ -119,7 +114,8 @@ export function QuizCard({
       setResult(wasCorrect ? "correct" : "wrong");
       setDisabled(true);
       resolvedAtRef.current = Date.now();
-      setSlow(markAnswered(input.mode) && wasCorrect);
+      // 느린 정답은 박스를 유지하도록 기록만 한다 (화면 문구는 없음).
+      markAnswered(input.mode);
       if (back) {
         setShowingBack(true);
       }
@@ -246,11 +242,6 @@ export function QuizCard({
           {disabled && result !== null && (
               <div key={result} className="anim-fade-in">
                 <AnswerFeedback correct={result === "correct"} />
-                {scored && slow && !hinted && result === "correct" && (
-                  <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
-                    느렸어요 · 한 번 더 볼게요
-                  </p>
-                )}
               </div>
             )}
         </div>

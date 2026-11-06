@@ -111,18 +111,6 @@ export function ModePageShell({
         </header>
         {afterHeader}
         {children}
-        {/*
-          엄지 닿는 하단 홈 — 상단 ← HOME까지 손을 뻗지 않아도 된다. 세션 요약에는
-          자체 "홈으로"가 있어서, 요약이 떠 있으면 숨긴다 (한 화면에 홈 링크 셋).
-        */}
-        {backHref === "/" && (
-          <Link
-            href="/"
-            className="[main:has([data-session-summary])_&]:hidden [main:has([data-study-nav])_&]:hidden mt-auto pt-10 inline-flex items-center justify-center min-h-[44px] text-caption text-[color:var(--fg-faint)] tracking-wide hover:text-[color:var(--fg)]"
-          >
-            홈으로
-          </Link>
-        )}
       </div>
     </main>
   );

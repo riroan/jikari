@@ -78,8 +78,6 @@ export function SessionSummary({
   useEffect(() => ref.current?.focus({ preventScroll: true }), []);
   return (
     <section
-      // ModePageShell이 이 표식을 보고 하단 "홈으로"를 숨긴다 — 요약에 이미 있다.
-      data-session-summary=""
       ref={ref}
       tabIndex={-1}
       className="flex flex-col gap-6 outline-none"
