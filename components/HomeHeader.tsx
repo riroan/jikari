@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { HomeMenu } from "@/components/HomeMenu";
 
 /**
  * Home page header — brand on the left, streak + 復習 chip on the right.
@@ -29,6 +30,9 @@ export function HomeHeader({
     <>
     <header className="flex justify-between items-baseline mb-6">
       <div className="flex items-baseline">
+        <div className="self-center">
+          <HomeMenu />
+        </div>
         <h1
           className="text-title leading-none font-semibold tracking-wide"
           style={{ fontFamily: "var(--font-jp-serif)" }}

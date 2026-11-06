@@ -25,6 +25,8 @@ import {
   DEFAULT_PROGRESSION,
   addReward,
   buyFreeze,
+  buyItem,
+  equipItem,
   consumeFreezes,
   earn,
   normalizeProgression,
@@ -35,6 +37,7 @@ import {
   type Progression,
 } from "./progression";
 import { INITIAL_RATING, updateRating } from "./rating";
+import type { Slot } from "./cosmetics";
 import { remoteStorage } from "./remote-storage";
 import { recordMissAnswer } from "./misses";
 import { collectExtras } from "./extras";
@@ -74,7 +77,9 @@ interface StoreActions {
       | { kind: "redeem"; id: string }
       | { kind: "add"; name: string; cost: number }
       | { kind: "remove"; id: string }
-      | { kind: "use"; id: string },
+      | { kind: "use"; id: string }
+      | { kind: "item"; id: string }
+      | { kind: "equip"; slot: Slot; id: string },
   ) => boolean;
 
   /** Increment the lifetime ◯/✕ tally for a page. */
@@ -193,6 +198,8 @@ export const useStore = create<Store>()(
           : a.kind === "redeem" ? redeemReward(p, a.id, now)
           : a.kind === "add" ? addReward(p, a.name, a.cost, now)
           : a.kind === "remove" ? removeReward(p, a.id)
+          : a.kind === "item" ? buyItem(p, a.id, now)
+          : a.kind === "equip" ? equipItem(p, a.slot, a.id)
           : setPalette(p, a.id);
         if (!next) return false;
         set({ progression: next });

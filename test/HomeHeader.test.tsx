@@ -23,7 +23,7 @@ describe("HomeHeader — pre-hydration", () => {
     expect(screen.queryByText(/復習/)).toBeNull();
     // When `hydrated` is false the aria-label prop is undefined, so no
     // [aria-label] attribute is rendered at all — selector returns null.
-    expect(container.querySelector("[aria-label]")).toBeNull();
+    expect(container.querySelector("div[aria-label]")).toBeNull();
   });
 });
 
@@ -41,7 +41,7 @@ describe("HomeHeader — hydrated, studied today", () => {
     expect(screen.getByText(/7일 중\s*5일/)).toBeDefined();
     const streakSpan = screen.getByText(/7일 중\s*5일/);
     expect(streakSpan.className).toContain("accent-korean");
-    const labelHost = container.querySelector("[aria-label]");
+    const labelHost = container.querySelector("div[aria-label]");
     expect(labelHost?.getAttribute("aria-label")).toContain("최근 7일 중 5일");
     expect(labelHost?.getAttribute("aria-label")).toContain("오늘 7장");
   });
@@ -60,7 +60,7 @@ describe("HomeHeader — hydrated, not studied yet", () => {
     );
     const streakSpan = screen.getByText(/7일 중\s*3일/);
     expect(streakSpan.className).toContain("fg-faint");
-    const labelHost = container.querySelector("[aria-label]");
+    const labelHost = container.querySelector("div[aria-label]");
     expect(labelHost?.getAttribute("aria-label")).toContain("아직 시작 안 함");
   });
 
@@ -74,7 +74,7 @@ describe("HomeHeader — hydrated, not studied yet", () => {
         dueCount={0}
       />,
     );
-    const labelHost = container.querySelector("[aria-label]");
+    const labelHost = container.querySelector("div[aria-label]");
     expect(labelHost?.getAttribute("aria-label")).toContain("최근 7일 중 0일");
   });
 });
@@ -103,7 +103,7 @@ describe("HomeHeader — due chip", () => {
         dueCount={12}
       />,
     );
-    const labelHost = container.querySelector("[aria-label]");
+    const labelHost = container.querySelector("div[aria-label]");
     expect(labelHost?.getAttribute("aria-label")).toContain("복습 대기 12장");
   });
 

@@ -3,7 +3,9 @@ import {
   DEFAULT_PROGRESSION as P0,
   addReward,
   buyFreeze,
+  buyItem,
   consumeFreezes,
+  equipItem,
   earn,
   mergeProgression,
   pointsOf,
@@ -109,6 +111,32 @@ describe("shop", () => {
     expect(addReward(rich, "x", 0, NOW)).toBeNull();
     const p = addReward(rich, "보상", 300, NOW)!;
     expect(pointsOf(redeemReward(p, p.rewards[0].id, NOW)!)).toBe(1700);
+  });
+});
+
+describe("cosmetics", () => {
+  it("buyItem spends, owns and equips; can't buy twice or when short", () => {
+    const p = buyItem({ ...P0, xp: 2000 }, "frame:double", NOW)!;
+    expect([pointsOf(p), p.items, p.equip.frame]).toEqual([500, ["frame:double"], "frame:double"]);
+    expect(buyItem(p, "frame:double", NOW)).toBeNull();
+    expect(buyItem(P0, "skin:washi", NOW)).toBeNull();
+    expect(buyItem({ ...P0, xp: 9999 }, "nope", NOW)).toBeNull();
+  });
+
+  it("equipItem only takes owned items of the same slot; '' resets", () => {
+    const p = buyItem({ ...P0, xp: 9999 }, "skin:sumi", NOW)!;
+    expect(equipItem(p, "skin", "").equip.skin).toBe("");
+    expect(equipItem(p, "frame", "skin:sumi")).toBe(p);
+    expect(equipItem(p, "skin", "skin:washi")).toBe(p);
+  });
+
+  it("merge unions items, local equip wins, old saves without items/equip don't crash", () => {
+    const server = { ...P0, xp: 5000 } as Partial<typeof P0>;
+    delete server.items;
+    delete server.equip;
+    const local = buyItem({ ...P0, xp: 5000 }, "stamp:ryou", NOW)!;
+    const m = mergeProgression(server as typeof P0, local)!;
+    expect([m.items, m.equip.stamp]).toEqual([["stamp:ryou"], "stamp:ryou"]);
   });
 });
 

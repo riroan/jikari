@@ -337,12 +337,18 @@ function ChoicePanel({
           stateClass =
             "border-[color:var(--accent-progress)] bg-[color:var(--accent-progress)]/5";
         }
+        // 선지 스킨(globals.css [data-skin])이 상태별로 다르게 칠하도록.
+        const state =
+          disabled && isCorrectChoice ? (isSelected ? "correct" : "answer")
+          : disabled && isSelected ? "wrong"
+          : "idle";
         return (
           <button
             key={choice}
             onClick={() => onChoice(choice)}
             disabled={disabled}
-            className={`flex w-full items-baseline gap-3 text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
+            data-state={state}
+            className={`quiz-choice flex w-full items-baseline gap-3 text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
           >
             {/* 숫자 키 단축키 표시 — 키보드가 있는 데스크톱에서만 */}
             <span

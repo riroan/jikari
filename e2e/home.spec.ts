@@ -9,8 +9,11 @@ test.describe("home", () => {
 
     await expect(page.getByText("jikari", { exact: true })).toBeVisible();
     await expect(page.getByText("じかり")).toBeVisible();
-    await expect(page.getByRole("link", { name: /HOME/ })).toBeVisible();
-    await expect(page.getByRole("link", { name: /PROGRESS/ })).toBeVisible();
+    // 하단 내비 대신 좌상단 메뉴.
+    await page.getByRole("button", { name: "메뉴" }).click();
+    await expect(page.getByRole("link", { name: /진도/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /프로필/ })).toBeVisible();
+    await page.keyboard.press("Escape");
 
     // Each study subject (8) should have a pair of 공부 / 퀴즈 links.
     const studyLinks = page.getByRole("link", { name: "공부" });

@@ -41,6 +41,15 @@ const progressionSchema = z.object({
   frozenDays: z.array(dayKey).max(400),
   palettes: z.array(z.string().max(20)).max(20),
   palette: z.string().max(20),
+  // 꾸미기 이전 저장본·옛 클라이언트엔 없다 → 기본값.
+  items: z.array(z.string().max(40)).max(100).default([]),
+  equip: z
+    .object({
+      frame: z.string().max(40).default(""),
+      skin: z.string().max(40).default(""),
+      stamp: z.string().max(40).default(""),
+    })
+    .default({ frame: "", skin: "", stamp: "" }),
   rewards: z
     .array(z.object({ id: z.string().max(40), name: z.string().min(1).max(60), cost: z.number().int().positive().max(1_000_000) }))
     .max(100),

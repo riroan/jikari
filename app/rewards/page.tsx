@@ -9,8 +9,6 @@ import {
   DEFAULT_PROGRESSION,
   FREEZE_COST,
   FREEZE_MAX,
-  PALETTE_COST,
-  PALETTES,
   RANKS,
   consumeFreezes,
   pointsOf,
@@ -135,56 +133,6 @@ export default function RewardsPage() {
             {label("freeze", `${fmt(FREEZE_COST)}pt`)}
           </button>
         </div>
-      </section>
-
-      <section className="mb-10">
-        <h2 className={h2}>색 테마</h2>
-        <div className={row}>
-          <span className="text-[color:var(--fg-soft)]">기본</span>
-          <button
-            type="button"
-            disabled={p.palette === ""}
-            onClick={() => shop({ kind: "use", id: "" })}
-            className={btn}
-            style={{ minHeight: 44 }}
-          >
-            {p.palette === "" ? "사용 중" : "적용"}
-          </button>
-        </div>
-        {PALETTES.map((pal) => {
-          const owned = p.palettes.includes(pal.id);
-          const active = p.palette === pal.id;
-          return (
-            <div key={pal.id} className={row}>
-              <span className="flex items-center gap-3 text-[color:var(--fg-soft)]">
-                <span aria-hidden="true" className="inline-block w-6 h-1 rounded-sm" style={{ background: pal.swatch }} />
-                <span style={{ fontFamily: "var(--font-jp-serif)" }}>{pal.jp}</span>
-                <span className="text-caption text-[color:var(--fg-faint)]">{pal.ko}</span>
-              </span>
-              {owned ? (
-                <button
-                  type="button"
-                  disabled={active}
-                  onClick={() => shop({ kind: "use", id: pal.id })}
-                  className={btn}
-                  style={{ minHeight: 44 }}
-                >
-                  {active ? "사용 중" : "적용"}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  disabled={points < PALETTE_COST}
-                  onClick={confirmThen(`p:${pal.id}`, () => shop({ kind: "palette", id: pal.id }))}
-                  className={btn}
-                  style={{ minHeight: 44 }}
-                >
-                  {label(`p:${pal.id}`, `${fmt(PALETTE_COST)}pt`)}
-                </button>
-              )}
-            </div>
-          );
-        })}
       </section>
 
       <section className="mb-10">

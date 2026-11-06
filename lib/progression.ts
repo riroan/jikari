@@ -6,6 +6,7 @@
  */
 import { keyDaysAgo, toLocalDateKey } from "./heatmap";
 import type { HeatmapData } from "./types";
+import { SLOT_KO, cosmeticById, type Slot } from "./cosmetics";
 
 export interface Reward {
   id: string;
@@ -30,6 +31,10 @@ export interface Progression {
   palettes: string[];
   /** 적용 중인 색 테마 ("" = 기본). */
   palette: string;
+  /** 산 꾸미기 아이템 id (lib/cosmetics, `frame:kin` 등). */
+  items: string[];
+  /** 슬롯별 장착 아이템 id ("" = 기본). */
+  equip: Record<Slot, string>;
   /** 내가 정한 보상 목록. */
   rewards: Reward[];
   /** 지운 보상 id (병합에서 되살아나지 않게). */
@@ -53,6 +58,8 @@ export const DEFAULT_PROGRESSION: Progression = {
   frozenDays: [],
   palettes: [],
   palette: "",
+  items: [],
+  equip: { frame: "", skin: "", stamp: "" },
   rewards: [],
   removed: [],
   ledger: [],
@@ -66,7 +73,7 @@ export const DEFAULT_PROGRESSION: Progression = {
 /** 저장본(서버 JSON·옛 상태)을 빈 칸 없이 채운다. */
 export function normalizeProgression(raw: unknown): Progression {
   const p = (raw && typeof raw === "object" ? raw : {}) as Partial<Progression>;
-  return { ...DEFAULT_PROGRESSION, ...p };
+  return { ...DEFAULT_PROGRESSION, ...p, equip: { ...DEFAULT_PROGRESSION.equip, ...p.equip } };
 }
 
 // ---------- 적립 ----------------------------------------------------------
@@ -269,6 +276,20 @@ export function setPalette(p: Progression, id: string): Progression {
   return id === "" || p.palettes.includes(id) ? { ...p, palette: id } : p;
 }
 
+/** 꾸미기 아이템 구매 — 사면 바로 장착. */
+export function buyItem(p: Progression, id: string, now: number): Progression | null {
+  const c = cosmeticById.get(id);
+  if (!c || p.items.includes(id)) return null;
+  const s = spend(p, c.cost, `${SLOT_KO[c.slot]} ${c.jp}`, now);
+  return s && { ...s, items: [...s.items, id], equip: { ...s.equip, [c.slot]: id } };
+}
+
+/** 장착 — "" 은 기본으로 되돌리기. 안 산 것·다른 슬롯 아이템은 무시. */
+export function equipItem(p: Progression, slot: Slot, id: string): Progression {
+  const ok = id === "" || (p.items.includes(id) && cosmeticById.get(id)?.slot === slot);
+  return ok ? { ...p, equip: { ...p.equip, [slot]: id } } : p;
+}
+
 // ---------- 기기 간 병합 ----------------------------------------------------
 
 /**
@@ -283,6 +304,9 @@ export function setPalette(p: Progression, id: string): Progression {
  */
 export function mergeProgression(server?: Progression, local?: Progression): Progression | undefined {
   if (!server || !local) return server ?? local;
+  // 꾸미기 이전 저장본엔 items·equip이 없다.
+  server = normalizeProgression(server);
+  local = normalizeProgression(local);
   const union = (x: string[], y: string[]) => [...new Set([...x, ...y])];
   const ahead = local.xp > server.xp ? local : server;
   const spender =
@@ -300,6 +324,10 @@ export function mergeProgression(server?: Progression, local?: Progression): Pro
     .sort((x, y) => y.at - x.at)
     .slice(0, 100);
   const palettes = union(server.palettes, local.palettes);
+  const items = union(server.items, local.items);
+  // 장착도 색 테마처럼 로컬 선택이 이긴다 (산 것이라면).
+  const pickEquip = (slot: Slot) =>
+    local.equip[slot] === "" || items.includes(local.equip[slot]) ? local.equip[slot] : server.equip[slot];
   return {
     ...ahead,
     xp: Math.max(server.xp, local.xp),
@@ -308,6 +336,8 @@ export function mergeProgression(server?: Progression, local?: Progression): Pro
     frozenDays: union(server.frozenDays, local.frozenDays).sort().slice(-60),
     palettes,
     palette: local.palette === "" || palettes.includes(local.palette) ? local.palette : server.palette,
+    items,
+    equip: { frame: pickEquip("frame"), skin: pickEquip("skin"), stamp: pickEquip("stamp") },
     rewards,
     removed,
     ledger,

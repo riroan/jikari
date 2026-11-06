@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
 import { HomeHeader } from "@/components/HomeHeader";
-import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 import { daysSinceLastStudy, daysStudiedInLast, toLocalDateKey } from "@/lib/heatmap";
 import { splitDue, topDueKey, totalDue } from "@/lib/due";
 import { REVIEW_DUE_KEYS } from "@/lib/review-deck";
@@ -225,35 +224,6 @@ export default function Home() {
         </section>
         </div>
 
-        {/* Footer nav */}
-        <nav className="-mx-5 lg:mx-0 lg:col-span-2 lg:justify-start lg:gap-8 lg:pt-6 lg:border-t lg:border-[color:var(--line)] flex justify-between items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-[0.01em] min-[360px]:tracking-[0.06em] font-medium">
-          <Link
-            href="/"
-            aria-current="page"
-            className="inline-flex items-center justify-center min-h-[44px] px-1 text-[color:var(--fg-soft)] cursor-default"
-          >
-            HOME
-          </Link>
-          <Link
-            href="/progress"
-            className="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
-          >
-            PROGRESS
-          </Link>
-          <Link
-            href="/search"
-            className="min-w-[44px] inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
-          >
-            検索
-          </Link>
-          <Link
-            href="/settings"
-            className="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
-          >
-            SETTINGS
-          </Link>
-          <ThemeCycleButton />
-        </nav>
       </div>
     </main>
   );
