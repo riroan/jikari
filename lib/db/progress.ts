@@ -23,6 +23,7 @@ const VALID_MODES: ReadonlySet<CardMode> = new Set([
   "adjective",
   "grammar",
   "expression",
+  "listening",
 ]);
 
 function coerceMode(raw: unknown): CardMode | null {

@@ -41,6 +41,7 @@ const noDue: Record<CardMode, number> = {
   conjugation: 0,
   adjective: 0,
   expression: 0,
+  listening: 0,
 };
 
 describe("ChapterOverview", () => {

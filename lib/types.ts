@@ -294,7 +294,10 @@ export type CardMode =
   | "conjugation"
   | "adjective"
   | "grammar"
-  | "expression";
+  | "expression"
+  // 듣기 전용 — 글자 카드의 박스를 오염시키지 않게 따로 센다. cardId는
+  // `word:<vocabId>` · `sent:<sentenceId>` · `dict:<expressionId>` · `pair:<pairId>` · `num:<kind>`.
+  | "listening";
 export interface LearningState {
   /** Composite key: `${mode}:${cardId}` */
   cardKey: string;
@@ -349,7 +352,8 @@ export type QuizStatKey =
   | "grammar"
   | "conjugation"
   | "adjective"
-  | "expression";
+  | "expression"
+  | "listening";
 
 export interface QuizStat {
   correct: number;

@@ -56,6 +56,7 @@ export function ChapterMastery({
           return grammarById.has(cardId);
         case "conjugation":
         case "adjective":
+        case "listening":
           // Conjugation/adjective derive from vocab (verbs, adjectives).
           // chapter_members shouldn't reference these directly.
           return false;

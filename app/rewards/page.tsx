@@ -7,7 +7,6 @@ import { useClientNow } from "@/lib/use-is-client";
 import { currentStreak } from "@/lib/heatmap";
 import {
   DEFAULT_PROGRESSION,
-  EARN,
   FREEZE_COST,
   FREEZE_MAX,
   PALETTE_COST,
@@ -32,8 +31,6 @@ export default function RewardsPage() {
   const heatmap = useStore((s) => s.heatmap);
   const shop = useStore((s) => s.shop);
   const [armed, setArmed] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [cost, setCost] = useState("");
 
   if (now === null) return <ModePageShell title="褒美" />;
 
@@ -51,13 +48,6 @@ export default function RewardsPage() {
     run();
   };
   const label = (id: string, text: string) => (armed === id ? "확인?" : text);
-
-  const addReward = () => {
-    if (shop({ kind: "add", name, cost: Number(cost) })) {
-      setName("");
-      setCost("");
-    }
-  };
 
   return (
     <ModePageShell title="褒美">
@@ -97,12 +87,9 @@ export default function RewardsPage() {
           {fmt(points)}
           <span className="ml-1 text-caption text-[color:var(--fg-faint)]">pt</span>
         </div>
-        <p className="mt-2 text-caption text-[color:var(--fg-faint)] leading-relaxed break-keep">
-          정답 {EARN.choice}pt · 직접 입력 {EARN.typed}pt · 난이도 N3급 +1 · N2급 이상 +2 · 5단계 도달 +{EARN.mastered} ·
-          하루 목표 +{EARN.dailyGoal} · 7일 연속마다 +{EARN.week}. 같은 카드는 하루 {EARN.perCardPerDay}번까지만 쌓여요.
-        </p>
       </section>
 
+      {p.rewards.length > 0 && (
       <section className="mb-10">
         <h2 className={h2}>내 보상</h2>
         {p.rewards.map((r) => (
@@ -129,43 +116,14 @@ export default function RewardsPage() {
             </span>
           </div>
         ))}
-        <form
-          className="flex items-center gap-2 pt-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            addReward();
-          }}
-        >
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="보상 이름"
-            aria-label="보상 이름"
-            maxLength={60}
-            className="flex-1 min-w-0 h-11 bg-transparent border-b border-[color:var(--line)] text-body text-[color:var(--fg)] placeholder:text-[color:var(--fg-faint)] focus:outline-none focus:border-[color:var(--fg-soft)]"
-          />
-          <input
-            value={cost}
-            onChange={(e) => setCost(e.target.value.replace(/\D/g, ""))}
-            placeholder="pt"
-            aria-label="필요 포인트"
-            inputMode="numeric"
-            className="w-20 h-11 bg-transparent border-b border-[color:var(--line)] text-body text-right tabular-nums text-[color:var(--fg)] placeholder:text-[color:var(--fg-faint)] focus:outline-none focus:border-[color:var(--fg-soft)]"
-          />
-          <button type="submit" disabled={!name.trim() || !Number(cost)} className={btn} style={{ minHeight: 44 }}>
-            추가
-          </button>
-        </form>
       </section>
+      )}
 
       <section className="mb-10">
         <h2 className={h2}>휴식권</h2>
         <div className={row}>
           <span className="text-[color:var(--fg-soft)]">
             보유 {p.freezes} / {FREEZE_MAX}
-            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5 break-keep">
-              하루 쉬어도 연속 학습이 끊기지 않아요. 다시 공부하는 날 자동으로 써요.
-            </span>
           </span>
           <button
             type="button"

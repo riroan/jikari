@@ -82,6 +82,7 @@ function ChapterDetailInner({ id }: { id: string }) {
       conjugation: 0,
       adjective: 0,
       expression: 0,
+      listening: 0,
     };
     if (!mounted || now === null) return empty;
     const counts = { ...empty };
