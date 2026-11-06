@@ -20,7 +20,20 @@ import {
   type AnswerMode,
   type TodayQueue,
 } from "./srs";
-import { incrementToday, currentStreak } from "./heatmap";
+import { incrementToday, currentStreak, toLocalDateKey } from "./heatmap";
+import {
+  DEFAULT_PROGRESSION,
+  addReward,
+  buyFreeze,
+  consumeFreezes,
+  earn,
+  normalizeProgression,
+  redeemReward,
+  removeReward,
+  setPalette,
+  unlockPalette,
+  type Progression,
+} from "./progression";
 import { INITIAL_RATING, updateRating } from "./rating";
 import { remoteStorage } from "./remote-storage";
 import { recordMissAnswer } from "./misses";
@@ -43,6 +56,26 @@ interface StoreActions {
     answerMode?: AnswerMode,
     difficulty?: number,
   ) => void;
+
+  /**
+   * review()를 부르지 않는 연습(문장 만들기·음독)의 포인트 적립. SRS·히트맵은 그대로.
+   * `key`는 반복 적립 방지용 (예: "build:s12").
+   */
+  earnPractice: (key: string, correct: boolean, typed: boolean) => void;
+
+  /**
+   * 상점 — 살 수 없으면(잔액 부족 등) false. kind별 인자:
+   * freeze / palette(id) / redeem(rewardId) / add(name, cost) / remove(rewardId) / use(paletteId, ""=기본)
+   */
+  shop: (
+    action:
+      | { kind: "freeze" }
+      | { kind: "palette"; id: string }
+      | { kind: "redeem"; id: string }
+      | { kind: "add"; name: string; cost: number }
+      | { kind: "remove"; id: string }
+      | { kind: "use"; id: string },
+  ) => boolean;
 
   /** Increment the lifetime ◯/✕ tally for a page. */
   recordQuizResult: (key: QuizStatKey, correct: boolean) => void;
@@ -79,8 +112,11 @@ const initialState: PersistedState = {
   currentStreak: 0,
   quizStats: {},
   ratings: {},
+  progression: DEFAULT_PROGRESSION,
   settings: { ...DEFAULT_SETTINGS },
 };
+
+const progOf = (s: PersistedState): Progression => s.progression ?? DEFAULT_PROGRESSION;
 
 export const useStore = create<Store>()(
   persist(
@@ -95,13 +131,28 @@ export const useStore = create<Store>()(
         const existing = states[key];
         const base = existing ?? newLearningState(mode, cardId, now);
         const next = srsAdvance(base, correct, now, answerMode, takeSlow());
+        // 오늘 첫 답이면 그 전의 빈 날을 휴식권으로 메운 뒤 연속을 센다.
+        let progression = consumeFreezes(progOf(get()), get().heatmap, now);
         const heatmap = incrementToday(get().heatmap, now);
+        const streak = currentStreak(heatmap, now, progression.frozenDays);
+        progression = earn(progression, {
+          key,
+          correct,
+          typed: answerMode === "typed",
+          wasDue: existing !== undefined && existing.nextDue <= now,
+          mastered: base.box < 5 && next.box === 5,
+          todayCount: heatmap[toLocalDateKey(now)] ?? 0,
+          dailyGoal: get().settings.dailyGoal,
+          streak,
+          now,
+        });
         const ratings = get().ratings;
         set({
           learningStates: { ...states, [key]: next },
           heatmap,
           lastActiveAt: now,
-          currentStreak: currentStreak(heatmap, now),
+          currentStreak: streak,
+          progression,
           ratings:
             difficulty === undefined
               ? ratings
@@ -114,6 +165,38 @@ export const useStore = create<Store>()(
                   ),
                 },
         });
+      },
+
+      earnPractice: (key, correct, typed) => {
+        const now = Date.now();
+        set({
+          progression: earn(progOf(get()), {
+            key,
+            correct,
+            typed,
+            wasDue: false,
+            mastered: false,
+            todayCount: 0, // 히트맵에 안 잡히는 연습이라 하루 목표·연속 보너스는 review() 몫
+            dailyGoal: Infinity,
+            streak: 0,
+            now,
+          }),
+        });
+      },
+
+      shop: (a) => {
+        const p = progOf(get());
+        const now = Date.now();
+        const next =
+          a.kind === "freeze" ? buyFreeze(p, now)
+          : a.kind === "palette" ? unlockPalette(p, a.id, now)
+          : a.kind === "redeem" ? redeemReward(p, a.id, now)
+          : a.kind === "add" ? addReward(p, a.name, a.cost, now)
+          : a.kind === "remove" ? removeReward(p, a.id)
+          : setPalette(p, a.id);
+        if (!next) return false;
+        set({ progression: next });
+        return true;
       },
 
       recordQuizResult: (key, correct) => {
@@ -173,6 +256,7 @@ export const useStore = create<Store>()(
        * v3 → v4: added settings.typingThresholdBox (default 4)
        * v4 → v5: added quizStats (lifetime ◯/✕ per page)
        * v5 → v6: added ratings (adaptive difficulty per CardMode)
+       * v6 → v7: added progression (points / 級段 / rewards)
        */
       migrate: (persisted: unknown, _version: number) => {
         if (!persisted || typeof persisted !== "object") return initialState;
@@ -184,6 +268,7 @@ export const useStore = create<Store>()(
           schemaVersion: SCHEMA_VERSION,
           quizStats: p.quizStats ?? {},
           ratings: p.ratings ?? {},
+          progression: normalizeProgression(p.progression),
           settings: {
             theme: prev.theme ?? DEFAULT_SETTINGS.theme,
             showFurigana: prev.showFurigana ?? DEFAULT_SETTINGS.showFurigana,
@@ -208,6 +293,7 @@ export function exportState(): string {
     currentStreak: state.currentStreak,
     quizStats: state.quizStats,
     ratings: state.ratings,
+    progression: state.progression,
     settings: state.settings,
   };
   return JSON.stringify({ ...backup, extras: collectExtras() }, null, 2);

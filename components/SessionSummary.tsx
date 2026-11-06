@@ -12,6 +12,32 @@ import { forecastDue } from "@/lib/forecast";
 import { toLocalDateKey } from "@/lib/heatmap";
 import { useLiveMisses } from "@/lib/use-misses";
 import type { RunSummary } from "@/lib/quiz-run";
+import { rankOf } from "@/lib/progression";
+
+/** 이번 판 XP 한 줄 + 승급했으면 도장(判子) 한 번. 폭죽 없음 (DESIGN.md Quiet over loud). */
+function XpLine({ from }: { from: number }) {
+  const xp = useStore((s) => s.progression?.xp ?? 0);
+  const gained = xp - from;
+  if (gained <= 0) return null;
+  const rank = rankOf(xp);
+  const promoted = rankOf(from).index < rank.index;
+  return (
+    <div className="mt-3 flex items-center gap-3">
+      {promoted && (
+        <span
+          className="anim-pop-in inline-flex items-center justify-center px-2 py-1 border-2 border-[color:var(--accent-korean)] text-[color:var(--accent-korean)] text-body font-semibold rounded-sm"
+          style={{ fontFamily: "var(--font-jp-serif)" }}
+        >
+          {rank.name}
+        </span>
+      )}
+      <Link href="/rewards" className="text-caption tabular-nums text-[color:var(--fg-faint)] min-h-11 inline-flex items-center">
+        +{gained} XP
+        {promoted ? " · 승급" : rank.next ? ` · ${rank.next.name}까지 ${(rank.next.xp - xp).toLocaleString("ko-KR")}` : ""}
+      </Link>
+    </div>
+  );
+}
 
 const font = (s: string) =>
   /[가-힣]/.test(s) ? "var(--font-kr-sans)" : "var(--font-jp-sans)";
@@ -75,6 +101,7 @@ export function SessionSummary({
             {breakdown}
           </p>
         )}
+        {summary.xpStart !== undefined && <XpLine from={summary.xpStart} />}
       </div>
 
       {missed.length > 0 ? (

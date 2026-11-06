@@ -15,6 +15,28 @@ import { SUBJECTS } from "@/lib/subjects";
 import { forecastDue } from "@/lib/forecast";
 import { DailyPhrase } from "@/components/DailyPhrase";
 import { useLiveMisses } from "@/lib/use-misses";
+import { DEFAULT_PROGRESSION, pointsOf, rankOf } from "@/lib/progression";
+
+/** 급단 한 줄 — 오늘 목표 진행선과 같은 형식. 누르면 褒美(보상) 페이지. */
+function RankLine() {
+  const p = useStore((s) => s.progression ?? DEFAULT_PROGRESSION);
+  const rank = rankOf(p.xp);
+  const ratio = rank.next ? (p.xp - rank.floor) / (rank.next.xp - rank.floor) : 1;
+  return (
+    <Link href="/rewards" className="block mb-4 py-1" aria-label={`${rank.name}, 포인트 ${pointsOf(p)}`}>
+      <div className="h-px bg-[color:var(--line)]">
+        <div className="h-px bg-[color:var(--fg-faint)]" style={{ width: `${Math.min(ratio, 1) * 100}%` }} />
+      </div>
+      <div className="mt-1 flex justify-between text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
+        <span>
+          <span style={{ fontFamily: "var(--font-jp-serif)" }}>{rank.name}</span>
+          {rank.next && ` · ${p.xp.toLocaleString("ko-KR")} / ${rank.next.xp.toLocaleString("ko-KR")}`}
+        </span>
+        <span>{pointsOf(p).toLocaleString("ko-KR")}pt →</span>
+      </div>
+    </Link>
+  );
+}
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -107,6 +129,8 @@ export default function Home() {
               : `오늘 ${todayCount} / ${DAILY_GOAL}`}
           </div>
         </div>
+
+        {hydrated && <RankLine />}
 
         {nextReview && (
           <Link

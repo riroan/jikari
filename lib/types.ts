@@ -3,6 +3,8 @@
  * Source: DESIGN.md § Component vocabulary + CEO plan accepted scope
  */
 
+import type { Progression } from "./progression";
+
 export type JLPTLevel = 5 | 4 | 3 | 2 | 1;
 
 export interface KanjiCard {
@@ -367,6 +369,11 @@ export interface PersistedState {
    * Absent key = never answered in that mode; treat as INITIAL_RATING.
    */
   ratings: Record<string, number>;
+  /**
+   * 포인트·급단·보상 (lib/progression.ts). Optional: 옛 클라이언트·백업엔 없고,
+   * 없으면 서버는 기존 값을 건드리지 않는다.
+   */
+  progression?: Progression;
   /** User settings */
   settings: {
     /** "system" follows OS prefers-color-scheme; "light"/"dark" override. */
@@ -384,7 +391,7 @@ export interface PersistedState {
   };
 }
 
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 
 export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   theme: "system",

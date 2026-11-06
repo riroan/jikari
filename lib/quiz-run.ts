@@ -31,6 +31,8 @@ export interface RunSummary {
   bestStreak: number;
   /** id별 마지막 답이 오답인 것만, 처음 틀린 순서대로 */
   missed: RunAnswer[];
+  /** 판 시작 시점 XP (useQuizRun이 채움) — 요약이 지금 XP와 비교한다. */
+  xpStart?: number;
 }
 
 export const initialRun: RunState = {

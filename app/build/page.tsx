@@ -7,6 +7,7 @@ import { BuildCard } from "@/components/BuildCard";
 import { WriteCard } from "@/components/WriteCard";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useCardsStore } from "@/lib/cards-store";
+import { useStore } from "@/lib/store";
 import { buildItems, pickDistractors, pickParticleDistractors, splitItem } from "@/lib/build-deck";
 import { shuffleIds } from "@/lib/deck";
 import { stripMarkup, parseMarkup } from "@/lib/jp-markup";
@@ -25,6 +26,7 @@ const isOnOff = (r: string): r is "on" | "off" => r === "on" || r === "off";
 export default function BuildPage() {
   const mounted = useIsClient();
   const sentences = useCardsStore((s) => s.sentences);
+  const earnPractice = useStore((s) => s.earnPractice);
   const expressions = useCardsStore((s) => s.expressions);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
   const [index, setIndex] = useState(0);
@@ -95,6 +97,8 @@ export default function BuildPage() {
   if (!item) return shell();
   const onResolved = (ok: boolean, assisted: boolean) => {
     if (assisted) setAssists((a) => a + 1);
+    // SRS는 안 건드리지만 포인트는 쌓는다 (작문 = 직접 입력, 조립 = 선택형).
+    if (!run.retrying) earnPractice(`build:${item.id}`, ok && !assisted, style === "write");
     run.record(item.id, ok, item.ko, stripMarkup(parseMarkup(item.markup)));
     if (!run.retrying) setIndex((i) => i + 1);
   };

@@ -12,6 +12,7 @@ import {
   type RunSummary,
 } from "./quiz-run";
 import { useLocalPref } from "./use-local-pref";
+import { useStore } from "./store";
 
 /** 설정의 "한 판 문제 수". endless면 판이 끝나지 않는다 (덱은 페이지가 순환). */
 export const RUN_LENGTH_KEY = "jikari-run-length";
@@ -29,7 +30,10 @@ export function useQuizRun(deckLength = RUN_LENGTH, maxLength = RUN_LENGTH, allo
   const length =
     allowEndless && pref === "endless" ? Infinity : Math.min(maxLength, deckLength);
   const [s, setS] = useState(initialRun);
-  const summary: RunSummary | null = s.done ? summarize(s.answers) : null;
+  // 판 시작 시점의 XP — 요약에서 "이번 판 +N XP"·승급 표시용.
+  const xpNow = () => useStore.getState().progression?.xp ?? 0;
+  const [xpStart, setXpStart] = useState(xpNow);
+  const summary: RunSummary | null = s.done ? { ...summarize(s.answers), xpStart } : null;
   return {
     summary,
     retryId: retryId(s),
@@ -37,6 +41,9 @@ export function useQuizRun(deckLength = RUN_LENGTH, maxLength = RUN_LENGTH, allo
     record: (id: string, correct: boolean, front: string, back: string) =>
       setS((p) => recordAnswer(p, { id, correct, front, back }, length)),
     retryMissed: () => setS(retryMissed),
-    next: () => setS(nextRun()),
+    next: () => {
+      setXpStart(xpNow());
+      setS(nextRun());
+    },
   };
 }

@@ -5,6 +5,7 @@ import { progressTag, sameTag } from "../progress-tag";
 import { mergeState } from "../merge-state";
 import { getPool } from "./client";
 import { normalizeDailyGoal } from "../daily-goal";
+import { normalizeProgression, type Progression } from "../progression";
 import type {
   CardMode,
   HeatmapData,
@@ -45,6 +46,31 @@ function isMissingDailyGoal(e: unknown): boolean {
 function markNoDailyGoal() {
   if (!noDailyGoal) console.warn("[db] app_settings.daily_goal missing — run migration 0013; using the default daily goal until then");
   noDailyGoal = true;
+}
+
+/** Same degrade for migration 0014 (progression table): no table → progression is simply absent. */
+let noProgression = false;
+function isMissingTable(e: unknown): boolean {
+  const err = e as { errno?: number; message?: string };
+  return err?.errno === 1146 || /doesn't exist/i.test(err?.message ?? "");
+}
+function markNoProgression() {
+  if (!noProgression) console.warn("[db] progression table missing — run migration 0014; points are not saved until then");
+  noProgression = true;
+}
+
+async function readProgression(pool: Pick<Pool | PoolConnection, "query">): Promise<Progression | undefined> {
+  if (noProgression) return undefined;
+  try {
+    const [rows] = await pool.query<RowDataPacket[]>("SELECT data FROM progression WHERE id = 1");
+    const raw = rows?.[0]?.data;
+    if (raw == null) return undefined;
+    return normalizeProgression(typeof raw === "string" ? JSON.parse(raw) : raw);
+  } catch (e) {
+    if (!isMissingTable(e)) throw e;
+    markNoProgression();
+    return undefined;
+  }
 }
 
 export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = getPool()): Promise<PersistedState> {
@@ -112,6 +138,8 @@ export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = g
     [stRows] = await pool.query<RowDataPacket[]>(settingsSql(false));
   }
   const st = stRows[0];
+  const progression = await readProgression(pool);
+  const prog = progression ? { progression } : {};
 
   if (!st) {
     return {
@@ -122,6 +150,7 @@ export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = g
       currentStreak: 0,
       quizStats,
       ratings,
+      ...prog,
       settings: { ...DEFAULT_SETTINGS },
     };
   }
@@ -149,6 +178,7 @@ export async function getProgress(pool: Pick<Pool | PoolConnection, "query"> = g
     currentStreak: Number(st.current_streak),
     quizStats,
     ratings,
+    ...prog,
     settings: {
       theme,
       showFurigana: Boolean(st.show_furigana),
@@ -174,6 +204,7 @@ export async function getProgressSnapshot(): Promise<PersistedState> {
 /** Test-only. */
 export function __resetDailyGoalFlagForTests() {
   noDailyGoal = false;
+  noProgression = false;
 }
 
 export type PutResult =
@@ -258,6 +289,19 @@ export async function putProgress(
     if (ratingList.length > 0) {
       const rows = ratingList.map(([mode, rating]) => [mode, rating]);
       await conn.query("INSERT INTO ratings (mode, rating) VALUES ?", [rows]);
+    }
+
+    // 없으면(옛 클라이언트) 서버 값을 그대로 둔다 — 지우지 않는다.
+    if (state.progression && !noProgression) {
+      try {
+        await conn.query(
+          "INSERT INTO progression (id, data) VALUES (1, ?) ON DUPLICATE KEY UPDATE data = VALUES(data)",
+          [JSON.stringify(state.progression)],
+        );
+      } catch (e) {
+        if (!isMissingTable(e)) throw e;
+        markNoProgression();
+      }
     }
 
     const upsertSettings = (withGoal: boolean) =>

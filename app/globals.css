@@ -172,6 +172,30 @@
   }
 }
 
+/*
+ * 색 테마 (보상으로 해금, lib/progression PALETTES). 진행색(accent-progress)만 바꾼다.
+ * 팔레트마다 --pal(채움, ink 글자 AA) / --pal-text(종이 위 작은 글자 AA) / --pal-dark(다크 배경 AA).
+ * 선택자 특이성: 위의 다크 블록보다 하나씩 높게 둬서 순서와 무관하게 이긴다.
+ */
+:root[data-palette="sakura"] { --pal: #D79AA2; --pal-text: #9B4D59; --pal-dark: #E3A9B2; }
+:root[data-palette="wakaba"] { --pal: #9DB86A; --pal-text: #57702F; --pal-dark: #B7CF83; }
+:root[data-palette="momiji"] { --pal: #D98B57; --pal-text: #9A4B22; --pal-dark: #E39B68; }
+:root[data-palette="yuki"]   { --pal: #8FA6C2; --pal-text: #465F7D; --pal-dark: #A3BAD6; }
+:root[data-palette] {
+  --accent-progress: var(--pal);
+  --accent-progress-text: var(--pal-text);
+}
+:root[data-palette][data-theme="dark"] {
+  --accent-progress: var(--pal-dark);
+  --accent-progress-text: var(--pal-dark);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-palette]:not([data-theme="light"]) {
+    --accent-progress: var(--pal-dark);
+    --accent-progress-text: var(--pal-dark);
+  }
+}
+
 /* Tailwind 4 theme tokens — exposes CSS vars as Tailwind utilities */
 @theme inline {
   --color-bg:                var(--bg);

@@ -14,6 +14,14 @@ import { useStore } from "@/lib/store";
  */
 export function ThemeApplier() {
   const theme = useStore((s) => s.settings.theme);
+  const palette = useStore((s) => s.progression?.palette ?? "");
+
+  // 보상으로 해금한 색 테마 (globals.css [data-palette]).
+  useEffect(() => {
+    const root = document.documentElement;
+    if (palette) root.dataset.palette = palette;
+    else delete root.dataset.palette;
+  }, [palette]);
 
   useEffect(() => {
     const root = document.documentElement;
