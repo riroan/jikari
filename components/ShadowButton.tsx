@@ -1,5 +1,6 @@
 "use client";
 
+import { stopSpeaking } from "@/lib/tts";
 import { useCallback, useEffect, useReducer, useRef } from "react";
 import { pickMimeType, shadowMessage, shadowReducer } from "@/lib/shadow";
 
@@ -53,7 +54,7 @@ export function ShadowButton() {
       dispatch({ type: "error", reason: "unsupported" });
       return;
     }
-    window.speechSynthesis?.cancel();
+    stopSpeaking();
     releaseAudio();
     let s: MediaStream;
     try {
@@ -94,7 +95,7 @@ export function ShadowButton() {
 
   function play() {
     if (!url.current) return;
-    window.speechSynthesis?.cancel();
+    stopSpeaking();
     const a = new Audio(url.current);
     audio.current = a;
     a.onended = a.onerror = () => dispatch({ type: "ended" });

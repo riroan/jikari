@@ -1,5 +1,6 @@
 "use client";
 
+import { stopSpeaking } from "@/lib/tts";
 import { useEffect, useRef, useState } from "react";
 import { RubyText } from "./Furigana";
 import { SpeakButton } from "./SpeakButton";
@@ -74,7 +75,7 @@ export function SpeakingCard({
   const start = () => {
     if (!ctor) return;
     // iOS 오디오 세션: 재생 중이면 마이크가 막히거나 소리가 겹친다.
-    window.speechSynthesis?.cancel();
+    stopSpeaking();
     kill();
     const rec = new ctor();
     rec.lang = "ja-JP";
