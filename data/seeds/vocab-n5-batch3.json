@@ -1,0 +1,312 @@
+[
+  {
+    "id": "木",
+    "word": "木",
+    "reading": "き",
+    "meanings": [
+      "tree",
+      "wood"
+    ],
+    "koreanMeanings": [
+      "나무"
+    ],
+    "ruby": "{木|き}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "雨",
+    "word": "雨",
+    "reading": "あめ",
+    "meanings": [
+      "rain"
+    ],
+    "koreanMeanings": [
+      "비"
+    ],
+    "ruby": "{雨|あめ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "雲",
+    "word": "雲",
+    "reading": "くも",
+    "meanings": [
+      "cloud"
+    ],
+    "koreanMeanings": [
+      "구름"
+    ],
+    "ruby": "{雲|くも}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "火曜日",
+    "word": "火曜日",
+    "reading": "かようび",
+    "meanings": [
+      "Tuesday"
+    ],
+    "koreanMeanings": [
+      "화요일"
+    ],
+    "ruby": "{火曜日|かようび}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "水曜日",
+    "word": "水曜日",
+    "reading": "すいようび",
+    "meanings": [
+      "Wednesday"
+    ],
+    "koreanMeanings": [
+      "수요일"
+    ],
+    "ruby": "{水曜日|すいようび}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "木曜日",
+    "word": "木曜日",
+    "reading": "もくようび",
+    "meanings": [
+      "Thursday"
+    ],
+    "koreanMeanings": [
+      "목요일"
+    ],
+    "ruby": "{木曜日|もくようび}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "金曜日",
+    "word": "金曜日",
+    "reading": "きんようび",
+    "meanings": [
+      "Friday"
+    ],
+    "koreanMeanings": [
+      "금요일"
+    ],
+    "ruby": "{金曜日|きんようび}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "土曜日",
+    "word": "土曜日",
+    "reading": "どようび",
+    "meanings": [
+      "Saturday"
+    ],
+    "koreanMeanings": [
+      "토요일"
+    ],
+    "ruby": "{土曜日|どようび}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "日曜日",
+    "word": "日曜日",
+    "reading": "にちようび",
+    "meanings": [
+      "Sunday"
+    ],
+    "koreanMeanings": [
+      "일요일"
+    ],
+    "ruby": "{日曜日|にちようび}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "上",
+    "word": "上",
+    "reading": "うえ",
+    "meanings": [
+      "above",
+      "on top"
+    ],
+    "koreanMeanings": [
+      "위"
+    ],
+    "ruby": "{上|うえ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "下",
+    "word": "下",
+    "reading": "した",
+    "meanings": [
+      "below",
+      "under"
+    ],
+    "koreanMeanings": [
+      "아래",
+      "밑"
+    ],
+    "ruby": "{下|した}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "前",
+    "word": "前",
+    "reading": "まえ",
+    "meanings": [
+      "front",
+      "before"
+    ],
+    "koreanMeanings": [
+      "앞",
+      "전",
+      "이전"
+    ],
+    "ruby": "{前|まえ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "後ろ",
+    "word": "後ろ",
+    "reading": "うしろ",
+    "meanings": [
+      "behind"
+    ],
+    "koreanMeanings": [
+      "뒤"
+    ],
+    "ruby": "{後|うし}ろ",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "右",
+    "word": "右",
+    "reading": "みぎ",
+    "meanings": [
+      "right side"
+    ],
+    "koreanMeanings": [
+      "오른쪽"
+    ],
+    "ruby": "{右|みぎ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "左",
+    "word": "左",
+    "reading": "ひだり",
+    "meanings": [
+      "left side"
+    ],
+    "koreanMeanings": [
+      "왼쪽"
+    ],
+    "ruby": "{左|ひだり}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "外",
+    "word": "外",
+    "reading": "そと",
+    "meanings": [
+      "outside"
+    ],
+    "koreanMeanings": [
+      "밖"
+    ],
+    "ruby": "{外|そと}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "中",
+    "word": "中",
+    "reading": "なか",
+    "meanings": [
+      "inside"
+    ],
+    "koreanMeanings": [
+      "안",
+      "속"
+    ],
+    "ruby": "{中|なか}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "人",
+    "word": "人",
+    "reading": "ひと",
+    "meanings": [
+      "person"
+    ],
+    "koreanMeanings": [
+      "사람"
+    ],
+    "ruby": "{人|ひと}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "男",
+    "word": "男",
+    "reading": "おとこ",
+    "meanings": [
+      "man",
+      "male"
+    ],
+    "koreanMeanings": [
+      "남자"
+    ],
+    "ruby": "{男|おとこ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "女",
+    "word": "女",
+    "reading": "おんな",
+    "meanings": [
+      "woman",
+      "female"
+    ],
+    "koreanMeanings": [
+      "여자"
+    ],
+    "ruby": "{女|おんな}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  }
+]

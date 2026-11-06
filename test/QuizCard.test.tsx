@@ -44,6 +44,8 @@ describe("QuizCard — choice mode regression", () => {
       />,
     );
     fireEvent.click(screen.getByText("ひ"));
+    expect(screen.getByRole("button", { name: /にち 정답/ }).hasAttribute("disabled")).toBe(true);
+    expect(screen.getByRole("button", { name: /ひ 선택 · 오답/ }).hasAttribute("disabled")).toBe(true);
     expect(onResolved).not.toHaveBeenCalled();
     clickNext();
     expect(onResolved).toHaveBeenCalledWith(false, "ひ");

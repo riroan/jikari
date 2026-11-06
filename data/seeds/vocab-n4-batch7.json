@@ -1,0 +1,253 @@
+[
+  {
+    "id": "悪い",
+    "word": "悪い",
+    "reading": "わるい",
+    "meanings": [
+      "bad"
+    ],
+    "koreanMeanings": [
+      "나쁘다"
+    ],
+    "ruby": "{悪|わる}い",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "i_adj"
+  },
+  {
+    "id": "大事",
+    "word": "大事",
+    "reading": "だいじ",
+    "meanings": [
+      "important"
+    ],
+    "koreanMeanings": [
+      "중요하다",
+      "소중하다"
+    ],
+    "ruby": "{大事|だいじ}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "安全",
+    "word": "安全",
+    "reading": "あんぜん",
+    "meanings": [
+      "safe"
+    ],
+    "koreanMeanings": [
+      "안전하다"
+    ],
+    "ruby": "{安全|あんぜん}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "十分",
+    "word": "十分",
+    "reading": "じゅうぶん",
+    "meanings": [
+      "enough",
+      "sufficient"
+    ],
+    "koreanMeanings": [
+      "충분하다"
+    ],
+    "ruby": "{十分|じゅうぶん}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "na_adj"
+  },
+  {
+    "id": "特に",
+    "word": "特に",
+    "reading": "とくに",
+    "meanings": [
+      "especially"
+    ],
+    "koreanMeanings": [
+      "특히"
+    ],
+    "ruby": "{特|とく}に",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "文字",
+    "word": "文字",
+    "reading": "もじ",
+    "meanings": [
+      "character",
+      "letter"
+    ],
+    "koreanMeanings": [
+      "문자",
+      "글자"
+    ],
+    "ruby": "{文字|もじ}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "作文",
+    "word": "作文",
+    "reading": "さくぶん",
+    "meanings": [
+      "composition",
+      "essay"
+    ],
+    "koreanMeanings": [
+      "작문"
+    ],
+    "ruby": "{作文|さくぶん}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "工場",
+    "word": "工場",
+    "reading": "こうじょう",
+    "meanings": [
+      "factory"
+    ],
+    "koreanMeanings": [
+      "공장"
+    ],
+    "ruby": "{工場|こうじょう}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "市場",
+    "word": "市場",
+    "reading": "いちば",
+    "meanings": [
+      "marketplace",
+      "physical market"
+    ],
+    "koreanMeanings": [
+      "시장",
+      "장터"
+    ],
+    "ruby": "{市場|いちば}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "都会",
+    "word": "都会",
+    "reading": "とかい",
+    "meanings": [
+      "city"
+    ],
+    "koreanMeanings": [
+      "도시"
+    ],
+    "ruby": "{都会|とかい}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "社員",
+    "word": "社員",
+    "reading": "しゃいん",
+    "meanings": [
+      "employee",
+      "member of a company"
+    ],
+    "koreanMeanings": [
+      "사원",
+      "직원"
+    ],
+    "ruby": "{社員|しゃいん}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "全員",
+    "word": "全員",
+    "reading": "ぜんいん",
+    "meanings": [
+      "everyone",
+      "all members"
+    ],
+    "koreanMeanings": [
+      "전원",
+      "모두"
+    ],
+    "ruby": "{全員|ぜんいん}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "今回",
+    "word": "今回",
+    "reading": "こんかい",
+    "meanings": [
+      "this time"
+    ],
+    "koreanMeanings": [
+      "이번"
+    ],
+    "ruby": "{今回|こんかい}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "半年",
+    "word": "半年",
+    "reading": "はんとし",
+    "meanings": [
+      "half a year"
+    ],
+    "koreanMeanings": [
+      "반년"
+    ],
+    "ruby": "{半年|はんとし}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "特急",
+    "word": "特急",
+    "reading": "とっきゅう",
+    "meanings": [
+      "limited express"
+    ],
+    "koreanMeanings": [
+      "특급"
+    ],
+    "ruby": "{特急|とっきゅう}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "急行",
+    "word": "急行",
+    "reading": "きゅうこう",
+    "meanings": [
+      "express train"
+    ],
+    "koreanMeanings": [
+      "급행"
+    ],
+    "ruby": "{急行|きゅうこう}",
+    "jlptLevel": 4,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  }
+]

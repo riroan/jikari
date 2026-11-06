@@ -1,0 +1,280 @@
+[
+  {
+    "id": "見つける",
+    "word": "見つける",
+    "reading": "みつける",
+    "meanings": [
+      "find"
+    ],
+    "koreanMeanings": [
+      "찾아내다"
+    ],
+    "ruby": "{見|み}つける",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "入れる",
+    "word": "入れる",
+    "reading": "いれる",
+    "meanings": [
+      "put in"
+    ],
+    "koreanMeanings": [
+      "넣다"
+    ],
+    "ruby": "{入|い}れる",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "出す",
+    "word": "出す",
+    "reading": "だす",
+    "meanings": [
+      "take out",
+      "send"
+    ],
+    "koreanMeanings": [
+      "꺼내다",
+      "내다"
+    ],
+    "ruby": "{出|だ}す",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "止める",
+    "word": "止める",
+    "reading": "とめる",
+    "meanings": [
+      "stop (transitive)"
+    ],
+    "koreanMeanings": [
+      "세우다",
+      "멈추게 하다"
+    ],
+    "ruby": "{止|と}める",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "集める",
+    "word": "集める",
+    "reading": "あつめる",
+    "meanings": [
+      "collect"
+    ],
+    "koreanMeanings": [
+      "모으다"
+    ],
+    "ruby": "{集|あつ}める",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "閉まる",
+    "word": "閉まる",
+    "reading": "しまる",
+    "meanings": [
+      "close (intransitive)"
+    ],
+    "koreanMeanings": [
+      "닫히다"
+    ],
+    "ruby": "{閉|し}まる",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "開く",
+    "word": "開く",
+    "reading": "あく",
+    "meanings": [
+      "open (intransitive)"
+    ],
+    "koreanMeanings": [
+      "열리다"
+    ],
+    "ruby": "{開|あ}く",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "落ちる",
+    "word": "落ちる",
+    "reading": "おちる",
+    "meanings": [
+      "fall",
+      "drop"
+    ],
+    "koreanMeanings": [
+      "떨어지다"
+    ],
+    "ruby": "{落|お}ちる",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "降る",
+    "word": "降る",
+    "reading": "ふる",
+    "meanings": [
+      "fall (rain, snow)"
+    ],
+    "koreanMeanings": [
+      "내리다",
+      "오다"
+    ],
+    "ruby": "{降|ふ}る",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "飛ぶ",
+    "word": "飛ぶ",
+    "reading": "とぶ",
+    "meanings": [
+      "fly"
+    ],
+    "koreanMeanings": [
+      "날다"
+    ],
+    "ruby": "{飛|と}ぶ",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "運ぶ",
+    "word": "運ぶ",
+    "reading": "はこぶ",
+    "meanings": [
+      "carry"
+    ],
+    "koreanMeanings": [
+      "나르다",
+      "옮기다"
+    ],
+    "ruby": "{運|はこ}ぶ",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "通う",
+    "word": "通う",
+    "reading": "かよう",
+    "meanings": [
+      "commute"
+    ],
+    "koreanMeanings": [
+      "다니다"
+    ],
+    "ruby": "{通|かよ}う",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "生まれる",
+    "word": "生まれる",
+    "reading": "うまれる",
+    "meanings": [
+      "be born"
+    ],
+    "koreanMeanings": [
+      "태어나다"
+    ],
+    "ruby": "{生|う}まれる",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "建てる",
+    "word": "建てる",
+    "reading": "たてる",
+    "meanings": [
+      "build"
+    ],
+    "koreanMeanings": [
+      "짓다",
+      "세우다"
+    ],
+    "ruby": "{建|た}てる",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "晴れる",
+    "word": "晴れる",
+    "reading": "はれる",
+    "meanings": [
+      "clear up"
+    ],
+    "koreanMeanings": [
+      "맑아지다",
+      "개다"
+    ],
+    "ruby": "{晴|は}れる",
+    "jlptLevel": 4,
+    "verbGroup": "ichidan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "鳴く",
+    "word": "鳴く",
+    "reading": "なく",
+    "meanings": [
+      "cry (animal)"
+    ],
+    "koreanMeanings": [
+      "울다"
+    ],
+    "ruby": "{鳴|な}く",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "集まる",
+    "word": "集まる",
+    "reading": "あつまる",
+    "meanings": [
+      "gather (intransitive)"
+    ],
+    "koreanMeanings": [
+      "모이다"
+    ],
+    "ruby": "{集|あつ}まる",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "落とす",
+    "word": "落とす",
+    "reading": "おとす",
+    "meanings": [
+      "drop"
+    ],
+    "koreanMeanings": [
+      "떨어뜨리다"
+    ],
+    "ruby": "{落|お}とす",
+    "jlptLevel": 4,
+    "verbGroup": "godan",
+    "adjGroup": "not_adj"
+  }
+]

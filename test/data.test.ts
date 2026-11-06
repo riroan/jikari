@@ -243,6 +243,21 @@ describe("generateExpressionChoices distractor quality", () => {
     expect(new Set(choices).size).toBe(choices.length);
     expect(choices).toHaveLength(3);
   });
+
+  test("같은 표현이나 띄어쓰기만 다른 뜻은 오답으로 내지 않는다", () => {
+    const target = { ...e("target", "polite"), expression_jp: "大丈夫です", translation_ko: "괜찮아요" };
+    const sameExpression = { ...e("same-jp", "polite"), expression_jp: "大丈夫です", ruby: "{大丈夫|だいじょうぶ}です" };
+    const sameMeaning = { ...e("same-ko", "polite"), translation_ko: "괜찮 아요" };
+    useCardsStore.setState({ expressions: [target, sameExpression, sameMeaning, e("other", "polite")] });
+    for (let seed = 0; seed < 10; seed++) {
+      const recall = generateExpressionChoices(target, "recall", seed).choices;
+      const recognition = generateExpressionChoices(target, "recognition", seed).choices;
+      expect(recall).not.toContain(sameExpression.ruby);
+      expect(recall).not.toContain(sameMeaning.expression_jp);
+      expect(recognition).not.toContain(sameExpression.translation_ko);
+      expect(recognition).not.toContain(sameMeaning.translation_ko);
+    }
+  });
 });
 
 describe("centerTell", () => {

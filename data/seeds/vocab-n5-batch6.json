@@ -1,0 +1,107 @@
+[
+  {
+    "id": "会社員",
+    "word": "会社員",
+    "reading": "かいしゃいん",
+    "meanings": [
+      "company employee"
+    ],
+    "koreanMeanings": [
+      "회사원"
+    ],
+    "ruby": "{会社員|かいしゃいん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "電話番号",
+    "word": "電話番号",
+    "reading": "でんわばんごう",
+    "meanings": [
+      "phone number"
+    ],
+    "koreanMeanings": [
+      "전화번호"
+    ],
+    "ruby": "{電話番号|でんわばんごう}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "自動車",
+    "word": "自動車",
+    "reading": "じどうしゃ",
+    "meanings": [
+      "automobile"
+    ],
+    "koreanMeanings": [
+      "자동차"
+    ],
+    "ruby": "{自動車|じどうしゃ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "中学生",
+    "word": "中学生",
+    "reading": "ちゅうがくせい",
+    "meanings": [
+      "middle school student"
+    ],
+    "koreanMeanings": [
+      "중학생"
+    ],
+    "ruby": "{中学生|ちゅうがくせい}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "小学生",
+    "word": "小学生",
+    "reading": "しょうがくせい",
+    "meanings": [
+      "elementary school student"
+    ],
+    "koreanMeanings": [
+      "초등학생"
+    ],
+    "ruby": "{小学生|しょうがくせい}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "毎年",
+    "word": "毎年",
+    "reading": "まいとし",
+    "meanings": [
+      "every year"
+    ],
+    "koreanMeanings": [
+      "매년"
+    ],
+    "ruby": "{毎年|まいとし}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "毎月",
+    "word": "毎月",
+    "reading": "まいつき",
+    "meanings": [
+      "every month"
+    ],
+    "koreanMeanings": [
+      "매달"
+    ],
+    "ruby": "{毎月|まいつき}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  }
+]

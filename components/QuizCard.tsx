@@ -334,6 +334,11 @@ function ChoicePanel({
       {choices.map((choice, i) => {
         const isSelected = selected === choice;
         const isCorrectChoice = choice === correct;
+        const resultLabel = disabled
+          ? isCorrectChoice
+            ? isSelected ? "선택 · 정답" : "정답"
+            : isSelected ? "선택 · 오답" : null
+          : null;
         let stateClass =
           "border-[color:var(--line)] hover:bg-[color:var(--bg-deep)]";
         if (disabled && isSelected && isCorrectChoice) {
@@ -351,7 +356,7 @@ function ChoicePanel({
             key={choice}
             onClick={() => onChoice(choice)}
             disabled={disabled}
-            className={`flex items-baseline gap-3 text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
+            className={`flex w-full items-baseline gap-3 text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
           >
             {/* 숫자 키 단축키 표시 — 키보드가 있는 데스크톱에서만 */}
             <span
@@ -361,9 +366,17 @@ function ChoicePanel({
             >
               {i + 1}
             </span>
-            <span className="min-w-0">
+            <span className="min-w-0 flex-1">
               <RubyText text={choice} />
             </span>
+            {resultLabel && (
+              <>
+                {" "}
+                <span className="shrink-0 text-caption text-[color:var(--fg-soft)]">
+                  {resultLabel}
+                </span>
+              </>
+            )}
           </button>
         );
       })}

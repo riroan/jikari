@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { readdirSync } from "node:fs";
 import path from "node:path";
-import { importPlan } from "../scripts/import-plan";
+import { duplicateImportIds, importPlan } from "../scripts/import-plan";
 
 describe("importPlan", () => {
   test("routes each seed to its add-* script, card tables before nothing else", () => {
@@ -25,5 +25,18 @@ describe("importPlan", () => {
     const data = readdirSync(path.join(process.cwd(), "data"));
     const covered = new Set(importPlan(seeds, data).map((s) => s.file));
     expect(seeds.filter((f) => !covered.has(`data/seeds/${f}`))).toEqual([]);
+  });
+
+  test("detects duplicate IDs within a table before importing", () => {
+    const steps = importPlan(["kanji-a.json", "kanji-b.json", "vocab-a.json"], []);
+    const ids: Record<string, string[]> = {
+      "data/seeds/kanji-a.json": ["日", "日"],
+      "data/seeds/kanji-b.json": ["日"],
+      "data/seeds/vocab-a.json": ["日"],
+    };
+    expect(duplicateImportIds(steps, (file) => ids[file])).toEqual([
+      "日: data/seeds/kanji-a.json, data/seeds/kanji-a.json",
+      "日: data/seeds/kanji-a.json, data/seeds/kanji-b.json",
+    ]);
   });
 });
