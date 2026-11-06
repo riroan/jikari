@@ -17,6 +17,22 @@ describe("useQuizRun", () => {
     expect(big.result.current.summary?.total).toBe(10);
   });
 
+  it("endless pref never ends the run, except when the caller opts out", () => {
+    localStorage.setItem("jikari-run-length", "endless");
+    try {
+      const { result } = renderHook(() => useQuizRun(2));
+      for (let i = 0; i < 30; i++) act(() => result.current.record(`c${i}`, true, "", ""));
+      expect(result.current.summary).toBeNull();
+
+      const mix = renderHook(() => useQuizRun(2, 2, false));
+      act(() => mix.result.current.record("a", true, "", ""));
+      act(() => mix.result.current.record("b", true, "", ""));
+      expect(mix.result.current.summary?.total).toBe(2);
+    } finally {
+      localStorage.removeItem("jikari-run-length");
+    }
+  });
+
   it("retry round counts only its own answers and ends with the queue", () => {
     const { result } = renderHook(() => useQuizRun(2));
     act(() => result.current.record("a", false, "a", "A"));
