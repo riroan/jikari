@@ -105,6 +105,7 @@ export const ALL_CONJUGATION_FORMS: readonly ConjugationForm[] = [
  *   i_adv (〜く)         — i-adj only (adverbial)
  *   na_prenominal (〜な) — na-adj only (noun modifier)
  *   ni_adv (〜に)        — na-adj only (adverbial; parallel to i_adv)
+ *   sa_noun (〜さ)       — i-adj only (nominalization: 高い → 高さ)
  *
  * Callers should filter by group — see ADJ_FORMS_FOR.
  */
@@ -117,7 +118,8 @@ export type AdjectiveForm =
   | "na_prenominal"
   | "ni_adv"
   | "conditional"
-  | "polite_negative";
+  | "polite_negative"
+  | "sa_noun";
 
 const COMMON_ADJ_FORMS: readonly AdjectiveForm[] = [
   "negative",
@@ -139,7 +141,8 @@ export const ADJ_FORMS_FOR: Record<
   Exclude<AdjGroup, "not_adj">,
   readonly AdjectiveForm[]
 > = {
-  i_adj: [...COMMON_ADJ_FORMS, "i_adv"],
+  // 〜さ 명사형은 い형용사만 — な형용사는 好きさ처럼 어색한 게 섞여서 뺐다.
+  i_adj: [...COMMON_ADJ_FORMS, "i_adv", "sa_noun"],
   na_adj: [...COMMON_ADJ_FORMS, "na_prenominal", "ni_adv"],
 };
 
