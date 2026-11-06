@@ -246,11 +246,6 @@ export function QuizCard({
           {disabled && result !== null && (
               <div key={result} className="anim-fade-in">
                 <AnswerFeedback correct={result === "correct"} />
-                {hinted && result === "correct" && (
-                  <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
-                    힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
-                  </p>
-                )}
                 {scored && slow && !hinted && result === "correct" && (
                   <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
                     느렸어요 · 한 번 더 볼게요

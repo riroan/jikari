@@ -104,11 +104,16 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
         minQuestionHeight={0}
         input={{ mode: "choice", choices, correct, choiceFontFamily: "var(--font-kr-sans)" }}
         back={
-          <div
-            className="text-h2 leading-[1.8] font-medium"
-            style={{ fontFamily: "var(--font-jp-serif)", color: "var(--fg)" }}
-          >
-            <RubyText text={ruby} />
+          <div className="flex flex-col gap-3">
+            <div
+              className="text-h2 leading-[1.8] font-medium"
+              style={{ fontFamily: "var(--font-jp-serif)", color: "var(--fg)" }}
+            >
+              <RubyText text={ruby} />
+            </div>
+            <div className="text-small text-[color:var(--fg-soft)] leading-relaxed">
+              {card.translation}
+            </div>
           </div>
         }
         speak={full}
@@ -157,6 +162,9 @@ function Listening({ kind }: { kind: "word" | "sentence" }) {
               {card.reading}
             </div>
           )}
+          <div className="mt-3 text-small text-[color:var(--fg-soft)]">
+            {card.koreanMeanings.join(", ")}
+          </div>
         </div>
       }
       speak={card.reading}

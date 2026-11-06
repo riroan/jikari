@@ -244,6 +244,14 @@ describe("conjugateAll — dedupe + both representations", () => {
     const out = conjugateAll("かう", "かう", "godan", "masu");
     expect(out).toEqual(["かいます"]);
   });
+  it("potential accepts ら抜き after the standard form (godan/する untouched)", () => {
+    expect(conjugateAll("食べる", "たべる", "ichidan", "potential")).toEqual([
+      "食べられる", "たべられる", "食べれる", "たべれる",
+    ]);
+    expect(conjugateAll("来る", "くる", "irregular", "potential")).toContain("これる");
+    expect(conjugateAll("書く", "かく", "godan", "potential")).toEqual(["書ける", "かける"]);
+    expect(conjugateAll("する", "する", "irregular", "potential")).toEqual(["できる"]);
+  });
   it("exception applies to both word and reading variants", () => {
     const out = conjugateAll("行く", "いく", "godan", "te");
     expect(out.sort()).toEqual(["いって", "行って"].sort());

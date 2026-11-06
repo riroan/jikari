@@ -30,6 +30,8 @@ export interface TypedChallengeCardProps {
   heroText?: string;
   groupLabelKo: string;
   groupLabelJp: string;
+  /** 정답 공개 때만 보이는 원형의 한국어 뜻. */
+  meaningKo?: string;
   onResolved: (wasCorrect: boolean) => void;
 }
 
@@ -43,6 +45,7 @@ export function TypedChallengeCard({
   heroText,
   groupLabelKo,
   groupLabelJp,
+  meaningKo,
   onResolved,
 }: TypedChallengeCardProps) {
   const [result, setResult] = useState<"correct" | "wrong" | null>(null);
@@ -203,6 +206,7 @@ export function TypedChallengeCard({
             >
               {diffTarget === primaryAnswer ? renderDiff(primaryAnswer) : primaryAnswer}
             </div>
+            {meaningKo && <div className="text-small text-[color:var(--fg-soft)]">{meaningKo}</div>}
             {(otherAnswers.length > 0 || diffTarget) && (
               <div
                 className="text-caption text-[color:var(--fg-faint)]"
@@ -265,13 +269,11 @@ export function TypedChallengeCard({
               <span style={{ fontFamily: "var(--font-jp-sans)" }}>
                 {primaryAnswer}
               </span>
+              {meaningKo && (
+                <span className="text-small text-[color:var(--fg-soft)] font-normal">{meaningKo}</span>
+              )}
             </div>
             <div className="flex flex-col items-end gap-1">
-              {hinted && (
-                <p className="text-caption text-[color:var(--fg-faint)]">
-                  힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
-                </p>
-              )}
             <div className="flex items-center gap-1">
               {speakText && <SpeakButton text={speakText} />}
               <button
