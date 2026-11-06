@@ -71,10 +71,14 @@ export function normalizeProgression(raw: unknown): Progression {
 
 // ---------- 적립 ----------------------------------------------------------
 
+/**
+ * 밸런스 검증(180일 시뮬레이션, 2026-11-06) 반영: 복습 예정 보너스는 뺐다 — 적립을 15~23%
+ * 부풀리면서 복습 유도는 /review·홈 due 수가 이미 한다. 하루 목표 보너스는 목표가 20보다
+ * 낮으면 목표만큼만 (목표 10으로 +20 파밍 방지).
+ */
 export const EARN = {
   choice: 1,
   typed: 2,
-  due: 1,
   mastered: 5,
   dailyGoal: 20,
   week: 50,
@@ -82,14 +86,24 @@ export const EARN = {
   perCardPerDay: 2,
 } as const;
 
+/**
+ * 난이도 가산점 — lib/rating 척도(1000 = N5 … 2000 = N1, 활용형·높임말도 같은 축).
+ * 정수 포인트라 배율 대신 계단: N5·N4 +0 / N3급(≥1500) +1 / N2·N1급(≥1750) +2.
+ * 1500 경계라 N4 문법인 가능형·의지형은 +0. 난이도를 모르는 답(연습 모드 등)도 +0.
+ */
+export function difficultyBonus(difficulty?: number): number {
+  if (difficulty === undefined) return 0;
+  return difficulty >= 1750 ? 2 : difficulty >= 1500 ? 1 : 0;
+}
+
 export interface AnswerContext {
   /** 반복 판정용 카드 키 (cardKey). */
   key: string;
   correct: boolean;
   typed: boolean;
-  /** 복습 예정이던 카드 (새 카드 제외). */
-  wasDue: boolean;
-  /** 이번 정답으로 5단계에 처음 올라감. */
+  /** lib/rating 난이도 (없으면 가산 없음). */
+  difficulty?: number;
+  /** 이번 정답으로 5단계에 올라감 (store가 "틀렸다 다시 맞힘" 반복은 걸러서 넘긴다). */
   mastered: boolean;
   /** 오늘 푼 문제 수 (이번 것 포함). 0이면 하루 목표 보너스 판정 안 함. */
   todayCount: number;
@@ -100,21 +114,22 @@ export interface AnswerContext {
 }
 
 export function earn(p: Progression, c: AnswerContext): Progression {
-  if (!c.correct) return p;
   const day = toLocalDateKey(c.now);
   const dayCounts = p.day === day ? { ...p.dayCounts } : {};
-  const n = dayCounts[c.key] ?? 0;
-  dayCounts[c.key] = n + 1;
 
   let gained = 0;
-  if (n < EARN.perCardPerDay) {
-    gained += c.typed ? EARN.typed : EARN.choice;
-    if (c.wasDue) gained += EARN.due;
-    if (c.mastered) gained += EARN.mastered;
+  if (c.correct) {
+    const n = dayCounts[c.key] ?? 0;
+    dayCounts[c.key] = n + 1;
+    if (n < EARN.perCardPerDay) {
+      gained += (c.typed ? EARN.typed : EARN.choice) + difficultyBonus(c.difficulty);
+      if (c.mastered) gained += EARN.mastered;
+    }
   }
+  // 목표·연속 보너스는 정답 여부와 무관 — 목표 번째 답이 오답이어도 받는다.
   let { bonusDay, streakDay } = p;
   if (c.todayCount > 0 && c.todayCount >= c.dailyGoal && bonusDay !== day) {
-    gained += EARN.dailyGoal;
+    gained += Math.min(EARN.dailyGoal, c.dailyGoal);
     bonusDay = day;
   }
   if (c.streak > 0 && c.streak % 7 === 0 && streakDay !== day) {
@@ -122,6 +137,7 @@ export function earn(p: Progression, c: AnswerContext): Progression {
     streakDay = day;
   }
 
+  if (gained === 0 && p.day === day) return p;
   const xp = p.xp + gained;
   const rankAt = { ...p.rankAt };
   for (let i = 0; i <= rankOf(xp).index; i++) if (!(i in rankAt)) rankAt[i] = c.now;
@@ -130,7 +146,10 @@ export function earn(p: Progression, c: AnswerContext): Progression {
 
 // ---------- 급단 ----------------------------------------------------------
 
-/** 하루 150pt 기준: 1級 약 2달, 初段 약 3달, 그 뒤 한 단에 약 한 달. */
+/**
+ * 하루 ~60문제(≈130–150pt) 기준: 1級 약 2~3달, 初段 약 3~4달, 그 뒤 한 단에 약 한 달.
+ * (시뮬레이션: 하루 150문제면 初段 약 40일, 20문제면 1級 4달 이상.)
+ */
 export const RANKS: readonly { name: string; xp: number }[] = [
   { name: "10級", xp: 0 },
   { name: "9級", xp: 150 },
@@ -186,7 +205,8 @@ export function consumeFreezes(p: Progression, heatmap: HeatmapData, now: number
 
 export const FREEZE_COST = 200;
 export const FREEZE_MAX = 2;
-export const PALETTE_COST = 1500;
+/** 2500: 하루 60문제 기준 4개 모으는 데 약 2.5달 — 장기 목표가 되게. */
+export const PALETTE_COST = 2500;
 /** swatch = globals.css의 --pal 값 (구매 전 미리보기용). */
 export const PALETTES = [
   { id: "sakura", jp: "桜", ko: "벚꽃", swatch: "#D79AA2" },

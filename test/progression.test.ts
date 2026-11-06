@@ -17,15 +17,27 @@ import { currentStreak, keyDaysAgo } from "@/lib/heatmap";
 
 const NOW = new Date(2026, 10, 6, 12).getTime();
 const ctx = (o: Partial<AnswerContext> = {}): AnswerContext => ({
-  key: "kanji:日", correct: true, typed: false, wasDue: false, mastered: false,
+  key: "kanji:日", correct: true, typed: false, mastered: false,
   todayCount: 1, dailyGoal: 20, streak: 1, now: NOW, ...o,
 });
 
 describe("earn", () => {
-  it("choice 1 / typed 2 / due +1 / mastered +5, wrong 0", () => {
+  it("choice 1 / typed 2 / mastered +5, wrong 0", () => {
     expect(earn(P0, ctx()).xp).toBe(1);
-    expect(earn(P0, ctx({ typed: true, wasDue: true, mastered: true })).xp).toBe(8);
-    expect(earn(P0, ctx({ correct: false }))).toBe(P0);
+    expect(earn(P0, ctx({ typed: true, mastered: true })).xp).toBe(7);
+    expect(earn(P0, ctx({ correct: false })).xp).toBe(0);
+  });
+
+  it("goal bonus pays even when the goal-th answer is wrong, capped at the goal size", () => {
+    expect(earn(P0, ctx({ correct: false, todayCount: 20 })).xp).toBe(20);
+    expect(earn(P0, ctx({ todayCount: 10, dailyGoal: 10 })).xp).toBe(1 + 10);
+  });
+
+  it("harder cards pay more: N5/N4 +0, N3급 +1, N2·N1급 +2 (none when unknown)", () => {
+    expect([1000, 1250, 1400, 1500, 1750, 2000, undefined].map((d) => earn(P0, ctx({ difficulty: d })).xp)).toEqual([
+      1, 1, 1, 2, 3, 3, 1,
+    ]);
+    expect(earn(P0, ctx({ typed: true, difficulty: 2000 })).xp).toBe(4);
   });
 
   it("same card earns at most twice a day, counter resets the next day", () => {
@@ -86,7 +98,8 @@ describe("shop", () => {
   });
 
   it("palette unlock applies it and can't be bought twice", () => {
-    const p = unlockPalette(rich, "sakura", NOW)!;
+    expect(unlockPalette(rich, "sakura", NOW)).toBeNull(); // 2000 < 2500
+    const p = unlockPalette({ ...rich, xp: 3000 }, "sakura", NOW)!;
     expect([p.palette, pointsOf(p)]).toEqual(["sakura", 500]);
     expect(unlockPalette(p, "sakura", NOW)).toBeNull();
   });

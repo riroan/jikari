@@ -98,7 +98,7 @@ export default function RewardsPage() {
           <span className="ml-1 text-caption text-[color:var(--fg-faint)]">pt</span>
         </div>
         <p className="mt-2 text-caption text-[color:var(--fg-faint)] leading-relaxed break-keep">
-          정답 {EARN.choice}pt · 직접 입력 {EARN.typed}pt · 복습 예정 카드 +{EARN.due} · 5단계 도달 +{EARN.mastered} ·
+          정답 {EARN.choice}pt · 직접 입력 {EARN.typed}pt · 난이도 N3급 +1 · N2급 이상 +2 · 5단계 도달 +{EARN.mastered} ·
           하루 목표 +{EARN.dailyGoal} · 7일 연속마다 +{EARN.week}. 같은 카드는 하루 {EARN.perCardPerDay}번까지만 쌓여요.
         </p>
       </section>

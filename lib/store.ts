@@ -139,8 +139,9 @@ export const useStore = create<Store>()(
           key,
           correct,
           typed: answerMode === "typed",
-          wasDue: existing !== undefined && existing.nextDue <= now,
-          mastered: base.box < 5 && next.box === 5,
+          difficulty,
+          // 연속 정답 3회 뒤의 승급만 — 5단계에서 일부러 틀리고 다시 맞혀 +5를 반복하는 루프 차단.
+          mastered: base.box < 5 && next.box === 5 && base.correctStreak >= 3,
           todayCount: heatmap[toLocalDateKey(now)] ?? 0,
           dailyGoal: get().settings.dailyGoal,
           streak,
@@ -174,7 +175,6 @@ export const useStore = create<Store>()(
             key,
             correct,
             typed,
-            wasDue: false,
             mastered: false,
             todayCount: 0, // 히트맵에 안 잡히는 연습이라 하루 목표·연속 보너스는 review() 몫
             dailyGoal: Infinity,
