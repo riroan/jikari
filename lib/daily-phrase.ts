@@ -12,11 +12,19 @@ function prevKey(dateKey: string): string {
   return `${p.getFullYear()}-${String(p.getMonth() + 1).padStart(2, "0")}-${String(p.getDate()).padStart(2, "0")}`;
 }
 
+/**
+ * 오늘의 출처: 0 = 일상표현, k = 보유한 k번째 한마디 팩. 날짜 해시라 하루 동안 고정.
+ * 팩이 없으면 언제나 0.
+ */
+export function pickDailySource(sourceCount: number, dateKey: string): number {
+  return sourceCount <= 1 ? 0 : hash(`${dateKey}:src`) % sourceCount;
+}
+
 /** 오늘의 한마디: dateKey(YYYY-MM-DD, 로컬)로 결정적 선택. 어제와 같은 카드는 피한다. */
-export function pickDailyPhrase(
-  cards: readonly ExpressionCard[],
+export function pickDailyPhrase<T = ExpressionCard>(
+  cards: readonly T[],
   dateKey: string,
-): ExpressionCard | null {
+): T | null {
   const n = cards.length;
   if (n === 0) return null;
   const i = hash(dateKey) % n;

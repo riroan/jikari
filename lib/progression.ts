@@ -6,7 +6,7 @@
  */
 import { keyDaysAgo, toLocalDateKey } from "./heatmap";
 import type { HeatmapData } from "./types";
-import { SLOT_KO, cosmeticById, type Slot } from "./cosmetics";
+import { SLOT_KO, cosmeticById, type EquipSlot } from "./cosmetics";
 
 export interface Reward {
   id: string;
@@ -34,7 +34,7 @@ export interface Progression {
   /** 산 꾸미기 아이템 id (lib/cosmetics, `frame:kin` 등). */
   items: string[];
   /** 슬롯별 장착 아이템 id ("" = 기본). */
-  equip: Record<Slot, string>;
+  equip: Record<EquipSlot, string>;
   /** 내가 정한 보상 목록. */
   rewards: Reward[];
   /** 지운 보상 id (병합에서 되살아나지 않게). */
@@ -276,16 +276,18 @@ export function setPalette(p: Progression, id: string): Progression {
   return id === "" || p.palettes.includes(id) ? { ...p, palette: id } : p;
 }
 
-/** 꾸미기 아이템 구매 — 사면 바로 장착. */
+/** 꾸미기 아이템 구매 — 사면 바로 장착 (한마디 팩은 장착 없이 보유만으로 켜진다). */
 export function buyItem(p: Progression, id: string, now: number): Progression | null {
   const c = cosmeticById.get(id);
   if (!c || p.items.includes(id)) return null;
   const s = spend(p, c.cost, `${SLOT_KO[c.slot]} ${c.jp}`, now);
-  return s && { ...s, items: [...s.items, id], equip: { ...s.equip, [c.slot]: id } };
+  if (!s) return null;
+  const items = [...s.items, id];
+  return c.slot === "pack" ? { ...s, items } : { ...s, items, equip: { ...s.equip, [c.slot]: id } };
 }
 
 /** 장착 — "" 은 기본으로 되돌리기. 안 산 것·다른 슬롯 아이템은 무시. */
-export function equipItem(p: Progression, slot: Slot, id: string): Progression {
+export function equipItem(p: Progression, slot: EquipSlot, id: string): Progression {
   const ok = id === "" || (p.items.includes(id) && cosmeticById.get(id)?.slot === slot);
   return ok ? { ...p, equip: { ...p.equip, [slot]: id } } : p;
 }
@@ -326,7 +328,7 @@ export function mergeProgression(server?: Progression, local?: Progression): Pro
   const palettes = union(server.palettes, local.palettes);
   const items = union(server.items, local.items);
   // 장착도 색 테마처럼 로컬 선택이 이긴다 (산 것이라면).
-  const pickEquip = (slot: Slot) =>
+  const pickEquip = (slot: EquipSlot) =>
     local.equip[slot] === "" || items.includes(local.equip[slot]) ? local.equip[slot] : server.equip[slot];
   return {
     ...ahead,

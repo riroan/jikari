@@ -13,10 +13,12 @@ import { toLocalDateKey } from "@/lib/heatmap";
 import { useLiveMisses } from "@/lib/use-misses";
 import type { RunSummary } from "@/lib/quiz-run";
 import { rankOf } from "@/lib/progression";
+import { hookOf } from "@/lib/cosmetics";
 
 /** 이번 판 XP 한 줄 + 승급했으면 도장(判子) 한 번. 폭죽 없음 (DESIGN.md Quiet over loud). */
 function XpLine({ from }: { from: number }) {
   const xp = useStore((s) => s.progression?.xp ?? 0);
+  const frame = useStore((s) => s.progression?.equip?.frame ?? "");
   const gained = xp - from;
   if (gained <= 0) return null;
   const rank = rankOf(xp);
@@ -25,7 +27,12 @@ function XpLine({ from }: { from: number }) {
     <div className="mt-3 flex items-center gap-3">
       {promoted && (
         <span
-          className="anim-pop-in inline-flex items-center justify-center px-2 py-1 border-2 border-[color:var(--accent-korean)] text-[color:var(--accent-korean)] text-body font-semibold rounded-sm"
+          // 프로필에서 장착한 테두리가 있으면 승급 도장에도 쓴다.
+          className={`anim-pop-in inline-flex items-center justify-center text-body font-semibold rounded-sm ${
+            frame
+              ? `frame-${hookOf(frame)} px-3 py-2 text-[color:var(--fg)]`
+              : "px-2 py-1 border-2 border-[color:var(--accent-korean)] text-[color:var(--accent-korean)]"
+          }`}
           style={{ fontFamily: "var(--font-jp-serif)" }}
         >
           {rank.name}

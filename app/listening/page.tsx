@@ -63,10 +63,10 @@ function useListenRecord() {
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   return useCallback(
-    (cardId: string, ok: boolean, typed = false) => {
+    (cardId: string, ok: boolean, typed = false, earnKey?: string) => {
       // 듣는 시간까지 응답 시간에 들어가 "느림" 판정이 무의미하다 — 버린다.
       takeSlow();
-      review("listening", cardId, ok, typed ? "typed" : "choice");
+      review("listening", cardId, ok, typed ? "typed" : "choice", undefined, earnKey);
       recordQuizResult("listening", ok);
     },
     [review, recordQuizResult],
@@ -347,7 +347,8 @@ function Numbers() {
       }
       speak={q.reading}
       onResolved={(ok) => {
-        if (!run.retrying) record(`num:${kind}`, ok);
+        // SRS는 종류별 카드 하나, 포인트는 문제마다 (종류당 하루 2번 상한에 막히지 않게).
+        if (!run.retrying) record(`num:${kind}`, ok, false, `listening:num:${q.answer}:${q.reading}`);
         run.record(id, ok, q.answer, q.reading);
         if (!run.retrying) setIndex((i) => i + 1);
       }}

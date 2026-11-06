@@ -6,7 +6,7 @@ import { StampMark } from "@/components/AnswerFeedback";
 import { useStore } from "@/lib/store";
 import { useClientNow } from "@/lib/use-is-client";
 import { currentStreak } from "@/lib/heatmap";
-import { COSMETICS, SLOT_KO, hookOf, type Slot } from "@/lib/cosmetics";
+import { COSMETICS, SLOT_KO, hookOf, type EquipSlot } from "@/lib/cosmetics";
 import {
   DEFAULT_PROGRESSION,
   PALETTE_COST,
@@ -21,7 +21,7 @@ const row = "flex justify-between items-center gap-4 text-small py-2 border-b bo
 const btn =
   "shrink-0 px-3 text-small border border-[color:var(--line)] rounded-sm text-[color:var(--fg)] tabular-nums disabled:text-[color:var(--fg-faint)] disabled:opacity-60";
 const fmt = (n: number) => n.toLocaleString("ko-KR");
-const SLOTS: readonly Slot[] = ["frame", "skin", "stamp"];
+const SLOTS: readonly EquipSlot[] = ["frame", "skin", "stamp"];
 
 /** 프로필 — 급단 인장 + 꾸미기(테두리·선지 스킨·정답 도장·색 테마). 사는 버튼은 두 번 눌러야 실행. */
 export default function ProfilePage() {
@@ -63,7 +63,7 @@ export default function ProfilePage() {
       </button>
     );
 
-  const preview = (slot: Slot, id: string) => {
+  const preview = (slot: EquipSlot, id: string) => {
     if (slot === "frame")
       return <span aria-hidden className={`inline-block w-6 h-6 rounded-sm frame-${id ? hookOf(id) : "base"}`} />;
     if (slot === "stamp")
@@ -157,6 +157,36 @@ export default function ProfilePage() {
           ))}
         </section>
       ))}
+
+      <section className="mb-10">
+        <h2 className={h2}>{SLOT_KO.pack}</h2>
+        {COSMETICS.filter((c) => c.slot === "pack").map((c) => {
+          const owned = p.items.includes(c.id);
+          return (
+            <div key={c.id} className={row}>
+              <span className="flex items-center gap-3 text-[color:var(--fg-soft)]">
+                <span style={{ fontFamily: "var(--font-jp-serif)" }}>{c.jp}</span>
+                <span className="text-caption text-[color:var(--fg-faint)]">{c.ko}</span>
+              </span>
+              {owned ? (
+                <span className="text-caption text-[color:var(--fg-faint)] min-h-11 inline-flex items-center">
+                  오늘의 한마디에 나와요
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  disabled={points < c.cost}
+                  onClick={confirmThen(c.id, () => shop({ kind: "item", id: c.id }))}
+                  className={btn}
+                  style={{ minHeight: 44 }}
+                >
+                  {label(c.id, `${fmt(c.cost)}pt`)}
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </section>
 
       <section className="mb-10">
         <h2 className={h2}>색 테마</h2>

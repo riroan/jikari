@@ -37,7 +37,7 @@ import {
   type Progression,
 } from "./progression";
 import { INITIAL_RATING, updateRating } from "./rating";
-import type { Slot } from "./cosmetics";
+import type { EquipSlot } from "./cosmetics";
 import { remoteStorage } from "./remote-storage";
 import { recordMissAnswer } from "./misses";
 import { collectExtras } from "./extras";
@@ -58,6 +58,8 @@ interface StoreActions {
     correct: boolean,
     answerMode?: AnswerMode,
     difficulty?: number,
+    /** 포인트 반복 적립 상한을 셀 키 (기본 = cardKey). 숫자 듣기처럼 SRS 카드 하나에 문제가 무한한 곳. */
+    earnKey?: string,
   ) => void;
 
   /**
@@ -79,7 +81,7 @@ interface StoreActions {
       | { kind: "remove"; id: string }
       | { kind: "use"; id: string }
       | { kind: "item"; id: string }
-      | { kind: "equip"; slot: Slot; id: string },
+      | { kind: "equip"; slot: EquipSlot; id: string },
   ) => boolean;
 
   /** Increment the lifetime ◯/✕ tally for a page. */
@@ -128,7 +130,7 @@ export const useStore = create<Store>()(
     (set, get) => ({
       ...initialState,
 
-      review: (mode, cardId, correct, answerMode = "choice", difficulty) => {
+      review: (mode, cardId, correct, answerMode = "choice", difficulty, earnKey) => {
         const now = Date.now();
         recordMissAnswer(mode, cardId, correct, now);
         const key = cardKey(mode, cardId);
@@ -141,7 +143,7 @@ export const useStore = create<Store>()(
         const heatmap = incrementToday(get().heatmap, now);
         const streak = currentStreak(heatmap, now, progression.frozenDays);
         progression = earn(progression, {
-          key,
+          key: earnKey ?? key,
           correct,
           typed: answerMode === "typed",
           difficulty,
