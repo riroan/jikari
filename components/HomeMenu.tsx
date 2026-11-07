@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 
 const ITEMS = [
   { href: "/profile", ko: "프로필", jp: "プロフィール" },
-  { href: "/rewards", ko: "보상", jp: "褒美" },
+  { href: "/shop", ko: "상점", jp: "商店" },
+  { href: "/rewards", ko: "급단", jp: "級段" },
   { href: "/progress", ko: "진도", jp: "進捗" },
   { href: "/search", ko: "검색", jp: "検索" },
   { href: "/settings", ko: "설정", jp: "設定" },
@@ -15,7 +15,7 @@ const ITEMS = [
 const rowClass =
   "flex items-center justify-between gap-6 min-h-11 px-4 text-small text-[color:var(--fg)] hover:bg-[color:var(--bg-deep)]";
 
-/** 홈 좌상단 메뉴 — 예전 하단 내비(PROGRESS·検索·SETTINGS·테마)와 프로필·보상을 모은다. */
+/** 홈 좌상단 메뉴 — 프로필, 상점, 급단 기록과 유틸리티 화면으로 이동한다. */
 export function HomeMenu() {
   const [open, setOpen] = useState(false);
 
@@ -63,10 +63,6 @@ export function HomeMenu() {
                 </span>
               </Link>
             ))}
-            <div className={`${rowClass} border-t border-[color:var(--line)] hover:bg-transparent`}>
-              <span>테마</span>
-              <ThemeCycleButton className="min-h-11 text-caption text-[color:var(--fg-soft)] hover:text-[color:var(--fg)]" />
-            </div>
           </nav>
         </>
       )}

@@ -1,14 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { ModePageShell } from "@/components/ModePageShell";
 import { useStore } from "@/lib/store";
 import { useClientNow } from "@/lib/use-is-client";
 import { currentStreak } from "@/lib/heatmap";
 import {
   DEFAULT_PROGRESSION,
-  FREEZE_COST,
-  FREEZE_MAX,
   RANKS,
   consumeFreezes,
   pointsOf,
@@ -17,20 +15,16 @@ import {
 
 const h2 = "text-xs text-[color:var(--fg-faint)] tracking-label mb-3 font-medium";
 const row = "flex justify-between items-center gap-4 text-small py-2 border-b border-[color:var(--line)]";
-const btn =
-  "shrink-0 px-3 text-small border border-[color:var(--line)] rounded-sm text-[color:var(--fg)] tabular-nums disabled:text-[color:var(--fg-faint)] disabled:opacity-60";
 const fmt = (n: number) => n.toLocaleString("ko-KR");
 const date = (ms: number) => new Date(ms).toLocaleDateString("ko-KR", { year: "numeric", month: "numeric", day: "numeric" });
 
-/** 급단·포인트·보상. 포인트를 쓰는 버튼은 두 번 눌러야 실행된다 (첫 탭 = "확인?"). */
+/** 급단 진행과 도달 기록. 구매와 사용 내역은 /shop에서 본다. */
 export default function RewardsPage() {
   const now = useClientNow();
   const p = useStore((s) => s.progression ?? DEFAULT_PROGRESSION);
   const heatmap = useStore((s) => s.heatmap);
-  const shop = useStore((s) => s.shop);
-  const [armed, setArmed] = useState<string | null>(null);
 
-  if (now === null) return <ModePageShell title="褒美" />;
+  if (now === null) return <ModePageShell title="級段" />;
 
   const rank = rankOf(p.xp);
   const points = pointsOf(p);
@@ -39,16 +33,8 @@ export default function RewardsPage() {
   const span = rank.next ? rank.next.xp - rank.floor : 1;
   const ratio = rank.next ? (p.xp - rank.floor) / span : 1;
 
-  /** 포인트를 쓰는 동작: 첫 탭은 확인 대기, 두 번째 탭에 실행. */
-  const confirmThen = (id: string, run: () => void) => () => {
-    if (armed !== id) return setArmed(id);
-    setArmed(null);
-    run();
-  };
-  const label = (id: string, text: string) => (armed === id ? "확인?" : text);
-
   return (
-    <ModePageShell title="褒美">
+    <ModePageShell title="級段">
       <section className="mb-10">
         <div className="flex items-baseline justify-between">
           <div
@@ -85,54 +71,7 @@ export default function RewardsPage() {
           {fmt(points)}
           <span className="ml-1 text-caption text-[color:var(--fg-faint)]">pt</span>
         </div>
-      </section>
-
-      {p.rewards.length > 0 && (
-      <section className="mb-10">
-        <h2 className={h2}>내 보상</h2>
-        {p.rewards.map((r) => (
-          <div key={r.id} className={row}>
-            <span className="text-[color:var(--fg)] break-keep">{r.name}</span>
-            <span className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => shop({ kind: "remove", id: r.id })}
-                className="min-h-11 px-2 text-caption text-[color:var(--fg-faint)] underline underline-offset-4"
-                aria-label={`${r.name} 삭제`}
-              >
-                삭제
-              </button>
-              <button
-                type="button"
-                disabled={points < r.cost}
-                onClick={confirmThen(`r:${r.id}`, () => shop({ kind: "redeem", id: r.id }))}
-                className={btn}
-                style={{ minHeight: 44 }}
-              >
-                {label(`r:${r.id}`, `${fmt(r.cost)}pt`)}
-              </button>
-            </span>
-          </div>
-        ))}
-      </section>
-      )}
-
-      <section className="mb-10">
-        <h2 className={h2}>휴식권</h2>
-        <div className={row}>
-          <span className="text-[color:var(--fg-soft)]">
-            보유 {p.freezes} / {FREEZE_MAX}
-          </span>
-          <button
-            type="button"
-            disabled={p.freezes >= FREEZE_MAX || points < FREEZE_COST}
-            onClick={confirmThen("freeze", () => shop({ kind: "freeze" }))}
-            className={btn}
-            style={{ minHeight: 44 }}
-          >
-            {label("freeze", `${fmt(FREEZE_COST)}pt`)}
-          </button>
-        </div>
+        <Link href="/shop" className="mt-3 min-h-11 inline-flex items-center text-small text-[color:var(--accent-progress-text)] underline underline-offset-4">상점에서 사용하기 →</Link>
       </section>
 
       <section className="mb-10">
@@ -152,19 +91,6 @@ export default function RewardsPage() {
         )}
       </section>
 
-      {p.ledger.length > 0 && (
-        <section className="mb-10">
-          <h2 className={h2}>사용 내역</h2>
-          {p.ledger.slice(0, 20).map((l) => (
-            <div key={`${l.at}:${l.label}`} className={row}>
-              <span className="text-[color:var(--fg-soft)] break-keep">{l.label}</span>
-              <span className="text-caption tabular-nums text-[color:var(--fg-faint)]">
-                −{fmt(l.cost)} · {date(l.at)}
-              </span>
-            </div>
-          ))}
-        </section>
-      )}
     </ModePageShell>
   );
 }

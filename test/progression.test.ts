@@ -172,4 +172,43 @@ describe("mergeProgression", () => {
     const local = { ...server, palette: "sakura" };
     expect(mergeProgression(server, local)!.palette).toBe("sakura");
   });
+
+  it("adds independent earnings and purchases once from a shared base", () => {
+    const base = { ...P0, xp: 5000 };
+    const server = buyItem({ ...base, xp: 5010 }, "frame:double", NOW)!;
+    const local = buyItem({ ...base, xp: 5020 }, "skin:sumi", NOW + 1)!;
+    const merged = mergeProgression(server, local, base)!;
+    expect([merged.xp, merged.spent, pointsOf(merged)]).toEqual([5030, 3500, 1530]);
+    expect(merged.items).toEqual(["frame:double", "skin:sumi"]);
+    expect(mergeProgression(server, merged, server)!.spent).toBe(3500);
+  });
+
+  it("keeps today's bonus and card cap when the other device has more XP", () => {
+    const local = earn({ ...P0, xp: 50 }, ctx({ todayCount: 20, correct: false }));
+    const server = { ...P0, xp: 100 };
+    const merged = mergeProgression(server, local)!;
+    expect(merged.bonusDay).toBe(local.bonusDay);
+    expect(earn(merged, ctx({ todayCount: 21, correct: false })).xp).toBe(100);
+    const capped = earn(earn(P0, ctx()), ctx());
+    expect(earn(mergeProgression({ ...P0, xp: 100 }, capped)!, ctx()).xp).toBe(100);
+  });
+
+  it("combines independent daily card counts and freeze purchases", () => {
+    const a = earn(P0, ctx());
+    const b = earn(P0, ctx());
+    const merged = mergeProgression(a, b, P0)!;
+    expect([merged.xp, merged.dayCounts["kanji:日"]]).toEqual([2, 2]);
+    expect(earn(merged, ctx()).xp).toBe(2);
+    const rich = { ...P0, xp: 1000 };
+    const freezes = mergeProgression(buyFreeze(rich, NOW)!, buyFreeze(rich, NOW + 1)!, rich)!;
+    expect([freezes.freezes, freezes.spent]).toEqual([2, 400]);
+  });
+
+  it("charges a permanent item only once when both devices buy it", () => {
+    const base = { ...P0, xp: 5000 };
+    const a = buyItem(base, "frame:double", NOW)!;
+    const b = buyItem(base, "frame:double", NOW + 1)!;
+    const merged = mergeProgression(a, b, base)!;
+    expect([merged.spent, merged.items, merged.ledger.length]).toEqual([1500, ["frame:double"], 1]);
+  });
 });

@@ -296,19 +296,26 @@ export function equipItem(p: Progression, slot: EquipSlot, id: string): Progress
 
 /**
  * 서버 사본과 로컬(오프라인·충돌) 사본 병합. 어느 쪽도 되돌리지 않는다:
- * - xp·spent: 각각 max (둘 다 늘기만 하는 누적값). 양쪽이 따로 적립했다면 적은 쪽 적립분은
- *   잃는다 — merge-state의 quizStats max와 같은 타협. 구매는 환불되지 않는다.
+ * - xp·spent: 공통 기준본이 있으면 각 기기의 증가분을 더한다. 기준본이 없는 옛
+ *   저장본은 중복 합산을 피하기 위해 max를 쓴다.
  * - 사용 내역·해금·휴식권으로 메운 날·도달 기록: 합집합.
- * - 휴식권 장수: 더 많이 쓴(spent 큰) 쪽 — 그쪽이 구매를 반영한다. 같으면 적은 쪽(사용 반영).
+ * - 휴식권 장수: 공통 기준본이 있으면 구매·사용의 순변화를 합산한다.
  * - 보상: 합집합에서 어느 쪽이든 지운 것(`removed`)은 뺀다.
  * - 적용 중인 색 테마: 로컬 선택(사용자의 마지막 조작)이 이긴다, 해금된 것이라면.
- * - 반복 적립 카운터·보너스 날짜: xp가 큰 쪽.
+ * - 반복 적립 카운터: 같은 날의 증가분은 기준본에서 합산. 보너스 날짜: 더 최근 날짜.
  */
-export function mergeProgression(server?: Progression, local?: Progression): Progression | undefined {
+export function mergeProgression(server?: Progression, local?: Progression, base?: Progression): Progression | undefined {
   if (!server || !local) return server ?? local;
   // 꾸미기 이전 저장본엔 items·equip이 없다.
   server = normalizeProgression(server);
   local = normalizeProgression(local);
+  const common = base && normalizeProgression(base);
+  const canAdd = (field: "xp" | "spent") =>
+    !!common && common[field] <= server[field] && common[field] <= local[field];
+  const mergeTotal = (field: "xp" | "spent") =>
+    canAdd(field)
+      ? server[field] + local[field] - common![field]
+      : Math.max(server[field], local[field]);
   const union = (x: string[], y: string[]) => [...new Set([...x, ...y])];
   const ahead = local.xp > server.xp ? local : server;
   const spender =
@@ -321,20 +328,56 @@ export function mergeProgression(server?: Progression, local?: Progression): Pro
   const rewards = [...server.rewards, ...local.rewards.filter((r) => !server.rewards.some((s) => s.id === r.id))]
     .filter((r) => !removed.includes(r.id))
     .slice(0, REWARDS_MAX);
-  const ledger = [...server.ledger, ...local.ledger]
+  // 같은 영구 해금을 두 기기에서 샀다면 한 번만 청구한다.
+  const duplicateLabels = new Map<string, number>();
+  if (common && canAdd("spent")) {
+    for (const id of server.items) {
+      if (common.items.includes(id) || !local.items.includes(id)) continue;
+      const c = cosmeticById.get(id);
+      if (c) duplicateLabels.set(`${SLOT_KO[c.slot]} ${c.jp}`, c.cost);
+    }
+    for (const id of server.palettes) {
+      if (common.palettes.includes(id) || !local.palettes.includes(id)) continue;
+      const pal = PALETTES.find((p) => p.id === id);
+      if (pal) duplicateLabels.set(`색 테마 ${pal.jp}`, PALETTE_COST);
+    }
+  }
+  const duplicateCost = [...duplicateLabels.values()].reduce((sum, cost) => sum + cost, 0);
+  const ledger = [...server.ledger, ...local.ledger.filter((l) => duplicateLabels.get(l.label) !== l.cost)]
     .filter((l, i, all) => all.findIndex((m) => m.at === l.at && m.label === l.label) === i)
     .sort((x, y) => y.at - x.at)
     .slice(0, 100);
   const palettes = union(server.palettes, local.palettes);
   const items = union(server.items, local.items);
+  const day = server.day > local.day ? server.day : local.day;
+  const dayCounts: Record<string, number> = {};
+  for (const p of [server, local]) {
+    if (p.day !== day) continue;
+    for (const [key, count] of Object.entries(p.dayCounts))
+      dayCounts[key] = Math.max(dayCounts[key] ?? 0, count);
+  }
+  if (common && server.day === day && local.day === day) {
+    for (const key of Object.keys(dayCounts)) {
+      const from = common.day === day ? (common.dayCounts[key] ?? 0) : 0;
+      const a = server.dayCounts[key] ?? 0;
+      const b = local.dayCounts[key] ?? 0;
+      if (from <= a && from <= b) dayCounts[key] = a + b - from;
+    }
+  }
   // 장착도 색 테마처럼 로컬 선택이 이긴다 (산 것이라면).
   const pickEquip = (slot: EquipSlot) =>
     local.equip[slot] === "" || items.includes(local.equip[slot]) ? local.equip[slot] : server.equip[slot];
   return {
     ...ahead,
-    xp: Math.max(server.xp, local.xp),
-    spent: Math.max(server.spent, local.spent),
-    freezes: spender.freezes,
+    xp: mergeTotal("xp"),
+    spent: mergeTotal("spent") - duplicateCost,
+    day,
+    dayCounts,
+    bonusDay: server.bonusDay > local.bonusDay ? server.bonusDay : local.bonusDay,
+    streakDay: server.streakDay > local.streakDay ? server.streakDay : local.streakDay,
+    freezes: common
+      ? Math.max(0, Math.min(FREEZE_MAX, server.freezes + local.freezes - common.freezes))
+      : spender.freezes,
     frozenDays: union(server.frozenDays, local.frozenDays).sort().slice(-60),
     palettes,
     palette: local.palette === "" || palettes.includes(local.palette) ? local.palette : server.palette,

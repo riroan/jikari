@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { ModePageShell } from "@/components/ModePageShell";
-import { StampMark } from "@/components/AnswerFeedback";
+import { CosmeticPreview } from "@/components/CosmeticPreview";
+import { RankEmblem } from "@/components/RankEmblem";
 import { useStore } from "@/lib/store";
 import { useClientNow } from "@/lib/use-is-client";
 import { currentStreak } from "@/lib/heatmap";
 import { COSMETICS, SLOT_KO, hookOf, type EquipSlot } from "@/lib/cosmetics";
 import {
   DEFAULT_PROGRESSION,
-  PALETTE_COST,
   PALETTES,
   consumeFreezes,
   pointsOf,
@@ -23,13 +23,12 @@ const btn =
 const fmt = (n: number) => n.toLocaleString("ko-KR");
 const SLOTS: readonly EquipSlot[] = ["frame", "skin", "stamp"];
 
-/** 프로필 — 급단 인장 + 꾸미기(테두리·선지 스킨·정답 도장·색 테마). 사는 버튼은 두 번 눌러야 실행. */
+/** 프로필 — 급단 인장과 보유한 꾸미기 아이템을 적용한다. 구매는 /shop. */
 export default function ProfilePage() {
   const now = useClientNow();
   const p = useStore((s) => s.progression ?? DEFAULT_PROGRESSION);
   const heatmap = useStore((s) => s.heatmap);
   const shop = useStore((s) => s.shop);
-  const [armed, setArmed] = useState<string | null>(null);
 
   if (now === null) return <ModePageShell title="プロフィール" />;
 
@@ -38,68 +37,17 @@ export default function ProfilePage() {
   const streak = currentStreak(heatmap, now, consumeFreezes(p, heatmap, now).frozenDays);
   const frame = p.equip.frame ? hookOf(p.equip.frame) : "base";
 
-  const confirmThen = (id: string, run: () => void) => () => {
-    if (armed !== id) return setArmed(id);
-    setArmed(null);
-    run();
-  };
-  const label = (id: string, text: string) => (armed === id ? "확인?" : text);
-
-  /** 보유하면 적용/사용 중, 아니면 가격(두 번 눌러 구매). */
-  const action = (o: { id: string; owned: boolean; active: boolean; cost: number; buy: () => void; use: () => void }) =>
-    o.owned ? (
-      <button type="button" disabled={o.active} onClick={o.use} className={btn} style={{ minHeight: 44 }}>
-        {o.active ? "사용 중" : "적용"}
-      </button>
-    ) : (
-      <button
-        type="button"
-        disabled={points < o.cost}
-        onClick={confirmThen(o.id, o.buy)}
-        className={btn}
-        style={{ minHeight: 44 }}
-      >
-        {label(o.id, `${fmt(o.cost)}pt`)}
-      </button>
-    );
-
-  const preview = (slot: EquipSlot, id: string) => {
-    if (slot === "frame")
-      return <span aria-hidden className={`inline-block w-6 h-6 rounded-sm frame-${id ? hookOf(id) : "base"}`} />;
-    if (slot === "stamp")
-      return (
-        <span className="inline-flex w-6 justify-center text-[color:var(--accent-progress-text)]">
-          <StampMark id={id} />
-        </span>
-      );
-    return (
-      <span data-skin={id ? hookOf(id) : undefined} aria-hidden className="inline-block w-16">
-        <span
-          data-state="idle"
-          className="quiz-choice block px-2 py-1 text-tiny text-[color:var(--fg)] border border-[color:var(--line)] rounded-sm"
-          style={{ fontFamily: "var(--font-jp-sans)" }}
-        >
-          あ
-        </span>
-      </span>
-    );
-  };
+  const action = (active: boolean, use: () => void) => (
+    <button type="button" disabled={active} onClick={use} className={btn} style={{ minHeight: 44 }}>
+      {active ? "사용 중" : "적용"}
+    </button>
+  );
 
   return (
     <ModePageShell title="プロフィール">
       <section className="mb-10 flex items-center gap-6">
-        <div
-          className={`frame-${frame} w-32 h-32 shrink-0 rounded-sm flex flex-col items-center justify-center bg-[color:var(--bg)]`}
-        >
-          <div
-            className="text-h1 leading-none font-semibold text-[color:var(--fg)]"
-            style={{ fontFamily: "var(--font-jp-serif)" }}
-          >
-            {rank.name}
-          </div>
-          <div className="mt-2 text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
-            {fmt(p.xp)} XP
-          </div>
+        <div className={`frame-${frame} w-32 h-32 shrink-0 rounded-sm bg-[color:var(--bg)]`}>
+          <RankEmblem index={rank.index} name={rank.name} />
         </div>
         <dl className="flex flex-col gap-1 text-small">
           <div className="flex gap-3">
@@ -121,101 +69,60 @@ export default function ProfilePage() {
         </dl>
       </section>
 
+      <Link href="/shop" className="mb-10 min-h-11 inline-flex items-center self-start text-small text-[color:var(--accent-progress-text)] underline underline-offset-4">
+        상점에서 꾸미기 아이템 보기 →
+      </Link>
+
       {SLOTS.map((slot) => (
         <section key={slot} className="mb-10">
           <h2 className={h2}>{SLOT_KO[slot]}</h2>
           <div className={row}>
             <span className="flex items-center gap-3 text-[color:var(--fg-soft)]">
-              {preview(slot, "")}
+              <CosmeticPreview slot={slot} id="" />
               기본
             </span>
-            {action({
-              id: `${slot}:`,
-              owned: true,
-              active: p.equip[slot] === "",
-              cost: 0,
-              buy: () => {},
-              use: () => shop({ kind: "equip", slot, id: "" }),
-            })}
+            {action(p.equip[slot] === "", () => shop({ kind: "equip", slot, id: "" }))}
           </div>
-          {COSMETICS.filter((c) => c.slot === slot).map((c) => (
+          {COSMETICS.filter((c) => c.slot === slot && p.items.includes(c.id)).map((c) => (
             <div key={c.id} className={row}>
               <span className="flex items-center gap-3 text-[color:var(--fg-soft)]">
-                {preview(slot, c.id)}
+                <CosmeticPreview slot={slot} id={c.id} />
                 <span style={{ fontFamily: "var(--font-jp-serif)" }}>{c.jp}</span>
                 <span className="text-caption text-[color:var(--fg-faint)]">{c.ko}</span>
               </span>
-              {action({
-                id: c.id,
-                owned: p.items.includes(c.id),
-                active: p.equip[slot] === c.id,
-                cost: c.cost,
-                buy: () => shop({ kind: "item", id: c.id }),
-                use: () => shop({ kind: "equip", slot, id: c.id }),
-              })}
+              {action(p.equip[slot] === c.id, () => shop({ kind: "equip", slot, id: c.id }))}
             </div>
           ))}
         </section>
       ))}
 
-      <section className="mb-10">
+      {p.items.some((id) => COSMETICS.find((c) => c.id === id)?.slot === "pack") && <section className="mb-10">
         <h2 className={h2}>{SLOT_KO.pack}</h2>
-        {COSMETICS.filter((c) => c.slot === "pack").map((c) => {
-          const owned = p.items.includes(c.id);
-          return (
+        {COSMETICS.filter((c) => c.slot === "pack" && p.items.includes(c.id)).map((c) => (
             <div key={c.id} className={row}>
               <span className="flex items-center gap-3 text-[color:var(--fg-soft)]">
                 <span style={{ fontFamily: "var(--font-jp-serif)" }}>{c.jp}</span>
                 <span className="text-caption text-[color:var(--fg-faint)]">{c.ko}</span>
               </span>
-              {owned ? (
-                <span className="text-caption text-[color:var(--fg-faint)] min-h-11 inline-flex items-center">
-                  오늘의 한마디에 나와요
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  disabled={points < c.cost}
-                  onClick={confirmThen(c.id, () => shop({ kind: "item", id: c.id }))}
-                  className={btn}
-                  style={{ minHeight: 44 }}
-                >
-                  {label(c.id, `${fmt(c.cost)}pt`)}
-                </button>
-              )}
+              <span className="text-caption text-[color:var(--fg-faint)] min-h-11 inline-flex items-center">오늘의 한마디에 나와요</span>
             </div>
-          );
-        })}
-      </section>
+        ))}
+      </section>}
 
       <section className="mb-10">
         <h2 className={h2}>색 테마</h2>
         <div className={row}>
           <span className="text-[color:var(--fg-soft)]">기본</span>
-          {action({
-            id: "pal:",
-            owned: true,
-            active: p.palette === "",
-            cost: 0,
-            buy: () => {},
-            use: () => shop({ kind: "use", id: "" }),
-          })}
+          {action(p.palette === "", () => shop({ kind: "use", id: "" }))}
         </div>
-        {PALETTES.map((pal) => (
+        {PALETTES.filter((pal) => p.palettes.includes(pal.id)).map((pal) => (
           <div key={pal.id} className={row}>
             <span className="flex items-center gap-3 text-[color:var(--fg-soft)]">
               <span aria-hidden="true" className="inline-block w-6 h-1 rounded-sm" style={{ background: pal.swatch }} />
               <span style={{ fontFamily: "var(--font-jp-serif)" }}>{pal.jp}</span>
               <span className="text-caption text-[color:var(--fg-faint)]">{pal.ko}</span>
             </span>
-            {action({
-              id: `pal:${pal.id}`,
-              owned: p.palettes.includes(pal.id),
-              active: p.palette === pal.id,
-              cost: PALETTE_COST,
-              buy: () => shop({ kind: "palette", id: pal.id }),
-              use: () => shop({ kind: "use", id: pal.id }),
-            })}
+            {action(p.palette === pal.id, () => shop({ kind: "use", id: pal.id }))}
           </div>
         ))}
       </section>

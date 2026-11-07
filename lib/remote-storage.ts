@@ -3,6 +3,7 @@
 import type { StateStorage } from "zustand/middleware";
 import { backoffMs } from "./retry";
 import { mergeState } from "./merge-state";
+import type { Progression } from "./progression";
 import type { PersistedState } from "./types";
 
 /**
@@ -12,10 +13,12 @@ import type { PersistedState } from "./types";
 const PENDING_KEY = "jikari-pending-v1";
 const REJECTED_KEY = "jikari-pending-rejected-v1";
 type Ratings = PersistedState["ratings"];
-type Envelope = { v: 1; base?: PersistedState["settings"]; baseRatings?: Ratings; replace?: true; value: string };
+type Envelope = { v: 1; base?: PersistedState["settings"]; baseRatings?: Ratings; baseProgression?: Progression; replace?: true; value: string };
 let storedPending: boolean | null = null; // cached "a pending copy exists in localStorage"
 let baseSettings: PersistedState["settings"] | undefined;
 let baseRatings: Ratings | undefined;
+let baseProgression: Progression | undefined;
+let staleBaseProgression: Progression | undefined;
 /**
  * Version tag (ETag) of the server state this session last saw (GET or successful PUT). Sent as If-Match;
  * the server answers 409 + its current state if someone else saved since. null = unknown/old server -> unconditional.
@@ -96,7 +99,7 @@ let memEnv: Envelope | null = null;
 let persistFailed = false;
 function writeEnvelope(value: string) {
   const env: Envelope = {
-    v: 1, base: baseSettings, baseRatings, ...(replace ? { replace: true } : {}), value,
+    v: 1, base: baseSettings, baseRatings, baseProgression, ...(replace ? { replace: true } : {}), value,
   };
   memEnv = env;
   try {
@@ -183,6 +186,8 @@ export function __resetRemoteStorageForTests() {
   persistFailed = false;
   baseSettings = undefined;
   baseRatings = undefined;
+  baseProgression = undefined;
+  staleBaseProgression = undefined;
   serverTag = null;
   conflicts = 0;
   replace = false;
@@ -263,10 +268,11 @@ async function flush() {
     const saved = parsed.state as Partial<PersistedState> | undefined;
     baseSettings = saved?.settings;
     baseRatings = saved?.ratings;
+    baseProgression = saved?.progression;
     if (pending === value) pending = null; // a re-merge produced the very payload we just saved
     if (wasReplace && seq === replaceSeq) replace = false; // the server now holds the replaced state; later writes merge normally
     if (pending != null) {
-      if (wasReplace) writeEnvelope(pending); // drop/keep the replace flag in the stored copy
+      writeEnvelope(pending); // newer edits are relative to the state just saved
       schedule(0); // newer state arrived mid-flight
     } else clearEnvelope();
   } catch (err) {
@@ -286,13 +292,15 @@ async function flush() {
 async function onConflict(res: Response, value: string) {
   const server = (await res.json()) as PersistedState;
   const tag = res.headers.get("ETag");
-  let merged = server;
-  for (const v of pending != null && pending !== value ? [value, pending] : [value]) {
-    merged = mergeState(merged, (JSON.parse(v) as { state: PersistedState }).state, baseSettings, baseRatings);
-  }
+  // A newer pending value is a full snapshot that already includes `value`.
+  const latest = pending != null && pending !== value ? pending : value;
+  const local = (JSON.parse(latest) as { state: PersistedState }).state;
+  const merged = mergeState(server, local, baseSettings, baseRatings, baseProgression);
+  staleBaseProgression = local.progression;
   serverTag = tag;
   baseSettings = server.settings;
   baseRatings = server.ratings;
+  baseProgression = server.progression;
   pending = JSON.stringify({ state: merged, version: merged.schemaVersion ?? 0 });
   writeEnvelope(pending);
   staleStore = true;
@@ -350,16 +358,19 @@ async function loadAndMerge(): Promise<string | null> {
     let state = (await res.json()) as {
       schemaVersion?: number;
     } & Partial<PersistedState>;
+    const freshProgression = state.progression;
     const fromSnapshot = res.headers.get("X-Jikari-Offline-Snapshot") === "1";
     setSnapshot(fromSnapshot);
     if (!fromSnapshot) loaded = true;
     loadFailed = false;
     serverTag = fromSnapshot ? null : res.headers.get("ETag");
     const env0 = memEnv ?? readEnvelope();
-    baseSettings = fromSnapshot && env0?.base ? env0.base : state.settings;
-    baseRatings = fromSnapshot && env0?.baseRatings ? env0.baseRatings : state.ratings;
-    // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
     const queued = pending ?? env0?.value ?? null;
+    baseSettings = env0?.base ?? state.settings;
+    baseRatings = env0?.baseRatings ?? state.ratings;
+    // Old pending envelopes have no progression base; keep the safe max fallback.
+    baseProgression = queued ? env0?.baseProgression : state.progression;
+    // Fresh server copy in hand: fold in answers queued while offline, then PUT once.
     if (queued != null) {
       try {
         const local = (JSON.parse(queued) as { state: PersistedState }).state;
@@ -368,7 +379,10 @@ async function loadAndMerge(): Promise<string | null> {
           if (replace || env?.replace) {
             replace = true;
             state = local; // explicit restore/reset: send as-is with the fresh tag, no merge
-          } else state = mergeState(state as PersistedState, local, env?.base, env?.baseRatings);
+          } else state = mergeState(state as PersistedState, local, env?.base, env?.baseRatings, env?.baseProgression);
+          // The queued merged state now contains the fresh server copy. Future
+          // retries must count only the local delta beyond that copy.
+          if (!fromSnapshot) baseProgression = freshProgression;
           pending = JSON.stringify({
             state,
             version: state.schemaVersion ?? 0,
@@ -420,7 +434,8 @@ export const remoteStorage: StateStorage = {
     if (staleStore && lastMerged && !replace) {
       // the store has not adopted the 409 merge yet: never save its stale state bare
       const local = (JSON.parse(value) as { state: PersistedState }).state;
-      const m = mergeState(lastMerged, local, baseSettings, baseRatings);
+      const m = mergeState(lastMerged, local, baseSettings, baseRatings, staleBaseProgression);
+      staleBaseProgression = local.progression;
       lastMerged = m;
       value = JSON.stringify({ state: m, version: m.schemaVersion ?? 0 });
     }

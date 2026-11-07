@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { __resetRemoteStorageForTests, getProgressLoadFailed, getSyncStatus, remoteStorage } from "@/lib/remote-storage";
+import { DEFAULT_PROGRESSION } from "@/lib/progression";
 
 const STATE = JSON.stringify({ state: { schemaVersion: 1, learningStates: {} }, version: 1 });
 
@@ -174,6 +175,40 @@ describe("remoteStorage", () => {
       expect(body.learningStates["vocab:a"].lastReviewed).toBe(900);
       expect(body.learningStates["vocab:b"]).toBeDefined();
       expect(localStorage.getItem("jikari-pending-v1")).toBeNull();
+    });
+
+    test("after reload: independent XP and purchases use the saved common base", async () => {
+      const base = { ...DEFAULT_PROGRESSION, xp: 1000, spent: 100 };
+      const local = { ...base, xp: 1020, spent: 300 };
+      const server = { ...base, xp: 1010, spent: 400 };
+      localStorage.setItem("jikari-pending-v1", JSON.stringify({
+        v: 1, baseProgression: base, value: val(full({ progression: local })),
+      }));
+      __resetRemoteStorageForTests();
+      fetchMock.mockResolvedValueOnce(Response.json(full({ progression: server })));
+      const out = JSON.parse((await remoteStorage.getItem("jikari"))!);
+      expect([out.state.progression.xp, out.state.progression.spent]).toEqual([1030, 600]);
+      fetchMock.mockResolvedValue(Response.json({ ok: true }));
+      await vi.advanceTimersByTimeAsync(10);
+      const body = JSON.parse((putCalls(fetchMock)[0][1] as RequestInit).body as string);
+      expect([body.progression.xp, body.progression.spent]).toEqual([1030, 600]);
+    });
+
+    test("409 retry counts each device's XP and spending only once", async () => {
+      const base = { ...DEFAULT_PROGRESSION, xp: 1000, spent: 100 };
+      const local = { ...base, xp: 1020, spent: 300 };
+      const server = { ...base, xp: 1010, spent: 400 };
+      fetchMock.mockResolvedValueOnce(Response.json(full({ progression: base }), { headers: { ETag: '"base"' } }));
+      await remoteStorage.getItem("jikari");
+      fetchMock
+        .mockResolvedValueOnce(Response.json(full({ progression: server }), { status: 409, headers: { ETag: '"server"' } }))
+        .mockResolvedValueOnce(Response.json({ ok: true }, { headers: { ETag: '"merged"' } }));
+      remoteStorage.setItem("jikari", val(full({ progression: local })));
+      await vi.advanceTimersByTimeAsync(510);
+      const puts = putCalls(fetchMock);
+      expect(puts).toHaveLength(2);
+      const body = JSON.parse((puts[1][1] as RequestInit).body as string);
+      expect([body.progression.xp, body.progression.spent]).toEqual([1030, 600]);
     });
 
     test("concurrent reconnect triggers coalesce into one GET and one PUT; a write mid-flight adds exactly one more", async () => {
