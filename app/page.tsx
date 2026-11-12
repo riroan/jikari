@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { Heatmap } from "@/components/Heatmap";
 import { HomeHeader } from "@/components/HomeHeader";
-import { ThemeCycleButton } from "@/components/ThemeCycleButton";
 import { daysSinceLastStudy, daysStudiedInLast, toLocalDateKey } from "@/lib/heatmap";
 import { splitDue, topDueKey, totalDue } from "@/lib/due";
 import { REVIEW_DUE_KEYS } from "@/lib/review-deck";
@@ -15,6 +14,28 @@ import { SUBJECTS } from "@/lib/subjects";
 import { forecastDue } from "@/lib/forecast";
 import { DailyPhrase } from "@/components/DailyPhrase";
 import { useLiveMisses } from "@/lib/use-misses";
+import { DEFAULT_PROGRESSION, pointsOf, rankOf } from "@/lib/progression";
+
+/** 급단 한 줄 — 오늘 목표 진행선과 같은 형식. 누르면 褒美(보상) 페이지. */
+function RankLine() {
+  const p = useStore((s) => s.progression ?? DEFAULT_PROGRESSION);
+  const rank = rankOf(p.xp);
+  const ratio = rank.next ? (p.xp - rank.floor) / (rank.next.xp - rank.floor) : 1;
+  return (
+    <Link href="/rewards" className="block mb-4 py-1" aria-label={`${rank.name}, 포인트 ${pointsOf(p)}`}>
+      <div className="h-px bg-[color:var(--line)]">
+        <div className="h-px bg-[color:var(--fg-faint)]" style={{ width: `${Math.min(ratio, 1) * 100}%` }} />
+      </div>
+      <div className="mt-1 flex justify-between text-tiny tabular-nums tracking-wide text-[color:var(--fg-faint)]">
+        <span>
+          <span style={{ fontFamily: "var(--font-jp-serif)" }}>{rank.name}</span>
+          {rank.next && ` · ${p.xp.toLocaleString("ko-KR")} / ${rank.next.xp.toLocaleString("ko-KR")}`}
+        </span>
+        <span>{pointsOf(p).toLocaleString("ko-KR")}pt →</span>
+      </div>
+    </Link>
+  );
+}
 
 /**
  * Home structure (post plan-design-review 2026-04-19):
@@ -107,6 +128,8 @@ export default function Home() {
               : `오늘 ${todayCount} / ${DAILY_GOAL}`}
           </div>
         </div>
+
+        {hydrated && <RankLine />}
 
         {nextReview && (
           <Link
@@ -201,35 +224,6 @@ export default function Home() {
         </section>
         </div>
 
-        {/* Footer nav */}
-        <nav className="-mx-5 lg:mx-0 lg:col-span-2 lg:justify-start lg:gap-8 lg:pt-6 lg:border-t lg:border-[color:var(--line)] flex justify-between items-center whitespace-nowrap text-caption text-[color:var(--fg-faint)] tracking-[0.01em] min-[360px]:tracking-[0.06em] font-medium">
-          <Link
-            href="/"
-            aria-current="page"
-            className="inline-flex items-center justify-center min-h-[44px] px-1 text-[color:var(--fg-soft)] cursor-default"
-          >
-            HOME
-          </Link>
-          <Link
-            href="/progress"
-            className="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
-          >
-            PROGRESS
-          </Link>
-          <Link
-            href="/search"
-            className="min-w-[44px] inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
-          >
-            検索
-          </Link>
-          <Link
-            href="/settings"
-            className="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[color:var(--fg-soft)]"
-          >
-            SETTINGS
-          </Link>
-          <ThemeCycleButton />
-        </nav>
       </div>
     </main>
   );

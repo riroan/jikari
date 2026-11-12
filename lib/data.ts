@@ -9,6 +9,7 @@ import type {
 } from "./types";
 import { useCardsStore } from "./cards-store";
 import { seededShuffle } from "./prng";
+import { normalizeKorean } from "./normalize";
 
 export type QuizDirection = "recall" | "recognition";
 /** 단어 퀴즈 전용: 한자만 보고 가나 읽기를 고르는 형식이 하나 더 있다. */
@@ -521,7 +522,13 @@ export function generateExpressionChoices(
   seed: number = Math.random(),
   expected?: number,
 ): { correct: string; choices: string[] } {
-  const others = cards().expressions.filter((e) => e.id !== card.id);
+  // 여러 상황에서 같은 표현이나 같은 뜻을 쓸 수 있다. 그런 카드를 오답으로
+  // 내면 정답이 둘이 된다. Ruby 표기가 달라도 원문이 같으면 같은 표현이다.
+  const others = cards().expressions.filter((e) =>
+    e.id !== card.id &&
+    e.expression_jp !== card.expression_jp &&
+    normalizeKorean(e.translation_ko) !== normalizeKorean(card.translation_ko),
+  );
   const recall = direction === "recall";
   const correct = recall ? (card.ruby ?? card.expression_jp) : card.translation_ko;
 

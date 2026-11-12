@@ -43,6 +43,7 @@ export function ChapterOverview({
     conjugation: 0,
     adjective: 0,
     expression: 0,
+    listening: 0,
   };
   const previews: Partial<Record<CardMode, AnyCard[]>> = {};
   for (const { member, card } of members) {

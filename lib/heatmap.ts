@@ -65,13 +65,18 @@ export function generateCells(
  * Compute current streak (consecutive days with activity counting back from today).
  * Yesterday-only grace: if today has 0 but yesterday has >0, still count streak from yesterday.
  */
-export function currentStreak(heatmap: HeatmapData, now: number): number {
+export function currentStreak(
+  heatmap: HeatmapData,
+  now: number,
+  /** 휴식권이 지켜 준 날 — 공부한 날로 친다 (lib/progression). */
+  frozenDays: readonly string[] = [],
+): number {
   let streak = 0;
   for (let i = 0; i < 365; i++) {
     const date = new Date(now - i * DAY_MS);
     const key = toLocalDateKey(date.getTime());
     const count = heatmap[key] ?? 0;
-    if (count > 0) {
+    if (count > 0 || frozenDays.includes(key)) {
       streak++;
     } else if (i === 0) {
       // Today empty but yesterday might still count
@@ -84,7 +89,7 @@ export function currentStreak(heatmap: HeatmapData, now: number): number {
 }
 
 /** Local-date key for `daysAgo` days before `now` (calendar math, so DST can't skip/repeat a day). */
-function keyDaysAgo(now: number, daysAgo: number): string {
+export function keyDaysAgo(now: number, daysAgo: number): string {
   const d = new Date(now);
   return toLocalDateKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() - daysAgo, 12).getTime());
 }

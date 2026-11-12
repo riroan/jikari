@@ -172,6 +172,69 @@
   }
 }
 
+/*
+ * 색 테마 (보상으로 해금, lib/progression PALETTES). 진행색(accent-progress)만 바꾼다.
+ * 팔레트마다 --pal(채움, ink 글자 AA) / --pal-text(종이 위 작은 글자 AA) / --pal-dark(다크 배경 AA).
+ * 선택자 특이성: 위의 다크 블록보다 하나씩 높게 둬서 순서와 무관하게 이긴다.
+ */
+:root[data-palette="sakura"] { --pal: #D79AA2; --pal-text: #9B4D59; --pal-dark: #E3A9B2; }
+:root[data-palette="wakaba"] { --pal: #9DB86A; --pal-text: #57702F; --pal-dark: #B7CF83; }
+:root[data-palette="momiji"] { --pal: #D98B57; --pal-text: #9A4B22; --pal-dark: #E39B68; }
+:root[data-palette="yuki"]   { --pal: #8FA6C2; --pal-text: #465F7D; --pal-dark: #A3BAD6; }
+:root[data-palette] {
+  --accent-progress: var(--pal);
+  --accent-progress-text: var(--pal-text);
+}
+:root[data-palette][data-theme="dark"] {
+  --accent-progress: var(--pal-dark);
+  --accent-progress-text: var(--pal-dark);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-palette]:not([data-theme="light"]) {
+    --accent-progress: var(--pal-dark);
+    --accent-progress-text: var(--pal-dark);
+  }
+}
+
+/*
+ * 프로필 꾸미기 (lib/cosmetics). 테두리는 프로필의 급단 인장 칸에만 쓴다.
+ * 금테 색: 라이트는 종이 위에서 보이는 짙은 금, 다크는 기존 gold 토큰.
+ */
+:root { --frame-gold: #9C7A2E; }
+[data-theme="dark"] { --frame-gold: var(--_dark-gold); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --frame-gold: var(--_dark-gold); }
+}
+.frame-base   { border: 1px solid var(--line); }
+.frame-double { border: 4px double var(--fg-soft); }
+.frame-sumi   { border: 2px solid var(--fg); }
+.frame-shu    { border: 2px solid var(--accent-korean); outline: 1px solid var(--accent-korean); outline-offset: -7px; }
+.frame-kin    { border: 4px double var(--frame-gold); outline: 1px solid var(--frame-gold); outline-offset: -10px; }
+
+/*
+ * 선지 스킨 — <html data-skin>. QuizCard 선지 버튼(.quiz-choice)의 data-state가
+ * idle일 때만 바탕을 바꾸고, 정답/오답 표시는 기본 색 그대로 둔다 (상태가 스킨에 묻히지 않게).
+ */
+[data-skin="washi"] .quiz-choice[data-state="idle"] {
+  background: var(--bg-deep);
+  border-color: transparent;
+}
+[data-skin="sen"] .quiz-choice {
+  border-width: 0 0 1px 0;
+  border-radius: 0;
+}
+[data-skin="fuda"] .quiz-choice {
+  border-radius: 0;
+  border-top-width: 3px;
+}
+[data-skin="sumi"] .quiz-choice[data-state="idle"] {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+[data-skin="sumi"] .quiz-choice[data-state="idle"] * { color: inherit; }
+[data-skin="sumi"] .quiz-choice[data-state="idle"]:hover:not(:disabled) { opacity: 0.88; }
+
 /* Tailwind 4 theme tokens — exposes CSS vars as Tailwind utilities */
 @theme inline {
   --color-bg:                var(--bg);

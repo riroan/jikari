@@ -18,6 +18,7 @@ const learningStateSchema = z.object({
     "adjective",
     "grammar",
     "expression",
+    "listening",
   ]),
   cardId: z.string(),
   box: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]),
@@ -31,6 +32,37 @@ const quizStatSchema = z.object({
   wrong: z.number().int().nonnegative(),
 });
 
+const dayKey = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const count = z.number().int().nonnegative();
+const progressionSchema = z.object({
+  xp: count,
+  spent: count,
+  freezes: z.number().int().min(0).max(2),
+  frozenDays: z.array(dayKey).max(400),
+  palettes: z.array(z.string().max(20)).max(20),
+  palette: z.string().max(20),
+  // 꾸미기 이전 저장본·옛 클라이언트엔 없다 → 기본값.
+  items: z.array(z.string().max(40)).max(100).default([]),
+  equip: z
+    .object({
+      frame: z.string().max(40).default(""),
+      skin: z.string().max(40).default(""),
+      stamp: z.string().max(40).default(""),
+    })
+    .default({ frame: "", skin: "", stamp: "" }),
+  rewards: z
+    .array(z.object({ id: z.string().max(40), name: z.string().min(1).max(60), cost: z.number().int().positive().max(1_000_000) }))
+    .max(100),
+  // 지운 보상 id — 0014 직후 저장본엔 없으므로 기본값.
+  removed: z.array(z.string().max(40)).max(200).default([]),
+  ledger: z.array(z.object({ at: count, label: z.string().max(80), cost: count })).max(200),
+  rankAt: z.record(z.string(), count),
+  day: z.union([dayKey, z.literal("")]),
+  dayCounts: z.record(z.string(), count),
+  bonusDay: z.union([dayKey, z.literal("")]),
+  streakDay: z.union([dayKey, z.literal("")]),
+});
+
 const persistedStateSchema = z.object({
   schemaVersion: z.number().int().positive(),
   learningStates: z.record(z.string(), learningStateSchema),
@@ -41,6 +73,8 @@ const persistedStateSchema = z.object({
   quizStats: z.record(z.string(), quizStatSchema).default({}),
   // Older (v<6) backups don't carry ratings — pad so they still import.
   ratings: z.record(z.string(), z.number().finite()).default({}),
+  // v7: optional — absent means "leave the stored progression alone" (old clients/backups).
+  progression: progressionSchema.optional(),
   settings: z.object({
     theme: z.enum(["light", "dark", "system"]).default("system"),
     showFurigana: z.boolean().default(true),

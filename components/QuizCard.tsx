@@ -62,8 +62,6 @@ export interface QuizCardProps {
   memoKey?: string;
   /** Shown only after a WRONG answer, below the next button (never shifts it). Null/undefined renders nothing. */
   missExample?: Example | null;
-  /** false where the answer is never scheduled (listening): hides the "느렸어요" note. Default true. */
-  scored?: boolean;
   /** Called after feedback, caller advances to next card */
   onResolved: (wasCorrect: boolean, wrongPick?: string) => void;
   /**
@@ -83,7 +81,6 @@ export function QuizCard({
   speak,
   memoKey,
   missExample,
-  scored = true,
   onResolved,
   minQuestionHeight = 260,
 }: QuizCardProps) {
@@ -95,7 +92,6 @@ export function QuizCard({
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [typedUserAnswer, setTypedUserAnswer] = useState<string | null>(null);
   const [hinted, setHinted] = useState(false);
-  const [slow, setSlow] = useState(false);
   const resolvedAtRef = useRef(0);
 
   const advance = useCallback(() => {
@@ -105,7 +101,6 @@ export function QuizCard({
     if (result === "wrong" && selectedChoice !== null) onResolved(ok, selectedChoice);
     else onResolved(ok);
     setHinted(false);
-    setSlow(false);
     markShown();
     setResult(null);
     setDisabled(false);
@@ -119,7 +114,8 @@ export function QuizCard({
       setResult(wasCorrect ? "correct" : "wrong");
       setDisabled(true);
       resolvedAtRef.current = Date.now();
-      setSlow(markAnswered(input.mode) && wasCorrect);
+      // 느린 정답은 박스를 유지하도록 기록만 한다 (화면 문구는 없음).
+      markAnswered(input.mode);
       if (back) {
         setShowingBack(true);
       }
@@ -246,16 +242,6 @@ export function QuizCard({
           {disabled && result !== null && (
               <div key={result} className="anim-fade-in">
                 <AnswerFeedback correct={result === "correct"} />
-                {hinted && result === "correct" && (
-                  <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
-                    힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
-                  </p>
-                )}
-                {scored && slow && !hinted && result === "correct" && (
-                  <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
-                    느렸어요 · 한 번 더 볼게요
-                  </p>
-                )}
               </div>
             )}
         </div>
@@ -334,6 +320,11 @@ function ChoicePanel({
       {choices.map((choice, i) => {
         const isSelected = selected === choice;
         const isCorrectChoice = choice === correct;
+        const resultLabel = disabled
+          ? isCorrectChoice
+            ? isSelected ? "선택 · 정답" : "정답"
+            : isSelected ? "선택 · 오답" : null
+          : null;
         let stateClass =
           "border-[color:var(--line)] hover:bg-[color:var(--bg-deep)]";
         if (disabled && isSelected && isCorrectChoice) {
@@ -346,12 +337,18 @@ function ChoicePanel({
           stateClass =
             "border-[color:var(--accent-progress)] bg-[color:var(--accent-progress)]/5";
         }
+        // 선지 스킨(globals.css [data-skin])이 상태별로 다르게 칠하도록.
+        const state =
+          disabled && isCorrectChoice ? (isSelected ? "correct" : "answer")
+          : disabled && isSelected ? "wrong"
+          : "idle";
         return (
           <button
             key={choice}
             onClick={() => onChoice(choice)}
             disabled={disabled}
-            className={`flex items-baseline gap-3 text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
+            data-state={state}
+            className={`quiz-choice flex w-full items-baseline gap-3 text-left px-4 py-3.5 text-body text-[color:var(--fg)] border rounded-sm transition-colors ${stateClass} disabled:cursor-not-allowed`}
           >
             {/* 숫자 키 단축키 표시 — 키보드가 있는 데스크톱에서만 */}
             <span
@@ -361,9 +358,17 @@ function ChoicePanel({
             >
               {i + 1}
             </span>
-            <span className="min-w-0">
+            <span className="min-w-0 flex-1">
               <RubyText text={choice} />
             </span>
+            {resultLabel && (
+              <>
+                {" "}
+                <span className="shrink-0 text-caption text-[color:var(--fg-soft)]">
+                  {resultLabel}
+                </span>
+              </>
+            )}
           </button>
         );
       })}

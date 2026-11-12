@@ -1,4 +1,6 @@
 import { currentStreak } from "./heatmap";
+import { mergeProgression } from "./progression";
+import type { Progression } from "./progression";
 import type { LearningState, PersistedState, QuizStat } from "./types";
 
 type Settings = PersistedState["settings"];
@@ -45,6 +47,7 @@ export function mergeState(
   local: PersistedState,
   base?: Settings,
   baseRatings?: Record<string, number>,
+  baseProgression?: Progression,
 ): PersistedState {
   const lastActiveAt = Math.max(server.lastActiveAt, local.lastActiveAt);
   const heatmap = mergeRecord(server.heatmap ?? {}, local.heatmap ?? {}, Math.max);
@@ -58,14 +61,16 @@ export function mergeState(
   for (const [mode, l] of Object.entries(local.ratings ?? {})) {
     if (!(mode in ratings) || (baseRatings && l !== baseRatings[mode])) ratings[mode] = l;
   }
+  const progression = mergeProgression(server.progression, local.progression, baseProgression);
   return {
     schemaVersion: Math.max(server.schemaVersion, local.schemaVersion),
     learningStates: mergeRecord(server.learningStates ?? {}, local.learningStates ?? {}, newerLearning),
     heatmap,
     lastActiveAt,
-    currentStreak: lastActiveAt > 0 ? currentStreak(heatmap, lastActiveAt) : 0,
+    currentStreak: lastActiveAt > 0 ? currentStreak(heatmap, lastActiveAt, progression?.frozenDays) : 0,
     quizStats: mergeRecord(server.quizStats ?? {}, local.quizStats ?? {}, maxQuizStat),
     ratings,
+    ...(progression ? { progression } : {}),
     settings,
   };
 }

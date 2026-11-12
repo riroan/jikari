@@ -30,6 +30,8 @@ interface CardsState {
   grammarPatternIds: string[];
   /** IDs of grammar cards with type === "particle_contrast" (助詞 대조) */
   grammarParticleContrastIds: string[];
+  /** 회화체(話し言葉) 탭 — 문형 카드 중 id가 `pattern-casual-`로 시작하는 것. */
+  grammarCasualIds: string[];
   kanjiById: Map<string, KanjiCard>;
   vocabById: Map<string, VocabCard>;
   sentenceById: Map<string, SentenceCard>;
@@ -59,6 +61,7 @@ const emptyMaps = {
   particleIds: [] as string[],
   grammarPatternIds: [] as string[],
   grammarParticleContrastIds: [] as string[],
+  grammarCasualIds: [] as string[],
   kanjiById: new Map<string, KanjiCard>(),
   vocabById: new Map<string, VocabCard>(),
   sentenceById: new Map<string, SentenceCard>(),
@@ -71,6 +74,9 @@ const emptyMaps = {
   expressionIds: [] as string[],
   expressionById: new Map<string, ExpressionCard>(),
 };
+
+/** 회화체 카드는 별도 타입 없이 문형 카드 + id 접두어로 구분한다 (DB 스키마 그대로). */
+export const isCasualGrammarId = (id: string) => id.startsWith("pattern-casual-");
 
 function indexMembersByChapter(members: ChapterMember[]): Map<string, ChapterMember[]> {
   const m = new Map<string, ChapterMember[]>();
@@ -130,7 +136,10 @@ export const useCardsStore = create<CardsState>((set, get) => ({
           sentenceIds: sentences.filter((c) => c.category === "vocab").map((c) => c.id),
           particleIds: sentences.filter((c) => c.category === "particle").map((c) => c.id),
           grammarPatternIds: grammar
-            .filter((c): c is GrammarPatternCard => c.type === "pattern")
+            .filter((c): c is GrammarPatternCard => c.type === "pattern" && !isCasualGrammarId(c.id))
+            .map((c) => c.id),
+          grammarCasualIds: grammar
+            .filter((c) => c.type === "pattern" && isCasualGrammarId(c.id))
             .map((c) => c.id),
           grammarParticleContrastIds: grammar
             .filter((c): c is ParticleContrastCard => c.type === "particle_contrast")

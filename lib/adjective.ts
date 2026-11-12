@@ -53,6 +53,8 @@ function conjugateIAdj(stem: string, form: AdjectiveForm): string {
       return body + "くて";
     case "i_adv":
       return body + "く";
+    case "sa_noun":
+      return body + "さ";
     case "conditional":
       return body + "ければ";
     case "polite_negative":
@@ -94,8 +96,9 @@ function conjugateNaAdj(stem: string, form: AdjectiveForm): string {
       // ではないです added as accepted alternates in conjugateAdjAll.
       return stem + "じゃありません";
     case "i_adv":
+    case "sa_noun":
       throw new AdjectiveConjugationError(
-        `na-adj does not have i_adv form (stem '${stem}')`,
+        `na-adj does not have ${form} form (stem '${stem}')`,
       );
   }
 }
@@ -204,6 +207,7 @@ export const ADJ_FORM_LABELS_KO: Record<AdjectiveForm, string> = {
   ni_adv: "부사형",
   conditional: "조건형",
   polite_negative: "정중부정형",
+  sa_noun: "명사형(〜さ)",
 };
 
 /** Japanese labels for back-of-card display. */
@@ -219,4 +223,5 @@ export const ADJ_FORM_LABELS_JP: Record<AdjectiveForm, string> = {
   na_prenominal: "連体形",
   conditional: "条件形",
   polite_negative: "丁寧否定形",
+  sa_noun: "名詞形",
 };

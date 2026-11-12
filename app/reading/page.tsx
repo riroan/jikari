@@ -6,6 +6,7 @@ import { EmptyCardsState } from "@/components/EmptyCardsState";
 import { ReadingCard } from "@/components/ReadingCard";
 import { SessionSummary } from "@/components/SessionSummary";
 import { useCardsStore } from "@/lib/cards-store";
+import { useStore } from "@/lib/store";
 import { parseMarkup, stripMarkup } from "@/lib/jp-markup";
 import { loadWeak, orderDeck, readingItems, saveWeak, updateWeak } from "@/lib/reading";
 import { useIsClient } from "@/lib/use-is-client";
@@ -19,6 +20,7 @@ import { useQuizRun } from "@/lib/use-quiz-run";
 export default function ReadingPage() {
   const mounted = useIsClient();
   const sentences = useCardsStore((s) => s.sentences);
+  const earnPractice = useStore((s) => s.earnPractice);
   const expressions = useCardsStore((s) => s.expressions);
   const [seed] = useState(() => Math.floor(Math.random() * 1_000_000));
   const [index, setIndex] = useState(0);
@@ -50,6 +52,7 @@ export default function ReadingPage() {
       item={item}
       onResolved={(ok, peeked) => {
         if (!run.retrying) {
+          earnPractice(`reading:${item.id}`, ok && !peeked, false);
           const next = updateWeak(weak, item.id, ok, peeked);
           setWeak(next);
           saveWeak(next);

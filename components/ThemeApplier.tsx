@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useStore } from "@/lib/store";
+import { hookOf } from "@/lib/cosmetics";
 
 /**
  * Syncs the active color scheme into <html data-theme="…">.
@@ -14,6 +15,22 @@ import { useStore } from "@/lib/store";
  */
 export function ThemeApplier() {
   const theme = useStore((s) => s.settings.theme);
+  const palette = useStore((s) => s.progression?.palette ?? "");
+  const skin = useStore((s) => s.progression?.equip?.skin ?? "");
+
+  // 보상으로 해금한 색 테마 (globals.css [data-palette]).
+  useEffect(() => {
+    const root = document.documentElement;
+    if (palette) root.dataset.palette = palette;
+    else delete root.dataset.palette;
+  }, [palette]);
+
+  // 프로필에서 장착한 선지 스킨 (globals.css [data-skin]).
+  useEffect(() => {
+    const root = document.documentElement;
+    if (skin) root.dataset.skin = hookOf(skin);
+    else delete root.dataset.skin;
+  }, [skin]);
 
   useEffect(() => {
     const root = document.documentElement;

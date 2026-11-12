@@ -29,3 +29,21 @@ export function importPlan(seedFiles: readonly string[], dataFiles: readonly str
   }
   return steps;
 }
+
+/** Import scripts skip existing IDs, so duplicates would silently discard content. */
+export function duplicateImportIds(
+  steps: readonly ImportStep[],
+  idsForFile: (file: string) => readonly string[],
+): string[] {
+  const first = new Map<string, string>();
+  const duplicates: string[] = [];
+  for (const step of steps) {
+    for (const id of idsForFile(step.file)) {
+      const key = `${step.script}\u0000${id}`;
+      const previous = first.get(key);
+      if (previous) duplicates.push(`${id}: ${previous}, ${step.file}`);
+      else first.set(key, step.file);
+    }
+  }
+  return duplicates;
+}

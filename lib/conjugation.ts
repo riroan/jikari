@@ -285,7 +285,11 @@ export function conjugateAll(
 ): string[] {
   const a = conjugate(word, group, form);
   const b = conjugate(reading, group, form);
-  return a === b ? [a] : [a, b];
+  const out = a === b ? [a] : [a, b];
+  // 가능형 ら抜き (食べれる·来れる): 회화에서 흔하니 정답으로 인정. 표준형이 primary로 남게 뒤에 붙인다.
+  if (form === "potential" && group !== "godan")
+    for (const x of [...out]) if (x.endsWith("られる")) out.push(x.slice(0, -3) + "れる");
+  return out;
 }
 
 // ---------- human-readable labels ------------------------------------------

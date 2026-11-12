@@ -53,6 +53,7 @@ export function ConjugationCard({
       heroFontSizePx={96}
       groupLabelKo={GROUP_LABELS_KO[verb.verbGroup]}
       groupLabelJp={GROUP_LABELS_JP[verb.verbGroup]}
+      meaningKo={verb.koreanMeanings[0]}
       onResolved={onResolved}
     />
   );

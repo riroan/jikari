@@ -10,14 +10,21 @@
  * (bun run db:migrate), not this.
  */
 import { spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { importPlan } from "./import-plan";
+import { duplicateImportIds, importPlan } from "./import-plan";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const plan = importPlan(readdirSync(path.join(root, "data/seeds")), readdirSync(path.join(root, "data")));
 const dryRun = process.argv.includes("--dry-run");
+const duplicates = duplicateImportIds(plan, (file) => {
+  const cards = JSON.parse(readFileSync(path.join(root, file), "utf8")) as { id: string }[];
+  return cards.map((card) => card.id);
+});
+if (duplicates.length) {
+  throw new Error(`Duplicate seed IDs (later entries would be skipped):\n${duplicates.join("\n")}`);
+}
 
 const run = (args: string[]) => {
   console.log(`\n$ bun ${args.join(" ")}`);

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useCardsStore } from "@/lib/cards-store";
 import { getProgressLoadFailed, MERGED_EVENT, RESYNC_EVENT, subscribeSync } from "@/lib/remote-storage";
 import { useStore } from "@/lib/store";
+import { primeSpeech } from "@/lib/tts";
 
 export function HydrationBoundary({ children }: { children: React.ReactNode }) {
   const ready = useCardsStore((s) => s.ready);
@@ -19,6 +20,8 @@ export function HydrationBoundary({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     void hydrate();
+    // 미리 만든 음성 목록 — 첫 재생부터 GCP 음성이 나오게 시작할 때 받아 둔다.
+    primeSpeech();
     // If hydration finished between the lazy-init snapshot and this
     // effect firing, the listener path below handles it — no
     // synchronous setState in the effect body (lint rule

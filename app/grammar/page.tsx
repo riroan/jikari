@@ -30,7 +30,7 @@ import type {
 } from "@/lib/types";
 
 type StudyMode = "study" | "quiz";
-type GrammarTab = "pattern" | "particle";
+type GrammarTab = "pattern" | "particle" | "casual";
 
 export default function GrammarPage() {
   return (
@@ -45,15 +45,16 @@ function GrammarPageInner() {
 
   const searchParams = useSearchParams();
   const mode: StudyMode = searchParams.get("mode") === "study" ? "study" : "quiz";
-  const tab: GrammarTab =
-    searchParams.get("tab") === "particle" ? "particle" : "pattern";
+  const tabParam = searchParams.get("tab");
+  const tab: GrammarTab = tabParam === "particle" || tabParam === "casual" ? tabParam : "pattern";
 
   const review = useStore((s) => s.review);
   const recordQuizResult = useStore((s) => s.recordQuizResult);
   const getBox = useStore((s) => s.getBox);
   const patternIds = useCardsStore((s) => s.grammarPatternIds);
   const particleIds = useCardsStore((s) => s.grammarParticleContrastIds);
-  const ids = tab === "pattern" ? patternIds : particleIds;
+  const casualIds = useCardsStore((s) => s.grammarCasualIds);
+  const ids = tab === "particle" ? particleIds : tab === "casual" ? casualIds : patternIds;
 
   const [epoch, setEpoch] = useState(0);
   const [index, setIndex] = useState(0);
@@ -73,7 +74,8 @@ function GrammarPageInner() {
     setJumpId(null);
   }
 
-  const boxPrefix = tab === "pattern" ? "pattern" : "particle";
+  // 회화체도 문형 카드라 SRS 키는 grammar:pattern:{id}.
+  const boxPrefix = tab === "particle" ? "particle" : "pattern";
   const grammarById = useCardsStore((s) => s.grammarById);
   const rating = useStore((s) => s.ratings.grammar ?? INITIAL_RATING);
   const ratingTier = quantizeRating(rating);
@@ -219,6 +221,11 @@ function TabBar({ active }: { active: GrammarTab }) {
         href={`/grammar?tab=particle${modeParam}`}
         label={<>조사 <span style={{ fontFamily: "var(--font-jp-sans)" }}>助詞</span></>}
         active={active === "particle"}
+      />
+      <TabLink
+        href={`/grammar?tab=casual${modeParam}`}
+        label={<>회화체 <span style={{ fontFamily: "var(--font-jp-sans)" }}>話し言葉</span></>}
+        active={active === "casual"}
       />
     </div>
   );

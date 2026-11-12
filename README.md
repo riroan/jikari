@@ -7,7 +7,7 @@
 ## 라우트
 
 - `/` 홈 (오늘의 한마디, 일일 목표 진행선, 복습 CTA → `/review`)
-- `/review` 복습 — 기한 도래한 한자·단어·문장·문법 카드를 섞어서 한 세션으로 (한 번에 일일 목표 수까지)
+- `/review` 복습 — 기한 도래한 8개 과목 카드를 섞어서 한 세션으로 (한 번에 일일 목표 수까지)
 - `/mix` 종합 퀴즈 — 8개 과목을 섞은 한 판 (약한 카드 우선)
 - `/build` 문장 만들기 — 조립(조각을 골라 문장을 만들기, 조사 분리 옵션) · 작문(한국어 뜻을 보고 일본어를 직접 쓰기, 한자/가나 표기 모두 인정)
 - `/listening` 듣기 — 탭: 단어(발음 듣고 뜻 고르기, SRS 영향 없음) · 문장(천천히 재생) · 받아쓰기(가나로 적기) · 말하기(소리 내어 말하기)
@@ -43,7 +43,7 @@ bun dev                         # http://localhost:3000
 
 ## 콘텐츠 넣기
 
-시드는 `data/seeds/`(문법은 `data/`)에 JSON으로 있고, 아래 스크립트로 DB에 넣습니다. **이미 있는 id는 건너뛰므로** 여러 번 실행해도 안전하지만, 이미 들어간 카드의 내용은 바뀌지 않습니다. 기존 카드를 고치려면 `lib/db/migrations/A_*.sql`에 데이터 수정을 추가합니다.
+시드는 `data/seeds/`(문법은 `data/`)에 JSON으로 있고, 아래 스크립트로 DB에 넣습니다. **이미 DB에 있는 id는 건너뛰므로** 여러 번 실행해도 안전하지만, 이미 들어간 카드의 내용은 바뀌지 않습니다. 시드 파일끼리 id가 겹치면 `import-all.ts`가 가져오기 전에 오류를 냅니다. 기존 카드를 고치려면 `lib/db/migrations/A_*.sql`에 데이터 수정을 추가합니다.
 
 모든 시드를 한 번에 넣으려면 (한자 → 단어 → 문장·조사 → 표현 → 문법 → 단원 동기화 순):
 
@@ -85,7 +85,7 @@ bun run e2e         # playwright 스모크 (개발 서버를 3333 포트로 띄�
 `vX.Y.Z` 태그를 push하면 GitHub Actions(`.github/workflows/release-image.yml`)가 arm64 Docker 이미지를 빌드해 `registry.gitlab.com/riroan/riroan/jikari:<태그>`로 올립니다. 저장소 시크릿 `GITLAB_REGISTRY_USERNAME`, `GITLAB_REGISTRY_TOKEN`이 필요합니다. 이미지 푸시 뒤 `deploy` 잡이 `KUBECONFIG` 시크릿(base64)으로 `jikari` 네임스페이스의 `jikari-web` 디플로이먼트를 새 태그로 롤아웃하고 마이그레이션을 실행합니다(실패하면 `rollout undo`). 컨테이너는 `DB_*` 환경 변수를 받습니다.
 
 - 이미지 이름은 워크플로 `IMAGE`(`registry.gitlab.com/riroan/riroan/jikari`)와 배포 매니페스트의 `image`가 같아야 합니다. 매니페스트는 이 저장소 밖에 있으니 직접 확인합니다.
-- `git pull` 후에는 `bun run db:migrate`를 실행합니다. 최근 마이그레이션: `0013_daily_goal`(`app_settings.daily_goal`), `A_0004_kanji_dup_levels`, `A_0005_content_fixes`, `A_0006_content_fixes_2`, `A_0007_sentence_distractor_spread`, `A_0008_sentence_verb_distractor_spread`, `A_0009_kanji_on_reading_fixes`, `A_0010_kanji_non_joyo_readings`, `A_0011_expression_e004`, `A_0012_kanji_joyo_readings`.
+- `git pull` 후에는 `bun run db:migrate`를 실행합니다. 최근 마이그레이션: `0013_daily_goal`(`app_settings.daily_goal`), `A_0012_kanji_joyo_readings`, `A_0013_content_audit_fixes`.
 - 새 이미지를 롤아웃한 뒤에는 클러스터에서 마이그레이션을 한 번 실행합니다.
 
   ```bash

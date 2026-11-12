@@ -41,11 +41,6 @@ export function DictationCard({
       />
       <div role="status">
         {res && <AnswerFeedback correct={res.correct} />}
-        {res?.correct && hinted && (
-          <p className="mt-1 text-caption text-[color:var(--fg-faint)]">
-            힌트를 썼어요 — 다시 도전할 카드로 남겨둘게요
-          </p>
-        )}
       </div>
       {answer && res && (
         <div className="flex flex-col gap-4 pt-4 border-t border-[color:var(--line)]">

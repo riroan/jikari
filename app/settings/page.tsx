@@ -13,6 +13,7 @@ import { useClientNow } from "@/lib/use-is-client";
 import { useLocalPref } from "@/lib/use-local-pref";
 import { AUDIO_FIRST_KEY, isOnOff } from "@/components/AudioFirstPrompt";
 import { SPEED_KEY, SPEED_RATES, isSpeechSpeed, type SpeechSpeed } from "@/lib/tts-speed";
+import { RUN_LENGTH_KEY, isRunLengthPref, type RunLengthPref } from "@/lib/use-quiz-run";
 import { speak } from "@/lib/tts";
 import {
   RESPACE_DAYS,
@@ -60,6 +61,7 @@ export default function SettingsPage() {
 
   const [speed, setSpeed] = useLocalPref<SpeechSpeed>(SPEED_KEY, "normal", isSpeechSpeed);
   const [audioFirst, setAudioFirst] = useLocalPref(AUDIO_FIRST_KEY, "off", isOnOff);
+  const [runLength, setRunLength] = useLocalPref<RunLengthPref>(RUN_LENGTH_KEY, "10", isRunLengthPref);
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [pending, setPending] = useState<PersistedState | null>(null);
   const pendingExtras = useRef<BackupExtras | undefined>(undefined);
@@ -340,6 +342,24 @@ export default function SettingsPage() {
                 {n}
               </option>
             ))}
+          </select>
+        </label>
+        <label className="flex justify-between items-center text-small py-2">
+          <span className="text-[color:var(--fg-soft)]">
+            한 판 문제 수
+            <span className="block text-caption text-[color:var(--fg-faint)] mt-0.5 break-keep">
+              무한이면 요약 없이 계속 이어서 출제 (믹스 제외, 이 기기만)
+            </span>
+          </span>
+          <select
+            value={runLength}
+            onChange={(e) => setRunLength(e.target.value as RunLengthPref)}
+            aria-label="한 판 문제 수"
+            className="shrink-0 bg-transparent border border-[color:var(--line)] rounded-sm px-2 h-11 min-h-11 text-body text-[color:var(--fg)] focus:border-[color:var(--fg-soft)]"
+            style={{ minHeight: 44, minWidth: 64 }}
+          >
+            <option value="10">10문제</option>
+            <option value="endless">무한</option>
           </select>
         </label>
         <label className="flex justify-between items-center text-small py-2">

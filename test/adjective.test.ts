@@ -46,6 +46,11 @@ describe("i-adj: いい irregularity (stem → よ)", () => {
   it("いい → i_adv = よく", () => {
     expect(conjugateAdj("いい", "i_adj", "i_adv")).toBe("よく");
   });
+  it("〜さ 명사형: 高い → 高さ, いい → よさ, な형용사는 없음", () => {
+    expect(conjugateAdj("高い", "i_adj", "sa_noun")).toBe("高さ");
+    expect(conjugateAdj("いい", "i_adj", "sa_noun")).toBe("よさ");
+    expect(() => conjugateAdj("静か", "na_adj", "sa_noun")).toThrow(AdjectiveConjugationError);
+  });
   it("良い (kanji form) → negative = 良くない via regular stripping", () => {
     expect(conjugateAdj("良い", "i_adj", "negative")).toBe("良くない");
   });

@@ -96,13 +96,11 @@ test("settings has 하루 목표 select", async ({ page }) => {
   await expect(page.getByRole("combobox", { name: "하루 목표" })).toBeVisible();
 });
 
-test("home has 오늘의 복습 CTA and single-line footer", async ({ page }) => {
+test("home has 오늘의 복습 CTA and a top-left menu", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByText("오늘의 복습")).toBeVisible();
-  const links = page.locator("nav").last().getByRole("link");
-  const boxes = await links.evaluateAll((els) => els.map((e) => e.getBoundingClientRect()));
-  expect(boxes.length).toBeGreaterThan(1);
-  expect(new Set(boxes.map((b) => Math.round(b.top))).size).toBe(1);
+  await page.getByRole("button", { name: "메뉴" }).click();
+  await expect(page.locator("#home-menu").getByRole("link")).toHaveCount(5);
   expect(await noOverflow(page)).toBe(true);
 });
 

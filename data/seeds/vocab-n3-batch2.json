@@ -1,0 +1,112 @@
+[
+  {
+    "id": "中心",
+    "word": "中心",
+    "reading": "ちゅうしん",
+    "meanings": ["center"],
+    "koreanMeanings": ["중심"],
+    "ruby": "{中心|ちゅうしん}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "一部",
+    "word": "一部",
+    "reading": "いちぶ",
+    "meanings": ["a part", "portion"],
+    "koreanMeanings": ["일부"],
+    "ruby": "{一部|いちぶ}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "以内",
+    "word": "以内",
+    "reading": "いない",
+    "meanings": ["within"],
+    "koreanMeanings": ["이내"],
+    "ruby": "{以内|いない}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "全国",
+    "word": "全国",
+    "reading": "ぜんこく",
+    "meanings": ["the whole country"],
+    "koreanMeanings": ["전국"],
+    "ruby": "{全国|ぜんこく}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "本物",
+    "word": "本物",
+    "reading": "ほんもの",
+    "meanings": ["the real thing"],
+    "koreanMeanings": ["진짜"],
+    "ruby": "{本物|ほんもの}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "見物",
+    "word": "見物",
+    "reading": "けんぶつ",
+    "meanings": ["sightseeing"],
+    "koreanMeanings": ["구경"],
+    "ruby": "{見物|けんぶつ}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "期待",
+    "word": "期待",
+    "reading": "きたい",
+    "meanings": ["expectation"],
+    "koreanMeanings": ["기대"],
+    "ruby": "{期待|きたい}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "作品",
+    "word": "作品",
+    "reading": "さくひん",
+    "meanings": ["work (of art)"],
+    "koreanMeanings": ["작품"],
+    "ruby": "{作品|さくひん}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "名字",
+    "word": "名字",
+    "reading": "みょうじ",
+    "meanings": ["surname"],
+    "koreanMeanings": ["성", "성씨"],
+    "ruby": "{名字|みょうじ}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "白菜",
+    "word": "白菜",
+    "reading": "はくさい",
+    "meanings": ["napa cabbage"],
+    "koreanMeanings": ["배추"],
+    "ruby": "{白菜|はくさい}",
+    "jlptLevel": 3,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  }
+]

@@ -49,6 +49,7 @@ export function AdjectiveCard({ adj, form, onResolved }: AdjectiveCardProps) {
       heroFontSizePx={84}
       groupLabelKo={ADJ_GROUP_LABELS_KO[adj.adjGroup]}
       groupLabelJp={ADJ_GROUP_LABELS_JP[adj.adjGroup]}
+      meaningKo={adj.koreanMeanings[0]}
       onResolved={onResolved}
     />
   );

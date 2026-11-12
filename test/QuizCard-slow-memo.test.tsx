@@ -10,7 +10,7 @@ afterEach(() => {
 });
 
 describe("QuizCard — slow-correct + memo", () => {
-  it("slow line stays in the status row; memo sits in the tail below the button row", () => {
+  it("slow correct shows no note (still recorded via markAnswered); memo sits in the tail below the button row", () => {
     localStorage.setItem("jikari-memos-v1", JSON.stringify([{ key: "vocab:v1", text: "내 메모", at: 1 }]));
     render(
       <QuizCard
@@ -21,13 +21,12 @@ describe("QuizCard — slow-correct + memo", () => {
       />,
     );
     fireEvent.click(screen.getByText("a"));
-    const slow = screen.getByText(/느렸어요/);
+    expect(screen.queryByText(/느렸어요/)).toBeNull();
     const memo = screen.getByText("내 메모");
     const tail = screen.getByTestId("quiz-tail");
     expect(tail.contains(memo)).toBe(true);
-    expect(tail.contains(slow)).toBe(false);
     const next = screen.getByRole("button", { name: "다음 문제" });
-    // DOM order: status row (slow line + next) before the memo tail.
+    // DOM order: status row (next) before the memo tail.
     expect(next.compareDocumentPosition(tail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });

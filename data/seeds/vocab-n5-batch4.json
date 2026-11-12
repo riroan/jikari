@@ -1,0 +1,356 @@
+[
+  {
+    "id": "一人",
+    "word": "一人",
+    "reading": "ひとり",
+    "meanings": [
+      "one person",
+      "alone"
+    ],
+    "koreanMeanings": [
+      "혼자",
+      "한 명"
+    ],
+    "ruby": "{一人|ひとり}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "二人",
+    "word": "二人",
+    "reading": "ふたり",
+    "meanings": [
+      "two people"
+    ],
+    "koreanMeanings": [
+      "두 사람"
+    ],
+    "ruby": "{二人|ふたり}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "味",
+    "word": "味",
+    "reading": "あじ",
+    "meanings": [
+      "taste",
+      "flavor"
+    ],
+    "koreanMeanings": [
+      "맛"
+    ],
+    "ruby": "{味|あじ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "心",
+    "word": "心",
+    "reading": "こころ",
+    "meanings": [
+      "heart",
+      "mind"
+    ],
+    "koreanMeanings": [
+      "마음"
+    ],
+    "ruby": "{心|こころ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "島",
+    "word": "島",
+    "reading": "しま",
+    "meanings": [
+      "island"
+    ],
+    "koreanMeanings": [
+      "섬"
+    ],
+    "ruby": "{島|しま}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "池",
+    "word": "池",
+    "reading": "いけ",
+    "meanings": [
+      "pond"
+    ],
+    "koreanMeanings": [
+      "연못"
+    ],
+    "ruby": "{池|いけ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "日本",
+    "word": "日本",
+    "reading": "にほん",
+    "meanings": [
+      "Japan"
+    ],
+    "koreanMeanings": [
+      "일본"
+    ],
+    "ruby": "{日本|にほん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "東京",
+    "word": "東京",
+    "reading": "とうきょう",
+    "meanings": [
+      "Tokyo"
+    ],
+    "koreanMeanings": [
+      "도쿄"
+    ],
+    "ruby": "{東京|とうきょう}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "外国",
+    "word": "外国",
+    "reading": "がいこく",
+    "meanings": [
+      "foreign country"
+    ],
+    "koreanMeanings": [
+      "외국"
+    ],
+    "ruby": "{外国|がいこく}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "薬",
+    "word": "薬",
+    "reading": "くすり",
+    "meanings": [
+      "medicine"
+    ],
+    "koreanMeanings": [
+      "약"
+    ],
+    "ruby": "{薬|くすり}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "今月",
+    "word": "今月",
+    "reading": "こんげつ",
+    "meanings": [
+      "this month"
+    ],
+    "koreanMeanings": [
+      "이번 달"
+    ],
+    "ruby": "{今月|こんげつ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "来月",
+    "word": "来月",
+    "reading": "らいげつ",
+    "meanings": [
+      "next month"
+    ],
+    "koreanMeanings": [
+      "다음 달"
+    ],
+    "ruby": "{来月|らいげつ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "先月",
+    "word": "先月",
+    "reading": "せんげつ",
+    "meanings": [
+      "last month"
+    ],
+    "koreanMeanings": [
+      "지난달"
+    ],
+    "ruby": "{先月|せんげつ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "今週",
+    "word": "今週",
+    "reading": "こんしゅう",
+    "meanings": [
+      "this week"
+    ],
+    "koreanMeanings": [
+      "이번 주"
+    ],
+    "ruby": "{今週|こんしゅう}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "今晩",
+    "word": "今晩",
+    "reading": "こんばん",
+    "meanings": [
+      "this evening"
+    ],
+    "koreanMeanings": [
+      "오늘 밤"
+    ],
+    "ruby": "{今晩|こんばん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "一番",
+    "word": "一番",
+    "reading": "いちばん",
+    "meanings": [
+      "the most",
+      "number one"
+    ],
+    "koreanMeanings": [
+      "가장",
+      "제일"
+    ],
+    "ruby": "{一番|いちばん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "半分",
+    "word": "半分",
+    "reading": "はんぶん",
+    "meanings": [
+      "half"
+    ],
+    "koreanMeanings": [
+      "절반"
+    ],
+    "ruby": "{半分|はんぶん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "月",
+    "word": "月",
+    "reading": "つき",
+    "meanings": [
+      "moon"
+    ],
+    "koreanMeanings": [
+      "달"
+    ],
+    "ruby": "{月|つき}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "年",
+    "word": "年",
+    "reading": "とし",
+    "meanings": [
+      "year",
+      "age"
+    ],
+    "koreanMeanings": [
+      "해",
+      "나이"
+    ],
+    "ruby": "{年|とし}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "時",
+    "word": "時",
+    "reading": "とき",
+    "meanings": [
+      "time",
+      "when"
+    ],
+    "koreanMeanings": [
+      "때"
+    ],
+    "ruby": "{時|とき}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "円",
+    "word": "円",
+    "reading": "えん",
+    "meanings": [
+      "yen"
+    ],
+    "koreanMeanings": [
+      "엔"
+    ],
+    "ruby": "{円|えん}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "火",
+    "word": "火",
+    "reading": "ひ",
+    "meanings": [
+      "fire"
+    ],
+    "koreanMeanings": [
+      "불"
+    ],
+    "ruby": "{火|ひ}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  },
+  {
+    "id": "何",
+    "word": "何",
+    "reading": "なに",
+    "meanings": [
+      "what"
+    ],
+    "koreanMeanings": [
+      "무엇"
+    ],
+    "ruby": "{何|なに}",
+    "jlptLevel": 5,
+    "verbGroup": "not_verb",
+    "adjGroup": "not_adj"
+  }
+]

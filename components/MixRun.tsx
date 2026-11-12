@@ -46,7 +46,7 @@ export function MixRun({ entries, onExit }: { entries: MixEntry[]; onExit: () =>
   const [stats, setStats] = useState({ correct: 0, wrong: 0 });
   const [tally, setTally] = useState<Partial<Record<MixSubject, [number, number]>>>({});
   const [retried, setRetried] = useState(false);
-  const run = useQuizRun(entries.length, entries.length);
+  const run = useQuizRun(entries.length, entries.length, false);
 
   const breakdown = useMemo(
     () =>

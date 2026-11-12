@@ -12,7 +12,7 @@ test.describe("home — 단원 entry button", () => {
 
     await page.goto("/");
 
-    // Regression: brand + 9 subject rows + heatmap + footer still visible.
+    // Regression: brand + 9 subject rows + heatmap still visible.
     await expect(page.getByRole("heading", { name: "jikari", level: 1 })).toBeVisible();
     await expect(page.getByRole("link", { name: "공부" })).toHaveCount(8);
     await expect(page.getByRole("link", { name: /(?<!종합 )퀴즈/ })).toHaveCount(9);
@@ -23,12 +23,13 @@ test.describe("home — 단원 entry button", () => {
     await expect(unitsLink).toBeVisible();
     await expect(unitsLink).toHaveAttribute("href", "/chapters");
 
-    // Footer no longer carries UNITS — only HOME/PROGRESS/SETTINGS.
-    const footer = page.locator("nav").last();
-    await expect(footer.getByRole("link", { name: /^HOME$/ })).toBeVisible();
-    await expect(footer.getByRole("link", { name: /^PROGRESS$/ })).toBeVisible();
-    await expect(footer.getByRole("link", { name: /^SETTINGS$/ })).toBeVisible();
-    await expect(footer.getByRole("link", { name: /^UNITS$/ })).toHaveCount(0);
+    // 좌상단 메뉴에는 단원이 없다 (단원은 위 진입점).
+    await page.getByRole("button", { name: "메뉴" }).click();
+    const menu = page.locator("#home-menu");
+    await expect(menu.getByRole("link", { name: /진도/ })).toBeVisible();
+    await expect(menu.getByRole("link", { name: /설정/ })).toBeVisible();
+    await expect(menu.getByRole("link", { name: /단원/ })).toHaveCount(0);
+    await page.keyboard.press("Escape");
 
     // Inline chapter list NOT rendered on home (moved to /chapters route).
     await expect(page.locator("section[aria-labelledby='chapters-label']")).toHaveCount(0);

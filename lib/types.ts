@@ -3,6 +3,8 @@
  * Source: DESIGN.md § Component vocabulary + CEO plan accepted scope
  */
 
+import type { Progression } from "./progression";
+
 export type JLPTLevel = 5 | 4 | 3 | 2 | 1;
 
 export interface KanjiCard {
@@ -103,6 +105,7 @@ export const ALL_CONJUGATION_FORMS: readonly ConjugationForm[] = [
  *   i_adv (〜く)         — i-adj only (adverbial)
  *   na_prenominal (〜な) — na-adj only (noun modifier)
  *   ni_adv (〜に)        — na-adj only (adverbial; parallel to i_adv)
+ *   sa_noun (〜さ)       — i-adj only (nominalization: 高い → 高さ)
  *
  * Callers should filter by group — see ADJ_FORMS_FOR.
  */
@@ -115,7 +118,8 @@ export type AdjectiveForm =
   | "na_prenominal"
   | "ni_adv"
   | "conditional"
-  | "polite_negative";
+  | "polite_negative"
+  | "sa_noun";
 
 const COMMON_ADJ_FORMS: readonly AdjectiveForm[] = [
   "negative",
@@ -137,7 +141,8 @@ export const ADJ_FORMS_FOR: Record<
   Exclude<AdjGroup, "not_adj">,
   readonly AdjectiveForm[]
 > = {
-  i_adj: [...COMMON_ADJ_FORMS, "i_adv"],
+  // 〜さ 명사형은 い형용사만 — な형용사는 好きさ처럼 어색한 게 섞여서 뺐다.
+  i_adj: [...COMMON_ADJ_FORMS, "i_adv", "sa_noun"],
   na_adj: [...COMMON_ADJ_FORMS, "na_prenominal", "ni_adv"],
 };
 
@@ -289,7 +294,10 @@ export type CardMode =
   | "conjugation"
   | "adjective"
   | "grammar"
-  | "expression";
+  | "expression"
+  // 듣기 전용 — 글자 카드의 박스를 오염시키지 않게 따로 센다. cardId는
+  // `word:<vocabId>` · `sent:<sentenceId>` · `dict:<expressionId>` · `pair:<pairId>` · `num:<kind>`.
+  | "listening";
 export interface LearningState {
   /** Composite key: `${mode}:${cardId}` */
   cardKey: string;
@@ -344,7 +352,8 @@ export type QuizStatKey =
   | "grammar"
   | "conjugation"
   | "adjective"
-  | "expression";
+  | "expression"
+  | "listening";
 
 export interface QuizStat {
   correct: number;
@@ -367,6 +376,11 @@ export interface PersistedState {
    * Absent key = never answered in that mode; treat as INITIAL_RATING.
    */
   ratings: Record<string, number>;
+  /**
+   * 포인트·급단·보상 (lib/progression.ts). Optional: 옛 클라이언트·백업엔 없고,
+   * 없으면 서버는 기존 값을 건드리지 않는다.
+   */
+  progression?: Progression;
   /** User settings */
   settings: {
     /** "system" follows OS prefers-color-scheme; "light"/"dark" override. */
@@ -384,7 +398,7 @@ export interface PersistedState {
   };
 }
 
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 
 export const DEFAULT_SETTINGS: PersistedState["settings"] = {
   theme: "system",

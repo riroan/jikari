@@ -93,6 +93,7 @@ const ADJECTIVE_FORM_DIFFICULTY: Record<AdjectiveForm, number> = {
   past: 1050,
   na_prenominal: 1100,
   past_negative: 1150,
+  sa_noun: 1150,
   i_adv: 1200,
   ni_adv: 1200,
   te: 1250,
