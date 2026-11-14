@@ -36,3 +36,13 @@ describe("joyoReadingProblems", () => {
     expect(joyoReadingProblems({ id: "綺", onReadings: ["き"], kunReadings: [] })).toEqual(["綺: 상용한자가 아님"]);
   });
 });
+
+describe("splitOkurigana", () => {
+  test("표의 점 위치로 어간과 오쿠리가나를 가른다", async () => {
+    const { splitOkurigana } = await import("@/lib/joyo");
+    expect(splitOkurigana("語", "かたる")).toEqual(["かた", "る"]);
+    expect(splitOkurigana("語", "かたらう")).toEqual(["かた", "らう"]);
+    expect(splitOkurigana("金", "かね")).toEqual(["かね", ""]);
+    expect(splitOkurigana("綺", "きれい")).toEqual(["きれい", ""]);
+  });
+});

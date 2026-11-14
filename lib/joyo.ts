@@ -47,3 +47,23 @@ export function joyoReadingProblems(card: {
     ...card.kunReadings.filter((r) => !j.kun.has(r)).map((r) => `${card.id} 訓 ${r}`),
   ];
 }
+
+/**
+ * 훈독을 [어간, 오쿠리가나]로 가른다 (常用漢字表의 "かた.る" 표기를 이용).
+ * 시드의 훈독은 전체형("かたる")이라 표에서 같은 읽기를 찾아 점 위치로 자른다.
+ * 오쿠리가나가 없는 읽기(かね)나 표에 없는 읽기는 [reading, ""].
+ */
+export function splitOkurigana(char: string, reading: string): [string, string] {
+  const e = TABLE[char];
+  if (!e) return [reading, ""];
+  for (const k of e.kun) {
+    const dot = k.indexOf(".");
+    if (dot < 0) continue;
+    const flat = k.replace(/-/g, "");
+    if (toHiragana(flat.replace(".", "")) === reading) {
+      const stem = toHiragana(flat.slice(0, flat.indexOf(".")));
+      return [stem, reading.slice(stem.length)];
+    }
+  }
+  return [reading, ""];
+}

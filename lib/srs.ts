@@ -230,3 +230,18 @@ export function masteryLevel(state: LearningState | undefined): "new" | "learnin
 }
 
 export const INTERVALS = INTERVAL_DAYS;
+
+/**
+ * "알고있음"을 누르면 다음 복습까지 며칠인지 (공부 카드 버튼 라벨용).
+ * 아직 본 적 없는 카드는 box 1에서 시작한다고 보고 계산한다. 반올림, 최소 1일.
+ */
+export function previewKnownDays(
+  state: LearningState | undefined,
+  mode: CardMode,
+  cardId: string,
+  now: number,
+): number {
+  const base = state ?? newLearningState(mode, cardId, now);
+  const next = advance(base, true, now);
+  return Math.max(1, Math.round((next.nextDue - now) / DAY_MS));
+}

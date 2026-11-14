@@ -437,3 +437,9 @@ ruby rt {
 html:has(dialog[open]) {
   overflow: hidden;
 }
+
+/* 공부 카드 "답 가리기": StudyCard가 data-hide-answers를 달면 본문의 data-answer를 흐린다. */
+[data-hide-answers] [data-answer] {
+  filter: blur(7px);
+  user-select: none;
+}

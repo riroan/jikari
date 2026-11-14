@@ -139,8 +139,9 @@ function VocabPageInner() {
       {emptyWeak && <WeakEmptyNotice />}
       {mode === "study" ? (
         <StudyCard
-          body={<VocabStudyBody card={card} />}
+          body={<VocabStudyBody key={card.id} card={card} />}
           speak={card.reading}
+          grade={{ mode: "vocab", cardId: card.id, difficulty: jlptDifficulty(card) }}
           position={index + 1}
           total={deck.length}
           onPrev={retreat}

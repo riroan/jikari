@@ -143,6 +143,7 @@ function SentencePageInner() {
         <StudyCard
           body={<SentenceFilled card={card} />}
           speak={card.sentence.replace("＿＿＿", card.blank)}
+          grade={{ mode: "sentence", cardId: card.id, difficulty: jlptDifficulty(card) }}
           shadow
           position={index + 1}
           total={deck.length}

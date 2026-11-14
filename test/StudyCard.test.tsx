@@ -88,3 +88,46 @@ describe("StudyCard — keyboard (desktop)", () => {
     expect(onPrev).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("StudyCard — 판정 버튼", () => {
+  it("알고있음은 review(true) 후 다음으로, 되돌리기는 상태를 되돌리고 이전으로", async () => {
+    const { useStore } = await import("@/lib/store");
+    useStore.getState().reset();
+    const onPrev = vi.fn();
+    const onNext = vi.fn();
+    render(
+      <StudyCard
+        body={<div>語</div>}
+        position={1}
+        total={3}
+        onPrev={onPrev}
+        onNext={onNext}
+        grade={{ mode: "kanji", cardId: "語" }}
+      />,
+    );
+    expect(screen.getByText(/일 후 복습/)).toBeDefined();
+    fireEvent.click(screen.getByText("알고있음"));
+    expect(onNext).toHaveBeenCalledTimes(1);
+    expect(useStore.getState().learningStates["kanji:語"]?.box).toBe(2);
+    fireEvent.click(screen.getByLabelText("직전 판정 되돌리기"));
+    expect(onPrev).toHaveBeenCalledTimes(1);
+    expect(useStore.getState().learningStates["kanji:語"]).toBeUndefined();
+  });
+
+  it("다시 학습은 review(false)", async () => {
+    const { useStore } = await import("@/lib/store");
+    useStore.getState().reset();
+    render(
+      <StudyCard body={<div>x</div>} position={1} total={1} onPrev={vi.fn()} onNext={vi.fn()} grade={{ mode: "vocab", cardId: "v1" }} />,
+    );
+    fireEvent.click(screen.getByText("다시 학습"));
+    expect(useStore.getState().learningStates["vocab:v1"]?.box).toBe(1);
+    expect(useStore.getState().learningStates["vocab:v1"]?.lastReviewed).toBeGreaterThan(0);
+  });
+
+  it("grade가 없으면 이전/다음", () => {
+    render(<StudyCard body={<div>x</div>} position={1} total={2} onPrev={vi.fn()} onNext={vi.fn()} />);
+    expect(screen.getByLabelText("다음 카드")).toBeDefined();
+    expect(screen.queryByText("알고있음")).toBeNull();
+  });
+});

@@ -127,6 +127,7 @@ function ExpressionsPageInner() {
         <StudyCard
           body={<ExpressionBack card={card} />}
           speak={card.ruby ?? card.expression_jp}
+          grade={{ mode: "expression", cardId: card.id, difficulty: registerDifficulty(card) }}
           shadow
           position={index + 1}
           total={deck.length}

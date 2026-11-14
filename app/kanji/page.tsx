@@ -22,8 +22,9 @@ import { preferredFor, settleConfusion } from "@/lib/confusion";
 import { normalizeJapanese } from "@/lib/normalize";
 import { wordsWithKanji } from "@/lib/kanji-words";
 import { useKanjiMissExample } from "@/lib/use-miss-example";
-import { SpeakButton } from "@/components/SpeakButton";
-import type { KanjiCard } from "@/lib/types";
+import type { KanjiCard, VocabCard } from "@/lib/types";
+import { splitOkurigana } from "@/lib/joyo";
+import { speak } from "@/lib/tts";
 
 type StudyMode = "study" | "quiz";
 
@@ -137,7 +138,10 @@ function KanjiPageInner() {
       {emptyWeak && <WeakEmptyNotice />}
       {mode === "study" ? (
         <StudyCard
-          body={<KanjiStudyBody card={card} />}
+          key="study"
+          body={<KanjiStudyBody key={card.id} card={card} />}
+          grade={{ mode: "kanji", cardId: card.id, difficulty: jlptDifficulty(card) }}
+          hideable
           position={index + 1}
           total={deck.length}
           onPrev={retreat}
@@ -262,43 +266,128 @@ function KanjiQuiz({
 }
 
 function KanjiStudyBody({ card }: { card: KanjiCard }) {
-  // Quiz back + example words — in study mode, everything is visible from the start.
+  // 공부 화면: 큰 한자 → 훈음 → 음독/훈독 칩 → 예시 단어(3개씩 넘김). 답에 해당하는 곳은
+  // data-answer로 표시해 "답 가리기"(StudyCard)에서 흐려진다.
   const vocab = useCardsStore((s) => s.vocab);
-  const words = wordsWithKanji(card.kanji, vocab);
+  const words = wordsWithKanji(card.kanji, vocab, 30);
   return (
-    <div className="flex flex-col gap-4">
-      <KanjiBack card={card} />
-      {words.length > 0 && (
-        <ul className="border-t border-[color:var(--line)] pt-1 m-0 p-0 list-none">
-          {words.map((w) => (
-            <li
-              key={w.id}
-              className="flex items-center justify-between gap-2 border-b border-[color:var(--line)]"
-            >
-              <div className="flex flex-col py-2 min-w-0">
-                <span className="text-body" lang="ja">
-                  <span
-                    className="text-[color:var(--fg)]"
-                    style={{ fontFamily: "var(--font-jp-serif)" }}
-                  >
-                    {w.word}
-                  </span>
-                  <span
-                    className="ml-2 text-small text-[color:var(--fg-faint)]"
-                    style={{ fontFamily: "var(--font-jp-sans)" }}
-                  >
-                    {w.reading}
-                  </span>
-                </span>
-                <span className="text-small text-[color:var(--fg-soft)]">
-                  {w.koreanMeanings[0]}
-                </span>
-              </div>
-              <SpeakButton text={w.reading} />
-            </li>
-          ))}
-        </ul>
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-col items-center gap-1 pt-2">
+        <div
+          lang="ja"
+          className="text-[96px] leading-none font-semibold text-[color:var(--fg)]"
+          style={{ fontFamily: "var(--font-jp-serif)" }}
+        >
+          {card.kanji}
+        </div>
+        <div data-answer className="mt-2 text-body text-[color:var(--fg-soft)]">
+          {card.koreanMeaning} {card.koreanSound.join("·")}
+        </div>
+      </div>
+      <div data-answer className="flex flex-col gap-2">
+        <ReadingChips label="음독" kanji={card.kanji} readings={card.onReadings} />
+        <ReadingChips label="훈독" kanji={card.kanji} readings={card.kunReadings} okurigana />
+        <SinoKoreanHint koreanSound={card.koreanSound} onReadings={card.onReadings} />
+      </div>
+      {words.length > 0 && <WordPager words={words} />}
+    </div>
+  );
+}
+
+/** 음독/훈독 한 줄: 작은 라벨 칩 + 읽기. 훈독의 오쿠리가나(かた「る」)는 흐리게. */
+function ReadingChips({
+  label,
+  kanji,
+  readings,
+  okurigana = false,
+}: {
+  label: string;
+  kanji: string;
+  readings: readonly string[];
+  okurigana?: boolean;
+}) {
+  if (readings.length === 0) return null;
+  return (
+    <div className="flex items-baseline gap-3">
+      <span className="shrink-0 px-1.5 py-0.5 rounded-sm border border-[color:var(--line)] bg-[color:var(--bg-deep)] text-tiny text-[color:var(--fg-faint)]">
+        {label}
+      </span>
+      <span lang="ja" className="text-body text-[color:var(--fg)]" style={{ fontFamily: "var(--font-jp-sans)" }}>
+        {readings.map((r, i) => {
+          const [stem, okuri] = okurigana ? splitOkurigana(kanji, r) : [r, ""];
+          return (
+            <span key={r}>
+              {i > 0 && <span className="text-[color:var(--fg-faint)]">, </span>}
+              {stem}
+              {okuri && <span className="text-[color:var(--fg-faint)]">{okuri}</span>}
+            </span>
+          );
+        })}
+      </span>
+    </div>
+  );
+}
+
+const WORDS_PER_PAGE = 3;
+
+/** 예시 단어: JLPT 배지 · 단어 · 읽기 · 뜻. 3개씩 넘겨 보고, 줄을 누르면 발음한다. */
+function WordPager({ words }: { words: readonly VocabCard[] }) {
+  const [page, setPage] = useState(0);
+  const pages = Math.ceil(words.length / WORDS_PER_PAGE);
+  const shown = words.slice(page * WORDS_PER_PAGE, page * WORDS_PER_PAGE + WORDS_PER_PAGE);
+  const arrow =
+    "inline-flex items-center justify-center min-w-[44px] min-h-[36px] text-[color:var(--fg-soft)] disabled:opacity-30";
+  return (
+    <div className="border border-[color:var(--line)] rounded-sm">
+      {pages > 1 && (
+        <div className="flex items-center justify-center gap-2 border-b border-[color:var(--line)]">
+          <button type="button" className={arrow} aria-label="이전 단어" disabled={page === 0} onClick={(e) => { e.stopPropagation(); setPage(page - 1); }}>
+            ‹
+          </button>
+          <span className="text-caption tabular-nums text-[color:var(--fg-soft)]">
+            {page + 1} / {pages}
+          </span>
+          <button type="button" className={arrow} aria-label="다음 단어" disabled={page >= pages - 1} onClick={(e) => { e.stopPropagation(); setPage(page + 1); }}>
+            ›
+          </button>
+        </div>
       )}
+      <ul className="m-0 p-0 list-none">
+        {shown.map((w) => (
+          <li key={w.id} className="border-b last:border-b-0 border-[color:var(--line)]">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                speak(w.reading);
+              }}
+              aria-label={`${w.word} 발음 듣기`}
+              className="w-full min-h-[48px] px-3 py-2 flex items-center gap-3 text-left hover:bg-[color:var(--bg-deep)] transition-colors"
+            >
+              <span
+                className={`shrink-0 w-8 text-center px-1 py-0.5 rounded-sm border text-tiny tabular-nums ${
+                  w.jlptLevel >= 4
+                    ? "border-[color:var(--accent-progress)] text-[color:var(--accent-progress-text)]"
+                    : "border-[color:var(--accent-korean)] text-[color:var(--accent-korean)]"
+                }`}
+              >
+                N{w.jlptLevel}
+              </span>
+              <span lang="ja" className="min-w-0 flex-1 flex items-baseline gap-2 truncate">
+                <span className="text-body text-[color:var(--fg)]" style={{ fontFamily: "var(--font-jp-serif)" }}>
+                  {w.word}
+                </span>
+                <span data-answer className="text-small text-[color:var(--fg-faint)]" style={{ fontFamily: "var(--font-jp-sans)" }}>
+                  {w.reading}
+                </span>
+              </span>
+              <span data-answer className="shrink-0 text-small text-[color:var(--fg-soft)]">
+                {w.koreanMeanings[0]}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

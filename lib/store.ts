@@ -99,6 +99,13 @@ interface StoreActions {
   /** Update settings. */
   updateSettings: (partial: Partial<PersistedState["settings"]>) => void;
 
+  /**
+   * 공부 카드의 되돌리기: review() 직전 상태 조각을 떠 두었다가 그대로 되돌린다.
+   * (오답 노트의 기기 로컬 기록은 되돌리지 않는다.)
+   */
+  snapshotForUndo: () => UndoSnapshot;
+  restoreUndo: (snapshot: UndoSnapshot) => void;
+
   /** Set nextDue for many cards in ONE update (respace / undo). Nothing else changes. */
   setNextDues: (changes: Record<string, number>) => void;
 
@@ -108,6 +115,11 @@ interface StoreActions {
   /** Reset to empty state. */
   reset: () => void;
 }
+
+export type UndoSnapshot = Pick<
+  PersistedState,
+  "learningStates" | "heatmap" | "lastActiveAt" | "currentStreak" | "progression" | "ratings"
+>;
 
 type Store = PersistedState & StoreActions;
 
@@ -235,6 +247,20 @@ export const useStore = create<Store>()(
 
       updateSettings: (partial) =>
         set({ settings: { ...get().settings, ...partial } }),
+
+      snapshotForUndo: () => {
+        const s = get();
+        return {
+          learningStates: s.learningStates,
+          heatmap: s.heatmap,
+          lastActiveAt: s.lastActiveAt,
+          currentStreak: s.currentStreak,
+          progression: s.progression,
+          ratings: s.ratings,
+        };
+      },
+
+      restoreUndo: (snapshot) => set({ ...snapshot }),
 
       setNextDues: (changes) => {
         const states = { ...get().learningStates };
